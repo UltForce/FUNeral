@@ -1,0 +1,440 @@
+/* styles.css */
+nav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  float: left;
+}
+
+nav a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add this CSS rule to define hover effect for buttons */
+button:hover {
+  background-color: #ddd;
+  color: black;
+  transform: scale(1.1); /* Increase size by 10% */
+}
+/* Apply hover effect to the label wrapping the checkbox input */
+.checkbox:hover {
+  background-color: #ddd;
+  color: black;
+}
+/* Update the CSS selector to target the active link */
+nav ul.centeredNav li.active a:hover,
+nav ul.centeredNav li.active a {
+  background-color: #ddd;
+  color: black;
+  transform: scale(1.1); /* Increase size by 10% */
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.back-to-top:hover {
+  background-color: #555;
+}
+
+ul.centeredNav {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+}
+
+ul.centered li {
+  margin: 0 10px;
+}
+
+.background-shadow {
+  min-height: 93vh;
+  background-size: cover;
+  box-shadow: inset 0 0 2000px rgba(0, 0, 0, 0.5);
+}
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page-title {
+  padding-top: 30px;
+}
+
+.div-spacing {
+  padding-top: 20px;
+  max-width: 1200px;
+}
+
+.image-container {
+  width: 200px;
+  /* Adjust as needed */
+  height: 200px;
+  /* Adjust as needed */
+  overflow: hidden;
+  border: 2px solid #ccc;
+  /* Border style */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Maintain aspect ratio and cover the entire container */
+}
+.service-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.service-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.service-card {
+  width: calc(20% - 20px); /* Adjust width based on number of cards per row */
+  margin-bottom: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.pagination-buttons {
+  margin-top: 150px;
+  height: 50px;
+}
+
+.pagination-buttons button {
+  margin-right: 10px;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .service-card {
+    width: calc(50% - 20px); /* Adjust width for smaller screens */
+  }
+}
+/* styles.css */
+.homepage {
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2em;
+}
+
+section.hero {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+section.hero h2 {
+  color: #333;
+}
+
+section.featured {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 45%;
+}
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.account-table {
+  width: 100%;
+  border-collapse: collapse; /* Remove border spacing */
+}
+
+.account-table th,
+.account-table td {
+  border: 1px solid #ddd; /* Add border to cells */
+  padding: 8px;
+  text-align: left;
+}
+
+.account-table th {
+  background-color: #333; /* Header background color */
+  color: white; /* Header text color */
+}
+
+.account-table th:first-child,
+.account-table td:first-child {
+  background-color: #333; /* Highlight the first column */
+  color: white; /* Text color for the first column */
+}
+
+.footer {
+  margin-top: 0;
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.social-media a {
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.contact-info p {
+  margin: 0;
+}
+
+.contact-info p:first-child {
+  margin-bottom: 5px;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.two-column-layout {
+  padding-left: 10%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center the form groups horizontally */
+  width: 50%; /* Adjust the width of the two-column layout */
+  margin: auto; /* Center the layout horizontally */
+}
+
+.form-group {
+  flex: 0 0 48%; /* Set the width of each form group to occupy half of the available space */
+  margin-bottom: 50px; /* Add margin between form groups */
+}
+
+.form-group label {
+  display: block; /* Display the label as a block element */
+  margin-bottom: 5px; /* Add margin below the label */
+}
+
+.form-group input {
+  width: 50%; /* Make the input field occupy the entire width of its container */
+  padding: 8px; /* Add padding to the input field */
+  box-sizing: border-box; /* Ensure that padding and border are included in the width */
+  margin-bottom: 15px; /* Add margin between form groups */
+}
+.booking-form {
+  width: 90%;
+}
+
+.accordion-body {
+  white-space: pre-wrap;
+  max-height: none;
+}
+
+.accordion-container {
+  width: 80%; /* Adjust the width as needed */
+  margin: 0 auto; /* Centers the accordion horizontally */
+}
+
+.accordion {
+  width: 100%;
+}
+
+.accordion-item {
+  min-height: 70px;
+}
+.accordion-button {
+  min-height: 70px;
+}
+.custom-event {
+  width: 150px; /* Adjust the width as needed */
+}
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 3 columns */
+  grid-gap: 10px; /* Adjust as needed */
+}
+
+.gallery-container img {
+  width: 100%; /* Ensure images fill their container */
+  height: auto;
+  max-width: 300px; /* Set maximum width for each image */
+  max-height: 300px; /* Set maximum height for each image */
+  object-fit: cover; /* Ensure images are cropped to fit the square shape */
+  margin-bottom: 25px; /* Adjust spacing between images */
+}
+
+.gallery-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 25px; /* Adjust spacing between images */
+}
+
+.gallery img {
+  width: 100%; /* Ensure images fill their container */
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 50px; /* Adjust spacing between images */
+}
+.image-services {
+  width: 95%;
+}
+.image {
+  width: 95%;
+  max-width: 450px;
+  margin-bottom: 50px; /* Adjust spacing between images */
+}
+label {
+  margin-left: 10px;
+}
+.register-label {
+  color: #888;
+}
+/* Custom CSS for DataTable */
+.dataTables_wrapper {
+  margin-top: 20px;
+}
+
+.dataTables_length {
+  margin-bottom: 10px;
+}
+
+.dataTables_filter {
+  margin-bottom: 10px;
+}
+
+.dataTables_info {
+  margin-bottom: 10px;
+}
+
+.dataTables_paginate {
+  margin-top: 10px;
+}
+
+#appointmentsTable th,
+#appointmentsTable td {
+  text-align: left;
+  padding: 8px;
+}
+
+#appointmentsTable th {
+  background-color: #f2f2f2;
+}
+
+#appointmentsTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#appointmentsTable tbody tr:hover {
+  background-color: #ddd;
+}
+
+.report-header {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.report-header h3 {
+  margin: 0; /* Remove default margin */
+  margin-right: 100px;
+}
+
+/* Add these styles to your CSS file */
+.book-now-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 3em;
+  padding: 10px 20px;
+  background-color: black;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.book-now-button:hover {
+  background-color: white;
+}
+.calendar-container {
+  width: 90%;
+}
+.unread-dot {
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 5px; /* Adjust as needed */
+}
+
+.image-label {
+  position: absolute;
+  top: 0.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 2px 2px;
+  border-radius: 2px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #333;
+}
