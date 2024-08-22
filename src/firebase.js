@@ -25,18 +25,18 @@ import {
 } from "firebase/firestore";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 // Firebase configuration for the main app
 const firebaseConfig = {
-  apiKey: "AIzaSyBBJDmeNnG_9fF2QXadjQ6imZYIcg-_yaY",
-  authDomain: "funeral-e5a57.firebaseapp.com",
-  projectId: "funeral-e5a57",
-  storageBucket: "funeral-e5a57.appspot.com",
-  messagingSenderId: "601009835586",
-  appId: "1:601009835586:web:0485ee22862be0c34ea7db",
-  measurementId: "G-5TB63CLGD3",
+  apiKey: "AIzaSyDWwBbQ29OasLNPDgJyuct1X55gkiNXGYI",
+  authDomain: "funeral-81aff.firebaseapp.com",
+  projectId: "funeral-81aff",
+  storageBucket: "funeral-81aff.appspot.com",
+  messagingSenderId: "938666208645",
+  appId: "1:938666208645:web:5afa1086623efe668268ec",
 };
 
 // Initialize Firebase
@@ -76,12 +76,27 @@ const getUserRoleFirestore = async (userId) => {
   }
 };
 
-// Function to create a new appointment
 const createAppointment = async (userId, appointmentData) => {
   try {
-    // Add the userId to the appointment data
+    const storage = getStorage();
+    let deathCertificateURL = "";
+
+    // Check if a DeathCertificate file is provided
+    if (appointmentData.DeathCertificate) {
+      const file = appointmentData.DeathCertificate;
+      const storageRef = ref(
+        storage,
+        `deathCertificates/${userId}/${Date.now()}_${file.name}`
+      );
+      await uploadBytes(storageRef, file);
+      deathCertificateURL = await getDownloadURL(storageRef);
+    }
+
+    // Add the userId and deathCertificateURL to the appointment data
     appointmentData.userId = userId;
+    appointmentData.DeathCertificate = deathCertificateURL;
     appointmentData.status = appointmentData.status || "pending"; // Set default value to "pending" if status is not provided
+
     // Create a new document in the "appointments" collection
     const appointmentRef = await addDoc(
       collection(dba, "appointments"),
@@ -91,11 +106,8 @@ const createAppointment = async (userId, appointmentData) => {
     // Get the ID of the newly created appointment document
     const appointmentId = appointmentRef.id;
 
-    // Add the appointmentId to the appointment data
-    appointmentData.appointmentId = appointmentId;
-
-    // Update the appointment document with the appointmentId
-    await updateDoc(appointmentRef, { appointmentId: appointmentId });
+    // Update the appointment data with the appointmentId
+    await updateDoc(appointmentRef, { appointmentId });
 
     console.log("Appointment created successfully with ID: ", appointmentId);
   } catch (error) {
@@ -398,4 +410,5 @@ export {
   AuditLogger,
   getUserEmail,
   getUserEmailById,
+  getStorage,
 };

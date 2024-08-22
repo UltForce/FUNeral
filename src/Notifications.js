@@ -80,6 +80,7 @@ const Notifications = () => {
       });
     }
   }, [notifications]);
+
   const vaccinationformatDateTime = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     // Check if dateTimeString is not applicable
@@ -116,20 +117,6 @@ const Notifications = () => {
               <tbody>
                 {notifications.map((notification, index) => (
                   <tr key={index}>
-                    {Object.entries(JSON.parse(notification.data)).map(
-                      ([key, value]) => {
-                        if (key === "vaccinationDate") {
-                          return (
-                            <td key={key}>
-                              {vaccinationformatDateTime(value)}
-                            </td>
-                          );
-                        } else if (key !== "appointmentId" && key !== "petId") {
-                          return <td key={key}>{value}</td>;
-                        }
-                        return null; // Skip rendering if key is "appointmentId" or "petId"
-                      }
-                    )}
                     <td>{notification.message}</td>
                   </tr>
                 ))}

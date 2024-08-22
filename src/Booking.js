@@ -25,6 +25,8 @@ import {
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
+import { Button, Modal, Form } from "react-bootstrap";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 // Toast configuration for displaying messages
 const Toast = Swal.mixin({
   toast: true,
@@ -41,6 +43,86 @@ const Toast = Swal.mixin({
 // Component for booking appointments
 const Booking = ({ addNotification }) => {
   const navigate = useNavigate(); // Initialize navigate function
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const handleShow1 = () => setShowModal1(true);
+  const handleClose1 = () => setShowModal1(false);
+  const handleShow2 = () => setShowModal2(true);
+  const handleClose2 = () => setShowModal2(false);
+  const [termsChecked, setTermsChecked] = useState(false); // State for tracking if terms are checked
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null); // State for storing selected date
+  const [isFormOpen, setIsFormOpen] = useState(false); // State for controlling form visibility
+  const [isValidDaySelected, setIsValidDaySelected] = useState(false); // State for checking if a valid day is selected
+  const [hasPendingAppointment, setHasPendingAppointment] = useState(false);
+  const calendarRef = useRef(null);
+  const [appointments, setAppointments] = useState([]); // State for storing appointments
+  const [formData, setFormData] = useState({
+    // State for form data
+    name: "",
+    date: "",
+    appointmentType: "",
+    serviceType: "",
+    phoneNumber: "",
+    notes: "",
+    plan: "",
+    status: "",
+    DeceasedName: "",
+    DeceasedAge: "",
+    DeceasedBirthday: "",
+    DateofDeath: "",
+    PlaceofDeath: "",
+    DeceasedRelationship: "",
+    DeathCertificate: "",
+  });
+  const handleNext = () => {
+    // Validate first modal fields
+    if (formData.plan && formData.phoneNumber && formData.notes) {
+      setShowModal1(false);
+      setShowModal2(true);
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Please fill in all the fields.",
+      });
+    }
+  };
+  // Function to handle returning to the first modal
+  const handleReturn = () => {
+    handleClose2(); // Close the second modal
+    handleShow1(); // Reopen the first modal
+  };
+  // Function to map appointment status to color
+  const getStatusColor = (status) => {
+    return statusColors[status] || "gray"; // Default color is gray for unknown status
+  };
+  const clearFormData = async () => {
+    setFormData({
+      // State for form data
+      name: "",
+      appointmentType: "",
+      serviceType: "",
+      phoneNumber: "",
+      notes: "",
+      plan: "",
+      DeceasedName: "",
+      DeceasedAge: "",
+      DeceasedBirthday: "",
+      DateofDeath: "",
+      PlaceofDeath: "",
+      DeceasedRelationship: "",
+      DeathCertificate: "",
+    });
+  };
+
+  // Object mapping appointment status to colors
+  const statusColors = {
+    pending: "orange",
+    canceled: "red",
+    approved: "blue",
+    completed: "green",
+  };
 
   useEffect(() => {
     const checkLoggedInStatus = async () => {
@@ -58,35 +140,6 @@ const Booking = ({ addNotification }) => {
     checkLoggedInStatus();
   }, [navigate]); // Pass navigate as a dependency to useEffect
 
-  const [appointments, setAppointments] = useState([]); // State for storing appointments
-  const [selectedDate, setSelectedDate] = useState(null); // State for storing selected date
-  const [formData, setFormData] = useState({
-    // State for form data
-    name: "",
-    appointmentType: "",
-    serviceType: "Nail Trim",
-    status: "pending",
-  });
-  const [isFormOpen, setIsFormOpen] = useState(false); // State for controlling form visibility
-  const [isValidDaySelected, setIsValidDaySelected] = useState(false); // State for checking if a valid day is selected
-  const [termsChecked, setTermsChecked] = useState(false); // State for tracking if terms are checked
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const calendarRef = useRef(null);
-  // Object mapping appointment status to colors
-  const statusColors = {
-    pending: "orange",
-    canceled: "red",
-    approved: "blue",
-    completed: "green",
-  };
-
-  // Function to map appointment status to color
-  const getStatusColor = (status) => {
-    return statusColors[status] || "gray"; // Default color is gray for unknown status
-  };
-
   // Fetch user ID from local storage when component mounts
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -101,6 +154,17 @@ const Booking = ({ addNotification }) => {
     fetchAppointments();
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const loggedInUserId = getCurrentUserId(); // Get logged-in user ID
+    const userPendingAppointments = appointments.filter(
+      (appointment) =>
+        appointment.userId === loggedInUserId &&
+        appointment.status === "pending"
+    );
+
+    setHasPendingAppointment(userPendingAppointments.length > 0); // Check if there's a pending appointment
+  }, [appointments]);
 
   // Fetch appointments
   const fetchAppointments = async () => {
@@ -133,7 +197,7 @@ const Booking = ({ addNotification }) => {
   // Handle click on calendar event
   const handleEventClick = async (eventInfo) => {
     try {
-      const loggedInUserId = getCurrentUserId(); // Get the current user's I
+      const loggedInUserId = getCurrentUserId(); // Get the current user's ID
 
       const appointmentId = eventInfo.event.id;
       const clickedAppointment = appointments.find(
@@ -152,13 +216,22 @@ const Booking = ({ addNotification }) => {
         isAdmin // User is an admin
       ) {
         setFormData({
-          // Set form data
+          // State for form data
           appointmentId: appointmentId,
           name: clickedAppointment.name,
           appointmentType: clickedAppointment.appointmentType,
           serviceType: clickedAppointment.serviceType,
+          phoneNumber: clickedAppointment.phoneNumber,
+          notes: clickedAppointment.notes,
+          plan: clickedAppointment.plan,
+          DeceasedName: clickedAppointment.DeceasedName,
+          DeceasedAge: clickedAppointment.DeceasedAge,
+          DeceasedBirthday: clickedAppointment.DeceasedBirthday,
+          DateofDeath: clickedAppointment.DateofDeath,
+          PlaceofDeath: clickedAppointment.PlaceofDeath,
+          DeceasedRelationship: clickedAppointment.DeceasedRelationship,
+          DeathCertificate: clickedAppointment.DeathCertificate,
         });
-
         setSelectedDate(clickedAppointment.date); // Set selected date
         setIsFormOpen(true); // Open form
       } else {
@@ -188,17 +261,13 @@ const Booking = ({ addNotification }) => {
   // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    const updatedFormData = {
-      ...formData,
-      serviceType: formData.serviceType || "Nail Trim",
-    };
-    if (!updatedFormData.name) {
+    // Validation: Birthday should be before Date of Death
+    if (new Date(formData.DeceasedBirthday) >= new Date(formData.DateofDeath)) {
       Toast.fire({
         icon: "error",
-        title: "Please fill in all the fields.",
+        title: "The Date of Death cannot be before the Birth Date.",
       });
-      return; // Exit early if fields are empty
+      return;
     }
     const loggedInUserId = getCurrentUserId();
 
@@ -214,29 +283,44 @@ const Booking = ({ addNotification }) => {
         if (result.isConfirmed) {
           await updateAppointment(loggedInUserId, formData.appointmentId, {
             name: formData.name,
+            date: formData.date,
             appointmentType: formData.appointmentType,
             serviceType: formData.serviceType,
+            phoneNumber: formData.phoneNumber,
+            notes: formData.notes,
+            plan: formData.plan,
+            DeceasedName: formData.DeceasedName,
+            DeceasedAge: formData.DeceasedAge,
+            DeceasedBirthday: formData.DeceasedName,
+            DateofDeath: formData.DateofDeath,
+            PlaceofDeath: formData.PlaceofDeath,
+            DeceasedRelationship: formData.DeceasedRelationship,
+            DeathCertificate: formData.DeathCertificate,
           });
+          // Handle file upload for Death Certificate
+          if (formData.DeathCertificate) {
+            const storage = getStorage();
+            const storageRef = ref(
+              storage,
+              `deathCertificates/${loggedInUserId}/${formData.appointmentId}.pdf`
+            );
+            await uploadBytes(storageRef, formData.DeathCertificate);
+          }
           addNotification({
             id: Date.now(),
             message: `Appointment updated successfully:`,
-            data: `${JSON.stringify(formData)}`,
           }); // Pass formData containing appointment details
           const event = {
             type: "Appointment", // Type of event
             userId: loggedInUserId, // User ID associated with the event
             details: "User edited an existing appointment", // Details of the event
           };
-
-          // Call the AuditLogger function with the event object
-          AuditLogger({ event });
+          handleClose2(); // Close the second modal after submitting
           setIsFormOpen(false); // Close form
           setIsValidDaySelected(false);
-          setFormData({
-            name: "",
-            appointmentType: "",
-            serviceType: "Nail Trim",
-          });
+          // Call the AuditLogger function with the event object
+          AuditLogger({ event });
+          clearFormData();
           // Show success message
           Swal.fire({
             title: "success",
@@ -268,10 +352,20 @@ const Booking = ({ addNotification }) => {
         if (result.isConfirmed) {
           await createAppointment(loggedInUserId, {
             userId: loggedInUserId,
-            date: selectedDate,
             name: formData.name,
+            date: selectedDate,
             appointmentType: formData.appointmentType,
             serviceType: formData.serviceType,
+            phoneNumber: formData.phoneNumber,
+            notes: formData.notes,
+            plan: formData.plan,
+            DeceasedName: formData.DeceasedName,
+            DeceasedAge: formData.DeceasedAge,
+            DeceasedBirthday: formData.DeceasedName,
+            DateofDeath: formData.DateofDeath,
+            PlaceofDeath: formData.PlaceofDeath,
+            DeceasedRelationship: formData.DeceasedRelationship,
+            DeathCertificate: formData.DeathCertificate,
           });
           const appointmentData = {
             ...formData,
@@ -279,15 +373,11 @@ const Booking = ({ addNotification }) => {
           addNotification({
             id: Date.now(),
             message: `Appointment created successfully:`,
-            data: `${JSON.stringify(appointmentData)}`,
           }); // Pass formData containing appointment details
+          handleClose2(); // Close the second modal after submitting
           setIsFormOpen(false); // Close form
           setIsValidDaySelected(false);
-          setFormData({
-            name: "",
-            appointmentType: "",
-            serviceType: "Nail Trim",
-          });
+          clearFormData();
           // Show success message
           Swal.fire({
             title: "success",
@@ -318,150 +408,115 @@ const Booking = ({ addNotification }) => {
     }
   };
 
-  // Handle deletion of appointment
+  const handleEditClick = () => {
+    const loggedInUserId = getCurrentUserId(); // Get the current user's ID
+    const pendingAppointment = appointments.find(
+      (appointment) =>
+        appointment.userId === loggedInUserId &&
+        appointment.status === "pending"
+    );
+
+    if (pendingAppointment) {
+      // Pre-fill form data with the pending appointment's details
+      setFormData({
+        appointmentId: pendingAppointment.id,
+        name: pendingAppointment.name,
+        date: pendingAppointment.date,
+        appointmentType: pendingAppointment.appointmentType,
+        serviceType: pendingAppointment.serviceType,
+        phoneNumber: pendingAppointment.phoneNumber,
+        notes: pendingAppointment.notes,
+        plan: pendingAppointment.plan,
+        DeceasedName: pendingAppointment.DeceasedName,
+        DeceasedAge: pendingAppointment.DeceasedAge,
+        DeceasedBirthday: pendingAppointment.DeceasedBirthday,
+        DateofDeath: pendingAppointment.DateofDeath,
+        PlaceofDeath: pendingAppointment.PlaceofDeath,
+        DeceasedRelationship: pendingAppointment.DeceasedRelationship,
+        DeathCertificate: pendingAppointment.DeathCertificate,
+      });
+
+      // Open the first modal for editing
+      setShowModal1(true);
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "No pending appointment found.",
+      });
+    }
+  };
+
+  // Handle deletion of pending appointment for the currently logged-in user
   const handleDeleteAppointment = async () => {
     try {
-      if (formData.appointmentId) {
-        const loggedInUserId = getCurrentUserId(); // Get the current user's ID
-        const clickedAppointment = appointments.find(
-          // Find clicked appointment
-          (appointment) => appointment.id === formData.appointmentId
-        );
+      const loggedInUserId = getCurrentUserId(); // Get the current user's ID
+      const pendingAppointment = appointments.find(
+        (appointment) =>
+          appointment.userId === loggedInUserId &&
+          appointment.status === "pending"
+      );
 
-        if (!clickedAppointment) {
-          console.error("Appointment not found.");
-          return;
-        }
-
-        // Check if the user is an admin
-        if (isAdmin) {
-          Swal.fire({
-            icon: "question",
-            title: "Do you want to delete this appointment?",
-            showDenyButton: true,
-            confirmButtonText: "Yes",
-            denyButtonText: `No`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              // If user is admin, delete appointment
-              await deleteAppointment(formData.appointmentId);
-              setIsFormOpen(false); // Close form
-              setIsValidDaySelected(false);
-              setFormData({
-                name: "",
-                appointmentType: "",
-                serviceType: "Nail Trim",
-              });
-              addNotification({
-                id: Date.now(),
-                message: `Appointment deleted successfully:`,
-                data: `${JSON.stringify(formData)}`,
-              }); // Pass formData containing appointment detailsls
-              const event = {
-                type: "Appointment", // Type of event
-                userId: loggedInUserId, // User ID associated with the event
-                details: "User deleted an existing appointment", // Details of the event
-              };
-
-              // Call the AuditLogger function with the event object
-              AuditLogger({ event });
-              fetchAppointments(); // Fetch appointments
-              // Show success message
-              Swal.fire({
-                title: "success",
-                text: "Appointment deleted successfully",
-                icon: "success",
-                type: "success",
-                heightAuto: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Confirm",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  Toast.fire({
-                    icon: "success",
-                    title: "Appointment deleted successfully",
-                  });
-                }
-              });
-              return;
-            }
+      // If no pending appointment is found, show an error message
+      if (!pendingAppointment) {
+        Swal.fire({
+          title: "Error",
+          text: "No pending appointment found for this user.",
+          icon: "error",
+          heightAuto: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Confirm",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "error",
+              title: "No pending appointment found.",
+            });
+          }
+        });
+        return;
+      }
+      Swal.fire({
+        icon: "question",
+        title: "Do you want to cancel your pending appointment?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `No`,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          // Cancel the pending appointment
+          await deleteAppointment(pendingAppointment.id);
+          setIsFormOpen(false); // Close form
+          setIsValidDaySelected(false);
+          clearFormData();
+          addNotification({
+            id: Date.now(),
+            message: `Appointment canceled successfully:`,
           });
-        }
-
-        // If user is not admin and appointment is pending, cancel appointment
-        else if (
-          clickedAppointment.userId === loggedInUserId &&
-          clickedAppointment.status === "pending"
-        ) {
+          const event = {
+            type: "Appointment", // Type of event
+            userId: loggedInUserId, // User ID associated with the event
+            details: "User canceled a pending appointment", // Details of the event
+          };
+          AuditLogger({ event }); // Log the event
+          fetchAppointments(); // Fetch updated appointments
+          // Show success message
           Swal.fire({
-            icon: "question",
-            title: "Do you want to cancel this appointment?",
-            showDenyButton: true,
-            confirmButtonText: "Yes",
-            denyButtonText: `No`,
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              await deleteAppointment(formData.appointmentId);
-              setIsFormOpen(false); // Close form
-              setIsValidDaySelected(false);
-              setFormData({
-                name: "",
-                appointmentType: "",
-                serviceType: "Nail Trim",
-              });
-              addNotification({
-                id: Date.now(),
-                message: `Appointment canceled successfully:`,
-                data: `${JSON.stringify(formData)}`,
-              }); // Pass formData containing appointment detailsls
-              const event = {
-                type: "Appointment", // Type of event
-                userId: loggedInUserId, // User ID associated with the event
-                details: "User canceled an existing appointment", // Details of the event
-              };
-
-              // Call the AuditLogger function with the event object
-              AuditLogger({ event });
-              // Show success message
-              Swal.fire({
-                title: "success",
-                text: "Appointment canceled successfully",
-                icon: "success",
-                type: "success",
-                heightAuto: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Confirm",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  Toast.fire({
-                    icon: "success",
-                    title: "Appointment canceled successfully",
-                  });
-                }
-              });
-              fetchAppointments(); // Fetch appointments
-            }
-          });
-        } else {
-          Swal.fire({
-            // Show error message if user cannot cancel appointment
-            title: "Error",
-            text: "You cannot cancel appointments that do not belong to you or are not pending.",
-            icon: "error",
+            title: "Success",
+            text: "Appointment canceled successfully",
+            icon: "success",
             heightAuto: false,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "Confirm",
           }).then((result) => {
             if (result.isConfirmed) {
               Toast.fire({
-                icon: "error",
-                title:
-                  "You cannot delete appointments that do not belong to you or are not pending.",
+                icon: "success",
+                title: "Appointment canceled successfully",
               });
             }
           });
         }
-      }
+      });
     } catch (error) {
       console.error("Error deleting appointment:", error);
       Toast.fire({
@@ -482,7 +537,38 @@ const Booking = ({ addNotification }) => {
     const currentDate2 = moment().tz("Asia/Manila").format(); // Get current date in Singapore Time
     console.log(startDate2);
     console.log(currentDate2);
-    calendarApi.changeView("timeGridDay", startDate3);
+    // Set the selected date for display
+    setSelectedDate(startDate.format("MMMM DD h:mm A")); // Format the date as "Month, Day HH AM/PM"
+    console.log(currentDate2);
+    if (selectInfo.view.type === "dayGridMonth") {
+      //Check if the selected date (day) is in the past
+      if (startDate.isBefore(currentDate, "day")) {
+        setIsFormOpen(false); // Close form
+        setIsValidDaySelected(false); // Set day as invalid
+        Toast.fire({
+          icon: "error",
+          title: "Cannot select past dates.",
+        });
+        console.log("Cannot select past dates.");
+        return;
+      }
+      calendarApi.changeView("timeGridDay", startDate3);
+    } else if (selectInfo.view.type === "timeGridDay") {
+      // Check if the selected hour is in the past
+      if (startDate.isBefore(currentDate.clone().add(1, "hour"), "hour")) {
+        setIsFormOpen(false); // Close form
+        setIsValidDaySelected(false); // Set day as invalid
+        Toast.fire({
+          icon: "error",
+          title: "Cannot select past dates.",
+        });
+        console.log("Cannot select past dates.");
+        return;
+      }
+      setIsValidDaySelected(true);
+    } else {
+      calendarApi.changeView("timeGridDay", startDate3);
+    }
 
     // Check if selected date is valid
     // Check if the user already has a pending appointment
@@ -492,10 +578,7 @@ const Booking = ({ addNotification }) => {
         appointment.userId === loggedInUserId &&
         appointment.status === "pending"
     );
-
     setSelectedDate(startDate3); // Set selected date
-    setIsValidDaySelected(true); // Set valid day selected
-
     if (selectInfo.view.type === "timeGridDay") {
       // Open form when day view is selected
       if (!isAdmin) {
@@ -519,35 +602,9 @@ const Booking = ({ addNotification }) => {
           });
           return;
         }
-        setIsFormOpen(true); // Open form
-      } else {
-        setIsFormOpen(true); // Open form
       }
-    } else {
-      // Change view to day grid when other views are selected
     }
-
-    setFormData({
-      // Reset form data
-      name: "",
-      appointmentType: "",
-      serviceType: "Nail Trim",
-    });
-  };
-
-  // Handle view change on calendar
-  const handleViewChange = (viewInfo) => {
-    if (
-      viewInfo.view.type !== "timeGrid" && // Close form when view is not time grid or day grid month
-      viewInfo.view.type !== "dayGridMonth"
-    ) {
-      setIsFormOpen(false); // Close form
-    }
-
-    if (isValidDaySelected && viewInfo.view.type === "timeGrid") {
-      // Open form when valid day is selected and view is time grid
-      setIsFormOpen(true); // Open form
-    }
+    clearFormData();
   };
 
   // Handle terms checkbox change
@@ -571,17 +628,10 @@ const Booking = ({ addNotification }) => {
         await updateAppointment(loggedInUserId, formData.appointmentId, {
           status: status,
         });
-        setIsFormOpen(false);
-        setIsValidDaySelected(false);
-        setFormData({
-          name: "",
-          appointmentType: "",
-          serviceType: "Nail Trim",
-        });
+        clearFormData();
         addNotification({
           id: Date.now(),
           message: `Appointment status updated successfully:`,
-          data: `${JSON.stringify(formData)}`,
         });
         const event = {
           type: "Appointment", // Type of event
@@ -649,9 +699,19 @@ const Booking = ({ addNotification }) => {
   return (
     <section className="background-shadow">
       <div style={{ display: "flex" }}>
-        <div style={{ flex: 1, marginRight: "50px" }}>
-          <h1>My Appointments</h1>
-
+        <div
+          style={{
+            flex: 1,
+            marginTop: "10px",
+            marginBottom: "50px",
+            marginLeft: "50px",
+            marginRight: "50px",
+          }}
+        >
+          <h1>Appointment Booking</h1>{" "}
+          <p style={{ marginLeft: "20px" }}>
+            Selected Date: {selectedDate ? selectedDate : "None selected"}
+          </p>
           <FullCalendar
             ref={calendarRef}
             plugins={[
@@ -681,7 +741,6 @@ const Booking = ({ addNotification }) => {
             select={handleDateSelect}
             eventClick={handleEventClick}
             allDaySlot={false}
-            datesSet={handleViewChange}
             expandRows={true}
             height="625px"
             eventMinWidth={1000}
@@ -696,209 +755,216 @@ const Booking = ({ addNotification }) => {
           />
         </div>
 
-        <div style={{ flex: 0.3 }}>
-          {isFormOpen && (
-            <>
-              <br />
-              <br />
-              <h2>Appointment Form</h2>
-              <form onSubmit={handleFormSubmit}>
-                <div>
-                  <label
-                    class="col-form-label col-form-label"
-                    for="floatingName"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control form-control-sm booking-form"
-                    placeholder="Name"
-                    id="floatingName"
-                    value={formData.name}
-                    onChange={(e) => {
-                      const namevalue = e.target.value;
-                      if (namevalue.length <= 128) {
-                        setFormData({ ...formData, name: e.target.value });
-                      }
-                    }}
-                  />
-                </div>
-                <br />
-                <div>
-                  <label
-                    className="col-form-label col-form-label"
-                    for="typeOptions"
-                  >
-                    Appointment Type:
-                  </label>
-                  <div id="typeOptions">
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="type"
-                        id="onsite"
-                        value="onsite"
-                        checked={formData.appointmentType === "onsite"}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            appointmentType: e.target.value,
-                          })
-                        }
-                      />
-                      <label className="form-check-label" for="onsite">
-                        Onsite
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="type"
-                        id="home"
-                        value="home"
-                        checked={formData.appointmentType === "home"} // Check if gender is male
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            appointmentType: e.target.value,
-                          })
-                        }
-                      />
-                      <label className="form-check-label" for="home">
-                        Home
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div>
-                  <label>Service Type:</label>
-                  <select
-                    class="form-select form-select-sm booking-form"
-                    value={formData.serviceType}
-                    onChange={(e) =>
-                      setFormData({ ...formData, serviceType: e.target.value })
-                    }
-                  >
-                    <option value="Nail Trim">Nail Trim</option>
-                    <option value="Paw Trim">Paw Trim</option>
-                  </select>
-                </div>
-
-                <br />
-                <div>
-                  <input
-                    type="checkbox"
-                    checked={termsChecked}
-                    onChange={handleTermsChange}
-                  />
-                  <label htmlFor="terms">
-                    I agree to the <a href="/terms">Terms and Conditions</a>.
-                  </label>
-                </div>
-                <br />
-                <button
-                  className="btn btn-outline-primary"
-                  type="submit"
-                  disabled={!termsChecked}
+        {/* First Modal for Plan, Phone Number, and Notes */}
+        <Modal show={showModal1} onHide={handleClose1}>
+          <Modal.Header closeButton>
+            <Modal.Title>Booking Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p style={{ marginLeft: "20px" }}>
+              Selected Date: {selectedDate ? selectedDate : "None selected"}
+            </p>
+            <Form>
+              <Form.Group controlId="formPlan">
+                <Form.Label>Plan</Form.Label>
+                <Form.Select
+                  required
+                  value={formData.plan}
+                  onChange={(e) =>
+                    setFormData({ ...formData, plan: e.target.value })
+                  }
                 >
-                  Submit
-                </button>
-                {/* Conditionally render the delete button */}
-                {formData.appointmentId && (
-                  <button
-                    className="btn btn-outline-primary"
-                    type="button"
-                    onClick={handleDeleteAppointment}
-                  >
-                    Delete
-                  </button>
-                )}
+                  <option value="">Select a plan</option>
+                  <option value="Plan 1">Plan 1</option>
+                  <option value="Plan 2">Plan 2</option>
+                  <option value="Plan 3">Plan 3</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group controlId="formPhoneNumber">
+                <Form.Label>Phone Number</Form.Label>
+                <Form.Control
+                  type="tel"
+                  placeholder="Enter phone number"
+                  value={formData.phoneNumber}
+                  onChange={(e) => {
+                    const phoneValue = e.target.value.replace(/\D/g, "");
+                    if (phoneValue.length <= 13) {
+                      setFormData({ ...formData, phoneNumber: phoneValue });
+                    }
+                  }}
+                  required
+                />
+              </Form.Group>
+              <Form.Group controlId="formNotes">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  placeholder="Enter notes"
+                  value={formData.notes}
+                  onChange={(e) =>
+                    setFormData({ ...formData, notes: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Button variant="primary" className="mt-3" onClick={handleNext}>
+                Next
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
 
-                {isAdmin && (
-                  <div className="dropdown">
-                    <br />
-                    <button
-                      className={`btn btn-${getStatusColor(
-                        formData.status ? formData.status : "pending"
-                      )} dropdown-toggle`}
-                      type="button"
-                      id="statusDropdown"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      {formData.status
-                        ? formData.status.charAt(0).toUpperCase() +
-                          formData.status.slice(1)
-                        : "Change Status"}
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="statusDropdown"
-                    >
-                      {formData.status !== "pending" && (
-                        <li>
-                          <button
-                            className={`dropdown-item btn btn-${getStatusColor(
-                              "pending"
-                            )}`}
-                            type="button"
-                            onClick={() => handleStatusChange("pending")}
-                          >
-                            Pending
-                          </button>
-                        </li>
-                      )}
-                      {formData.status !== "approved" && (
-                        <li>
-                          <button
-                            className={`dropdown-item btn btn-${getStatusColor(
-                              "approved"
-                            )}`}
-                            type="button"
-                            onClick={() => handleStatusChange("approved")}
-                          >
-                            Approved
-                          </button>
-                        </li>
-                      )}
-                      {formData.status !== "canceled" && (
-                        <li>
-                          <button
-                            className={`dropdown-item btn btn-${getStatusColor(
-                              "canceled"
-                            )}`}
-                            type="button"
-                            onClick={() => handleStatusChange("canceled")}
-                          >
-                            Canceled
-                          </button>
-                        </li>
-                      )}
-                      {formData.status !== "completed" && (
-                        <li>
-                          <button
-                            className={`dropdown-item btn btn-${getStatusColor(
-                              "completed"
-                            )}`}
-                            type="button"
-                            onClick={() => handleStatusChange("completed")}
-                          >
-                            Completed
-                          </button>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                )}
-              </form>
-            </>
-          )}
-        </div>
+        {/* Second Modal for Post-Mortem Details */}
+        <Modal show={showModal2} onHide={handleClose2}>
+          <Modal.Header closeButton>
+            <Modal.Title>Post-Mortem Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleFormSubmit}>
+              <Form.Group controlId="formDeceasedName">
+                <Form.Label>Deceased Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter deceased's name"
+                  value={formData.DeceasedName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, DeceasedName: e.target.value })
+                  }
+                  required
+                />
+              </Form.Group>
+              <Form.Group controlId="formDeceasedAge">
+                <Form.Label>Deceased Age</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter deceased's age"
+                  value={formData.DeceasedAge}
+                  onChange={(e) => {
+                    const ageValue = e.target.value.replace(/\D/g, "");
+                    if (ageValue.length <= 3) {
+                      setFormData({ ...formData, DeceasedAge: ageValue });
+                    }
+                  }}
+                  required
+                />
+              </Form.Group>
+              <Form.Group controlId="formDeceasedBirthday">
+                <Form.Label>Deceased Birthday</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={formData.DeceasedBirthday}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DeceasedBirthday: e.target.value,
+                    })
+                  }
+                  required
+                  max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                />
+              </Form.Group>
+              <Form.Group controlId="formDateofDeath">
+                <Form.Label>Date of Death</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={formData.DateofDeath}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DateofDeath: e.target.value,
+                    })
+                  }
+                  required
+                  max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                />
+              </Form.Group>
+              <Form.Group controlId="formPlaceofDeath">
+                <Form.Label>Place of Death</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter place of death"
+                  value={formData.PlaceofDeath}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      PlaceofDeath: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Form.Group>
+              <Form.Group controlId="formDeceasedRelationship">
+                <Form.Label>Deceased's Relationship</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter your relationship with the deceased"
+                  value={formData.DeceasedRelationship}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DeceasedRelationship: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Form.Group>
+              <Form.Group controlId="formDeathCertificate">
+                <Form.Label>Death Certificate</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DeathCertificate: e.target.files[0],
+                    })
+                  }
+                  required
+                />
+              </Form.Group>
+              {/* Return button */}
+              <Button
+                variant="secondary"
+                className="mt-3"
+                onClick={handleReturn}
+              >
+                Return
+              </Button>
+              {""}
+              <Button variant="primary" type="submit" className="mt-3">
+                Submit
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
       </div>
+      {/* Conditionally Render "Book Appointment" Button */}
+      {isValidDaySelected && !hasPendingAppointment && (
+        <Button variant="primary" className="mt-4" onClick={handleShow1}>
+          Book Appointment
+        </Button>
+      )}
+      <br />
+      {/* Only show the Edit button if the user has a pending appointment */}
+      {appointments.some(
+        (appointment) =>
+          appointment.userId === getCurrentUserId() &&
+          appointment.status === "pending"
+      ) && (
+        <>
+          <Button variant="warning" className="mt-3" onClick={handleEditClick}>
+            Edit Appointment
+          </Button>
+          <br />
+          <Button
+            variant="danger"
+            className="mt-3"
+            onClick={handleDeleteAppointment}
+          >
+            Delete Appointment
+          </Button>
+        </>
+      )}
       <br />
     </section>
   );

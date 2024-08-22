@@ -173,20 +173,7 @@ const Navbar = ({ notifications, setNotifications }) => {
                 <span className="nav-label"> Gallery</span>
               </Link>
             </li>
-            <li
-              className={location.pathname === "/notifications" ? "active" : ""}
-            >
-              <Link to="/notifications" onClick={handleMarkAllRead}>
-                <FontAwesomeIcon icon={faBell} />
-                <span className="nav-label">
-                  {" "}
-                  Notifications{" "}
-                  {hasUnreadNotifications && (
-                    <span className="unread-dot"></span>
-                  )}
-                </span>
-              </Link>
-            </li>
+
             <li className={location.pathname === "/services" ? "active" : ""}>
               <Link to="/services">
                 <FontAwesomeIcon icon={faTag} />
@@ -210,6 +197,18 @@ const Navbar = ({ notifications, setNotifications }) => {
               <Link to="/FAQs">
                 <FontAwesomeIcon icon={faQuestionCircle} />
                 <span className="nav-label"> FAQs</span>
+              </Link>
+            </li>
+            <li
+              className={location.pathname === "/notifications" ? "active" : ""}
+            >
+              <Link to="/notifications" onClick={handleMarkAllRead}>
+                <FontAwesomeIcon icon={faBell} />
+                <span className="nav-label">
+                  {hasUnreadNotifications && (
+                    <span className="unread-dot"></span>
+                  )}
+                </span>
               </Link>
             </li>
             <li className={location.pathname === "/account" ? "active" : ""}>
