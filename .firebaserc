@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "funeral-e5a57"
-  }
+    "default": "funeral-81aff",
+    "FUNeral": "funeral-81aff"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
