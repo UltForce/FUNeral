@@ -124,7 +124,7 @@ const Audit = () => {
   }, []);
 
   return (
-    <section className="background-image">
+    <section className="background-image section">
       <br />
       <h1 className="centered">Audit Logs</h1>
       <div className="customerReport">

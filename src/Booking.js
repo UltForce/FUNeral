@@ -697,7 +697,7 @@ const Booking = ({ addNotification }) => {
   };
 
   return (
-    <section className="background-shadow">
+    <section className="background-shadow content-user">
       <div style={{ display: "flex" }}>
         <div
           style={{

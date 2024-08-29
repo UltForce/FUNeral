@@ -1,0 +1,51 @@
+/* Container for the snapping sections */
+.snapping-container {
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  
+  /* General styling for each section */
+  .snap-section {
+    scroll-snap-align: start;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+  }
+  
+  /* Specific styles for each section */
+  .section1 {
+    background-color: #333;
+  }
+  
+  .section2 {
+    background-color: #444;
+  }
+  
+  .section3 {
+    background-color: #555;
+  }
+  
+  .section4 {
+    background-color: #666;
+  }
+  
+  .section5 {
+    background-color: #777;
+  }
+  
+  .section6 {
+    background-color: #888;
+  }
+  
+  .section7 {
+    background-color: #999;
+  }
+  .section7 {
+    background-color: #222;
+  }
+  

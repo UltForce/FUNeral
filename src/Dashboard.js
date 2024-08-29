@@ -158,91 +158,93 @@ const Dashboard = () => {
   };
 
   return (
-    <section className="background-image">
-      <h1 className="centered">Dashboard</h1>
+    <section className="background-image content">
+      <section className="section">
+        <h1 className="centered">Dashboard</h1>
 
-      <div className="customerReport">
-        <div className="report-header">
-          <h3>
-            Appointment List
-            <button
-              className="btn btn-outline-primary ml-5"
-              onClick={handleGenerateReports}
-            >
-              Generate Reports
-            </button>
-          </h3>
-          <table className="w3-table col-md-4">
-            <thead>
-              <tr>
-                <th>Pending</th>
-                <th>Approved</th>
-                <th>Completed</th>
-                <th>Cancelled</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "pending"
-                    ).length
-                  }
-                </td>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "approved"
-                    ).length
-                  }
-                </td>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "completed"
-                    ).length
-                  }
-                </td>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "cancelled"
-                    ).length
-                  }
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {appointments && appointments.length > 0 ? (
-          <table id="appointmentsTable" className="display">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Service</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appointment) => (
-                <tr key={appointment.appointmentId}>
-                  <td>{appointment.name}</td>
-                  <td>{formatDateTime(appointment.date)}</td>
-                  <td>{appointment.appointmentType}</td>
-                  <td>{appointment.serviceType}</td>
-                  <td>{getStatusBadge(appointment.status)}</td>
+        <div className="customerReport">
+          <div className="report-header">
+            <h3>
+              Appointment List
+              <button
+                className="btn btn-outline-primary ml-5"
+                onClick={handleGenerateReports}
+              >
+                Generate Reports
+              </button>
+            </h3>
+            <table className="w3-table col-md-4">
+              <thead>
+                <tr>
+                  <th>Pending</th>
+                  <th>Approved</th>
+                  <th>Completed</th>
+                  <th>Cancelled</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No appointments</p>
-        )}
-      </div>
-      <br />
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "pending"
+                      ).length
+                    }
+                  </td>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "approved"
+                      ).length
+                    }
+                  </td>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "completed"
+                      ).length
+                    }
+                  </td>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "cancelled"
+                      ).length
+                    }
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {appointments && appointments.length > 0 ? (
+            <table id="appointmentsTable" className="display">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Service</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointments.map((appointment) => (
+                  <tr key={appointment.appointmentId}>
+                    <td>{appointment.name}</td>
+                    <td>{formatDateTime(appointment.date)}</td>
+                    <td>{appointment.appointmentType}</td>
+                    <td>{appointment.serviceType}</td>
+                    <td>{getStatusBadge(appointment.status)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No appointments</p>
+          )}
+        </div>
+        <br />
+      </section>
     </section>
   );
 };

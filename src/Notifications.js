@@ -97,7 +97,7 @@ const Notifications = () => {
     return `${year}-${month}-${day} ${dayOfWeek}`;
   };
   return (
-    <section className="background-image">
+    <section className="background-image section">
       <br />
       <div className="centered">
         <div className="customerReport">

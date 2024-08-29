@@ -1,0 +1,100 @@
+.gallery-container {
+  padding: 20px;
+}
+
+.album-selector {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.album-cover {
+  cursor: pointer;
+  text-align: center;
+}
+
+.album-image {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.album-title {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.album-preview {
+  text-align: center;
+}
+
+.return-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.return-button:hover {
+  background-color: #0056b3;
+}
+
+.preview-container {
+  margin-bottom: 20px;
+}
+
+.preview-image {
+  width: 30%; /* Larger size than thumbnails */
+  height: auto;
+  border-radius: 10px;
+  border: 5px solid transparent; /* Default transparent border */
+}
+
+.thumbnail-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.thumbnail-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 250px; /* Smaller size for thumbnails */
+  height: auto;
+  cursor: pointer;
+  opacity: 0.5; /* Lower opacity */
+  transition: opacity 0.2s, border 0.2s; /* Transition for smoother effect */
+  border-radius: 5px;
+  border: 2px solid transparent; /* Default border */
+}
+
+.thumbnail.active {
+  border: 2px solid #007bff; /* Highlight active thumbnail with blue border */
+  opacity: 1; /* Full opacity for active thumbnail */
+}
+
+.thumbnail:hover {
+  opacity: 0.8; /* Slightly increase opacity on hover */
+}

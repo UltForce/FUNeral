@@ -1,0 +1,33 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  padding: 30px; /* Increased padding for more space inside the modal */
+  border-radius: 8px;
+  width: 80%; /* Adjust width if needed */
+  max-width: 800px; /* Larger maximum width */
+  height: 80%; /* Adjust height to make it taller */
+  max-height: 90%; /* Increase the max-height to allow for a taller modal */
+  overflow: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 2em; /* Larger close button for better visibility */
+  cursor: pointer;
+}

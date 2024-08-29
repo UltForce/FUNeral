@@ -218,7 +218,7 @@ const Register = () => {
   };
 
   return (
-    <section className="background-image">
+    <section className="background-image section content-user">
       <div className="centered">
         <h2>Register</h2>
         <div className="row">

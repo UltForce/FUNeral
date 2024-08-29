@@ -21,8 +21,12 @@ import {
   faAddressBook,
   faClapperboard,
   faClipboard,
+  faBriefcase,
+  faBox,
+  faFileAlt,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import "./styles.css";
+import "./navbar.css";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
@@ -59,7 +63,6 @@ const Navbar = ({ notifications, setNotifications }) => {
   }, []);
 
   useEffect(() => {
-    // Check if there are unread notifications
     const storedNotifications = sessionStorage.getItem("notifications");
     if (storedNotifications) {
       const notifications = JSON.parse(storedNotifications);
@@ -91,12 +94,11 @@ const Navbar = ({ notifications, setNotifications }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // Clear local storage of notifications
           sessionStorage.removeItem("notifications");
 
           const userId = getCurrentUserId();
-          setIsLoggedIn(false); // Clear authentication state
-          setIsAdmin(false); // Clear admin state if needed
+          setIsLoggedIn(false);
+          setIsAdmin(false);
           await auth.signOut();
           navigate("/login");
           Toast.fire({
@@ -104,32 +106,26 @@ const Navbar = ({ notifications, setNotifications }) => {
             title: "Successfully Logout",
           });
           const event = {
-            type: "Logout", // Type of event
-            userId: userId, // User ID associated with the event
-            details: "User logged out", // Details of the event
+            type: "Logout",
+            userId: userId,
+            details: "User logged out",
           };
-          // Clear local storage of notifications
-          sessionStorage.removeItem("notifications");
-          // Call the AuditLogger function with the event object
           AuditLogger({ event });
-          // Clear notifications state in Notifications component
           setNotifications([]);
         } catch (error) {
           console.error("Error logging out:", error.message);
         }
         Swal.fire({
-          title: "success",
-          text: "Account successfully logout.",
+          title: "Success",
+          text: "Account successfully logged out.",
           icon: "success",
-          type: "success",
-          heightAuto: false,
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Confirm",
         }).then((result) => {
           if (result.isConfirmed) {
             Toast.fire({
               icon: "success",
-              title: "Account successfully logout.",
+              title: "Account successfully logged out.",
             });
           }
         });
@@ -138,148 +134,170 @@ const Navbar = ({ notifications, setNotifications }) => {
   };
 
   return (
-    <nav>
-      <ul className="centeredNav">
-        <li>
+    <>
+      {isAdmin ? (
+        <div className="sidebar-container">
+          <nav className="sidebar">
+            <ul>
+              {isLoggedIn && (
+                <>
+                  <li
+                    className={
+                      location.pathname === "/dashboard" ? "active" : ""
+                    }
+                  >
+                    <Link to="/dashboard">
+                      <FontAwesomeIcon icon={faClapperboard} />
+                      <span className="nav-label"> Dashboard</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      location.pathname === "/appointments" ? "active" : ""
+                    }
+                  >
+                    <Link to="/appointments">
+                      <FontAwesomeIcon icon={faCalendar} />
+                      <span className="nav-label"> Appointments</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      location.pathname === "/inventory" ? "active" : ""
+                    }
+                  >
+                    <Link to="/inventory">
+                      <FontAwesomeIcon icon={faBox} />
+                      <span className="nav-label"> Inventory</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/content" ? "active" : ""}
+                  >
+                    <Link to="/content">
+                      <FontAwesomeIcon icon={faFileAlt} />
+                      <span className="nav-label"> Content</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/reviews" ? "active" : ""}
+                  >
+                    <Link to="/reviews">
+                      <FontAwesomeIcon icon={faStar} />
+                      <span className="nav-label"> Reviews</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/reports" ? "active" : ""}
+                  >
+                    <Link to="/reports">
+                      <FontAwesomeIcon icon={faBriefcase} />
+                      <span className="nav-label"> Reports</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/audit" ? "active" : ""}
+                  >
+                    <Link to="/audit">
+                      <FontAwesomeIcon icon={faClipboard} />
+                      <span className="nav-label"> Audit</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link onClick={handleLogout}>
+                      <FontAwesomeIcon icon={faSignOutAlt} />
+                      <span className="nav-label"> Logout</span>
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </nav>
+        </div>
+      ) : (
+        <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
-        </li>
-        {isLoggedIn ? (
-          <>
-            {isAdmin && (
-              <li
-                className={location.pathname === "/dashboard" ? "active" : ""}
-              >
-                <Link to="/dashboard">
-                  <FontAwesomeIcon icon={faClapperboard} />
-                  <span className="nav-label"> Dashboard</span>
-                </Link>
-              </li>
-            )}
+          <ul className="centeredNav">
             <li className={location.pathname === "/homepage" ? "active" : ""}>
               <Link to="/homepage">
                 <FontAwesomeIcon icon={faHome} />
                 <span className="nav-label"> Home</span>
               </Link>
             </li>
-            <li className={location.pathname === "/About" ? "active" : ""}>
-              <Link to="/About">
+            <li className={location.pathname === "/about" ? "active" : ""}>
+              <Link to="/about">
                 <FontAwesomeIcon icon={faInfoCircle} />
                 <span className="nav-label"> About us</span>
               </Link>
             </li>
-            <li className={location.pathname === "/Gallery" ? "active" : ""}>
-              <Link to="/Gallery">
+            <li className={location.pathname === "/gallery" ? "active" : ""}>
+              <Link to="/gallery">
                 <FontAwesomeIcon icon={faImage} />
                 <span className="nav-label"> Gallery</span>
               </Link>
             </li>
-
-            <li className={location.pathname === "/services" ? "active" : ""}>
-              <Link to="/services">
-                <FontAwesomeIcon icon={faTag} />
-                <span className="nav-label"> Services</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/booking" ? "active" : ""}>
-              <Link to="/booking">
-                <FontAwesomeIcon icon={faCalendar} />
-                <span className="nav-label"> Book now</span>
-              </Link>
-            </li>
-
+            {isLoggedIn && (
+              <>
+                <li
+                  className={location.pathname === "/services" ? "active" : ""}
+                >
+                  <Link to="/services">
+                    <FontAwesomeIcon icon={faTag} />
+                    <span className="nav-label"> Services</span>
+                  </Link>
+                </li>
+                <li
+                  className={location.pathname === "/booking" ? "active" : ""}
+                >
+                  <Link to="/booking">
+                    <FontAwesomeIcon icon={faCalendar} />
+                    <span className="nav-label"> Book now</span>
+                  </Link>
+                </li>
+              </>
+            )}
             <li className={location.pathname === "/terms" ? "active" : ""}>
               <Link to="/terms">
                 <FontAwesomeIcon icon={faCog} />
                 <span className="nav-label"> Terms & Conditions</span>
               </Link>
             </li>
-            <li className={location.pathname === "/FAQs" ? "active" : ""}>
-              <Link to="/FAQs">
+            <li className={location.pathname === "/faqs" ? "active" : ""}>
+              <Link to="/faqs">
                 <FontAwesomeIcon icon={faQuestionCircle} />
                 <span className="nav-label"> FAQs</span>
               </Link>
             </li>
-            <li
-              className={location.pathname === "/notifications" ? "active" : ""}
-            >
-              <Link to="/notifications" onClick={handleMarkAllRead}>
-                <FontAwesomeIcon icon={faBell} />
-                <span className="nav-label">
-                  {hasUnreadNotifications && (
-                    <span className="unread-dot"></span>
-                  )}
-                </span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/account" ? "active" : ""}>
-              <Link to="/account">
-                <FontAwesomeIcon icon={faUser} />
-                <span className="nav-label"> Account</span>
-              </Link>
-            </li>
-            {isAdmin && (
-              <li className={location.pathname === "/Audit" ? "active" : ""}>
-                <Link to="/Audit">
-                  <FontAwesomeIcon icon={faClipboard} />
-                  <span className="nav-label"> Audit</span>
+            {isLoggedIn && (
+              <li>
+                <Link onClick={handleLogout}>
+                  <FontAwesomeIcon icon={faSignOutAlt} />
+                  <span className="nav-label"> Logout</span>
                 </Link>
               </li>
             )}
-            <li>
-              <Link onClick={handleLogout}>
-                <FontAwesomeIcon icon={faSignOutAlt} />
-                <span className="nav-label"> Logout</span>
-              </Link>
-            </li>
-          </>
-        ) : (
-          <>
-            <li className={location.pathname === "/homepage" ? "active" : ""}>
-              <Link to="/homepage">
-                <FontAwesomeIcon icon={faHome} />
-                <span className="nav-label"> Home</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/About" ? "active" : ""}>
-              <Link to="/About">
-                <FontAwesomeIcon icon={faInfoCircle} />
-                <span className="nav-label"> About us</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/Gallery" ? "active" : ""}>
-              <Link to="/Gallery">
-                <FontAwesomeIcon icon={faImage} />
-                <span className="nav-label"> Gallery</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/terms" ? "active" : ""}>
-              <Link to="/terms">
-                <FontAwesomeIcon icon={faCog} />
-                <span className="nav-label"> Terms & Conditions</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/FAQs" ? "active" : ""}>
-              <Link to="/FAQs">
-                <FontAwesomeIcon icon={faQuestionCircle} />
-                <span className="nav-label"> FAQs</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/login" ? "active" : ""}>
-              <Link to="/login">
-                <FontAwesomeIcon icon={faUser} />
-                <span className="nav-label"> Login</span>
-              </Link>
-            </li>
-            <li className={location.pathname === "/register" ? "active" : ""}>
-              <Link to="/register">
-                <FontAwesomeIcon icon={faAddressBook} />
-                <span className="nav-label"> Register</span>
-              </Link>
-            </li>
-          </>
-        )}
-      </ul>
-    </nav>
+            {!isLoggedIn && (
+              <>
+                <li className={location.pathname === "/login" ? "active" : ""}>
+                  <Link to="/login">
+                    <FontAwesomeIcon icon={faUser} />
+                    <span className="nav-label"> Login</span>
+                  </Link>
+                </li>
+                <li
+                  className={location.pathname === "/register" ? "active" : ""}
+                >
+                  <Link to="/register">
+                    <FontAwesomeIcon icon={faAddressBook} />
+                    <span className="nav-label"> Register</span>
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </nav>
+      )}
+    </>
   );
 };
 

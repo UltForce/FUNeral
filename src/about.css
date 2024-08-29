@@ -1,0 +1,69 @@
+.snapping-container {
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.about-us-section {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.testimonials-section {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.testimonial {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+.testimonial-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stars {
+  font-size: 1.5em;
+  color: #ffcc00;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.review-description {
+  font-style: italic;
+}
+
+.book-now-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}

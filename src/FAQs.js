@@ -22,9 +22,6 @@ const FAQs = () => {
   }, []);
 
   const [isVisible, setIsVisible] = useState(false);
-  const handleBookNowClick = () => {
-    navigate("/booking"); // Redirect to booking page when "Book now" button is clicked
-  };
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -42,7 +39,7 @@ const FAQs = () => {
   window.addEventListener("scroll", toggleVisibility);
 
   return (
-    <section className="background-image">
+    <section className="background-image section content-user">
       <div>
         <div>
           <h1 className="page-title centered">Frequently Asked Questions</h1>
@@ -485,14 +482,6 @@ const FAQs = () => {
           </button>
         )}
       </div>
-      {/* Floating "Book now" button */}
-      {isLoggedIn ? (
-        <button className="book-now-button" onClick={handleBookNowClick}>
-          Book now
-        </button>
-      ) : (
-        <></>
-      )}
     </section>
   );
 };

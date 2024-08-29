@@ -16,66 +16,75 @@ import Footer from "./Footer";
 import About from "./About";
 import Gallery from "./Gallery";
 import Audit from "./Audit";
+import ChatSupport from "./ChatSupport";
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function App() {
-  const [notifications, setNotifications] = useState([]);
+import "./App.css"; // Import your CSS file for animations
 
-  const addNotification = (notification) => {
-    const updatedNotifications = [
-      ...notifications,
-      { ...notification, read: false },
-    ];
-    setNotifications(updatedNotifications);
-    // Store updated notifications in session storage
-    sessionStorage.setItem(
-      "notifications",
-      JSON.stringify(updatedNotifications)
-    );
-  };
+const Layout = ({ children }) => {
+  return (
+    <>
+      {children}
+      <ChatSupport /> {/* Chat support available on every page */}
+    </>
+  );
+};
+
+const App = () => {
+  const location = useLocation(); // Use location to manage route transitions
+
+  return (
+    <SwitchTransition>
+      <CSSTransition
+        key={location.key}
+        classNames="page"
+        timeout={300} // Duration of the animation
+      >
+        <div className="page">
+          <Routes location={location}>
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/homepage" element={<Homepage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/faqs" element={<FAQs />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/reset" element={<Reset />} />
+            <Route path="/audit" element={<Audit />} />
+            <Route path="*" element={<Homepage />} />
+          </Routes>
+        </div>
+      </CSSTransition>
+    </SwitchTransition>
+  );
+};
+
+function AppWithRouter() {
   return (
     <Router>
-      <Navbar
-        notifications={notifications}
-        setNotifications={setNotifications}
-      />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/homepage" element={<Homepage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route
-          path="/notifications"
-          element={
-            <Notifications
-              notifications={notifications}
-              setNotifications={setNotifications}
-              addNotification={addNotification}
-            />
-          }
-        />
-        <Route path="/services" element={<Services />} />
-        <Route
-          path="/booking"
-          element={<Booking addNotification={addNotification} />}
-        />
-        <Route path="/FAQs" element={<FAQs />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/reset" element={<Reset />} />
-        <Route path="/Audit" element={<Audit />} />
-        <Route path="*" element={<Homepage />} />
-      </Routes>
-      <Footer />
-      <ToastContainer />
+      <Layout>
+        <Navbar />
+        <App />
+        <Footer />
+        <ToastContainer />
+      </Layout>
     </Router>
   );
 }
 
-export default App;
+export default AppWithRouter;

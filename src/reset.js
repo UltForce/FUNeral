@@ -76,7 +76,7 @@ const Reset = () => {
   };
 
   return (
-    <div className="centered background-image">
+    <div className="centered background-image section content-user">
       <h2>Password Reset</h2>
       {resetSent ? (
         <p>

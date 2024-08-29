@@ -142,7 +142,7 @@ const Login = () => {
     }
   };
   return (
-    <section className="background-image">
+    <section className="background-image section content-user">
       <div className="centered">
         <img src="JROA.jpg" height="200px" />
         <h2>Login</h2>
