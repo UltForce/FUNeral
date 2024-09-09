@@ -1,4 +1,182 @@
-/* General styling for each section */
+/* Ensure admin-dashboard layout has higher specificity */
+.admin-dashboard {
+  display: flex !important;
+  min-height: 100vh !important; /* Full height */
+  background-color: #f0e6dc !important; /* Override global background */
+}
+
+/* Sidebar styling with specific targeting */
+.admin-dashboard .sidebar {
+  width: 220px !important;
+  background-color: #4c3a31 !important;
+  min-height: 100vh !important;
+  padding: 20px !important;
+  position: fixed !important; /* Keep the sidebar fixed */
+}
+
+/* Padding for the main content with increased specificity */
+.admin-dashboard .main-content {
+  flex-grow: 1 !important;
+  background-color: #f0e6dc !important; /* Maintain background */
+  padding: 20px !important;
+  margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+
+/* Sidebar navigation styling with high specificity */
+.admin-dashboard .sidebar-nav ul {
+  list-style: none !important;
+  padding: 0 !important;
+}
+
+.admin-dashboard .sidebar-nav ul li {
+  margin-bottom: 15px !important;
+}
+
+.admin-dashboard .sidebar-nav ul li a {
+  color: white !important;
+  text-decoration: none !important;
+  display: block !important;
+  font-size: 18px !important;
+}
+
+.admin-dashboard .sidebar-nav ul li a:hover {
+  background-color: #634b42 !important;
+  padding: 10px !important;
+}
+
+/* Stats card with increased specificity */
+.admin-dashboard .stats-card {
+  background-color: #d9b79b !important;
+  color: white !important;
+  padding: 20px !important;
+  border-radius: 8px !important;
+  margin-bottom: 20px !important;
+}
+
+.admin-dashboard .stats-card h1 {
+  font-size: 36px !important;
+}
+
+/* Table inside appointments-card with increased specificity */
+.admin-dashboard table {
+  width: 100% !important;
+  margin-top: 20px !important;
+  background-color: white !important;
+  border-collapse: collapse !important;
+}
+
+.admin-dashboard table th,
+.admin-dashboard table td {
+  border: 1px solid #ddd !important;
+  padding: 8px !important;
+  text-align: left !important;
+}
+
+.admin-dashboard table th {
+  background-color: #4c3a31 !important;
+  color: white !important;
+}
+
+.admin-dashboard table tbody tr:nth-child(even) {
+  background-color: #f2f2f2 !important;
+}
+
+.admin-dashboard table tbody tr:hover {
+  background-color: #ddd !important;
+}
+
+/* List group for appointments card with forced priority */
+.admin-dashboard .appointments-card .list-group {
+  max-height: 200px !important; /* Control max height */
+  overflow-y: auto !important;
+  background-color: #d9b79b !important;
+  color: white !important;
+  padding: 15px !important;
+  border-radius: 8px !important;
+  margin-bottom: 20px !important;
+}
+
+/* Adjustments for smaller screens with increased specificity */
+@media (max-width: 768px) {
+  .admin-dashboard .sidebar {
+    width: 180px !important;
+  }
+
+  .admin-dashboard .main-content {
+    margin-left: 200px !important;
+  }
+}
+
+/* Pagination buttons with high priority */
+.admin-dashboard .pagination-buttons {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 50px !important;
+}
+
+.admin-dashboard .pagination-buttons button {
+  margin-right: 10px !important;
+  padding: 10px !important;
+  background-color: #4c3a31 !important;
+  color: white !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.admin-dashboard .pagination-buttons button:hover {
+  background-color: #634b42 !important;
+}
+
+.admin-dashboard .card {
+  margin-bottom: 1rem;
+}
+
+.card {
+  width: 100%; /* Ensure the card itself takes full width */
+  margin-bottom: 1rem;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 100%; /* Ensure the card body takes full width */
+}
+
+.react-calendar {
+  width: 50%; /* Calendar takes full width */
+  height: auto; /* Adjust height as needed */
+}
+
+.card-header {
+  background-color: #f8f9fa; /* Adjust background color if needed */
+}
+
+.stats-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.stats-card h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.stats-card p {
+  margin: 0;
+}
+
+.badge {
+  font-size: 0.8rem;
+}
+
+.no-sort {
+  background-color: #f9f9f9;
+}
 .section {
   scroll-snap-align: start;
   height: 100vh;

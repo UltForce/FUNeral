@@ -107,29 +107,6 @@ header h1 {
   font-size: 2em;
 }
 
-section.hero {
-  background-color: #f0f0f0;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-section.hero h2 {
-  color: #333;
-}
-
-section.featured {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  width: 45%;
-}
-
 footer {
   margin-top: 20px;
   text-align: center;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { generateReports } from "./firebase.js";
 import {
   getAppointments,
+  getAllUsers,
+  getAppointmentsWithStatus,
   getCurrentUserId,
-  AuditLogger,
   getUserRoleFirestore,
 } from "./firebase.js";
 import "./dashboard.css";
@@ -11,6 +11,18 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  ListGroup,
+  Button,
+  Badge,
+  Modal,
+} from "react-bootstrap";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -26,6 +38,14 @@ const Toast = Swal.mixin({
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [appointments, setAppointments] = useState([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [todaysAppointments, setTodaysAppointments] = useState([]);
+  const [completedAppointments, setCompletedAppointments] = useState(0);
+  const [date, setDate] = useState(new Date());
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
       try {
@@ -42,19 +62,45 @@ const Dashboard = () => {
     checkAdminAndLoginStatus();
   }, [navigate]);
 
-  const [appointments, setAppointments] = useState([]);
-
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const appointments = await getAppointments();
         setAppointments(appointments);
+
+        // Count appointments for today
+        const today = new Date().toISOString().split("T")[0];
+        const todayAppointments = appointments.filter(
+          (appointment) =>
+            new Date(appointment.date).toISOString().split("T")[0] === today
+        );
+        setTodaysAppointments(todayAppointments);
+
+        // Find the soonest appointment
+        const soonestAppointment = getSoonestAppointment(appointments);
+        setSelectedAppointment(soonestAppointment);
+
+        // Count completed appointments
+        const completedAppointments = await getAppointmentsWithStatus(
+          "completed"
+        );
+        setCompletedAppointments(completedAppointments.length);
       } catch (error) {
         console.error("Error fetching appointments:", error.message);
       }
     };
 
+    const fetchUsers = async () => {
+      try {
+        const users = await getAllUsers();
+        setTotalUsers(users.length);
+      } catch (error) {
+        console.error("Error fetching users:", error.message);
+      }
+    };
+
     fetchAppointments();
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -66,7 +112,7 @@ const Dashboard = () => {
           order: [],
           columnDefs: [
             { targets: "no-sort", orderable: false },
-            { targets: 1, type: "date-euro" }, // Specify the type of date sorting
+            { targets: 1, type: "date-euro" },
           ],
           drawCallback: function () {
             $(this.api().table().container())
@@ -89,57 +135,29 @@ const Dashboard = () => {
     }
   }, [appointments]);
 
-  const handleGenerateReports = async () => {
-    try {
-      await generateReports();
-      Toast.fire({
-        icon: "success",
-        title: "Reports successfully generated..",
-      });
-      const userId = getCurrentUserId();
-      const event = {
-        type: "Report",
-        userId: userId,
-        details: "User generated a report",
-      };
-      AuditLogger({ event });
-    } catch (error) {
-      console.error("Error generating reports:", error.message);
-      alert("An error occurred while generating reports.");
-    }
+  const statusColors = {
+    pending: "orange",
+    canceled: "red",
+    approved: "blue",
+    completed: "green",
+  };
+
+  const getStatusColor = (status) => {
+    return statusColors[status] || "gray";
   };
 
   const formatDateTime = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
-    // Check if dateTimeString is not applicable
     if (!dateTimeString) {
       return "N/A";
     }
-    // Extract date, day of the week, and hour
     const year = dateTime.getFullYear();
-    const month = ("0" + (dateTime.getMonth() + 1)).slice(-2); // Adding leading zero for single digit months
-    const day = ("0" + dateTime.getDate()).slice(-2); // Adding leading zero for single digit days
+    const month = ("0" + (dateTime.getMonth() + 1)).slice(-2);
+    const day = ("0" + dateTime.getDate()).slice(-2);
     const dayOfWeek = dateTime.toLocaleDateString("en-US", { weekday: "long" });
-    const hour = ("0" + dateTime.getHours()).slice(-2); // Adding leading zero for single digit hours
-    const minutes = ("0" + dateTime.getMinutes()).slice(-2); // Adding leading zero for single digit hours
-    // Format date string with spaces and without minutes and seconds
+    const hour = ("0" + dateTime.getHours()).slice(-2);
+    const minutes = ("0" + dateTime.getMinutes()).slice(-2);
     return `${year}-${month}-${day} ${dayOfWeek} ${hour}:${minutes}`;
-  };
-
-  const vaccinationformatDateTime = (dateTimeString) => {
-    const dateTime = new Date(dateTimeString);
-    // Check if dateTimeString is not applicable
-    if (!dateTimeString) {
-      return "N/A";
-    }
-    // Extract date, day of the week, and hour
-    const year = dateTime.getFullYear();
-    const month = ("0" + (dateTime.getMonth() + 1)).slice(-2); // Adding leading zero for single digit months
-    const day = ("0" + dateTime.getDate()).slice(-2); // Adding leading zero for single digit days
-    const dayOfWeek = dateTime.toLocaleDateString("en-US", { weekday: "long" });
-
-    // Format date string with spaces and without minutes and seconds
-    return `${year}-${month}-${day} ${dayOfWeek}`;
   };
 
   const getStatusBadge = (status) => {
@@ -157,94 +175,203 @@ const Dashboard = () => {
     }
   };
 
-  return (
-    <section className="background-image content">
-      <section className="section">
-        <h1 className="centered">Dashboard</h1>
+  const handleShowMore = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
-        <div className="customerReport">
-          <div className="report-header">
-            <h3>
-              Appointment List
-              <button
-                className="btn btn-outline-primary ml-5"
-                onClick={handleGenerateReports}
-              >
-                Generate Reports
-              </button>
-            </h3>
-            <table className="w3-table col-md-4">
-              <thead>
-                <tr>
-                  <th>Pending</th>
-                  <th>Approved</th>
-                  <th>Completed</th>
-                  <th>Cancelled</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    {
-                      appointments.filter(
-                        (appointment) => appointment.status === "pending"
-                      ).length
-                    }
-                  </td>
-                  <td>
-                    {
-                      appointments.filter(
-                        (appointment) => appointment.status === "approved"
-                      ).length
-                    }
-                  </td>
-                  <td>
-                    {
-                      appointments.filter(
-                        (appointment) => appointment.status === "completed"
-                      ).length
-                    }
-                  </td>
-                  <td>
-                    {
-                      appointments.filter(
-                        (appointment) => appointment.status === "cancelled"
-                      ).length
-                    }
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          {appointments && appointments.length > 0 ? (
-            <table id="appointmentsTable" className="display">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Date</th>
-                  <th>Type</th>
-                  <th>Service</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {appointments.map((appointment) => (
-                  <tr key={appointment.appointmentId}>
-                    <td>{appointment.name}</td>
-                    <td>{formatDateTime(appointment.date)}</td>
-                    <td>{appointment.appointmentType}</td>
-                    <td>{appointment.serviceType}</td>
-                    <td>{getStatusBadge(appointment.status)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>No appointments</p>
-          )}
-        </div>
-        <br />
+  const getSoonestAppointment = (appointments) => {
+    const today = new Date();
+    const futureAppointments = appointments.filter((appointment) => {
+      const appointmentDate = new Date(appointment.date);
+      return appointmentDate >= today;
+    });
+
+    return futureAppointments.reduce((soonest, current) => {
+      const soonestDate = new Date(soonest.date);
+      const currentDate = new Date(current.date);
+      return currentDate < soonestDate ? current : soonest;
+    }, futureAppointments[0]);
+  };
+
+  return (
+    <section>
+      <section className="admin-dashboard">
+        <main className="main-content">
+          <Container fluid>
+            <Row className="mt-4">
+              <Col md={4}>
+                <Card
+                  className="text-center stats-card"
+                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                >
+                  <Card.Body>
+                    <Card.Title>Total Customers</Card.Title>
+                    <Card.Text>
+                      <h1>{totalUsers}</h1>
+                      <p>Till Today</p>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={4}>
+                <Card
+                  className="text-center stats-card"
+                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                >
+                  <Card.Body>
+                    <Card.Title>Today's Appointments</Card.Title>
+                    <Card.Text>
+                      <h1>{todaysAppointments.length}</h1>
+                      <p>{new Date().toLocaleDateString()}</p>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={4}>
+                <Card
+                  className="text-center stats-card"
+                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                >
+                  <Card.Body>
+                    <Card.Title>Finished Appointments</Card.Title>
+                    <Card.Text>
+                      <h1>{completedAppointments}</h1>
+                      <p>All Time</p>
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+
+            <Row className="mt-4">
+              <Col md={4}>
+                <Card style={{ height: "450px", overflowY: "auto" }}>
+                  <Card.Header>Today's Appointments</Card.Header>
+                  <ListGroup variant="flush">
+                    {todaysAppointments.length === 0 ? (
+                      <ListGroup.Item className="text-center">
+                        No appointments today
+                      </ListGroup.Item>
+                    ) : (
+                      todaysAppointments.map((appointment) => (
+                        <ListGroup.Item key={appointment.id}>
+                          {appointment.name} - {appointment.plan} -{" "}
+                          {formatDateTime(appointment.date)}
+                          <Badge
+                            bg={getStatusColor(appointment.status)}
+                            className="float-right"
+                          >
+                            {appointment.status}
+                          </Badge>
+                        </ListGroup.Item>
+                      ))
+                    )}
+                  </ListGroup>
+                </Card>
+              </Col>
+
+              <Col md={4}>
+                <Card
+                  style={{
+                    height: "450px",
+                    maxHeight: "500px",
+                    overflowY: "auto",
+                  }}
+                >
+                  <Card.Header>Next Appointment Details</Card.Header>
+                  <Card.Body>
+                    {selectedAppointment ? (
+                      <>
+                        <Card.Title>{selectedAppointment.name}</Card.Title>
+                        <Card.Text>
+                          <strong>Time:</strong>{" "}
+                          {formatDateTime(selectedAppointment.date)}
+                          <br />
+                          <strong>Name:</strong> {selectedAppointment.name}
+                        </Card.Text>
+                        <Button variant="primary" onClick={handleShowMore}>
+                          Show More
+                        </Button>
+                      </>
+                    ) : (
+                      <Card.Text>No upcoming appointments</Card.Text>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={4}>
+                <Card style={{ height: "450px", width: "100%" }}>
+                  <Card.Header>Calendar</Card.Header>
+                  <Card.Body
+                    style={{ height: "100%", padding: 0, width: "100%" }}
+                  >
+                    <Calendar
+                      onChange={setDate}
+                      value={date}
+                      className="react-calendar"
+                    />
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </main>
       </section>
+
+      {/* Modal */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Appointment Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedAppointment ? (
+            <>
+              <h4>{selectedAppointment.name}</h4>
+              <p>
+                <strong>Date:</strong>{" "}
+                {formatDateTime(selectedAppointment.date)}
+                <br />
+                <strong>Phone Number:</strong> {selectedAppointment.phoneNumber}
+                <br />
+                <strong>Plan:</strong> {selectedAppointment.plan}
+                <br />
+                <strong>Status:</strong>{" "}
+                {getStatusBadge(selectedAppointment.status)}
+                <br />
+                <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
+              </p>
+              <br />
+              <h4>Post Mortem Details:</h4>
+              <p>
+                <strong>Deceased Name: </strong>
+                {selectedAppointment.DeceasedName}
+                <br />
+                <strong>Deceased Age: </strong>
+                {selectedAppointment.DeceasedAge}
+                <br />
+                <strong>Deceased Birthday: </strong>
+                {selectedAppointment.DeceasedBirthday}
+                <br />
+                <strong>Date of Death: </strong>
+                {selectedAppointment.DateofDeath}
+                <br />
+                <strong>Place of Death: </strong>
+                {selectedAppointment.PlaceofDeath}
+                <br />
+                <strong>Deceased Relationship: </strong>
+                {selectedAppointment.DeceasedRelationship}
+              </p>
+            </>
+          ) : (
+            <p>No details available</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 };

@@ -267,6 +267,20 @@ const updateAppointment = async (userId, appointmentId, newData) => {
   }
 };
 
+const updateAppointmentStatus = async (appointmentId, newStatus) => {
+  try {
+    // Construct the reference to the appointment document
+    const appointmentDocRef = doc(dba, "appointments", appointmentId);
+
+    // Update the appointment document with the new status
+    await updateDoc(appointmentDocRef, { status: newStatus });
+
+    console.log("Appointment updated successfully!");
+  } catch (error) {
+    console.error("Error updating appointment:", error.message);
+  }
+};
+
 // Function to delete an appointment
 const deleteAppointment = async (appointmentId) => {
   try {
@@ -371,6 +385,64 @@ const getUserEmailById = async (userId) => {
   }
 };
 
+// Function to add an inventory item
+const addInventoryItem = async (itemData) => {
+  try {
+    // Create a new document in the "inventory" collection
+    const inventoryRef = await addDoc(collection(dba, "inventory"), itemData);
+    console.log("Inventory item added successfully with ID: ", inventoryRef.id);
+  } catch (error) {
+    console.error("Error adding inventory item:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
+  }
+};
+
+// Function to get all inventory items
+const getInventoryItems = async () => {
+  try {
+    // Query the "inventory" collection
+    const snapshot = await getDocs(collection(dba, "inventory"));
+    const inventoryItems = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return inventoryItems;
+  } catch (error) {
+    console.error("Error getting inventory items:", error.message);
+    return []; // Return an empty array in case of error
+  }
+};
+
+// Function to update an inventory item
+const updateInventoryItem = async (itemId, newData) => {
+  try {
+    // Construct the reference to the inventory item document
+    const itemDocRef = doc(dba, "inventory", itemId);
+
+    // Update the inventory item document with the new data
+    await updateDoc(itemDocRef, newData);
+    console.log("Inventory item updated successfully!");
+  } catch (error) {
+    console.error("Error updating inventory item:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
+  }
+};
+
+// Function to delete an inventory item
+const deleteInventoryItem = async (itemId) => {
+  try {
+    // Construct the reference to the inventory item document
+    const itemDocRef = doc(dba, "inventory", itemId);
+
+    // Delete the inventory item document
+    await deleteDoc(itemDocRef);
+    console.log("Inventory item deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting inventory item:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
+  }
+};
+
 export {
   getAuth,
   auth,
@@ -411,4 +483,10 @@ export {
   getUserEmail,
   getUserEmailById,
   getStorage,
+  getAppointmentsWithStatus,
+  updateAppointmentStatus,
+  addInventoryItem,
+  getInventoryItems,
+  updateInventoryItem,
+  deleteInventoryItem,
 };

@@ -291,7 +291,7 @@ const Booking = ({ addNotification }) => {
             plan: formData.plan,
             DeceasedName: formData.DeceasedName,
             DeceasedAge: formData.DeceasedAge,
-            DeceasedBirthday: formData.DeceasedName,
+            DeceasedBirthday: formData.DeceasedBirthday,
             DateofDeath: formData.DateofDeath,
             PlaceofDeath: formData.PlaceofDeath,
             DeceasedRelationship: formData.DeceasedRelationship,
@@ -361,7 +361,7 @@ const Booking = ({ addNotification }) => {
             plan: formData.plan,
             DeceasedName: formData.DeceasedName,
             DeceasedAge: formData.DeceasedAge,
-            DeceasedBirthday: formData.DeceasedName,
+            DeceasedBirthday: formData.DeceasedBirthday,
             DateofDeath: formData.DateofDeath,
             PlaceofDeath: formData.PlaceofDeath,
             DeceasedRelationship: formData.DeceasedRelationship,
@@ -566,6 +566,7 @@ const Booking = ({ addNotification }) => {
         return;
       }
       setIsValidDaySelected(true);
+      setSelectedDate(startDate.format("MMMM DD h:mm A")); // Format the date as "Month, Day HH AM/PM"
     } else {
       calendarApi.changeView("timeGridDay", startDate3);
     }
@@ -728,7 +729,7 @@ const Booking = ({ addNotification }) => {
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right: "dayGridMonth,timeGridDay,timeGridWeek,listDay",
+              right: "dayGridMonth,timeGridDay,timeGridWeek",
             }}
             events={appointments.map((appointment) => ({
               id: appointment.id,
@@ -922,7 +923,19 @@ const Booking = ({ addNotification }) => {
                   required
                 />
               </Form.Group>
-              {/* Return button */}
+
+              {/* Terms and Conditions Checkbox */}
+              <Form.Group controlId="formTermsConditions" className="mt-3">
+                <Form.Check
+                  type="checkbox"
+                  label="I have read and agree to the terms and conditions"
+                  checked={termsChecked}
+                  onChange={(e) => setTermsChecked(e.target.checked)}
+                  required
+                />
+              </Form.Group>
+
+              {/* Return and Submit Buttons */}
               <Button
                 variant="secondary"
                 className="mt-3"
@@ -931,7 +944,12 @@ const Booking = ({ addNotification }) => {
                 Return
               </Button>
               {""}
-              <Button variant="primary" type="submit" className="mt-3">
+              <Button
+                variant="primary"
+                type="submit"
+                className="mt-3"
+                disabled={!termsChecked} // Disable submit button if terms are not agreed to
+              >
                 Submit
               </Button>
             </Form>
