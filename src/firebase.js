@@ -443,6 +443,110 @@ const deleteInventoryItem = async (itemId) => {
   }
 };
 
+// Function to get published testimonials
+const getPublishedTestimonials = async () => {
+  try {
+    const testimonialsQuery = query(
+      collection(dba, "testimonials"),
+      where("status", "==", "published")
+    );
+    const snapshot = await getDocs(testimonialsQuery);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error fetching published testimonials:", error.message);
+    return [];
+  }
+};
+
+const submitTestimonialFirestore = async (testimonialData) => {
+  try {
+    await addDoc(collection(dba, "testimonials"), testimonialData);
+    console.log("Testimonial submitted successfully!");
+  } catch (error) {
+    console.error("Error submitting testimonial:", error.message);
+  }
+};
+
+// Function to get reviews
+const getReviewsFirestore = async () => {
+  try {
+    const reviewsQuery = collection(dba, "testimonials");
+    const snapshot = await getDocs(reviewsQuery);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error fetching testimonials:", error.message);
+    return [];
+  }
+};
+
+// Function to update review status
+const updateReviewStatusFirestore = async (reviewId, newStatus) => {
+  try {
+    const reviewDocRef = doc(dba, "testimonials", reviewId);
+    await updateDoc(reviewDocRef, { status: newStatus });
+    console.log("Testimonial status updated successfully!");
+  } catch (error) {
+    console.error("Error updating review status:", error.message);
+  }
+};
+
+// Function to delete a review
+const deleteReviewFirestore = async (reviewId) => {
+  try {
+    const reviewDocRef = doc(dba, "reviews", reviewId);
+    await deleteDoc(reviewDocRef);
+    console.log("Review deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting review:", error.message);
+  }
+};
+
+export const addContent = async (contentData) => {
+  try {
+    const docRef = await addDoc(collection(dba, "content"), contentData);
+    return docRef.id;
+  } catch (e) {
+    console.error("Error adding content: ", e);
+    throw new Error("Failed to add content");
+  }
+};
+
+export const getContent = async () => {
+  const contentCollection = collection(dba, "content");
+  const contentSnapshot = await getDocs(contentCollection);
+  return contentSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+export const updateContent = async (contentId, updatedData) => {
+  const contentRef = doc(dba, "content", contentId);
+  try {
+    await updateDoc(contentRef, updatedData);
+  } catch (e) {
+    console.error("Error updating content: ", e);
+    throw new Error("Failed to update content");
+  }
+};
+
+export const deleteContent = async (contentId) => {
+  try {
+    await deleteDoc(doc(dba, "content", contentId));
+  } catch (e) {
+    console.error("Error deleting content: ", e);
+    throw new Error("Failed to delete content");
+  }
+};
+
+const getUserDetails = async (userId) => {
+  try {
+    const userDocRef = doc(dba, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+    return userDocSnapshot.exists() ? userDocSnapshot.data() : null;
+  } catch (error) {
+    console.error("Error fetching user details:", error.message);
+    return null;
+  }
+};
+
 export {
   getAuth,
   auth,
@@ -489,4 +593,10 @@ export {
   getInventoryItems,
   updateInventoryItem,
   deleteInventoryItem,
+  getPublishedTestimonials,
+  submitTestimonialFirestore,
+  getReviewsFirestore,
+  updateReviewStatusFirestore,
+  deleteReviewFirestore,
+  getUserDetails,
 };

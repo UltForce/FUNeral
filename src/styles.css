@@ -289,6 +289,60 @@ label {
   background-color: #ddd;
 }
 
+#inventoryTable th,
+#inventoryTable td {
+  text-align: left;
+  padding: 8px;
+}
+
+#inventoryTable th {
+  background-color: #f2f2f2;
+}
+
+#inventoryTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#inventoryTable tbody tr:hover {
+  background-color: #ddd;
+}
+
+#contentTable th,
+#contentTable td {
+  text-align: left;
+  padding: 8px;
+}
+
+#contentTable th {
+  background-color: #f2f2f2;
+}
+
+#contentTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#contentTable tbody tr:hover {
+  background-color: #ddd;
+}
+
+#reviewTable th,
+#reviewTable td {
+  text-align: left;
+  padding: 8px;
+}
+
+#reviewTable th {
+  background-color: #f2f2f2;
+}
+
+#reviewTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#reviewTable tbody tr:hover {
+  background-color: #ddd;
+}
+
 .report-header {
   display: flex;
   align-items: center; /* Align items vertically in the center */

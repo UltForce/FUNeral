@@ -1,13 +1,18 @@
-// homepage.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getCurrentUserId, getUserRoleFirestore, auth } from "./firebase.js";
 import "./homepage.css";
 
 const Homepage = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [content, setContent] = useState({
+    homepageText: "",
+    aboutUsText: "",
+    contactText: "",
+  });
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -19,21 +24,38 @@ const Homepage = () => {
       }
     });
 
+    const fetchContent = async () => {
+      const db = getFirestore();
+      const contentDoc = doc(db, "staticContent", "content");
+      try {
+        const docSnap = await getDoc(contentDoc);
+        if (docSnap.exists()) {
+          setContent(docSnap.data());
+        } else {
+          console.log("No content found");
+        }
+      } catch (error) {
+        console.error("Error fetching content:", error);
+      }
+    };
+
+    fetchContent();
+
     return () => unsubscribe();
   }, []);
 
   const handleButtonClick = () => {
     if (isLoggedIn) {
-      navigate("/booking"); // Redirect to booking page when logged in
+      navigate("/booking");
     } else {
-      navigate("/login"); // Redirect to login page when not logged in
+      navigate("/login");
     }
   };
 
   return (
     <div className="snapping-container content-user">
       <section className="snap-section section1">
-        <h1>Welcome to J.ROA Funeral Services</h1>{" "}
+        <h1>{content.homepageText || "Welcome to J.ROA Funeral Services"}</h1>
         <button className="action-button" onClick={handleButtonClick}>
           {isLoggedIn ? "Book Now" : "Login"}
         </button>
@@ -42,7 +64,7 @@ const Homepage = () => {
         <h1>Products</h1>
       </section>
       <section className="snap-section section3">
-        <h1>About Us</h1>
+        <h1>{content.aboutUsText || "About Us"}</h1>
       </section>
       <section className="snap-section section4">
         <h1>Our Services</h1>
@@ -56,14 +78,6 @@ const Homepage = () => {
       <section className="snap-section section7">
         <h1>Testimonials</h1>
       </section>
-      {/*
-      <iframe
-        width="350"
-        height="430"
-        allow="microphone;"
-        src="https://console.dialogflow.com/api-client/demo/embedded/1d3daf65-6838-45ac-b790-c823251bd7a6"
-      ></iframe>
-*/}
     </div>
   );
 };

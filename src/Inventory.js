@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   addInventoryItem,
   deleteInventoryItem,
   updateInventoryItem,
   getInventoryItems,
-} from "./firebase.js"; // Assume these functions are defined in firebase.js
+} from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
@@ -37,18 +37,22 @@ const Inventory = () => {
   });
 
   // Fetch inventory items
-  useEffect(() => {
-    const fetchInventoryItems = async () => {
-      try {
-        const items = await getInventoryItems();
-        setInventoryItems(items);
-      } catch (error) {
-        console.error("Error fetching inventory items:", error.message);
-      }
-    };
-
-    fetchInventoryItems();
+  const fetchInventoryItems = useCallback(async () => {
+    try {
+      const items = await getInventoryItems();
+      setInventoryItems(items);
+    } catch (error) {
+      console.error("Error fetching inventory items:", error.message);
+      Toast.fire({
+        icon: "error",
+        title: "Failed to fetch inventory items",
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    fetchInventoryItems();
+  }, [fetchInventoryItems]);
 
   useEffect(() => {
     if (inventoryItems.length > 0) {
@@ -63,7 +67,7 @@ const Inventory = () => {
               .find("td")
               .css("border", "1px solid #ddd");
           },
-          rowCallback: function (row, data, index) {
+          rowCallback: function (row) {
             $(row).hover(
               function () {
                 $(this).addClass("hover");
@@ -107,8 +111,23 @@ const Inventory = () => {
 
   const handleCloseModal = () => setShowModal(false);
 
+  const handleAddEditConfirmation = async (mode) => {
+    const actionText = mode === "add" ? "add" : "update";
+    const result = await Swal.fire({
+      title: `Are you sure you want to ${actionText} this item?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      icon: "warning",
+    });
+    return result.isConfirmed;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const confirmed = await handleAddEditConfirmation(modalMode);
+    if (!confirmed) return;
+
     try {
       if (modalMode === "add") {
         await addInventoryItem(formData);
@@ -123,36 +142,50 @@ const Inventory = () => {
           title: "Inventory item updated successfully",
         });
       }
-      // Fetch inventory items directly here
-      const items = await getInventoryItems();
-      setInventoryItems(items);
+      fetchInventoryItems(); // Fetch items directly here
       handleCloseModal();
     } catch (error) {
       console.error(
         `Error ${modalMode === "add" ? "adding" : "updating"} inventory item:`,
         error.message
       );
-      alert(
-        `An error occurred while ${
+      Toast.fire({
+        icon: "error",
+        title: `An error occurred while $ {
           modalMode === "add" ? "adding" : "updating"
-        } inventory item.`
-      );
+        } inventory item.`,
+      });
     }
   };
 
+  const handleDeleteConfirmation = async (itemId) => {
+    const result = await Swal.fire({
+      title: "Are you sure you want to delete this item?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      icon: "warning",
+    });
+    return result.isConfirmed ? itemId : null;
+  };
+
   const handleDelete = async (itemId) => {
+    const confirmedId = await handleDeleteConfirmation(itemId);
+    if (!confirmedId) return;
+
     try {
       await deleteInventoryItem(itemId);
       Toast.fire({
         icon: "success",
         title: "Inventory item deleted successfully",
       });
-      // Fetch inventory items directly here
-      const items = await getInventoryItems();
-      setInventoryItems(items);
+      fetchInventoryItems(); // Fetch items directly here
     } catch (error) {
       console.error("Error deleting inventory item:", error.message);
-      alert("An error occurred while deleting inventory item.");
+      Toast.fire({
+        icon: "error",
+        title: "An error occurred while deleting inventory item.",
+      });
     }
   };
 
@@ -171,7 +204,7 @@ const Inventory = () => {
       {inventoryItems.length === 0 ? (
         <p className="text-center">No items available</p>
       ) : (
-        <table className="display" id="inventoryTable">
+        <table className="display w3-table" id="inventoryTable">
           <thead>
             <tr>
               <th>Name</th>
@@ -252,10 +285,11 @@ const Inventory = () => {
             <Form.Group controlId="formDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
                 name="description"
                 value={formData.description}
                 onChange={handleFormChange}
+                required
               />
             </Form.Group>
             <br />

@@ -19,6 +19,9 @@ import Audit from "./Audit";
 import Appointments from "./Appointment";
 import ChatSupport from "./ChatSupport";
 import Inventory from "./Inventory";
+import Content from "./content";
+import Reviews from "./reviews";
+
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -95,6 +98,8 @@ const App = () => {
             <Route path="/audit" element={<Audit />} />
             <Route path="/appointments" element={<Appointments />} />
             <Route path="/inventory" element={<Inventory />} />
+            <Route path="/content" element={<Content />} />
+            <Route path="/reviews" element={<Reviews />} />
             <Route path="*" element={<Homepage />} />
           </Routes>
         </div>

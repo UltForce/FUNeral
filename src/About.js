@@ -1,13 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUserId, auth, getUserRoleFirestore } from "./firebase.js";
+import {
+  auth,
+  getUserRoleFirestore,
+  getPublishedTestimonials,
+  submitTestimonialFirestore,
+  getCurrentUserId,
+  getUserDetails,
+} from "./firebase.js"; // Assume these functions are defined in your firebase.js
+import Swal from "sweetalert2";
 import "./about.css";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+});
 
 const About = () => {
   const navigate = useNavigate(); // Initialize navigate function
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [testimonials, setTestimonials] = useState([]);
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(5); // Default rating
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -16,11 +40,67 @@ const About = () => {
         const userId = getCurrentUserId();
         const userRole = await getUserRoleFirestore(userId);
         setIsAdmin(userRole === "admin");
+
+        // Get user details
+        const userDetails = await getUserDetails(userId); // Fetch user details
+        if (userDetails) {
+          setFirstName(userDetails.firstname || "");
+          setLastName(userDetails.lastname || "");
+        }
       }
     });
 
+    const fetchTestimonials = async () => {
+      const publishedTestimonials = await getPublishedTestimonials(); // Fetch published testimonials
+      setTestimonials(publishedTestimonials);
+    };
+
+    fetchTestimonials();
     return () => unsubscribe();
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if firstName and lastName are set
+    if (!firstname || !lastname) {
+      Toast.fire({
+        icon: "error",
+        title: "User details are not available. Please try again later.",
+      });
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to submit your testimonial?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, submit it!",
+    });
+
+    if (result.isConfirmed) {
+      await submitTestimonialFirestore({
+        firstname,
+        lastname,
+        comment,
+        rating,
+        status: "pending", // Default status
+      });
+
+      // Clear the form
+      setComment("");
+      setRating(5);
+
+      // Show success toast
+      Toast.fire({
+        icon: "success",
+        title: "Testimonial request sent successfully!",
+      });
+    }
+  };
 
   return (
     <div className="snapping-container content-user">
@@ -35,40 +115,60 @@ const About = () => {
           width="400"
           height="300"
           style={{ border: 0 }}
-          allowfullscreen=""
+          allowFullScreen=""
           loading="lazy"
         ></iframe>
         <br />
         <h3>Contact No.</h3>
-        <p>
-          0909 081 3396 / 0935 354 4006 <br />
-        </p>
+        <p>0909 081 3396 / 0935 354 4006</p>
       </section>
 
       <section className="snap-section testimonials-section">
         <h2>Testimonials</h2>
-        <div className="testimonial">
-          <div className="testimonial-content">
-            <div className="stars">⭐⭐⭐⭐⭐</div>
-            <p className="reviewer-name">John Doe</p>
-            <p className="review-description">
-              "The service was exceptional, and the staff was incredibly
-              supportive during a difficult time."
-            </p>
+        {testimonials.map((testimonial) => (
+          <div key={testimonial.id} className="testimonial">
+            <div className="testimonial-content">
+              <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
+              <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
+              <p className="review-description">{testimonial.comment}</p>
+            </div>
           </div>
-        </div>
-        <div className="testimonial">
-          <div className="testimonial-content">
-            <div className="stars">⭐⭐⭐⭐</div>
-            <p className="reviewer-name">Jane Smith</p>
-            <p className="review-description">
-              "A very professional and compassionate team. They helped us
-              through every step of the process."
-            </p>
-          </div>
-        </div>
-        {/* Add more testimonials as needed */}
+        ))}
       </section>
+
+      {isLoggedIn && (
+        <section className="submit-testimonial-section section">
+          <h3>Add Your Testimonial</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Your comment"
+                required
+                className="form-control"
+                rows="3"
+              />
+            </div>
+            <div className="mb-3">
+              <select
+                value={rating}
+                onChange={(e) => setRating(Number(e.target.value))}
+                className="form-select"
+              >
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <option key={star} value={star}>
+                    {star} Star{star > 1 ? "s" : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </form>
+        </section>
+      )}
     </div>
   );
 };
