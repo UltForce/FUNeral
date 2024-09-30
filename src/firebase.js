@@ -486,18 +486,18 @@ const updateReviewStatusFirestore = async (reviewId, newStatus) => {
     await updateDoc(reviewDocRef, { status: newStatus });
     console.log("Testimonial status updated successfully!");
   } catch (error) {
-    console.error("Error updating review status:", error.message);
+    console.error("Error updating testimonial status:", error.message);
   }
 };
 
 // Function to delete a review
 const deleteReviewFirestore = async (reviewId) => {
   try {
-    const reviewDocRef = doc(dba, "reviews", reviewId);
+    const reviewDocRef = doc(dba, "testimonials", reviewId);
     await deleteDoc(reviewDocRef);
     console.log("Review deleted successfully!");
   } catch (error) {
-    console.error("Error deleting review:", error.message);
+    console.error("Error deleting testimonial:", error.message);
   }
 };
 

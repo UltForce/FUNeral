@@ -102,6 +102,20 @@ const About = () => {
     }
   };
 
+  // Render stars based on the current rating
+  const renderStars = () => {
+    return [1, 2, 3, 4, 5].map((star) => (
+      <span
+        key={star}
+        className={`star ${star <= rating ? "filled" : "faded"}`}
+        onClick={() => setRating(star)} // Set the rating when clicked
+        style={{ cursor: "pointer" }} // Make stars clickable
+      >
+        &#9733; {/* Unicode star character */}
+      </span>
+    ));
+  };
+
   return (
     <div className="snapping-container content-user">
       <section className="snap-section about-us-section">
@@ -150,19 +164,7 @@ const About = () => {
                 rows="3"
               />
             </div>
-            <div className="mb-3">
-              <select
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-                className="form-select"
-              >
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <option key={star} value={star}>
-                    {star} Star{star > 1 ? "s" : ""}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <div className="mb-3 star-rating">{renderStars()}</div>
             <button type="submit" className="btn btn-primary">
               Submit
             </button>

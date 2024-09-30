@@ -1,3 +1,5 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min"; // This includes tooltips and other Bootstrap JavaScript
 import React, { useState, useEffect, useCallback } from "react";
 import {
   addInventoryItem,
@@ -9,7 +11,10 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import { Dropdown, Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "bootstrap";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -80,6 +85,13 @@ const Inventory = () => {
           stripeClasses: ["stripe1", "stripe2"],
         });
       }
+      // Initialize Bootstrap tooltips
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+      tooltipTriggerList.forEach(
+        (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
+      );
     }
   }, [inventoryItems]);
 
@@ -88,7 +100,13 @@ const Inventory = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleShowModal = (mode, item = null) => {
+  const handleShowModal = (mode, item = null, event) => {
+    // Hide tooltip before changing status
+    const tooltipElement = event.currentTarget;
+    const tooltipInstance = Tooltip.getInstance(tooltipElement);
+    if (tooltipInstance) {
+      tooltipInstance.hide();
+    }
     setModalMode(mode);
     setSelectedItem(item);
     if (item) {
@@ -111,7 +129,7 @@ const Inventory = () => {
 
   const handleCloseModal = () => setShowModal(false);
 
-  const handleAddEditConfirmation = async (mode) => {
+  const handleAddEditConfirmation = async (mode, event) => {
     const actionText = mode === "add" ? "add" : "update";
     const result = await Swal.fire({
       title: `Are you sure you want to ${actionText} this item?`,
@@ -151,7 +169,7 @@ const Inventory = () => {
       );
       Toast.fire({
         icon: "error",
-        title: `An error occurred while $ {
+        title: `An error occurred while ${
           modalMode === "add" ? "adding" : "updating"
         } inventory item.`,
       });
@@ -169,7 +187,13 @@ const Inventory = () => {
     return result.isConfirmed ? itemId : null;
   };
 
-  const handleDelete = async (itemId) => {
+  const handleDelete = async (itemId, event) => {
+    // Hide tooltip before changing status
+    const tooltipElement = event.currentTarget;
+    const tooltipInstance = Tooltip.getInstance(tooltipElement);
+    if (tooltipInstance) {
+      tooltipInstance.hide();
+    }
     const confirmedId = await handleDeleteConfirmation(itemId);
     if (!confirmedId) return;
 
@@ -222,21 +246,33 @@ const Inventory = () => {
                 <td>{item.price}</td>
                 <td>{item.description}</td>
                 <td>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      Actions
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => handleShowModal("edit", item)}
-                      >
-                        Edit
-                      </Dropdown.Item>
-                      <Dropdown.Item onClick={() => handleDelete(item.id)}>
-                        Delete
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <div>
+                    {/* Edit Button with Tooltip */}
+                    <button
+                      className="btn btn-warning"
+                      type="button"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Edit Item"
+                      onClick={(event) => {
+                        handleShowModal("edit", item, event);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>{" "}
+                    {/* Delete Button with Tooltip */}
+                    <button
+                      className="btn btn-danger"
+                      type="button"
+                      data-bs-toggle="tooltip"
+                      title="Delete Item"
+                      onClick={(event) => {
+                        handleDelete(item.id, event);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -292,9 +328,8 @@ const Inventory = () => {
                 required
               />
             </Form.Group>
-            <br />
             <Button variant="primary" type="submit">
-              {modalMode === "add" ? "Add Item" : "Update Item"}
+              {modalMode === "add" ? "Add Item" : "Save Changes"}
             </Button>
           </Form>
         </Modal.Body>

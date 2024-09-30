@@ -62,6 +62,29 @@ const Dashboard = () => {
     checkAdminAndLoginStatus();
   }, [navigate]);
 
+  // window load
+  $(window).on("load", function (e) {
+    // set active page on sidebar
+    var pgurl = window.location.href.substr(
+      window.location.href.indexOf("/") + 2
+    );
+    pgurl = pgurl.substr(pgurl.indexOf("/") + 1);
+    pgurl = pgurl.replace(".aspx", "");
+
+    var active = $('a[href$="' + pgurl + '"]');
+    active.addClass("active");
+
+    if (active.parent().parent().parent().is("li")) {
+      active.parent().parent().parent().addClass("open");
+    }
+
+    // hide page loader
+    setTimeout(function () {
+      //$("#page-loader").fadeOut(200);
+      $("#page-loader2").fadeOut(10);
+    }, 800);
+  });
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -196,6 +219,7 @@ const Dashboard = () => {
     <section>
       <section className="admin-dashboard">
         <main className="main-content">
+          {/*<div class="custom-page-loader" id="page-loader2"></div>*/}
           <Container fluid>
             <Row className="mt-4">
               <Col md={4}>

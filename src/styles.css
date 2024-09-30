@@ -325,21 +325,39 @@ label {
   background-color: #ddd;
 }
 
-#reviewTable th,
-#reviewTable td {
+#reviewsTable th,
+#reviewsTable td {
   text-align: left;
   padding: 8px;
 }
 
-#reviewTable th {
+#reviewsTable th {
   background-color: #f2f2f2;
 }
 
-#reviewTable tbody tr:nth-child(even) {
+#reviewsTable tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-#reviewTable tbody tr:hover {
+#reviewsTable tbody tr:hover {
+  background-color: #ddd;
+}
+
+#auditTable th,
+#auditTable td {
+  text-align: left;
+  padding: 8px;
+}
+
+#auditTable th {
+  background-color: #f2f2f2;
+}
+
+#auditTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#auditTable tbody tr:hover {
   background-color: #ddd;
 }
 
@@ -393,4 +411,30 @@ label {
   font-size: 40px;
   font-weight: bold;
   color: #333;
+}
+
+.star {
+  font-size: 2rem;
+  color: gold;
+  transition: color 0.2s;
+}
+
+.filled {
+  color: gold;
+}
+
+.faded {
+  color: lightgray;
+}
+
+/* FOR CUSTOM PAGE LOADER */
+.custom-page-loader {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  opacity: 1;
+  background: url(/public/Chunk-4s-154px.gif) center no-repeat #fff;
 }
