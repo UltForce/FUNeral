@@ -9,6 +9,7 @@ import {
   getCurrentUserId,
   AuditLogger,
   getUserRoleFirestore,
+  sendNotification,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -153,13 +154,41 @@ const Appointments = () => {
 
   const handleAction = async (action, appointmentId) => {
     try {
+      const appointment = appointments.find((r) => r.id === appointmentId); 
       if (action === "delete") {
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Appointment",
+          userId: userId,
+          details: "Admin deleted an appointment",
+        };
+        AuditLogger({ event });
+
+        const title = "Appointment deleted";
+        const content = `Your appointment has been deleted by an admin`;
+        const recipient = appointment.userId;
+
+        await sendNotification(title, content, userId, recipient);
+
         await deleteAppointment(appointmentId);
         Toast.fire({
           icon: "success",
           title: "Appointment deleted successfully",
         });
       } else {
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Appointment",
+          userId: userId,
+          details: "Admin changed the status of an appointment",
+        };
+        AuditLogger({ event });
+        const title = "Appointment status changed";
+        const content = `Your appointment status has been changed to ${action}`;
+        const recipient = appointment.userId;
+
+        await sendNotification(title, content, userId, recipient);
+
         await updateAppointmentStatus(appointmentId, action);
         Toast.fire({
           icon: "success",

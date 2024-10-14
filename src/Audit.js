@@ -150,7 +150,7 @@ const Audit = () => {
             </tbody>
           </table>
         ) : (
-          <p>No appointments</p>
+          <p>No audits</p>
         )}
       </div>
     </section>

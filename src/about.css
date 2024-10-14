@@ -51,6 +51,11 @@
   font-weight: bold;
   margin: 10px 0;
 }
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 20px; /* Add space between testimonials */
+}
 
 .review-description {
   font-style: italic;

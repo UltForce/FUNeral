@@ -58,6 +58,13 @@ nav ul li a .nav-label {
   padding: 1rem;
   color: white;
   text-decoration: none;
+  transition: background-color 0.3s, transform 0.2s; /* Add smooth transition for hover effect */
+}
+
+.sidebar ul li a:hover {
+  background-color: #444; /* Darker background on hover */
+  color: #ffcc00; /* Change text color on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
 }
 
 /* Adjust the content area to account for sidebar width */
@@ -112,6 +119,17 @@ nav ul li a .nav-label {
   font-weight: bold;
 }
 
+/* Hover effect for top navbar links */
+.centeredNav li a {
+  transition: background-color 0.3s, transform 0.2s; /* Add smooth transition for hover effect */
+}
+
+.centeredNav li a:hover {
+  background-color: #444; /* Darker background on hover */
+  color: #ffcc00; /* Change text color on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
 /* Add this CSS rule to define hover effect for buttons */
 button:hover {
   background-color: #ddd;
@@ -131,4 +149,48 @@ nav ul.centeredNav li.active a {
   background-color: #ddd;
   color: black;
   transform: scale(1.1); /* Increase size by 10% */
+}
+
+.no-transition {
+  transition: none !important; /* Disable all transitions */
+}
+
+.notification-container {
+  position: relative;
+}
+
+.notification-dropdown {
+  color: black;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  width: 200px;
+  width: 300px; /* Adjust width as needed */
+  overflow-y: auto;
+}
+
+.notification {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification.read {
+  background-color: #f9f9f9;
+}
+
+.notification.unread {
+  background-color: #e8f5e9; /* Light green for unread */
+}
+
+.red-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
 }

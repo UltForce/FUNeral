@@ -22,6 +22,7 @@ import {
   deleteDoc,
   where,
   query,
+  Timestamp,
 } from "firebase/firestore";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
@@ -546,6 +547,71 @@ const getUserDetails = async (userId) => {
     return null;
   }
 };
+export const sendNotification = async (title, content, userId, recipient) => {
+  try {
+    const notification = {
+      title,
+      content,
+      userId,
+      recipient,
+      isRead: false,
+      timestamp: Timestamp.now(),
+    };
+
+    // Add the notification to the 'notifications' collection
+    await addDoc(collection(dba, "notifications"), notification);
+    console.log("Notification sent successfully:", notification);
+  } catch (error) {
+    console.error("Error sending notification:", error);
+  }
+};
+
+const fetchUserNotifications = async () => {
+  try {
+    const userId = getCurrentUserId();
+    const notificationsQuery = query(
+      collection(dba, "notifications"),
+      where("recipient", "==", userId)
+    );
+    const snapshot = await getDocs(notificationsQuery);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error fetching notifications:", error.message);
+    return [];
+  }
+};
+
+const fetchAdminNotifications = async () => {
+  try {
+    const notificationsQuery = query(
+      collection(dba, "notifications"),
+      where("recipient", "==", "admin")
+    );
+    const snapshot = await getDocs(notificationsQuery);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error fetching notifications:", error.message);
+    return [];
+  }
+};
+
+export const markNotificationAsRead = async (notificationId) => {
+  const notificationRef = doc(dba, "notifications", notificationId); // Reference to the specific notification
+  await updateDoc(notificationRef, { isRead: true }); // Update the document
+  console.log("Notification marked as read!");
+};
+
+export const markNotificationAsUnread = async (notificationId) => {
+  const notificationRef = doc(dba, "notifications", notificationId); // Reference to the specific notification
+  await updateDoc(notificationRef, { isRead: false }); // Update the document
+  console.log("Notification marked as unread!");
+};
+
+export const deleteNotification = async (notificationId) => {
+  const notificationRef = doc(dba, "notifications", notificationId); // Reference to the specific notification
+  await deleteDoc(notificationRef); // Delete the document
+  console.log("Notification deleted!");
+};
 
 export {
   getAuth,
@@ -599,4 +665,6 @@ export {
   updateReviewStatusFirestore,
   deleteReviewFirestore,
   getUserDetails,
+  fetchUserNotifications,
+  fetchAdminNotifications,
 };

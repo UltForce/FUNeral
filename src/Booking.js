@@ -19,8 +19,7 @@ import {
   getCurrentUserId,
   getAllAppointments,
   AuditLogger,
-  sendPasswordResetEmail,
-  getUserEmailById,
+  sendNotification,
 } from "./firebase";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +40,7 @@ const Toast = Swal.mixin({
 });
 
 // Component for booking appointments
-const Booking = ({ addNotification }) => {
+const Booking = ({}) => {
   const navigate = useNavigate(); // Initialize navigate function
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -306,10 +305,6 @@ const Booking = ({ addNotification }) => {
             );
             await uploadBytes(storageRef, formData.DeathCertificate);
           }
-          addNotification({
-            id: Date.now(),
-            message: `Appointment updated successfully:`,
-          }); // Pass formData containing appointment details
           const event = {
             type: "Appointment", // Type of event
             userId: loggedInUserId, // User ID associated with the event
@@ -320,6 +315,13 @@ const Booking = ({ addNotification }) => {
           setIsValidDaySelected(false);
           // Call the AuditLogger function with the event object
           AuditLogger({ event });
+
+          const title = "Pending appointment edited";
+          const content = `A pending appointment ${formData.appointmentId} has been edited`;
+          const recipient = "admin";
+
+          await sendNotification(title, content, loggedInUserId, recipient);
+
           clearFormData();
           // Show success message
           Swal.fire({
@@ -367,13 +369,11 @@ const Booking = ({ addNotification }) => {
             DeceasedRelationship: formData.DeceasedRelationship,
             DeathCertificate: formData.DeathCertificate,
           });
-          const appointmentData = {
-            ...formData,
-          };
-          addNotification({
-            id: Date.now(),
-            message: `Appointment created successfully:`,
-          }); // Pass formData containing appointment details
+          const title = "Appointment created";
+          const content = `An appointment ${formData.appointmentId} has been created`;
+          const recipient = "admin";
+
+          await sendNotification(title, content, loggedInUserId, recipient);
           handleClose2(); // Close the second modal after submitting
           setIsFormOpen(false); // Close form
           setIsValidDaySelected(false);
@@ -488,16 +488,17 @@ const Booking = ({ addNotification }) => {
           setIsFormOpen(false); // Close form
           setIsValidDaySelected(false);
           clearFormData();
-          addNotification({
-            id: Date.now(),
-            message: `Appointment canceled successfully:`,
-          });
           const event = {
             type: "Appointment", // Type of event
             userId: loggedInUserId, // User ID associated with the event
             details: "User canceled a pending appointment", // Details of the event
           };
           AuditLogger({ event }); // Log the event
+          const title = "Pending appointment deleted";
+          const content = `A pending appointment ${formData.appointmentId}has been deleted`;
+          const recipient = "admin";
+
+          await sendNotification(title, content, loggedInUserId, recipient);
           fetchAppointments(); // Fetch updated appointments
           // Show success message
           Swal.fire({
@@ -606,95 +607,6 @@ const Booking = ({ addNotification }) => {
       }
     }
     clearFormData();
-  };
-
-  // Handle terms checkbox change
-  const handleTermsChange = (e) => {
-    setTermsChecked(e.target.checked); // Set terms checked
-  };
-
-  const handleStatusChange = async (status) => {
-    try {
-      const loggedInUserId = getCurrentUserId();
-      const clickedAppointment = appointments.find(
-        (appointment) => appointment.id === formData.appointmentId
-      );
-
-      if (!clickedAppointment) {
-        console.error("Appointment not found.");
-        return;
-      }
-
-      if (isAdmin) {
-        await updateAppointment(loggedInUserId, formData.appointmentId, {
-          status: status,
-        });
-        clearFormData();
-        addNotification({
-          id: Date.now(),
-          message: `Appointment status updated successfully:`,
-        });
-        const event = {
-          type: "Appointment", // Type of event
-          userId: loggedInUserId, // User ID associated with the event
-          details: "User changed the status of an existing appointment", // Details of the event
-        };
-        // Get the userID from the clicked appointment
-        const userId = clickedAppointment.userId;
-
-        // Retrieve the user email with the userID
-        const userEmail = await getUserEmailById(userId);
-
-        if (!userEmail) {
-          console.error("User email not found for userID:", userId);
-          return;
-        }
-        if (status === "approved") {
-          // Send the password reset email to the user's email
-          await sendPasswordResetEmail(auth, userEmail);
-        }
-        // Call the AuditLogger function with the event object
-        AuditLogger({ event });
-        fetchAppointments();
-        Swal.fire({
-          title: "success",
-          text: "Appointment status updated successfully",
-          icon: "success",
-          heightAuto: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Confirm",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Toast.fire({
-              icon: "success",
-              title: "Appointment status updated successfully",
-            });
-          }
-        });
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "You are not authorized to update appointment status.",
-          icon: "error",
-          heightAuto: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Confirm",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Toast.fire({
-              icon: "error",
-              title: "You are not authorized to update appointment status.",
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error updating appointment status:", error.message);
-      Toast.fire({
-        icon: "error",
-        title: "Error updating appointment status",
-      });
-    }
   };
 
   return (

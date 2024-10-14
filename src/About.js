@@ -7,6 +7,8 @@ import {
   submitTestimonialFirestore,
   getCurrentUserId,
   getUserDetails,
+  AuditLogger,
+  sendNotification,
 } from "./firebase.js"; // Assume these functions are defined in your firebase.js
 import Swal from "sweetalert2";
 import "./about.css";
@@ -32,12 +34,14 @@ const About = () => {
   const [rating, setRating] = useState(5); // Default rating
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setIsLoggedIn(!!user);
       if (user) {
         const userId = getCurrentUserId();
+        setCurrentUserId(userId); // Store current user ID
         const userRole = await getUserRoleFirestore(userId);
         setIsAdmin(userRole === "admin");
 
@@ -52,7 +56,17 @@ const About = () => {
 
     const fetchTestimonials = async () => {
       const publishedTestimonials = await getPublishedTestimonials(); // Fetch published testimonials
-      setTestimonials(publishedTestimonials);
+
+      // Sort testimonials by highest rating first, and then by most recent
+      const sortedTestimonials = publishedTestimonials.sort((a, b) => {
+        if (b.rating === a.rating) {
+          return b.timestamp - a.timestamp; // Sort by most recent if ratings are the same
+        }
+        return b.rating - a.rating; // Sort by highest rating first
+      });
+
+      // Limit to top 4 testimonials
+      setTestimonials(sortedTestimonials.slice(0, 4));
     };
 
     fetchTestimonials();
@@ -71,6 +85,19 @@ const About = () => {
       return;
     }
 
+    // Check if the user has already submitted a testimonial
+    const existingTestimonial = testimonials.find(
+      (testimonial) => testimonial.userId === currentUserId
+    );
+
+    if (existingTestimonial) {
+      Toast.fire({
+        icon: "error",
+        title: "You have already submitted a testimonial.",
+      });
+      return;
+    }
+
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to submit your testimonial?",
@@ -82,7 +109,21 @@ const About = () => {
     });
 
     if (result.isConfirmed) {
+      const event = {
+        type: "Testimonial",
+        userId: currentUserId,
+        details: "User submitted a testimonial",
+      };
+      AuditLogger({ event });
+
+      const title = "Testimonial submitted";
+      const content = `A Testimonial has been submitted`;
+      const recipient = "admin";
+
+      await sendNotification(title, content, currentUserId, recipient);
+
       await submitTestimonialFirestore({
+        userId: currentUserId, // Include user ID
         firstname,
         lastname,
         comment,
@@ -139,15 +180,17 @@ const About = () => {
 
       <section className="snap-section testimonials-section">
         <h2>Testimonials</h2>
-        {testimonials.map((testimonial) => (
-          <div key={testimonial.id} className="testimonial">
-            <div className="testimonial-content">
-              <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
-              <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
-              <p className="review-description">{testimonial.comment}</p>
+        <div className="testimonials-grid">
+          {testimonials.slice(0, 4).map((testimonial) => (
+            <div key={testimonial.id} className="testimonial">
+              <div className="testimonial-content">
+                <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
+                <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
+                <p className="review-description">{testimonial.comment}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </section>
 
       {isLoggedIn && (

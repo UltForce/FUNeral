@@ -1,4 +1,5 @@
 // Login.js
+import "./styles.css"; // Import CSS file for styling
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {

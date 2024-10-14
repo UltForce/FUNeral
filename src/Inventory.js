@@ -6,6 +6,9 @@ import {
   deleteInventoryItem,
   updateInventoryItem,
   getInventoryItems,
+  AuditLogger,
+  getCurrentUserId,
+  getUserRoleFirestore,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -40,6 +43,22 @@ const Inventory = () => {
     price: "",
     description: "",
   });
+
+  useEffect(() => {
+    const checkAdminAndLoginStatus = async () => {
+      try {
+        const userRole = await getUserRoleFirestore(getCurrentUserId());
+        if (userRole !== "admin") {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error checking user role:", error.message);
+        navigate("/login");
+      }
+    };
+
+    checkAdminAndLoginStatus();
+  }, [navigate]);
 
   // Fetch inventory items
   const fetchInventoryItems = useCallback(async () => {
@@ -148,12 +167,26 @@ const Inventory = () => {
 
     try {
       if (modalMode === "add") {
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Inventory",
+          userId: userId,
+          details: "Admin added an item",
+        };
+        AuditLogger({ event });
         await addInventoryItem(formData);
         Toast.fire({
           icon: "success",
           title: "Inventory item added successfully",
         });
       } else if (modalMode === "edit" && selectedItem) {
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Inventory",
+          userId: userId,
+          details: "Admin updated an item",
+        };
+        AuditLogger({ event });
         await updateInventoryItem(selectedItem.id, formData);
         Toast.fire({
           icon: "success",
@@ -198,6 +231,13 @@ const Inventory = () => {
     if (!confirmedId) return;
 
     try {
+      const userId = getCurrentUserId();
+      const event = {
+        type: "Inventory",
+        userId: userId,
+        details: "Admin deleted an item",
+      };
+      AuditLogger({ event });
       await deleteInventoryItem(itemId);
       Toast.fire({
         icon: "success",

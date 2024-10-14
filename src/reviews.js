@@ -14,15 +14,37 @@ import {
   getReviewsFirestore,
   updateReviewStatusFirestore,
   deleteReviewFirestore,
+  AuditLogger,
+  getCurrentUserId,
+  getUserRoleFirestore,
+  sendNotification,
 } from "./firebase.js"; // Assume these functions are defined in your firebase.js
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
 const Reviews = () => {
+  const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const checkAdminAndLoginStatus = async () => {
+      try {
+        const userRole = await getUserRoleFirestore(getCurrentUserId());
+        if (userRole !== "admin") {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error checking user role:", error.message);
+        navigate("/login");
+      }
+    };
+
+    checkAdminAndLoginStatus();
+  }, [navigate]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -73,7 +95,24 @@ const Reviews = () => {
     });
 
     if (result.isConfirmed) {
+      const userId = getCurrentUserId();
+      const review = reviews.find((r) => r.id === reviewId); // Get the review details
+      const event = {
+        type: "Testimonial",
+        userId: userId,
+        details: "Admin updated a testimonial",
+      };
+      AuditLogger({ event });
+
       await updateReviewStatusFirestore(reviewId, newStatus);
+
+      // After successfully updating the status, send a notification
+      const title = "Testimonial Status Updated";
+      const content = `The status of your testimonial has been changed to ${newStatus}.`;
+      const recipient = review.userId; // Set the recipient (admin)
+
+      await sendNotification(title, content, userId, recipient);
+
       setReviews(
         reviews.map((review) =>
           review.id === reviewId ? { ...review, status: newStatus } : review
@@ -98,6 +137,22 @@ const Reviews = () => {
     });
 
     if (result.isConfirmed) {
+      const userId = getCurrentUserId();
+      const review = reviews.find((r) => r.id === reviewId); // Get the review details
+      const event = {
+        type: "Testimonial",
+        userId: userId,
+        details: "Admin deleted a testimonial",
+      };
+      AuditLogger({ event });
+
+
+      const title = "Testimonial deleted";
+      const content = `Your testimonial has been deleted by an admin.`;
+      const recipient = review.userId; 
+
+      await sendNotification(title, content, userId, recipient);
+
       await deleteReviewFirestore(reviewId);
       setReviews(reviews.filter((review) => review.id !== reviewId));
       MySwal.fire({

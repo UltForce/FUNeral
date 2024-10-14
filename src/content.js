@@ -6,8 +6,12 @@ import {
   addContent,
   updateContent,
   deleteContent,
+  AuditLogger,
+  getCurrentUserId,
+  getUserRoleFirestore,
 } from "./firebase"; // Helper functions for Firestore
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
 import { Button, Modal, Form } from "react-bootstrap";
@@ -28,6 +32,7 @@ const Toast = Swal.mixin({
 });
 
 const Content = () => {
+  const navigate = useNavigate();
   const [content, setContent] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add"); // add or edit
@@ -37,6 +42,22 @@ const Content = () => {
     title: "",
     body: "",
   });
+
+  useEffect(() => {
+    const checkAdminAndLoginStatus = async () => {
+      try {
+        const userRole = await getUserRoleFirestore(getCurrentUserId());
+        if (userRole !== "admin") {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error checking user role:", error.message);
+        navigate("/login");
+      }
+    };
+
+    checkAdminAndLoginStatus();
+  }, [navigate]);
 
   // Fetch content from Firestore
   useEffect(() => {
@@ -136,12 +157,27 @@ const Content = () => {
     if (result.isConfirmed) {
       try {
         if (modalMode === "edit" && selectedContent) {
+          const userId = getCurrentUserId();
+          const event = {
+            type: "Content",
+            userId: userId,
+            details: "Admin edited a content",
+          };
+          AuditLogger({ event });
+
           await updateContent(selectedContent.id, formData);
           Toast.fire({
             icon: "success",
             title: "Content updated successfully",
           });
         } else {
+          const userId = getCurrentUserId();
+          const event = {
+            type: "Content",
+            userId: userId,
+            details: "Admin added a content",
+          };
+          AuditLogger({ event });
           await addContent(formData);
           Toast.fire({
             icon: "success",
@@ -169,6 +205,13 @@ const Content = () => {
 
     if (result.isConfirmed) {
       try {
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Content",
+          userId: userId,
+          details: "Admin deleted a content",
+        };
+        AuditLogger({ event });
         await deleteContent(id);
         Toast.fire({
           icon: "success",

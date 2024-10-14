@@ -114,7 +114,7 @@ const Account = () => {
   };
 
   return (
-    <section className="background-image section">
+    <section className="background-image section content-user">
       <div className="centered page-transition">
         <h1 className="page-title">Account</h1>
         {user && userData && (
