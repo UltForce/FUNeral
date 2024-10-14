@@ -1,6 +1,7 @@
+import emailjs from "emailjs-com"; // Import EmailJS
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min"; // This includes tooltips and other Bootstrap JavaScript
-import { Tooltip } from "bootstrap"; // Explicitly import Tooltip from Bootstrap
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import { Tooltip } from "bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -18,7 +19,8 @@ import {
   getCurrentUserId,
   getUserRoleFirestore,
   sendNotification,
-} from "./firebase.js"; // Assume these functions are defined in your firebase.js
+  getUserEmailById, // Add a function to get the user's email by their ID
+} from "./firebase.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -48,7 +50,7 @@ const Reviews = () => {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const reviewsData = await getReviewsFirestore(); // Fetch reviews from Firestore
+      const reviewsData = await getReviewsFirestore();
       setReviews(reviewsData);
     };
     fetchReviews();
@@ -58,8 +60,6 @@ const Reviews = () => {
   useEffect(() => {
     if (reviews.length) {
       $("#reviewsTable").DataTable();
-
-      // Initialize Bootstrap tooltips
       const tooltipTriggerList = document.querySelectorAll(
         '[data-bs-toggle="tooltip"]'
       );
@@ -81,6 +81,30 @@ const Reviews = () => {
     });
   };
 
+  const sendEmailNotification = async (
+    recipientEmail,
+    recipientName,
+    status
+  ) => {
+    const emailParams = {
+      to_name: recipientName,
+      to_email: recipientEmail,
+      status: status,
+    };
+
+    try {
+      await emailjs.send(
+        "service_5f3k3ms", // Replace with your EmailJS service ID
+        "template_g1w6f2a", // Replace with your EmailJS template ID
+        emailParams,
+        "0Tz3RouZf3BXZaSmh" // Replace with your EmailJS user ID
+      );
+      console.log("Email sent successfully");
+    } catch (error) {
+      console.error("Failed to send email:", error);
+    }
+  };
+
   const handleStatusChange = async (reviewId, newStatus, event) => {
     hideTooltips(); // Hide tooltips before showing SweetAlert
 
@@ -96,7 +120,7 @@ const Reviews = () => {
 
     if (result.isConfirmed) {
       const userId = getCurrentUserId();
-      const review = reviews.find((r) => r.id === reviewId); // Get the review details
+      const review = reviews.find((r) => r.id === reviewId);
       const event = {
         type: "Testimonial",
         userId: userId,
@@ -106,12 +130,23 @@ const Reviews = () => {
 
       await updateReviewStatusFirestore(reviewId, newStatus);
 
-      // After successfully updating the status, send a notification
+      // Fetch the review owner's email
+      const recipientEmail = await getUserEmailById(review.userId);
+      const recipientName = `${review.firstname} ${review.lastname}`;
+
+      // Send a notification
       const title = "Testimonial Status Updated";
       const content = `The status of your testimonial has been changed to ${newStatus}.`;
-      const recipient = review.userId; // Set the recipient (admin)
+      const recipient = review.userId;
 
       await sendNotification(title, content, userId, recipient);
+
+      /* 
+      // Send an email notification to the review owner
+      if (newStatus === "published") {
+        await sendEmailNotification(recipientEmail, recipientName, newStatus);
+      }
+*/
 
       setReviews(
         reviews.map((review) =>
@@ -126,7 +161,7 @@ const Reviews = () => {
   };
 
   const handleDelete = async (reviewId, event) => {
-    hideTooltips(); // Hide tooltips before showing SweetAlert
+    hideTooltips();
 
     const result = await MySwal.fire({
       title: "Are you sure you want to delete this review?",
@@ -138,7 +173,7 @@ const Reviews = () => {
 
     if (result.isConfirmed) {
       const userId = getCurrentUserId();
-      const review = reviews.find((r) => r.id === reviewId); // Get the review details
+      const review = reviews.find((r) => r.id === reviewId);
       const event = {
         type: "Testimonial",
         userId: userId,
@@ -146,14 +181,13 @@ const Reviews = () => {
       };
       AuditLogger({ event });
 
-
       const title = "Testimonial deleted";
       const content = `Your testimonial has been deleted by an admin.`;
-      const recipient = review.userId; 
+      const recipient = review.userId;
 
       await sendNotification(title, content, userId, recipient);
-
       await deleteReviewFirestore(reviewId);
+
       setReviews(reviews.filter((review) => review.id !== reviewId));
       MySwal.fire({
         icon: "success",
@@ -184,7 +218,6 @@ const Reviews = () => {
               <td>{review.status}</td>
               <td>
                 <div>
-                  {/* Publish/Unpublish Button */}
                   <button
                     className="btn btn-success"
                     data-bs-toggle="tooltip"
@@ -196,7 +229,7 @@ const Reviews = () => {
                       handleStatusChange(
                         review.id,
                         review.status === "pending" ? "published" : "pending",
-                        e // Pass the event to handle tooltip
+                        e
                       )
                     }
                   >
@@ -208,7 +241,6 @@ const Reviews = () => {
                       }
                     />
                   </button>{" "}
-                  {/* Delete Button */}
                   <button
                     className="btn btn-danger"
                     data-bs-toggle="tooltip"

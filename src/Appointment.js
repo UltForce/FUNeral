@@ -1,3 +1,4 @@
+import emailjs from "emailjs-com"; // Import EmailJS
 import React, { useState, useEffect } from "react";
 import {
   generateReports,
@@ -10,6 +11,7 @@ import {
   AuditLogger,
   getUserRoleFirestore,
   sendNotification,
+  getUserEmailById,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -154,7 +156,7 @@ const Appointments = () => {
 
   const handleAction = async (action, appointmentId) => {
     try {
-      const appointment = appointments.find((r) => r.id === appointmentId); 
+      const appointment = appointments.find((r) => r.id === appointmentId);
       if (action === "delete") {
         const userId = getCurrentUserId();
         const event = {
@@ -190,6 +192,26 @@ const Appointments = () => {
         await sendNotification(title, content, userId, recipient);
 
         await updateAppointmentStatus(appointmentId, action);
+
+        // Fetch the user's email based on userId
+        const userEmail = await getUserEmailById(userId);
+
+        // Send email notification using EmailJS
+        const emailParams = {
+          to_name: appointment.name, // Name of the recipient
+          status: action, // New status
+          email: userEmail, // Email of the recipient retrieved from userId
+        };
+
+        // Replace these with your actual EmailJS credentials
+        const serviceID = "service_5f3k3ms";
+        const templateID = "template_g1w6f2a";
+        const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
+
+        /*
+        // Send the email
+        await emailjs.send(serviceID, templateID, emailParams, userID);
+*/
         Toast.fire({
           icon: "success",
           title: `Appointment status changed to ${action}`,
