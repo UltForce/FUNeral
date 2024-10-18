@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { auth, sendPasswordResetEmail } from "./firebase"; // Make sure to import the necessary Firebase authentication functions
 import Swal from "sweetalert2";
+import './reset.css';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -76,8 +77,10 @@ const Reset = () => {
   };
 
   return (
-    <div className="centered background-image section content-user">
-      <h2>Password Reset</h2>
+    <div className="reset">
+      <h2 className="pass-title">Password Reset</h2>
+      <div class="pass-border"></div>
+      <div className="pass-body">
       {resetSent ? (
         <p>
           Password reset email has been sent. Please check your email and follow
@@ -89,9 +92,11 @@ const Reset = () => {
             Enter your email address, and we will send you a link to reset your
             password.
           </p>
+          <br/>
           <label>Email:</label>
           <input
             type="email"
+            placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
@@ -108,8 +113,9 @@ const Reset = () => {
       )}
       <br />
       <p>
-        Remember your password? <Link to="/login">Login here</Link>.
+        Remember your password? <Link to="/login">Login here</Link>
       </p>
+      </div>
     </div>
   );
 };

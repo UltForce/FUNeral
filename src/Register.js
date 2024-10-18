@@ -17,6 +17,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { linkWithCredential } from "firebase/auth";
 import { EmailAuthProvider } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa"; // Import FontAwesome icons
+import './Register.css';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -218,9 +219,11 @@ const Register = () => {
   };
 
   return (
-    <section className="background-image section content-user">
-      <div className="centered">
-        <h2>Register</h2>
+    <section className="register">
+      <div className="register-box">
+        <h2 className="register-title">Register</h2>
+        <p className="register-info">Fill Out The Form Carefully For Registration</p>
+        <br/>
         <div className="row">
           <div className="col-md-1"></div>
           <div className="col-md-10">
@@ -492,19 +495,19 @@ const Register = () => {
           </div>
           <div className="col-md-1"></div>
         </div>
-        <br />
-        <div>
+        <div className="agree-terms">
           <input
+            className="checkbox"
             type="checkbox"
             checked={termsChecked}
             onChange={handleTermsChange}
           />
           <label htmlFor="terms">
-            I agree to the <a href="/terms">Terms and Conditions</a>.
+            I agree to the <a href="/terms">Terms and Conditions</a>
           </label>
         </div>
         <button
-          className="btn btn-outline-primary"
+          className="register-button"
           type="submit"
           onClick={handleGoogleSignIn}
           disabled={!termsChecked}
@@ -512,8 +515,8 @@ const Register = () => {
           <FaGoogle /> - Register
         </button>
         <br />
-        <p>
-          Already have an account? <Link to="/login">Login here</Link>.
+        <p className="login-account">
+          Already have an account? <Link to="/login">Login here</Link>
         </p>
       </div>
       <div className="col-md-1"></div>

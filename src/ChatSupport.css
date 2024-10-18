@@ -6,7 +6,7 @@
 }
 
 .chat-icon {
-  background-color: #007bff;
+  background-color: #18020C;
   padding: 15px;
   border: none;
   border-radius: 50%;
@@ -23,7 +23,7 @@
 }
 
 .chat-icon:hover {
-  background-color: #0056b3;
+  background-color: #4d4642;
 }
 
 .chat-box {
@@ -32,7 +32,7 @@
   right: 20px; /* Adjusted for new position */
   width: 350px;
   height: 430px;
-  background-color: white;
+  background-color: #FCF2D8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow: hidden;

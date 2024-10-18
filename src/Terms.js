@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getContent } from "./firebase"; // Import your Firestore helper function
+import './Terms.css';
 const Terms = () => {
   const [terms, setTerms] = useState([]);
 
@@ -22,14 +23,19 @@ const Terms = () => {
   }, []);
 
   return (
-    <section className="background-image section content-user">
+    <div>
+    <section className="terms">
       <div>
-        <h1 className="page-title centered">Terms and Conditions</h1>
+        <h1 className="terms-title">TERMS & CONDITIONS</h1>
+        <div class="terms-border"></div>
+      </div>
+    </section>
+    <section className="body">
         <div className="accordion-container centered">
           <div className="accordion" id="termsAccordion">
             <div className="row">
               {terms.length === 0 ? (
-                <p className="text-center">
+                <p className="no-terms">
                   No Terms and Conditions available at the moment.
                 </p>
               ) : (
@@ -63,8 +69,8 @@ const Terms = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+        </section>
+    </div>
   );
 };
 

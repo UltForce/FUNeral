@@ -1,0 +1,117 @@
+.reset {
+    background-color: #CAA971;
+    font-family: 'Rubik';
+    scroll-snap-align: start;
+    height: 100vh;
+    margin-top: 4rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.pass-title {
+    padding-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 45px;
+}
+
+.pass-border {
+    display: block;
+    width: 200px;
+    height: 3px;
+    background: #18020C;
+    margin: 8px auto 65px;
+}
+
+.pass-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 15px;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+}
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+    .pass-body {
+        margin: 4% 25%; 
+        padding: 20px 70px;
+    }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .pass-bodyx {
+        margin: 4% 20%; 
+        padding: 20px 60px;
+    }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .pass-body {
+        margin: 4% 15%; 
+        padding: 20px 50px;
+    }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+    .pass-body {
+        margin: 4% 10%; 
+        padding: 20px 47px;
+    }
+}
+
+.pass-body p {
+    font-size: 15px;
+    text-align: center;
+}
+
+.pass-body label {
+    font-size: 15px;
+    text-align: center;
+}
+
+.pass-body input {
+    border-radius: 10px;
+    background-color: #18020C;
+    color:#FDF9AA;
+    width: 70%;
+    font-weight: 400;
+    line-height: 1.5;
+    display: block;
+    padding: .375rem .75rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    border: 2px solid #4d4642;
+}
+
+.pass-body button {
+    border-radius: 10px;
+    width: 30%;
+    font-size: 15px;
+    background-color: #FDF9AA;
+    color: #18020C;
+    border-color: #4d4642;
+}
+
+.pass-body button:hover {
+    background-color: #4d4642;
+    color: white;
+    border-color: #4d4642;
+}
+
+.pass-body a {
+    color: #93310d;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.pass-body a:hover{
+    color: blue;
+}

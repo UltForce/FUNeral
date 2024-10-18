@@ -12,6 +12,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
+import "./login.css";
 import Swal from "sweetalert2";
 const Toast = Swal.mixin({
   toast: true,
@@ -143,28 +144,23 @@ const Login = () => {
     }
   };
   return (
-    <section className="background-image section content-user">
-      <div className="centered">
+    <section className="login">
+      <div className="box">
         <img src="JROA.jpg" height="200px" />
-        <h2>Login</h2>
-        <div class="form-floating mb-3">
+        <h2>LOGIN</h2>
+        <div class="inputs">
           <input
             type="email"
-            class="form-control"
             id="floatingInput"
-            placeholder="email@gmail.com"
+            placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
           />
-          <label className="register-label" for="floatingInput">
-            Email address
-          </label>
         </div>
-        <div class="form-floating">
+        <div class="inputs">
           <input
             type="password"
-            className="form-control"
             id="floatingPassword"
             placeholder="Password"
             autoComplete="off"
@@ -173,24 +169,20 @@ const Login = () => {
             onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
             ref={passwordInputRef} // Set the ref to the password input field
           />
-          <label className="register-label" for="floatingPassword">
-            Password
-          </label>
         </div>
         <br />
-        <button class="btn btn-outline-primary" onClick={handleLogin}>
+        <button class="login-button" onClick={handleLogin}>
           Login
         </button>
         <br></br>
-        <button className="btn btn-outline-primary" onClick={handleGoogleLogin}>
+        <button className="google-login-button" onClick={handleGoogleLogin}>
           <FaGoogle /> - Google Login
-        </button>
-        <br />
-        <p>
-          Don't have an account? <Link to="/register">Register here</Link>.
+        </button>   
+        <p className="links">
+          Forgot Password? <Link to="/reset">Recover</Link>
         </p>
-        <p>
-          Forgot Password? <Link to="/reset">Recover</Link>.
+        <p className="register-link">
+          Don't have an account? <Link to="/register">Register here</Link>
         </p>
       </div>
     </section>

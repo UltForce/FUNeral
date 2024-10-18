@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { Button, Modal, Form } from "react-bootstrap";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import './Booking.css';
 // Toast configuration for displaying messages
 const Toast = Swal.mixin({
   toast: true,
@@ -610,8 +611,8 @@ const Booking = ({}) => {
   };
 
   return (
-    <section className="background-shadow content-user">
-      <div style={{ display: "flex" }}>
+    <section className="booking">
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <div
           style={{
             flex: 1,
@@ -621,10 +622,12 @@ const Booking = ({}) => {
             marginRight: "50px",
           }}
         >
-          <h1>Appointment Booking</h1>{" "}
-          <p style={{ marginLeft: "20px" }}>
-            Selected Date: {selectedDate ? selectedDate : "None selected"}
+          <h1 className="appointment-booking-title">APPOINTMENT BOOKING</h1>{" "}
+          <div class="booking-border"></div>
+          <p className="selectedDate" style={{ marginLeft: "20px" }}>
+            Selected Date: <strong>{selectedDate ? selectedDate : "None selected"}</strong>
           </p>
+          <div className="booking-box">
           <FullCalendar
             ref={calendarRef}
             plugins={[
@@ -639,7 +642,7 @@ const Booking = ({}) => {
             initialDate={new Date().toISOString()} // Set initial date to current date/time
             timeZone="Asia/Manila" // Set timezone to Asia/Manila
             headerToolbar={{
-              left: "prev,next today",
+              left: "prev,next,today",
               center: "title",
               right: "dayGridMonth,timeGridDay,timeGridWeek",
             }}
@@ -666,21 +669,23 @@ const Booking = ({}) => {
             slotMaxTime="17:30:00" // Set the latest time to 5pm
             slotDuration="01:00:00" // Set the duration of each time slot to 30 minutes
           />
+          </div>
         </div>
 
         {/* First Modal for Plan, Phone Number, and Notes */}
         <Modal show={showModal1} onHide={handleClose1}>
-          <Modal.Header closeButton>
-            <Modal.Title>Booking Details</Modal.Title>
+          <Modal.Header closeButton  className="booking-header">
+            <Modal.Title className="booking-title">Booking Details</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <p style={{ marginLeft: "20px" }}>
-              Selected Date: {selectedDate ? selectedDate : "None selected"}
+          <Modal.Body className="details-box">
+            <p className="book-date" style={{ marginLeft: "20px" }}>
+              Selected Date: <strong>{selectedDate ? selectedDate : "None selected"}</strong>
             </p>
             <Form>
               <Form.Group controlId="formPlan">
-                <Form.Label>Plan</Form.Label>
+                <Form.Label className="label-title">Plan</Form.Label>
                 <Form.Select
+                  className="plan-select"
                   required
                   value={formData.plan}
                   onChange={(e) =>
@@ -693,9 +698,11 @@ const Booking = ({}) => {
                   <option value="Plan 3">Plan 3</option>
                 </Form.Select>
               </Form.Group>
+              <br/>
               <Form.Group controlId="formPhoneNumber">
-                <Form.Label>Phone Number</Form.Label>
+                <Form.Label className="label-title">Phone Number</Form.Label>
                 <Form.Control
+                  className="input-details"
                   type="tel"
                   placeholder="Enter phone number"
                   value={formData.phoneNumber}
@@ -708,9 +715,11 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formNotes">
-                <Form.Label>Notes</Form.Label>
+                <Form.Label className="label-title">Notes</Form.Label>
                 <Form.Control
+                  className="input-details"
                   as="textarea"
                   rows={3}
                   placeholder="Enter notes"
@@ -720,23 +729,30 @@ const Booking = ({}) => {
                   }
                 />
               </Form.Group>
-              <Button variant="primary" className="mt-3" onClick={handleNext}>
-                Next
-              </Button>
+              <br/>
+              <div className="buttons">
+                <Button variant="primary" className="close-button" onClick={handleClose1}>
+                  Cancel
+                </Button>
+                <Button variant="primary" className="next-button" onClick={handleNext}>
+                  Next
+                </Button>
+              </div>
             </Form>
           </Modal.Body>
         </Modal>
 
         {/* Second Modal for Post-Mortem Details */}
         <Modal show={showModal2} onHide={handleClose2}>
-          <Modal.Header closeButton>
-            <Modal.Title>Post-Mortem Details</Modal.Title>
+          <Modal.Header closeButton className="booking-header">
+            <Modal.Title className="mortem-title">Post-Mortem Details</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="details-box">
             <Form onSubmit={handleFormSubmit}>
               <Form.Group controlId="formDeceasedName">
-                <Form.Label>Deceased Name</Form.Label>
+                <Form.Label className="label-title">Deceased Name</Form.Label>
                 <Form.Control
+                  className="input-details"
                   type="text"
                   placeholder="Enter deceased's name"
                   value={formData.DeceasedName}
@@ -746,9 +762,11 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formDeceasedAge">
-                <Form.Label>Deceased Age</Form.Label>
+                <Form.Label className="label-title">Deceased Age</Form.Label>
                 <Form.Control
+                  className="input-details"
                   type="number"
                   placeholder="Enter deceased's age"
                   value={formData.DeceasedAge}
@@ -761,10 +779,12 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formDeceasedBirthday">
-                <Form.Label>Deceased Birthday</Form.Label>
+                <Form.Label className="label-title">Deceased Birthday</Form.Label>
                 <Form.Control
                   type="date"
+                  className="input-details"
                   value={formData.DeceasedBirthday}
                   onChange={(e) =>
                     setFormData({
@@ -776,10 +796,12 @@ const Booking = ({}) => {
                   max={new Date().toISOString().split("T")[0]} // Prevent future dates
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formDateofDeath">
-                <Form.Label>Date of Death</Form.Label>
+                <Form.Label className="label-title">Date of Death</Form.Label>
                 <Form.Control
                   type="date"
+                  className="input-details"
                   value={formData.DateofDeath}
                   onChange={(e) =>
                     setFormData({
@@ -791,10 +813,12 @@ const Booking = ({}) => {
                   max={new Date().toISOString().split("T")[0]} // Prevent future dates
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formPlaceofDeath">
-                <Form.Label>Place of Death</Form.Label>
+                <Form.Label className="label-title">Place of Death</Form.Label>
                 <Form.Control
                   type="text"
+                  className="input-details"
                   placeholder="Enter place of death"
                   value={formData.PlaceofDeath}
                   onChange={(e) =>
@@ -806,10 +830,12 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formDeceasedRelationship">
-                <Form.Label>Deceased's Relationship</Form.Label>
+                <Form.Label className="label-title">Deceased's Relationship</Form.Label>
                 <Form.Control
                   type="text"
+                  className="input-details"
                   placeholder="Enter your relationship with the deceased"
                   value={formData.DeceasedRelationship}
                   onChange={(e) =>
@@ -821,10 +847,12 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
+              <br/>
               <Form.Group controlId="formDeathCertificate">
-                <Form.Label>Death Certificate</Form.Label>
+                <Form.Label className="label-title">Death Certificate</Form.Label>
                 <Form.Control
                   type="file"
+                  className="input-details"
                   accept=".pdf"
                   onChange={(e) =>
                     setFormData({
@@ -840,37 +868,42 @@ const Booking = ({}) => {
               <Form.Group controlId="formTermsConditions" className="mt-3">
                 <Form.Check
                   type="checkbox"
-                  label="I have read and agree to the terms and conditions"
+                  label="I have Read and Agreed to the Terms and Conditions"
                   checked={termsChecked}
                   onChange={(e) => setTermsChecked(e.target.checked)}
                   required
                 />
               </Form.Group>
+              <br/>
 
               {/* Return and Submit Buttons */}
-              <Button
-                variant="secondary"
-                className="mt-3"
-                onClick={handleReturn}
-              >
-                Return
-              </Button>
-              {""}
-              <Button
-                variant="primary"
-                type="submit"
-                className="mt-3"
-                disabled={!termsChecked} // Disable submit button if terms are not agreed to
-              >
-                Submit
-              </Button>
+              <div className="buttons">
+                <Button
+                  variant="secondary"
+                  className="close-button"
+                  onClick={handleReturn}
+                >
+                  Back
+                </Button>
+                {""}
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="next-button"
+                  disabled={!termsChecked} // Disable submit button if terms are not agreed to
+                >
+                  Submit
+                </Button>
+              </div>
+
+              
             </Form>
           </Modal.Body>
         </Modal>
       </div>
       {/* Conditionally Render "Book Appointment" Button */}
       {isValidDaySelected && !hasPendingAppointment && (
-        <Button variant="primary" className="mt-4" onClick={handleShow1}>
+        <Button variant="primary" className="book-appointment-button" onClick={handleShow1}>
           Book Appointment
         </Button>
       )}
@@ -882,13 +915,13 @@ const Booking = ({}) => {
           appointment.status === "pending"
       ) && (
         <>
-          <Button variant="warning" className="mt-3" onClick={handleEditClick}>
+          <Button variant="warning" className="edit-appointment-button" onClick={handleEditClick}>
             Edit Appointment
           </Button>
           <br />
           <Button
             variant="danger"
-            className="mt-3"
+            className="delete-appointment-button"
             onClick={handleDeleteAppointment}
           >
             Delete Appointment

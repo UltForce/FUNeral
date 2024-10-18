@@ -1,0 +1,131 @@
+.login {
+    background-color: #CAA971;
+    font-family: 'Rubik';
+    scroll-snap-align: start;
+    height: 100vh;
+    margin-top: 4rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#e3d08d;
+    filter: drop-shadow(0 0 0.75rem black);
+}
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+    .box {
+        margin: 3% 25%; 
+        padding: 20px 150px;
+    }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .box {
+        margin: 2% 20%; 
+        padding: 20px 165px;
+    }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .box {
+        margin: 21% 14%; 
+        padding: 20px 100px;
+    }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+    .box {
+        margin: 15% 2%; 
+        padding: 20px 35px;
+    }
+}
+
+img {
+    border-radius: 10px;
+}
+
+h2 {
+    padding-top: 15px;
+    font-weight: 500;
+}
+
+.inputs {
+    margin-bottom: 1rem !important;
+    position: relative;
+    width: 100%;
+}
+
+.inputs input {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #FDF9AA;
+    appearance: none;
+    background-color: #18020C;
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid #FDF9AA;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+::placeholder{
+    color: #FDF9AA;
+}
+
+.login-button {
+    border-radius: 10px;
+    width: 30%;
+    font-size: 20px;
+    background-color: #18020C;
+    color: #FDF9AA;
+}
+
+.login-button:hover {
+    background-color: #4d4642;
+    color: white;
+}
+
+.google-login-button {
+    border-radius: 10px;
+    width: 50%;
+    font-size: 20px;
+    background-color: #18020C;
+    color: white;
+}
+
+.google-login-button:hover {
+    background-color: #4d4642;
+    color: white;
+}
+
+.links {
+    font-size: 15px; 
+}
+.register-link {
+    margin-top: 0px;
+    font-size: 15px; 
+}
+
+.box a {
+    color: #93310d;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.box a:hover{
+    color: blue;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getContent } from "./firebase"; // Import your Firestore helper function
+import './FAQs.css';
 
 const FAQs = () => {
   const [faqs, setFaqs] = useState([]);
@@ -21,14 +22,15 @@ const FAQs = () => {
   }, []);
 
   return (
-    <section className="background-image section content-user">
+    <section className="faqs">
       <div>
-        <h1 className="page-title centered">Frequently Asked Questions</h1>
+        <h1 className="faqs-title">FREQUENTLY ASKED QUESTIONS</h1>
+        <div class="faqs-border"></div>
         <div className="accordion-container centered">
           <div className="accordion" id="faqsAccordion">
             <div className="row">
               {faqs.length === 0 ? (
-                <p className="text-center">No FAQs available at the moment.</p>
+                <p className="no-faqs">No FAQs available at the moment.</p>
               ) : (
                 faqs.map((faq, index) => (
                   <div className="col-md-6" key={faq.id}>
@@ -54,6 +56,7 @@ const FAQs = () => {
                         <div className="accordion-body">{faq.body}</div>
                       </div>
                     </div>
+                    <br/>
                   </div>
                 ))
               )}
