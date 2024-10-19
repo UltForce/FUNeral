@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
+  auth,
   getAppointments,
   getAllUsers,
   getAppointmentsWithStatus,
   getCurrentUserId,
   getUserRoleFirestore,
+  fetchAdminNotifications,
+  fetchUserNotifications,
+  markNotificationAsRead,
+  deleteNotification,
 } from "./firebase.js";
 import "./dashboard.css";
 import Swal from "sweetalert2";
@@ -21,6 +26,13 @@ import {
   Badge,
   Modal,
 } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBell,
+  faUsers,
+  faCalendarDay,
+  faCheckCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -38,6 +50,8 @@ const Toast = Swal.mixin({
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [todaysAppointments, setTodaysAppointments] = useState([]);
@@ -45,6 +59,13 @@ const Dashboard = () => {
   const [date, setDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -61,6 +82,68 @@ const Dashboard = () => {
 
     checkAdminAndLoginStatus();
   }, [navigate]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      setIsLoggedIn(!!user);
+      if (user) {
+        const userId = getCurrentUserId();
+        const userRole = await getUserRoleFirestore(userId);
+        setIsAdmin(userRole === "admin");
+
+        // Fetch notifications for the logged-in user
+        await fetchNotifications(); // Fetch notifications when user logs in
+      } else {
+        setNotifications([]); // Clear notifications when user logs out
+        setHasUnreadNotifications(false); // Reset red dot
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const fetchNotifications = async () => {
+    const userId = getCurrentUserId();
+    console.log("User ID:", userId); // Check if userId is valid
+    if (!userId) return; // Exit if userId is not valid
+
+    const userRole = await getUserRoleFirestore(userId);
+    console.log("User Role:", userRole); // Check if userRole is valid
+
+    if (userRole === "admin") {
+      const notificationsData = await fetchAdminNotifications();
+      console.log("Admin Notifications:", notificationsData); // Check notifications data
+      // Check if there are unread notifications
+      const unreadExists = notificationsData.some(
+        (notification) => !notification.isRead
+      );
+      setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
+      setNotifications(notificationsData);
+    } else {
+      const notificationsData = await fetchUserNotifications();
+      console.log("User Notifications:", notificationsData); // Check notifications data
+      // Check if there are unread notifications
+      const unreadExists = notificationsData.some(
+        (notification) => !notification.isRead
+      );
+      setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
+      setNotifications(notificationsData);
+    }
+  };
+  const handleMarkAsRead = async (notificationId) => {
+    await markNotificationAsRead(notificationId);
+    fetchNotifications(); // Refresh notifications after marking as read
+  };
+
+  const handleDeleteNotification = async (notificationId) => {
+    await deleteNotification(notificationId);
+    fetchNotifications(); // Refresh notifications after deletion
+  };
+
+  const handleMarkAsUnread = async (notificationId) => {
+    await markNotificationAsRead(notificationId); // Mark as unread
+    fetchNotifications(); // Refresh notifications after marking as unread
+  };
 
   // window load
   $(window).on("load", function (e) {
@@ -215,13 +298,75 @@ const Dashboard = () => {
     }, futureAppointments[0]);
   };
 
+
   return (
     <section>
       <section className="admin-dashboard">
         <main className="main-content">
           <div className="admin-title-box">
-            <h1>Dashboard</h1>
+            <div className="title-notification-container">
+              <h1>Dashboard</h1>
+              <div className="notification-container">
+                <button onClick={toggleDropdown}>
+                  <FontAwesomeIcon icon={faBell} />
+                  {hasUnreadNotifications && <span className="red-dot"></span>}
+                </button>
+                {isDropdownOpen && (
+                  <div className="notification-dropdown">
+                    {notifications.length === 0 ? (
+                      <p>No notifications</p>
+                    ) : (
+                      notifications.map((notification) => (
+                        <div
+                          key={notification.id}
+                          className={`notification ${
+                            notification.isRead ? "read" : "unread"
+                          }`}
+                        >
+                          <h4>{notification.title}</h4>
+                          <p>{notification.content}</p>
+                          <small>
+                            {new Date(
+                              notification.timestamp instanceof Date
+                                ? notification.timestamp
+                                : notification.timestamp.toDate()
+                            ).toLocaleString()}
+                          </small>
+                          <br />
+
+                          {/* Conditionally render the mark as read/unread button */}
+                          {!notification.isRead ? (
+                            <button
+                              onClick={() => handleMarkAsRead(notification.id)}
+                            >
+                              Mark as Read
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                handleMarkAsUnread(notification.id)
+                              }
+                            >
+                              Mark as Unread
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() =>
+                              handleDeleteNotification(notification.id)
+                            }
+                          >
+                            Dismiss
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
+
           {/*<div class="custom-page-loader" id="page-loader2"></div>*/}
           <Container fluid>
             <Row className="mt-4">
@@ -231,6 +376,7 @@ const Dashboard = () => {
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
+                    <FontAwesomeIcon icon={faUsers} size="3x" />
                     <Card.Title>Total Customers</Card.Title>
                     <Card.Text>
                       <h1>{totalUsers}</h1>
@@ -245,6 +391,7 @@ const Dashboard = () => {
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
+                    <FontAwesomeIcon icon={faCalendarDay} size="3x" />
                     <Card.Title>Today's Appointments</Card.Title>
                     <Card.Text>
                       <h1>{todaysAppointments.length}</h1>
@@ -259,6 +406,7 @@ const Dashboard = () => {
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
+                    <FontAwesomeIcon icon={faCheckCircle} size="3x" />
                     <Card.Title>Finished Appointments</Card.Title>
                     <Card.Text>
                       <h1>{completedAppointments}</h1>
@@ -271,7 +419,10 @@ const Dashboard = () => {
 
             <Row className="mt-4">
               <Col md={4}>
-                <Card style={{ height: "450px", overflowY: "auto" }} className="today-appointments">
+                <Card
+                  style={{ height: "450px", overflowY: "auto" }}
+                  className="today-appointments"
+                >
                   <Card.Header>Today's Appointments</Card.Header>
                   <ListGroup variant="flush">
                     {todaysAppointments.length === 0 ? (
@@ -280,7 +431,10 @@ const Dashboard = () => {
                       </ListGroup.Item>
                     ) : (
                       todaysAppointments.map((appointment) => (
-                        <ListGroup.Item className="appointment-list" key={appointment.id}>
+                        <ListGroup.Item
+                          className="appointment-list"
+                          key={appointment.id}
+                        >
                           {appointment.name} - {appointment.plan} -{" "}
                           {formatDateTime(appointment.date)}
                           <Badge
@@ -311,12 +465,20 @@ const Dashboard = () => {
                         <Card.Title>{selectedAppointment.name}</Card.Title>
                         <Card.Text className="next-appointment-details">
                           <strong>Time:</strong>{" "}
-                          <div className="date-box">{formatDateTime(selectedAppointment.date)}</div>
+                          <div className="date-box">
+                            {formatDateTime(selectedAppointment.date)}
+                          </div>
                           <br />
-                          <strong>Name:</strong> 
-                          <div className="next-appointment-name">{selectedAppointment.name}</div>
+                          <strong>Name:</strong>
+                          <div className="next-appointment-name">
+                            {selectedAppointment.name}
+                          </div>
                         </Card.Text>
-                        <Button variant="primary" className="show-more-button" onClick={handleShowMore}>
+                        <Button
+                          variant="primary"
+                          className="show-more-button"
+                          onClick={handleShowMore}
+                        >
                           Show More
                         </Button>
                       </>
@@ -328,7 +490,10 @@ const Dashboard = () => {
               </Col>
 
               <Col md={4}>
-                <Card style={{ height: "450px", width: "100%" }}className="dashboard-calendar">
+                <Card
+                  style={{ height: "450px", width: "100%" }}
+                  className="dashboard-calendar"
+                >
                   <Card.Header>Calendar</Card.Header>
                   <Card.Body
                     style={{ height: "100%", padding: 0, width: "100%" }}
@@ -349,7 +514,9 @@ const Dashboard = () => {
       {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton className="appointment-header">
-          <Modal.Title className="appointment-title">Appointment Details</Modal.Title>
+          <Modal.Title className="appointment-title">
+            Appointment Details
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="appointment-details-box">
           {selectedAppointment ? (
@@ -377,6 +544,9 @@ const Dashboard = () => {
                 <strong>Deceased Age: </strong>
                 {selectedAppointment.DeceasedAge}
                 <br />
+                <strong>Deceased Sex: </strong>
+                {selectedAppointment.DeceasedSex}
+                <br />
                 <strong>Deceased Birthday: </strong>
                 {selectedAppointment.DeceasedBirthday}
                 <br />
@@ -395,7 +565,11 @@ const Dashboard = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal} className="close2-button">
+          <Button
+            variant="secondary"
+            onClick={handleCloseModal}
+            className="close2-button"
+          >
             Close
           </Button>
         </Modal.Footer>

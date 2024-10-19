@@ -20,6 +20,7 @@ import ChatSupport from "./ChatSupport";
 import Inventory from "./Inventory";
 import Content from "./content";
 import Reviews from "./reviews";
+import UserDashboard from "./UserDashboard";
 import { LogoutProvider } from "./LogoutContext";
 import React, { useState } from "react";
 import {
@@ -79,6 +80,7 @@ const App = () => {
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/content" element={<Content />} />
             <Route path="/reviews" element={<Reviews />} />
+            <Route path="/userdashboard" element={<UserDashboard />} />
             <Route path="*" element={<Homepage />} />
           </Routes>
         </div>

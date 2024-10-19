@@ -20,13 +20,14 @@ import {
   getAllAppointments,
   AuditLogger,
   sendNotification,
+  getUserData,
 } from "./firebase";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { Button, Modal, Form } from "react-bootstrap";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import './Booking.css';
+import "./Booking.css";
 // Toast configuration for displaying messages
 const Toast = Swal.mixin({
   toast: true,
@@ -58,6 +59,8 @@ const Booking = ({}) => {
   const [hasPendingAppointment, setHasPendingAppointment] = useState(false);
   const calendarRef = useRef(null);
   const [appointments, setAppointments] = useState([]); // State for storing appointments
+  const [userData, setUserData] = useState(null); // State to store user data from Firestore
+  const [user, setUser] = useState(null); // State to store the current user's data
   const [formData, setFormData] = useState({
     // State for form data
     name: "",
@@ -76,6 +79,33 @@ const Booking = ({}) => {
     DeceasedRelationship: "",
     DeathCertificate: "",
   });
+
+  useEffect(() => {
+    // Fetch the current user when the component mounts
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      // If a user is logged in, set the user data
+      setUser(currentUser);
+      // Fetch user data from Firestore
+      fetchUserData(currentUser.uid);
+    } else {
+      // If no user is logged in, set user to null
+      setUser(null);
+      setUserData(null); // Clear user data if no user is logged in
+    }
+  }, []);
+
+  // Function to fetch user data from Firestore
+  const fetchUserData = async (userId) => {
+    try {
+      const userData = await getUserData(userId);
+      setUserData(userData); // Set user data in state
+    } catch (error) {
+      console.error("Error fetching user data:", error.message);
+      setUserData(null); // Clear user data in case of error
+    }
+  };
+
   const handleNext = () => {
     // Validate first modal fields
     if (formData.plan && formData.phoneNumber && formData.notes) {
@@ -108,6 +138,7 @@ const Booking = ({}) => {
       plan: "",
       DeceasedName: "",
       DeceasedAge: "",
+      DeceasedSex: "",
       DeceasedBirthday: "",
       DateofDeath: "",
       PlaceofDeath: "",
@@ -226,6 +257,7 @@ const Booking = ({}) => {
           plan: clickedAppointment.plan,
           DeceasedName: clickedAppointment.DeceasedName,
           DeceasedAge: clickedAppointment.DeceasedAge,
+          DeceasedSex: clickedAppointment.DeceasedSex,
           DeceasedBirthday: clickedAppointment.DeceasedBirthday,
           DateofDeath: clickedAppointment.DateofDeath,
           PlaceofDeath: clickedAppointment.PlaceofDeath,
@@ -269,6 +301,9 @@ const Booking = ({}) => {
       });
       return;
     }
+    // Fill the name field with logged-in user's full name
+    const loggedInUserName = `${userData.firstname} ${userData.lastname}`;
+    formData.name = loggedInUserName; // Set the name field to the user's full name
     const loggedInUserId = getCurrentUserId();
 
     if (formData.appointmentId) {
@@ -291,6 +326,7 @@ const Booking = ({}) => {
             plan: formData.plan,
             DeceasedName: formData.DeceasedName,
             DeceasedAge: formData.DeceasedAge,
+            DeceasedSex: formData.DeceasedSex,
             DeceasedBirthday: formData.DeceasedBirthday,
             DateofDeath: formData.DateofDeath,
             PlaceofDeath: formData.PlaceofDeath,
@@ -364,6 +400,7 @@ const Booking = ({}) => {
             plan: formData.plan,
             DeceasedName: formData.DeceasedName,
             DeceasedAge: formData.DeceasedAge,
+            DeceasedSex: formData.DeceasedSex,
             DeceasedBirthday: formData.DeceasedBirthday,
             DateofDeath: formData.DateofDeath,
             PlaceofDeath: formData.PlaceofDeath,
@@ -430,6 +467,7 @@ const Booking = ({}) => {
         plan: pendingAppointment.plan,
         DeceasedName: pendingAppointment.DeceasedName,
         DeceasedAge: pendingAppointment.DeceasedAge,
+        DeceasedSex: pendingAppointment.DeceasedSex,
         DeceasedBirthday: pendingAppointment.DeceasedBirthday,
         DateofDeath: pendingAppointment.DateofDeath,
         PlaceofDeath: pendingAppointment.PlaceofDeath,
@@ -625,61 +663,63 @@ const Booking = ({}) => {
           <h1 className="appointment-booking-title">APPOINTMENT BOOKING</h1>{" "}
           <div class="booking-border"></div>
           <p className="selectedDate" style={{ marginLeft: "20px" }}>
-            Selected Date: <strong>{selectedDate ? selectedDate : "None selected"}</strong>
+            Selected Date:{" "}
+            <strong>{selectedDate ? selectedDate : "None selected"}</strong>
           </p>
           <div className="booking-box">
-          <FullCalendar
-            ref={calendarRef}
-            plugins={[
-              dayGridPlugin,
-              timeGridPlugin,
-              listPlugin,
-              interactionPlugin,
-              bootstrap5Plugin,
-            ]}
-            themeSystem="bootstrap5"
-            initialView="dayGridMonth"
-            initialDate={new Date().toISOString()} // Set initial date to current date/time
-            timeZone="Asia/Manila" // Set timezone to Asia/Manila
-            headerToolbar={{
-              left: "prev,next,today",
-              center: "title",
-              right: "dayGridMonth,timeGridDay,timeGridWeek",
-            }}
-            events={appointments.map((appointment) => ({
-              id: appointment.id,
-              title: appointment.name,
-              start: appointment.date,
-              backgroundColor: getStatusColor(appointment.status), // Set color based on status
-            }))}
-            editable={true}
-            selectable={true}
-            select={handleDateSelect}
-            eventClick={handleEventClick}
-            allDaySlot={false}
-            expandRows={true}
-            height="625px"
-            eventMinWidth={1000}
-            eventTimeFormat={{
-              // Set custom time format
-              hour: "numeric",
-              minute: "numeric",
-            }}
-            slotMinTime="08:00:00" // Set the earliest time to 8am
-            slotMaxTime="17:30:00" // Set the latest time to 5pm
-            slotDuration="01:00:00" // Set the duration of each time slot to 30 minutes
-          />
+            <FullCalendar
+              ref={calendarRef}
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                listPlugin,
+                interactionPlugin,
+                bootstrap5Plugin,
+              ]}
+              themeSystem="bootstrap5"
+              initialView="dayGridMonth"
+              initialDate={new Date().toISOString()} // Set initial date to current date/time
+              timeZone="Asia/Manila" // Set timezone to Asia/Manila
+              headerToolbar={{
+                left: "prev,next,today",
+                center: "title",
+                right: "dayGridMonth,timeGridDay,timeGridWeek",
+              }}
+              events={appointments.map((appointment) => ({
+                id: appointment.id,
+                title: appointment.name,
+                start: appointment.date,
+                backgroundColor: getStatusColor(appointment.status), // Set color based on status
+              }))}
+              editable={true}
+              selectable={true}
+              select={handleDateSelect}
+              eventClick={handleEventClick}
+              allDaySlot={false}
+              expandRows={true}
+              height="625px"
+              eventMinWidth={1000}
+              eventTimeFormat={{
+                // Set custom time format
+                hour: "numeric",
+                minute: "numeric",
+              }}
+              slotMinTime="08:00:00" // Set the earliest time to 8am
+              slotMaxTime="17:30:00" // Set the latest time to 5pm
+              slotDuration="01:00:00" // Set the duration of each time slot to 30 minutes
+            />
           </div>
         </div>
 
         {/* First Modal for Plan, Phone Number, and Notes */}
         <Modal show={showModal1} onHide={handleClose1}>
-          <Modal.Header closeButton  className="booking-header">
+          <Modal.Header closeButton className="booking-header">
             <Modal.Title className="booking-title">Booking Details</Modal.Title>
           </Modal.Header>
           <Modal.Body className="details-box">
             <p className="book-date" style={{ marginLeft: "20px" }}>
-              Selected Date: <strong>{selectedDate ? selectedDate : "None selected"}</strong>
+              Selected Date:{" "}
+              <strong>{selectedDate ? selectedDate : "None selected"}</strong>
             </p>
             <Form>
               <Form.Group controlId="formPlan">
@@ -698,7 +738,7 @@ const Booking = ({}) => {
                   <option value="Plan 3">Plan 3</option>
                 </Form.Select>
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formPhoneNumber">
                 <Form.Label className="label-title">Phone Number</Form.Label>
                 <Form.Control
@@ -715,7 +755,7 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formNotes">
                 <Form.Label className="label-title">Notes</Form.Label>
                 <Form.Control
@@ -729,12 +769,20 @@ const Booking = ({}) => {
                   }
                 />
               </Form.Group>
-              <br/>
+              <br />
               <div className="buttons">
-                <Button variant="primary" className="close-button" onClick={handleClose1}>
+                <Button
+                  variant="primary"
+                  className="close-button"
+                  onClick={handleClose1}
+                >
                   Cancel
                 </Button>
-                <Button variant="primary" className="next-button" onClick={handleNext}>
+                <Button
+                  variant="primary"
+                  className="next-button"
+                  onClick={handleNext}
+                >
                   Next
                 </Button>
               </div>
@@ -745,7 +793,9 @@ const Booking = ({}) => {
         {/* Second Modal for Post-Mortem Details */}
         <Modal show={showModal2} onHide={handleClose2}>
           <Modal.Header closeButton className="booking-header">
-            <Modal.Title className="mortem-title">Post-Mortem Details</Modal.Title>
+            <Modal.Title className="mortem-title">
+              Post-Mortem Details
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="details-box">
             <Form onSubmit={handleFormSubmit}>
@@ -762,7 +812,7 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formDeceasedAge">
                 <Form.Label className="label-title">Deceased Age</Form.Label>
                 <Form.Control
@@ -779,9 +829,25 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <br/>
+              <br />
+              <Form.Group controlId="formDeceasedSex">
+                <Form.Label className="label-title">Deceased Sex</Form.Label>
+                <Form.Control
+                  className="input-details"
+                  type="number"
+                  placeholder="Enter deceased's sex"
+                  value={formData.DeceasedSex}
+                  onChange={(e) =>
+                    setFormData({ ...formData, DeceasedSex: e.target.value })
+                  }
+                  required
+                />
+              </Form.Group>
+              <br />
               <Form.Group controlId="formDeceasedBirthday">
-                <Form.Label className="label-title">Deceased Birthday</Form.Label>
+                <Form.Label className="label-title">
+                  Deceased Birthday
+                </Form.Label>
                 <Form.Control
                   type="date"
                   className="input-details"
@@ -796,7 +862,7 @@ const Booking = ({}) => {
                   max={new Date().toISOString().split("T")[0]} // Prevent future dates
                 />
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formDateofDeath">
                 <Form.Label className="label-title">Date of Death</Form.Label>
                 <Form.Control
@@ -813,7 +879,7 @@ const Booking = ({}) => {
                   max={new Date().toISOString().split("T")[0]} // Prevent future dates
                 />
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formPlaceofDeath">
                 <Form.Label className="label-title">Place of Death</Form.Label>
                 <Form.Control
@@ -830,9 +896,11 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formDeceasedRelationship">
-                <Form.Label className="label-title">Deceased's Relationship</Form.Label>
+                <Form.Label className="label-title">
+                  Deceased's Relationship
+                </Form.Label>
                 <Form.Control
                   type="text"
                   className="input-details"
@@ -847,9 +915,11 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <br/>
+              <br />
               <Form.Group controlId="formDeathCertificate">
-                <Form.Label className="label-title">Death Certificate</Form.Label>
+                <Form.Label className="label-title">
+                  Death Certificate
+                </Form.Label>
                 <Form.Control
                   type="file"
                   className="input-details"
@@ -874,7 +944,7 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <br/>
+              <br />
 
               {/* Return and Submit Buttons */}
               <div className="buttons">
@@ -895,15 +965,17 @@ const Booking = ({}) => {
                   Submit
                 </Button>
               </div>
-
-              
             </Form>
           </Modal.Body>
         </Modal>
       </div>
       {/* Conditionally Render "Book Appointment" Button */}
       {isValidDaySelected && !hasPendingAppointment && (
-        <Button variant="primary" className="book-appointment-button" onClick={handleShow1}>
+        <Button
+          variant="primary"
+          className="book-appointment-button"
+          onClick={handleShow1}
+        >
           Book Appointment
         </Button>
       )}
@@ -915,7 +987,11 @@ const Booking = ({}) => {
           appointment.status === "pending"
       ) && (
         <>
-          <Button variant="warning" className="edit-appointment-button" onClick={handleEditClick}>
+          <Button
+            variant="warning"
+            className="edit-appointment-button"
+            onClick={handleEditClick}
+          >
             Edit Appointment
           </Button>
           <br />

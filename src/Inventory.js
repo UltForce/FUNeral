@@ -18,7 +18,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "bootstrap";
-import './Inventory.css';
+import "./Inventory.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -120,12 +120,14 @@ const Inventory = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleShowModal = (mode, item = null, event) => {
+  const handleShowModal = (mode, item = null, event = null) => {
     // Hide tooltip before changing status
-    const tooltipElement = event.currentTarget;
-    const tooltipInstance = Tooltip.getInstance(tooltipElement);
-    if (tooltipInstance) {
-      tooltipInstance.hide();
+    if (event) {
+      const tooltipElement = event.currentTarget;
+      const tooltipInstance = Tooltip.getInstance(tooltipElement);
+      if (tooltipInstance) {
+        tooltipInstance.hide();
+      }
     }
     setModalMode(mode);
     setSelectedItem(item);
@@ -221,30 +223,33 @@ const Inventory = () => {
     return result.isConfirmed ? itemId : null;
   };
 
-  const handleDelete = async (itemId, event) => {
+  const handleDelete = async (itemId, event = null) => {
     // Hide tooltip before changing status
-    const tooltipElement = event.currentTarget;
-    const tooltipInstance = Tooltip.getInstance(tooltipElement);
-    if (tooltipInstance) {
-      tooltipInstance.hide();
+    if (event) {
+      const tooltipElement = event.currentTarget;
+      const tooltipInstance = Tooltip.getInstance(tooltipElement);
+      if (tooltipInstance) {
+        tooltipInstance.hide();
+      }
     }
+
     const confirmedId = await handleDeleteConfirmation(itemId);
     if (!confirmedId) return;
 
     try {
       const userId = getCurrentUserId();
-      const event = {
+      const logEvent = {
         type: "Inventory",
         userId: userId,
         details: "Admin deleted an item",
       };
-      AuditLogger({ event });
+      AuditLogger({ event: logEvent });
       await deleteInventoryItem(itemId);
       Toast.fire({
         icon: "success",
         title: "Inventory item deleted successfully",
       });
-      fetchInventoryItems(); // Fetch items directly here
+      fetchInventoryItems();
     } catch (error) {
       console.error("Error deleting inventory item:", error.message);
       Toast.fire({
@@ -257,78 +262,76 @@ const Inventory = () => {
   return (
     <section className="inventory">
       <main className="main-content">
-      <div className="inventory-dashboard-box">
-        <div className="header-container">
-          <h1 className="centered">Inventory</h1>
-          <a className="add-inventory" onClick={() => handleShowModal("add")}>
-              <img src="add.png" style={{height: "30px"}}></img>
-          </a>
+        <div className="inventory-dashboard-box">
+          <div className="header-container">
+            <h1 className="centered">Inventory</h1>
+            <a className="add-inventory" onClick={() => handleShowModal("add")}>
+              <img src="add.png" style={{ height: "30px" }}></img>
+            </a>
+          </div>
         </div>
-      </div>
 
-      {/* tanggalin na dapat itong button*/}
-      <Button
-        variant="primary"
-        className="add-button"
-        onClick={() => handleShowModal("add")}
-      >
-        
-      </Button>
+        {/* tanggalin na dapat itong button*/}
+        <Button
+          variant="primary"
+          className="add-button"
+          onClick={() => handleShowModal("add")}
+        ></Button>
 
-      {inventoryItems.length === 0 ? (
-        <p className="text-center">No items available</p>
-      ) : (
-        <table className="display w3-table" id="inventoryTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Description</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventoryItems.map((item) => (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>{item.quantity}</td>
-                <td>{item.price}</td>
-                <td>{item.description}</td>
-                <td>
-                  <div>
-                    {/* Edit Button with Tooltip */}
-                    <button
-                      className="btn btn-warning"
-                      type="button"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Edit Item"
-                      onClick={(event) => {
-                        handleShowModal("edit", item, event);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faEdit} />
-                    </button>{" "}
-                    {/* Delete Button with Tooltip */}
-                    <button
-                      className="btn btn-danger"
-                      type="button"
-                      data-bs-toggle="tooltip"
-                      title="Delete Item"
-                      onClick={(event) => {
-                        handleDelete(item.id, event);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </div>
-                </td>
+        {inventoryItems.length === 0 ? (
+          <p className="text-center">No items available</p>
+        ) : (
+          <table className="display w3-table" id="inventoryTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {inventoryItems.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.price}</td>
+                  <td>{item.description}</td>
+                  <td>
+                    <div>
+                      {/* Edit Button with Tooltip */}
+                      <button
+                        className="btn btn-warning"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Edit Item"
+                        onClick={(event) => {
+                          handleShowModal("edit", item, event);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>{" "}
+                      {/* Delete Button with Tooltip */}
+                      <button
+                        className="btn btn-danger"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        title="Delete Item"
+                        onClick={(event) => {
+                          handleDelete(item.id, event);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </main>
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -350,7 +353,7 @@ const Inventory = () => {
                 required
               />
             </Form.Group>
-            <br/>
+            <br />
             <Form.Group controlId="formQuantity">
               <Form.Label className="label-title">Quantity</Form.Label>
               <Form.Control
@@ -362,7 +365,7 @@ const Inventory = () => {
                 required
               />
             </Form.Group>
-            <br/>
+            <br />
             <Form.Group controlId="formPrice">
               <Form.Label className="label-title">Price</Form.Label>
               <Form.Control
@@ -374,7 +377,7 @@ const Inventory = () => {
                 required
               />
             </Form.Group>
-            <br/>
+            <br />
             <Form.Group controlId="formDescription">
               <Form.Label className="label-title">Description</Form.Label>
               <Form.Control
@@ -386,14 +389,17 @@ const Inventory = () => {
                 required
               />
             </Form.Group>
-            <br/>
-            <Button variant="primary" type="submit" className="edit-item-button">
+            <br />
+            <Button
+              variant="primary"
+              type="submit"
+              className="edit-item-button"
+            >
               {modalMode === "add" ? "Add Item" : "Save Changes"}
             </Button>
           </Form>
         </Modal.Body>
       </Modal>
-      
     </section>
   );
 };

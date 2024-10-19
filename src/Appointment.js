@@ -17,8 +17,10 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import { Dropdown } from "react-bootstrap";
-import './Appointment.css';
+import { Dropdown, Button, Modal } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import "./Appointment.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -33,6 +35,9 @@ const Toast = Swal.mixin({
 });
 
 const Appointments = () => {
+  const [appointments, setAppointments] = useState([]);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -50,8 +55,6 @@ const Appointments = () => {
     checkAdminAndLoginStatus();
   }, [navigate]);
 
-  const [appointments, setAppointments] = useState([]);
-
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -64,6 +67,17 @@ const Appointments = () => {
 
     fetchAppointments();
   }, []);
+
+  // Modal functions
+  const handleShowDetails = (appointment) => {
+    setSelectedAppointment(appointment);
+    setShowDetailsModal(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setShowDetailsModal(false);
+    setSelectedAppointment(null);
+  };
 
   const fetchAppointments = async () => {
     try {
@@ -248,116 +262,186 @@ const Appointments = () => {
   return (
     <section className="dashboard-appointment">
       <main className="main-content">
-      <div className="appointments-dashboard-box">
-        <h1 className="centered">Appointments</h1>
-      </div>
+        <div className="appointments-dashboard-box">
+          <h1 className="centered">Appointments</h1>
+        </div>
 
-      <div className="customerReport">
-        <div className="appointment-reports">
-          {/* <h3>
+        <div className="customerReport">
+          <div className="appointment-reports">
+            {/* <h3>
             Appointment List
           </h3> */}
-          <table className="appointment-list-table">
-            <thead>
-              <tr>
-                <th>Pending</th>
-                <th>Approved</th>
-                <th>Completed</th>
-                <th>Cancelled</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "pending"
-                    ).length
-                  }
-                </td>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "approved"
-                    ).length
-                  }
-                </td>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "completed"
-                    ).length
-                  }
-                </td>
-                <td>
-                  {
-                    appointments.filter(
-                      (appointment) => appointment.status === "canceled"
-                    ).length
-                  }
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button
+            <table className="appointment-list-table">
+              <thead>
+                <tr>
+                  <th>Pending</th>
+                  <th>Approved</th>
+                  <th>Completed</th>
+                  <th>Cancelled</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "pending"
+                      ).length
+                    }
+                  </td>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "approved"
+                      ).length
+                    }
+                  </td>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "completed"
+                      ).length
+                    }
+                  </td>
+                  <td>
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status === "canceled"
+                      ).length
+                    }
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button
               className="generate-report-button"
               onClick={handleGenerateReports}
             >
               Generate Reports
             </button>
-        </div>
-        {appointments && appointments.length > 0 ? (
-          <table className="display" id="appointmentsTable">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Phone Number</th>
-                <th>Plan</th>
-                <th>Notes</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appointment) => (
-                <tr key={appointment.appointmentId}>
-                  <td>{appointment.name}</td>
-                  <td>{formatDateTime(appointment.date)}</td>
-                  <td>{appointment.phoneNumber}</td>
-                  <td>{appointment.plan}</td>
-                  <td>{appointment.notes}</td>
-                  <td>{getStatusBadge(appointment.status)}</td>
-                  <td>
-                    <Dropdown className="action-button">
-                      <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Actions
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {getAvailableActions(appointment.status).map(
-                          (action) => (
-                            <Dropdown.Item
-                              key={action}
-                              onClick={() =>
-                                handleAction(action, appointment.appointmentId)
-                              }
-                            >
-                              {action.charAt(0).toUpperCase() + action.slice(1)}
-                            </Dropdown.Item>
-                          )
-                        )}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </td>
+          </div>
+          {appointments && appointments.length > 0 ? (
+            <table className="display" id="appointmentsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Phone Number</th>
+                  <th>Plan</th>
+                  <th>Notes</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No appointments</p>
-        )}
-      </div>
-      <br />
+              </thead>
+              <tbody>
+                {appointments.map((appointment) => (
+                  <tr key={appointment.appointmentId}>
+                    <td>{appointment.name}</td>
+                    <td>{formatDateTime(appointment.date)}</td>
+                    <td>{appointment.phoneNumber}</td>
+                    <td>{appointment.plan}</td>
+                    <td>{appointment.notes}</td>
+                    <td>{getStatusBadge(appointment.status)}</td>
+                    <td>
+                      <Button
+                        variant="link"
+                        onClick={() => handleShowDetails(appointment)}
+                        className="view-details-button"
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </Button>
+                      <Dropdown className="action-button">
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                          Actions
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {getAvailableActions(appointment.status).map(
+                            (action) => (
+                              <Dropdown.Item
+                                key={action}
+                                onClick={() =>
+                                  handleAction(
+                                    action,
+                                    appointment.appointmentId
+                                  )
+                                }
+                              >
+                                {action.charAt(0).toUpperCase() +
+                                  action.slice(1)}
+                              </Dropdown.Item>
+                            )
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No appointments</p>
+          )}
+        </div>
+        <br />
+
+        {/* Appointment Details Modal */}
+        <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Appointment Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="appointment-details-box">
+            {selectedAppointment ? (
+              <>
+                <h4>{selectedAppointment.name}</h4>
+                <p className="first-details">
+                  <strong>Date:</strong>{" "}
+                  {formatDateTime(selectedAppointment.date)}
+                  <br />
+                  <strong>Phone Number:</strong>{" "}
+                  {selectedAppointment.phoneNumber}
+                  <br />
+                  <strong>Plan:</strong> {selectedAppointment.plan}
+                  <br />
+                  <strong>Status:</strong>{" "}
+                  {getStatusBadge(selectedAppointment.status)}
+                  <br />
+                  <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
+                </p>
+                <br />
+                <h4 className="postmortem-title">Post Mortem Details:</h4>
+                <p className="second-details">
+                  <strong>Deceased Name: </strong>
+                  {selectedAppointment.DeceasedName}
+                  <br />
+                  <strong>Deceased Age: </strong>
+                  {selectedAppointment.DeceasedAge}
+                  <br />
+                  <strong>Deceased Sex: </strong>
+                  {selectedAppointment.DeceasedSex}
+                  <br />
+                  <strong>Deceased Birthday: </strong>
+                  {selectedAppointment.DeceasedBirthday}
+                  <br />
+                  <strong>Date of Death: </strong>
+                  {selectedAppointment.DateofDeath}
+                  <br />
+                  <strong>Place of Death: </strong>
+                  {selectedAppointment.PlaceofDeath}
+                  <br />
+                  <strong>Deceased Relationship: </strong>
+                  {selectedAppointment.DeceasedRelationship}
+                </p>
+              </>
+            ) : (
+              <p>No details available</p>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseDetailsModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </main>
     </section>
   );

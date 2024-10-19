@@ -18,7 +18,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "bootstrap";
-import './content.css';
+import "./content.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -111,42 +111,30 @@ const Content = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleShowModal = (mode, item = null, event) => {
-    // Hide tooltip before changing status
-    const tooltipElement = event.currentTarget;
-    const tooltipInstance = Tooltip.getInstance(tooltipElement);
-    if (tooltipInstance) {
-      tooltipInstance.hide();
+  const handleShowModal = (mode, item = null, event = null) => {
+    if (event) {
+      const tooltipElement = event.currentTarget;
+      const tooltipInstance = Tooltip.getInstance(tooltipElement);
+      if (tooltipInstance) {
+        tooltipInstance.hide();
+      }
     }
     setModalMode(mode);
     setSelectedContent(item);
-    if (item) {
-      setFormData({
-        page: item.page || "faqs", // Could be faqs or terms
-        title: item.title || "",
-        body: item.body || "",
-      });
-    } else {
-      setFormData({
-        page: "faqs",
-        title: "",
-        body: "",
-      });
-    }
+    setFormData({
+      page: item?.page || "faqs",
+      title: item?.title || "",
+      body: item?.body || "",
+    });
     setShowModal(true);
   };
 
   const handleCloseModal = () => setShowModal(false);
 
-  const handleSubmit = async (e, event) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const actionText = modalMode === "edit" ? "update" : "add";
-    // Hide tooltip before changing status
-    const tooltipElement = event.currentTarget;
-    const tooltipInstance = Tooltip.getInstance(tooltipElement);
-    if (tooltipInstance) {
-      tooltipInstance.hide();
-    }
+
     const result = await Swal.fire({
       title: `Are you sure you want to ${actionText} this content?`,
       showCancelButton: true,
@@ -230,129 +218,131 @@ const Content = () => {
   return (
     <section className="manage-content">
       <main className="main-content">
-      <div className="content-dashboard-box">
-        <div className="header-container">
-          <h1 className="centered">Manage Content</h1>
-          <a className="add-inventory" onClick={() => handleShowModal("add")}>
-              <img src="add.png" style={{height: "30px"}}></img>
-          </a>
+        <div className="content-dashboard-box">
+          <div className="header-container">
+            <h1 className="centered">Manage Content</h1>
+            <a className="add-inventory" onClick={() => handleShowModal("add")}>
+              <img src="add.png" style={{ height: "30px" }}></img>
+            </a>
+          </div>
         </div>
-      </div>
 
-       {/* tanggalin na dapat itong button*/}
-      <Button
-        className="add-button"
-        variant="primary"
-        onClick={() => handleShowModal("add")}
-      >
+        {/* tanggalin na dapat itong button*/}
+        <Button
+          className="add-button"
+          variant="primary"
+          onClick={() => handleShowModal("add")}
+        ></Button>
 
-      </Button>
-
-      {content.length === 0 ? (
-        <p className="text-center">No content available</p>
-      ) : (
-        <table className="display" id="contentTable">
-          <thead>
-            <tr>
-              <th>Page</th>
-              <th>Title</th>
-              <th>Body</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {content.map((item) => (
-              <tr key={item.id}>
-                <td>{item.page}</td>
-                <td>{item.title}</td>
-                <td>{item.body}</td>
-                <td>
-                  <div>
-                    {/* Edit Button with Tooltip */}
-                    <button
-                      className="btn btn-warning"
-                      type="button"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Edit Item"
-                      onClick={(event) => {
-                        handleShowModal("edit", item, event);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faEdit} />
-                    </button>{" "}
-                    {/* Delete Button with Tooltip */}
-                    <button
-                      className="btn btn-danger"
-                      type="button"
-                      data-bs-toggle="tooltip"
-                      title="Delete Item"
-                      onClick={(event) => {
-                        handleDelete(item.id, event);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </div>
-                </td>
+        {content.length === 0 ? (
+          <p className="text-center">No content available</p>
+        ) : (
+          <table className="display" id="contentTable">
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Title</th>
+                <th>Body</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton className="content-header">
-          <Modal.Title className="content-title">
-            {modalMode === "edit" ? "Edit Content" : "Add Content"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="content-details-box">
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formPage">
-              <Form.Label className="label-title">Page</Form.Label>
-              <Form.Control
-                as="select"
-                className="input-details"
-                name="page"
-                value={formData.page}
-                onChange={handleFormChange}
-                required
+            </thead>
+            <tbody>
+              {content.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.page}</td>
+                  <td>{item.title}</td>
+                  <td>{item.body}</td>
+                  <td>
+                    <div>
+                      {/* Edit Button with Tooltip */}
+                      <button
+                        className="btn btn-warning"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Edit Item"
+                        onClick={(event) =>
+                          handleShowModal("edit", item, event)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>{" "}
+                      {/* Delete Button with Tooltip */}
+                      <button
+                        className="btn btn-danger"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        title="Delete Item"
+                        onClick={(event) => {
+                          handleDelete(item.id, event);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton className="content-header">
+            <Modal.Title className="content-title">
+              {modalMode === "edit" ? "Edit Content" : "Add Content"}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="content-details-box">
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formPage">
+                <Form.Label className="label-title">Page</Form.Label>
+                <Form.Control
+                  as="select"
+                  className="input-details"
+                  name="page"
+                  value={formData.page}
+                  onChange={handleFormChange}
+                  required
+                >
+                  <option value="faqs">FAQs</option>
+                  <option value="terms">Terms and Conditions</option>
+                </Form.Control>
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formTitle">
+                <Form.Label className="label-title">Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  className="input-details"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleFormChange}
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formBody">
+                <Form.Label className="label-title">Body</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  className="input-details"
+                  name="body"
+                  value={formData.body}
+                  onChange={handleFormChange}
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Button
+                variant="primary"
+                type="submit"
+                className="edit-content-button"
               >
-                <option value="faqs">FAQs</option>
-                <option value="terms">Terms and Conditions</option>
-              </Form.Control>
-            </Form.Group>
-            <br/>
-            <Form.Group controlId="formTitle">
-              <Form.Label className="label-title">Title</Form.Label>
-              <Form.Control
-                type="text"
-                className="input-details"
-                name="title"
-                value={formData.title}
-                onChange={handleFormChange}
-                required
-              />
-            </Form.Group>
-            <br/>
-            <Form.Group controlId="formBody">
-              <Form.Label className="label-title">Body</Form.Label>
-              <Form.Control
-                as="textarea"
-                className="input-details"
-                name="body"
-                value={formData.body}
-                onChange={handleFormChange}
-                required
-              />
-            </Form.Group>
-            <br />
-            <Button variant="primary" type="submit" className="edit-content-button">
-              {modalMode === "edit" ? "Update" : "Add"} Content
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
+                {modalMode === "edit" ? "Update" : "Add"} Content
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
       </main>
     </section>
   );

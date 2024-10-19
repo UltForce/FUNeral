@@ -479,6 +479,20 @@ const getReviewsFirestore = async () => {
     return [];
   }
 };
+// Function to get reviews
+const getUserReviewsFirestore = async (userId) => {
+  try {
+    const reviewsQuery = query(
+      collection(dba, "testimonials"),
+      where("userId", "==", userId)
+    );
+    const snapshot = await getDocs(reviewsQuery);
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error fetching testimonials:", error.message);
+    return [];
+  }
+};
 
 // Function to update review status
 const updateReviewStatusFirestore = async (reviewId, newStatus) => {
@@ -667,4 +681,5 @@ export {
   getUserDetails,
   fetchUserNotifications,
   fetchAdminNotifications,
+  getUserReviewsFirestore,
 };

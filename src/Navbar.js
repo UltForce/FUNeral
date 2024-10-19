@@ -193,70 +193,7 @@ const Navbar = ({}) => {
                       <span className="nav-label"> Dashboard</span>
                     </Link>
                   </li>
-                  <li>
-                    <div className="notification-container">
-                      <button onClick={toggleDropdown}>
-                        <FontAwesomeIcon icon={faBell} />
-                        {hasUnreadNotifications && (
-                          <span className="red-dot"></span>
-                        )}
-                      </button>
-                      {isDropdownOpen && (
-                        <div className="notification-dropdown">
-                          {notifications.length === 0 ? (
-                            <p>No notifications</p>
-                          ) : (
-                            notifications.map((notification) => (
-                              <div
-                                key={notification.id}
-                                className={`notification ${
-                                  notification.isRead ? "read" : "unread"
-                                }`}
-                              >
-                                <h4>{notification.title}</h4>
-                                <p>{notification.content}</p>
-                                <small>
-                                  {new Date(
-                                    notification.timestamp instanceof Date
-                                      ? notification.timestamp
-                                      : notification.timestamp.toDate()
-                                  ).toLocaleString()}
-                                </small>
-                                <br />
 
-                                {/* Conditionally render the mark as read/unread button */}
-                                {!notification.isRead ? (
-                                  <button
-                                    onClick={() =>
-                                      handleMarkAsRead(notification.id)
-                                    }
-                                  >
-                                    Mark as Read
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() =>
-                                      handleMarkAsUnread(notification.id)
-                                    }
-                                  >
-                                    Mark as Unread
-                                  </button>
-                                )}
-
-                                <button
-                                  onClick={() =>
-                                    handleDeleteNotification(notification.id)
-                                  }
-                                >
-                                  Dismiss
-                                </button>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </li>
                   <li
                     className={
                       location.pathname === "/appointments" ? "active" : ""
@@ -324,6 +261,18 @@ const Navbar = ({}) => {
         <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
           <ul className="centeredNav">
+            {isLoggedIn && (
+              <li
+                className={
+                  location.pathname === "/userdashboard" ? "active" : ""
+                }
+              >
+                <Link to="/userdashboard">
+                  <FontAwesomeIcon icon={faClapperboard} />
+                  <span className="nav-label"> Dashboard</span>
+                </Link>
+              </li>
+            )}
             <li className={location.pathname === "/homepage" ? "active" : ""}>
               <Link to="/homepage">
                 <FontAwesomeIcon icon={faHome} />

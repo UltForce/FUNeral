@@ -1,0 +1,8 @@
+.view-details-button {
+  margin-left: 10px; /* Adjust space between dropdown and button */
+  color: #007bff; /* Bootstrap primary color */
+}
+
+.view-details-button:hover {
+  color: #0056b3; /* Darker shade on hover */
+}
