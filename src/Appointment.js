@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
 import { Dropdown } from "react-bootstrap";
+import './Appointment.css';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -245,21 +246,18 @@ const Appointments = () => {
   };
 
   return (
-    <section className="background-image content section">
-      <h1 className="centered">Dashboard</h1>
+    <section className="dashboard-appointment">
+      <main className="main-content">
+      <div className="appointments-dashboard-box">
+        <h1 className="centered">Appointments</h1>
+      </div>
 
       <div className="customerReport">
-        <div className="report-header">
-          <h3>
+        <div className="appointment-reports">
+          {/* <h3>
             Appointment List
-            <button
-              className="btn btn-outline-primary ml-5"
-              onClick={handleGenerateReports}
-            >
-              Generate Reports
-            </button>
-          </h3>
-          <table className="w3-table col-md-4">
+          </h3> */}
+          <table className="appointment-list-table">
             <thead>
               <tr>
                 <th>Pending</th>
@@ -301,6 +299,12 @@ const Appointments = () => {
               </tr>
             </tbody>
           </table>
+          <button
+              className="generate-report-button"
+              onClick={handleGenerateReports}
+            >
+              Generate Reports
+            </button>
         </div>
         {appointments && appointments.length > 0 ? (
           <table className="display" id="appointmentsTable">
@@ -325,7 +329,7 @@ const Appointments = () => {
                   <td>{appointment.notes}</td>
                   <td>{getStatusBadge(appointment.status)}</td>
                   <td>
-                    <Dropdown>
+                    <Dropdown className="action-button">
                       <Dropdown.Toggle variant="success" id="dropdown-basic">
                         Actions
                       </Dropdown.Toggle>
@@ -354,6 +358,7 @@ const Appointments = () => {
         )}
       </div>
       <br />
+      </main>
     </section>
   );
 };

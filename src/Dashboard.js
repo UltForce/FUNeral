@@ -219,6 +219,9 @@ const Dashboard = () => {
     <section>
       <section className="admin-dashboard">
         <main className="main-content">
+          <div className="admin-title-box">
+            <h1>Dashboard</h1>
+          </div>
           {/*<div class="custom-page-loader" id="page-loader2"></div>*/}
           <Container fluid>
             <Row className="mt-4">
@@ -268,7 +271,7 @@ const Dashboard = () => {
 
             <Row className="mt-4">
               <Col md={4}>
-                <Card style={{ height: "450px", overflowY: "auto" }}>
+                <Card style={{ height: "450px", overflowY: "auto" }} className="today-appointments">
                   <Card.Header>Today's Appointments</Card.Header>
                   <ListGroup variant="flush">
                     {todaysAppointments.length === 0 ? (
@@ -277,7 +280,7 @@ const Dashboard = () => {
                       </ListGroup.Item>
                     ) : (
                       todaysAppointments.map((appointment) => (
-                        <ListGroup.Item key={appointment.id}>
+                        <ListGroup.Item className="appointment-list" key={appointment.id}>
                           {appointment.name} - {appointment.plan} -{" "}
                           {formatDateTime(appointment.date)}
                           <Badge
@@ -306,13 +309,14 @@ const Dashboard = () => {
                     {selectedAppointment ? (
                       <>
                         <Card.Title>{selectedAppointment.name}</Card.Title>
-                        <Card.Text>
+                        <Card.Text className="next-appointment-details">
                           <strong>Time:</strong>{" "}
-                          {formatDateTime(selectedAppointment.date)}
+                          <div className="date-box">{formatDateTime(selectedAppointment.date)}</div>
                           <br />
-                          <strong>Name:</strong> {selectedAppointment.name}
+                          <strong>Name:</strong> 
+                          <div className="next-appointment-name">{selectedAppointment.name}</div>
                         </Card.Text>
-                        <Button variant="primary" onClick={handleShowMore}>
+                        <Button variant="primary" className="show-more-button" onClick={handleShowMore}>
                           Show More
                         </Button>
                       </>
@@ -324,7 +328,7 @@ const Dashboard = () => {
               </Col>
 
               <Col md={4}>
-                <Card style={{ height: "450px", width: "100%" }}>
+                <Card style={{ height: "450px", width: "100%" }}className="dashboard-calendar">
                   <Card.Header>Calendar</Card.Header>
                   <Card.Body
                     style={{ height: "100%", padding: 0, width: "100%" }}
@@ -332,7 +336,7 @@ const Dashboard = () => {
                     <Calendar
                       onChange={setDate}
                       value={date}
-                      className="react-calendar"
+                      className="calendar"
                     />
                   </Card.Body>
                 </Card>
@@ -344,14 +348,14 @@ const Dashboard = () => {
 
       {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Appointment Details</Modal.Title>
+        <Modal.Header closeButton className="appointment-header">
+          <Modal.Title className="appointment-title">Appointment Details</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="appointment-details-box">
           {selectedAppointment ? (
             <>
               <h4>{selectedAppointment.name}</h4>
-              <p>
+              <p className="first-details">
                 <strong>Date:</strong>{" "}
                 {formatDateTime(selectedAppointment.date)}
                 <br />
@@ -365,8 +369,8 @@ const Dashboard = () => {
                 <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
               </p>
               <br />
-              <h4>Post Mortem Details:</h4>
-              <p>
+              <h4 className="postmortem-title">Post Mortem Details:</h4>
+              <p className="second-details">
                 <strong>Deceased Name: </strong>
                 {selectedAppointment.DeceasedName}
                 <br />
@@ -391,7 +395,7 @@ const Dashboard = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="secondary" onClick={handleCloseModal} className="close2-button">
             Close
           </Button>
         </Modal.Footer>

@@ -18,6 +18,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "bootstrap";
+import './content.css';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -227,14 +228,24 @@ const Content = () => {
   };
 
   return (
-    <section className="background-image content section">
-      <h1 className="centered">Manage Content</h1>
+    <section className="manage-content">
+      <main className="main-content">
+      <div className="content-dashboard-box">
+        <div className="header-container">
+          <h1 className="centered">Manage Content</h1>
+          <a className="add-inventory" onClick={() => handleShowModal("add")}>
+              <img src="add.png" style={{height: "30px"}}></img>
+          </a>
+        </div>
+      </div>
+
+       {/* tanggalin na dapat itong button*/}
       <Button
-        className="mb-3"
+        className="add-button"
         variant="primary"
         onClick={() => handleShowModal("add")}
       >
-        Add New Content
+
       </Button>
 
       {content.length === 0 ? (
@@ -290,17 +301,18 @@ const Content = () => {
         </table>
       )}
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <Modal.Header closeButton className="content-header">
+          <Modal.Title className="content-title">
             {modalMode === "edit" ? "Edit Content" : "Add Content"}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="content-details-box">
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formPage">
-              <Form.Label>Page</Form.Label>
+              <Form.Label className="label-title">Page</Form.Label>
               <Form.Control
                 as="select"
+                className="input-details"
                 name="page"
                 value={formData.page}
                 onChange={handleFormChange}
@@ -310,20 +322,24 @@ const Content = () => {
                 <option value="terms">Terms and Conditions</option>
               </Form.Control>
             </Form.Group>
+            <br/>
             <Form.Group controlId="formTitle">
-              <Form.Label>Title</Form.Label>
+              <Form.Label className="label-title">Title</Form.Label>
               <Form.Control
                 type="text"
+                className="input-details"
                 name="title"
                 value={formData.title}
                 onChange={handleFormChange}
                 required
               />
             </Form.Group>
+            <br/>
             <Form.Group controlId="formBody">
-              <Form.Label>Body</Form.Label>
+              <Form.Label className="label-title">Body</Form.Label>
               <Form.Control
                 as="textarea"
+                className="input-details"
                 name="body"
                 value={formData.body}
                 onChange={handleFormChange}
@@ -331,12 +347,13 @@ const Content = () => {
               />
             </Form.Group>
             <br />
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" className="edit-content-button">
               {modalMode === "edit" ? "Update" : "Add"} Content
             </Button>
           </Form>
         </Modal.Body>
       </Modal>
+      </main>
     </section>
   );
 };

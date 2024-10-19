@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import './reviews.css';
 
 const MySwal = withReactContent(Swal);
 
@@ -197,8 +198,11 @@ const Reviews = () => {
   };
 
   return (
-    <div className="reviews-container content section">
-      <h2 className="centered">Manage Reviews</h2>
+    <section className="reviews">
+      <main className="main-content">
+        <div className="review-dashboard-box">
+          <h1 className="centered">Manage Content</h1>
+        </div>
       <table id="reviewsTable" className="table table-striped table-hover">
         <thead>
           <tr>
@@ -256,7 +260,8 @@ const Reviews = () => {
           ))}
         </tbody>
       </table>
-    </div>
+      </main>
+    </section>
   );
 };
 

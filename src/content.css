@@ -1,0 +1,123 @@
+.manage-content {
+    display: flex !important;
+    min-height: 100vh !important; /* Full height */
+    background-color: #f0e6dc !important; /* Override global background */
+    font-family: 'Rubik';
+}
+
+.manage-content .main-content {
+    flex-grow: 1 !important;
+    background-color: #CAA971 !important; /* Maintain background */
+    padding: 20px !important;
+    margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+
+.content-dashboard-box {
+    display: block;
+    border: 1px solid #FFFFFF; 
+    border-radius: 20px; 
+    background-color:#FFFFFF;
+    padding: 18px 38px;
+    margin-bottom: 10px;
+}
+
+.header-container {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+}
+  
+.header-container h1 {
+    flex-grow: 1; /* Allow the heading to grow and take available space */
+    text-align: center; /* Center the heading text */
+    margin: 0; /* Remove default margins */
+}
+
+.add-inventory {
+    margin-left: 20px; 
+}
+
+#contentTable {
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+#contentTable th {
+    background-color: #D9D9D9;
+    font-weight: 500;
+    font-size: 20px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+}
+
+#contentTable td {
+    background-color: white;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.manage-content nav {
+    background-color: #333333;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.manage-content nav button {
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.content-header {
+    color: white;
+}
+
+.content-title {
+    font-weight: 400;
+    margin: 0 0 0 168px;
+    font-size: 25px;
+}
+
+.content-details-box {
+    display: block;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+    margin: 10px 0; 
+    padding: 13px 20px;
+}
+
+.edit-content-button {
+    background-color: #FDF9AA;
+    color: black;
+    border: 1px solid #6A6868;
+    font-size: 15px;
+    display: block;
+    margin: auto;
+}
+
+.edit-content-button:hover {
+    background-color: #CAA971;
+    color: #4d4642;
+    border: 1px solid #CAA971;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* temporary css - tanggalin if natanggal na yung button sa js  */
+.add-button {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: transparent;
+    border: none !important;
+}

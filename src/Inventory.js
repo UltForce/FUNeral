@@ -18,6 +18,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "bootstrap";
+import './Inventory.css';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -254,15 +255,24 @@ const Inventory = () => {
   };
 
   return (
-    <section className="background-image content section">
-      <h1 className="centered">Inventory</h1>
+    <section className="inventory">
+      <main className="main-content">
+      <div className="inventory-dashboard-box">
+        <div className="header-container">
+          <h1 className="centered">Inventory</h1>
+          <a className="add-inventory" onClick={() => handleShowModal("add")}>
+              <img src="add.png" style={{height: "30px"}}></img>
+          </a>
+        </div>
+      </div>
 
+      {/* tanggalin na dapat itong button*/}
       <Button
         variant="primary"
-        className="mb-3"
+        className="add-button"
         onClick={() => handleShowModal("add")}
       >
-        Add New Item
+        
       </Button>
 
       {inventoryItems.length === 0 ? (
@@ -319,61 +329,71 @@ const Inventory = () => {
           </tbody>
         </table>
       )}
+      </main>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <Modal.Header closeButton className="inventory-header">
+          <Modal.Title className="inventory-title">
             {modalMode === "add" ? "Add New Item" : "Edit Item"}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="inventory-details-box">
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formName">
-              <Form.Label>Name</Form.Label>
+              <Form.Label className="label-title">Name</Form.Label>
               <Form.Control
                 type="text"
+                className="input-details"
                 name="name"
                 value={formData.name}
                 onChange={handleFormChange}
                 required
               />
             </Form.Group>
+            <br/>
             <Form.Group controlId="formQuantity">
-              <Form.Label>Quantity</Form.Label>
+              <Form.Label className="label-title">Quantity</Form.Label>
               <Form.Control
                 type="number"
+                className="input-details"
                 name="quantity"
                 value={formData.quantity}
                 onChange={handleFormChange}
                 required
               />
             </Form.Group>
+            <br/>
             <Form.Group controlId="formPrice">
-              <Form.Label>Price</Form.Label>
+              <Form.Label className="label-title">Price</Form.Label>
               <Form.Control
                 type="number"
+                className="input-details"
                 name="price"
                 value={formData.price}
                 onChange={handleFormChange}
                 required
               />
             </Form.Group>
+            <br/>
             <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
+              <Form.Label className="label-title">Description</Form.Label>
               <Form.Control
                 as="textarea"
+                className="input-details"
                 name="description"
                 value={formData.description}
                 onChange={handleFormChange}
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <br/>
+            <Button variant="primary" type="submit" className="edit-item-button">
               {modalMode === "add" ? "Add Item" : "Save Changes"}
             </Button>
           </Form>
         </Modal.Body>
       </Modal>
+      
     </section>
   );
 };

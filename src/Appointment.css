@@ -1,0 +1,140 @@
+.dashboard-appointment {
+    display: flex !important;
+    min-height: 100vh !important; /* Full height */
+    background-color: #f0e6dc !important; /* Override global background */
+    font-family: 'Rubik';
+}
+
+.dashboard-appointment nav {
+    background-color: #333333;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.dashboard-appointment nav button {
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.dt-info {
+    font-size: 15px;
+    padding-top: 10px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.dashboard-appointment .main-content {
+    flex-grow: 1 !important;
+    background-color: #CAA971 !important; /* Maintain background */
+    padding: 20px !important;
+    margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+
+.appointments-dashboard-box {
+    display: block;
+    border: 1px solid #FFFFFF; 
+    border-radius: 20px; 
+    background-color:#FFFFFF;
+    padding: 18px 38px;
+}
+
+.appointment-reports {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    justify-content: space-around;
+    flex-direction: column;
+    font-size: 15px;
+}
+
+.appointment-reports .appointment-list-table {
+    border-radius: 10px;
+    text-align: center;
+    width: 45%;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.appointment-reports .appointment-list-table th {
+    background-color: #D9D9D9;
+    font-weight: 500;
+    border: 1px solid #333333;
+}
+
+.appointment-reports .appointment-list-table td {
+    background-color: white;
+    font-weight: 400;
+    border: 1px solid #333333;
+}
+
+#appointmentsTable {
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+#appointmentsTable th {
+    background-color: #D9D9D9;
+    font-weight: 500;
+    font-size: 20px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+}
+
+#appointmentsTable td {
+    background-color: white;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.dt-length {
+    margin-right: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
+.dt-search {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.dt-search input {
+    border-radius: 10px;
+    margin-left: 5px;
+    border: 1px solid #BEB9B9;
+}
+
+.generate-report-button {
+    border-radius: 10px;
+    margin-top: 10px;
+    background-color: #5581bf;
+    color: white;
+    font-size: 15px;
+    border: 1px solid #5581bf;
+}
+
+.generate-report-button:hover {
+    background-color: #304768;
+    color: white;
+    border: 1px solid #304768;
+}
+
+.dashboard-appointment .badge {
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.dashboard-appointment .action-button .dropdown-toggle {
+    font-size: 15px;
+}
+
+.dashboard-appointment .action-button {
+    text-align: center;
+}

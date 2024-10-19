@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
 import "./dashboard.css";
+import './Audit.css';
 const Audit = () => {
   const navigate = useNavigate();
   const [auditLogs, setAuditLogs] = useState([]);
@@ -124,9 +125,11 @@ const Audit = () => {
   }, []);
 
   return (
-    <section className="background-image content section">
-      <br />
-      <h1 className="centered">Audit Logs</h1>
+    <section className="audit">
+      <main className="main-content">
+      <div className="audit-dashboard-box">
+          <h1 className="centered">Audit Logs</h1>
+        </div>
       <div className="customerReport">
         {auditLogs && auditLogs.length > 0 ? (
           <table id="auditTable" className="display ">
@@ -153,6 +156,7 @@ const Audit = () => {
           <p>No audits</p>
         )}
       </div>
+      </main>
     </section>
   );
 };
