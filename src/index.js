@@ -4,6 +4,7 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "typeface-rubik";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

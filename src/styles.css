@@ -84,11 +84,13 @@ ul.centered li {
 .pagination-buttons {
   margin-top: 150px;
   height: 50px;
+  border-radius: 30%;
 }
 
 .pagination-buttons button {
   margin-right: 10px;
   cursor: pointer;
+  border-radius: 30%;
 }
 @media (max-width: 768px) {
   .service-card {
@@ -231,6 +233,7 @@ footer {
 }
 .accordion-button {
   min-height: 70px;
+  border-radius: 30%;
 }
 .custom-event {
   width: 150px; /* Adjust the width as needed */
@@ -383,6 +386,7 @@ label {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  border-radius: 30%;
 }
 
 .book-now-button:hover {
@@ -437,4 +441,10 @@ label {
   z-index: 9999;
   opacity: 1;
   background: url(/public/Chunk-4s-154px.gif) center no-repeat #fff;
+}
+
+
+/*FONT*/
+.rubik {
+  font-family: "Rubik", sans-serif;
 }
