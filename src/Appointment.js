@@ -17,7 +17,13 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import { Dropdown, Button, Modal } from "react-bootstrap";
+import {
+  Dropdown,
+  Button,
+  Modal,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import "./Appointment.css";
@@ -313,12 +319,17 @@ const Appointments = () => {
                 </tr>
               </tbody>
             </table>
-            <button
-              className="generate-report-button"
-              onClick={handleGenerateReports}
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>Export to CSV file</Tooltip>}
             >
-              Generate Reports
-            </button>
+              <button
+                className="generate-report-button"
+                onClick={handleGenerateReports}
+              >
+                Generate Reports
+              </button>
+            </OverlayTrigger>
           </div>
           {appointments && appointments.length > 0 ? (
             <table className="display" id="appointmentsTable">
@@ -343,13 +354,18 @@ const Appointments = () => {
                     <td>{appointment.notes}</td>
                     <td>{getStatusBadge(appointment.status)}</td>
                     <td>
-                      <Button
-                        variant="link"
-                        onClick={() => handleShowDetails(appointment)}
-                        className="view-details-button"
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Show Appointment Details</Tooltip>}
                       >
-                        <FontAwesomeIcon icon={faEye} />
-                      </Button>
+                        <Button
+                          variant="link"
+                          onClick={() => handleShowDetails(appointment)}
+                          className="view-details-button"
+                        >
+                          <FontAwesomeIcon icon={faEye} />
+                        </Button>
+                      </OverlayTrigger>
                       <Dropdown className="action-button">
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Actions

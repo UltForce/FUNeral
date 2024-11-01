@@ -398,6 +398,16 @@ const addInventoryItem = async (itemData) => {
   }
 };
 
+const uploadImage = async (file) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `inventoryImages/${file.name}`);
+
+  await uploadBytes(storageRef, file);
+  const imageUrl = await getDownloadURL(storageRef);
+
+  return imageUrl; // Return the URL for saving in Firestore
+};
+
 // Function to get all inventory items
 const getInventoryItems = async () => {
   try {
@@ -627,6 +637,11 @@ export const deleteNotification = async (notificationId) => {
   console.log("Notification deleted!");
 };
 
+export const updateProfilePictureUrl = async (userId, downloadUrl) => {
+  const userRef = doc(dba, "users", userId);
+  await updateDoc(userRef, { profilePictureUrl: downloadUrl });
+};
+
 export {
   getAuth,
   auth,
@@ -682,4 +697,5 @@ export {
   fetchUserNotifications,
   fetchAdminNotifications,
   getUserReviewsFirestore,
+  uploadImage,
 };

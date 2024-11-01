@@ -17,7 +17,8 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { linkWithCredential } from "firebase/auth";
 import { EmailAuthProvider } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa"; // Import FontAwesome icons
-import './Register.css';
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import "./Register.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -222,8 +223,10 @@ const Register = () => {
     <section className="register">
       <div className="register-box">
         <h2 className="register-title">Register</h2>
-        <p className="register-info">Fill Out The Form Carefully For Registration</p>
-        <br/>
+        <p className="register-info">
+          Fill Out The Form Carefully For Registration
+        </p>
+        <br />
         <div className="row">
           <div className="col-md-1"></div>
           <div className="col-md-10">
@@ -271,56 +274,68 @@ const Register = () => {
                   Last Name
                 </label>
               </div>
-              <div className="  form-floating mb-3  col-md-6">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="floatingMobile"
-                  placeholder="Mobile Number"
-                  value={mobilenumber}
-                  //onChange={(e) => setMobilenumber(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  ref={MobileNumberInputRef}
-                  onChange={(e) => {
-                    const mobilenumbervalue = e.target.value;
-                    if (
-                      mobilenumbervalue >= 0 &&
-                      mobilenumbervalue.length <= 13
-                    ) {
-                      // Check if the value is positive or zero
-                      setMobilenumber(mobilenumbervalue);
-                    }
-                  }}
-                />
-                <label className="register-label" for="floatingMobile">
-                  Mobile Number
-                </label>
-              </div>
-              <div className="  form-floating mb-3  col-md-6">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="floatingLand"
-                  placeholder="Landline Number"
-                  value={landlinenumber}
-                  //onChange={(e) => setLandlinenumber(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  ref={LandlineNumberInputRef}
-                  onChange={(e) => {
-                    const landlinenumbervalue = e.target.value;
-                    if (
-                      landlinenumbervalue >= 0 &&
-                      landlinenumbervalue.length <= 128
-                    ) {
-                      // Check if the value is positive or zero
-                      setLandlinenumber(landlinenumbervalue);
-                    }
-                  }}
-                />
-                <label className="register-label" for="floatingLand">
-                  Landline Number
-                </label>
-              </div>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>11 Digit e.g. 09xxxxxxxxx</Tooltip>}
+              >
+                <div className="  form-floating mb-3  col-md-6">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingMobile"
+                    placeholder="Mobile Number"
+                    value={mobilenumber}
+                    //onChange={(e) => setMobilenumber(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    ref={MobileNumberInputRef}
+                    onChange={(e) => {
+                      const mobilenumbervalue = e.target.value;
+                      if (
+                        mobilenumbervalue >= 0 &&
+                        mobilenumbervalue.length <= 11
+                      ) {
+                        // Check if the value is positive or zero
+                        setMobilenumber(mobilenumbervalue);
+                      }
+                    }}
+                  />
+                  <label className="register-label" for="floatingMobile">
+                    Mobile Number
+                  </label>
+                </div>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={
+                  <Tooltip>If no Landline Number, input Mobile Number</Tooltip>
+                }
+              >
+                <div className="  form-floating mb-3  col-md-6">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="floatingLand"
+                    placeholder="Landline Number"
+                    value={landlinenumber}
+                    //onChange={(e) => setLandlinenumber(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    ref={LandlineNumberInputRef}
+                    onChange={(e) => {
+                      const landlinenumbervalue = e.target.value;
+                      if (
+                        landlinenumbervalue >= 0 &&
+                        landlinenumbervalue.length <= 128
+                      ) {
+                        // Check if the value is positive or zero
+                        setLandlinenumber(landlinenumbervalue);
+                      }
+                    }}
+                  />
+                  <label className="register-label" for="floatingLand">
+                    Landline Number
+                  </label>
+                </div>
+              </OverlayTrigger>
               <div className="  form-floating mb-3  col-md-6">
                 <input
                   type="text"
@@ -454,47 +469,61 @@ const Register = () => {
                   Email
                 </label>
               </div> */}
-              <div className=" form-floating mb-3  col-md-6">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="floatingPass"
-                  placeholder="Password"
-                  value={password}
-                  //onChange={(e) => setPassword(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  ref={PasswordInputRef}
-                  onChange={(e) => {
-                    const passwordvalue = e.target.value;
-                    if (passwordvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setPassword(passwordvalue);
-                    }
-                  }}
-                />
-                <label className="register-label" for="floatingPass">
-                  Password
-                </label>
-              </div>
-              <div className="form-floating mb-3  col-md-6">
-                <input
-                  type="password"
-                  className="form-control"
-                  id="floatingConfirmPass"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onKeyPress={handleKeyPress}
-                  ref={ConfirmPasswordInputRef}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <label className="register-label" htmlFor="floatingConfirmPass">
-                  Confirm Password
-                </label>
-              </div>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>Must be 6 characters long</Tooltip>}
+              >
+                <div className=" form-floating mb-3  col-md-6">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="floatingPass"
+                    placeholder="Password"
+                    value={password}
+                    //onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    ref={PasswordInputRef}
+                    onChange={(e) => {
+                      const passwordvalue = e.target.value;
+                      if (passwordvalue.length <= 128) {
+                        // Check if the value is positive or zero
+                        setPassword(passwordvalue);
+                      }
+                    }}
+                  />
+                  <label className="register-label" for="floatingPass">
+                    Password
+                  </label>
+                </div>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip>Must match password</Tooltip>}
+              >
+                <div className="form-floating mb-3  col-md-6">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="floatingConfirmPass"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onKeyPress={handleKeyPress}
+                    ref={ConfirmPasswordInputRef}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <label
+                    className="register-label"
+                    htmlFor="floatingConfirmPass"
+                  >
+                    Confirm Password
+                  </label>
+                </div>
+              </OverlayTrigger>
             </div>
           </div>
           <div className="col-md-1"></div>
         </div>
+
         <div className="agree-terms">
           <input
             className="checkbox"
@@ -503,20 +532,37 @@ const Register = () => {
             onChange={handleTermsChange}
           />
           <label htmlFor="terms">
-            I agree to the <a href="/terms">Terms and Conditions</a>
+            I agree to the{" "}
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>See Terms and Conditions page</Tooltip>}
+            >
+              <a href="/terms">Terms and Conditions</a>
+            </OverlayTrigger>
           </label>
         </div>
-        <button
-          className="register-button"
-          type="submit"
-          onClick={handleGoogleSignIn}
-          disabled={!termsChecked}
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>Verify with Google</Tooltip>}
         >
-          <FaGoogle /> - Register
-        </button>
+          <button
+            className="register-button"
+            type="submit"
+            onClick={handleGoogleSignIn}
+            disabled={!termsChecked}
+          >
+            <FaGoogle /> - Register
+          </button>
+        </OverlayTrigger>
         <br />
         <p className="login-account">
-          Already have an account? <Link to="/login">Login here</Link>
+          Already have an account?{" "}
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip>See Login page</Tooltip>}
+          >
+            <Link to="/login">Login here</Link>
+          </OverlayTrigger>
         </p>
       </div>
       <div className="col-md-1"></div>

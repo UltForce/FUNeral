@@ -25,6 +25,8 @@ import {
   Button,
   Badge,
   Modal,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -298,7 +300,6 @@ const Dashboard = () => {
     }, futureAppointments[0]);
   };
 
-
   return (
     <section>
       <section className="admin-dashboard">
@@ -474,13 +475,18 @@ const Dashboard = () => {
                             {selectedAppointment.name}
                           </div>
                         </Card.Text>
-                        <Button
-                          variant="primary"
-                          className="show-more-button"
-                          onClick={handleShowMore}
+                        <OverlayTrigger
+                          placement="right"
+                          overlay={<Tooltip>Show Appointment Details</Tooltip>}
                         >
-                          Show More
-                        </Button>
+                          <Button
+                            variant="primary"
+                            className="show-more-button"
+                            onClick={handleShowMore}
+                          >
+                            Show More
+                          </Button>
+                        </OverlayTrigger>
                       </>
                     ) : (
                       <Card.Text>No upcoming appointments</Card.Text>

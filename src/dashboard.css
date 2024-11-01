@@ -329,15 +329,31 @@
   padding: 10px;
   width: 200px;
   z-index: 10;
+  width: 300px; /* Set the width of the dropdown */
+  max-height: 400px; /* Set a fixed max height */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .red-dot {
+  position: absolute;
   top: 5px;
   right: 5px;
   width: 10px;
   height: 10px;
   background-color: red;
   border-radius: 50%;
-  display: inline-block;
-  margin-left: 5px;
+}
+
+.notification-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
 }

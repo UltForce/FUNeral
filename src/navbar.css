@@ -170,10 +170,14 @@ nav ul.centeredNav li.active a {
   width: 200px;
   width: 300px; /* Adjust width as needed */
   overflow-y: auto;
+  width: 300px; /* Set the width of the dropdown */
+  max-height: 400px; /* Set a fixed max height */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .notification {
-  padding: 10px;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
   border-bottom: 1px solid #eee;
 }
 
@@ -193,4 +197,18 @@ nav ul.centeredNav li.active a {
   height: 10px;
   background-color: red;
   border-radius: 50%;
+}
+
+.notification-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
 }

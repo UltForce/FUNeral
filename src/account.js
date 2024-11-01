@@ -4,10 +4,16 @@ import {
   sendPasswordResetEmail,
   getUserData,
   AuditLogger,
-} from "./firebase"; // Make sure to import the necessary Firebase authentication and Firestore functions
+} from "./firebase";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUserId } from "./firebase.js";
+import { getCurrentUserId, dba } from "./firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, updateDoc } from "firebase/firestore";
+import { FaEdit } from "react-icons/fa"; // Icon library for edit icon
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+const placeholderProfilePicture = "https://via.placeholder.com/150"; // Placeholder profile picture URL
+
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -21,49 +27,97 @@ const Toast = Swal.mixin({
 });
 
 const Account = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [profilePictureURL, setProfilePictureURL] = useState("");
+  const [editableData, setEditableData] = useState({});
+  const [editMode, setEditMode] = useState(false);
+  const [originalData, setOriginalData] = useState({}); // Store original data for canceling
 
   useEffect(() => {
     const checkLoggedInStatus = async () => {
       try {
         const userId = getCurrentUserId();
         if (!userId) {
-          navigate("/login"); // Redirect to login page if user is not logged in
+          navigate("/login");
         }
       } catch (error) {
         console.error("Error checking login status:", error.message);
-        navigate("/login"); // Redirect to login page if error occurs
+        navigate("/login");
       }
     };
 
     checkLoggedInStatus();
-  }, [navigate]); // Pass navigate as a dependency to useEffect
-  const [user, setUser] = useState(null); // State to store the current user's data
-  const [userData, setUserData] = useState(null); // State to store user data from Firestore
+  }, [navigate]);
 
   useEffect(() => {
-    // Fetch the current user when the component mounts
     const currentUser = auth.currentUser;
     if (currentUser) {
-      // If a user is logged in, set the user data
       setUser(currentUser);
-      // Fetch user data from Firestore
       fetchUserData(currentUser.uid);
     } else {
-      // If no user is logged in, set user to null
       setUser(null);
-      setUserData(null); // Clear user data if no user is logged in
+      setUserData(null);
     }
   }, []);
 
-  // Function to fetch user data from Firestore
   const fetchUserData = async (userId) => {
     try {
-      const userData = await getUserData(userId);
-      setUserData(userData); // Set user data in state
+      const data = await getUserData(userId);
+      setUserData(data);
+      setProfilePictureURL(data.profilePictureURL || placeholderProfilePicture);
+      const initialEditableData = {
+        mobilenumber: data.mobilenumber || "",
+        landlinenumber: data.landlinenumber || "",
+        region: data.region || "",
+        city: data.city || "",
+        barangay: data.barangay || "",
+        street: data.street || "",
+        unit: data.unit || "",
+      };
+      setEditableData(initialEditableData);
+      setOriginalData(initialEditableData); // Store the original data right after setting it
     } catch (error) {
       console.error("Error fetching user data:", error.message);
-      setUserData(null); // Clear user data in case of error
+      setUserData(null);
+    }
+  };
+
+  const handleProfilePictureChange = (e) => {
+    if (e.target.files[0]) {
+      setProfilePicture(e.target.files[0]);
+      handleProfilePictureUpload(e.target.files[0]); // Automatically trigger upload
+    }
+  };
+
+  const handleProfilePictureUpload = async (file) => {
+    try {
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
+        `profilePictures/${user.uid}/${Date.now()}_${file.name}`
+      );
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      const userDocRef = doc(dba, "users", user.uid);
+      await updateDoc(userDocRef, { profilePictureURL: downloadURL });
+
+      setProfilePictureURL(downloadURL); // Update the profile picture URL in the component's state
+      Swal.fire(
+        "Upload Successful",
+        "Profile picture uploaded successfully.",
+        "success"
+      );
+    } catch (error) {
+      console.error("Error uploading profile picture:", error.message);
+      Swal.fire(
+        "Upload Failed",
+        "There was an error uploading your profile picture.",
+        "error"
+      );
     }
   };
 
@@ -78,30 +132,17 @@ const Account = () => {
       if (result.isConfirmed) {
         try {
           await sendPasswordResetEmail(auth, user.email);
-          // Example event object
           const event = {
-            type: "Password", // Type of event
-            userId: user.uid, // User ID associated with the event
-            details: "Change Password link sent", // Details of the event
+            type: "Password",
+            userId: user.uid,
+            details: "Change Password link sent",
           };
-
-          // Call the AuditLogger function with the event object
           AuditLogger({ event });
-          Swal.fire({
-            title: "success",
-            text: "Password reset link sent successfully.",
-            icon: "success",
-            heightAuto: false,
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Confirm",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Toast.fire({
-                icon: "success",
-                title: "Password reset link has been sent to email.",
-              });
-            }
-          });
+          Swal.fire(
+            "Success",
+            "Password reset link sent successfully.",
+            "success"
+          );
         } catch (error) {
           Toast.fire({
             icon: "error",
@@ -113,6 +154,62 @@ const Account = () => {
     });
   };
 
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditableData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSaveChanges = async () => {
+    // Confirm save changes
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to save these changes?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, save it!",
+      cancelButtonText: "No, cancel!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const userDocRef = doc(dba, "users", user.uid);
+        await updateDoc(userDocRef, editableData);
+        Swal.fire("Updated!", "Your information has been updated.", "success");
+        fetchUserData(user.uid); // Refresh the user data after saving
+        setEditMode(false); // Exit edit mode after saving
+      } catch (error) {
+        console.error("Error saving user information:", error.message);
+        Swal.fire(
+          "Update Failed",
+          "There was an error updating your information.",
+          "error"
+        );
+      }
+    }
+  };
+
+  const toggleEditMode = () => {
+    if (editMode) {
+      // Confirm canceling unsaved changes
+      Swal.fire({
+        title: "Discard Changes?",
+        text: "Are you sure you want to discard your changes?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, discard",
+        cancelButtonText: "No, keep editing",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setEditableData(originalData); // Revert to original data
+          setEditMode(false); // Exit edit mode
+        }
+      });
+    } else {
+      setOriginalData({ ...editableData }); // Store original data before editing
+      setEditMode(true); // Enter edit mode
+    }
+  };
+
   return (
     <section className="background-image section content-user">
       <div className="centered page-transition">
@@ -122,48 +219,89 @@ const Account = () => {
             <p className="lead">
               Welcome, {userData.firstname} {userData.lastname}!
             </p>
+            <div style={{ position: "relative", display: "inline-block" }}>
+              <img
+                src={profilePictureURL || placeholderProfilePicture}
+                alt="Profile"
+                style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+              />
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+                style={{ display: "none" }}
+                id="profilePictureInput"
+              />
+
+              <OverlayTrigger
+                placement="right"
+                overlay={<Tooltip>Upload your Profile Picture</Tooltip>}
+              >
+                <label
+                  htmlFor="profilePictureInput"
+                  style={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <FaEdit size={20} color="gray" />
+                </label>
+              </OverlayTrigger>
+            </div>
+            <br />
             <table className="account-table">
               <tbody>
                 <tr>
                   <th>Email:</th>
                   <td>{user.email}</td>
                 </tr>
-                <tr>
-                  <th>Mobile Number:</th>
-                  <td>{userData.mobilenumber}</td>
-                </tr>
-                <tr>
-                  <th>Landline Number:</th>
-                  <td>{userData.landlinenumber}</td>
-                </tr>
-                <tr>
-                  <th>Region:</th>
-                  <td>{userData.region}</td>
-                </tr>
-                <tr>
-                  <th>City:</th>
-                  <td>{userData.city}</td>
-                </tr>
-                <tr>
-                  <th>Barangay:</th>
-                  <td>{userData.barangay}</td>
-                </tr>
-                <tr>
-                  <th>Street:</th>
-                  <td>{userData.street}</td>
-                </tr>
-                <tr>
-                  <th>Unit:</th>
-                  <td>{userData.unit}</td>
-                </tr>
+                {[
+                  "mobilenumber",
+                  "landlinenumber",
+                  "region",
+                  "city",
+                  "barangay",
+                  "street",
+                  "unit",
+                ].map((field) => (
+                  <tr key={field}>
+                    <th>{field.replace(/([A-Z])/g, " $1")}</th>
+                    <td>
+                      <input
+                        type="text"
+                        name={field}
+                        value={editableData[field] || ""}
+                        onChange={handleEditChange}
+                        style={{ width: "100%" }}
+                        readOnly={!editMode} // Set to readonly based on edit mode
+                      />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+            <button
+              className="btn btn-outline-secondary mt-3 ms-2"
+              onClick={toggleEditMode}
+            >
+              {editMode ? "Cancel" : "Edit"}
+            </button>
+            {editMode && (
+              <button
+                className="btn btn-primary mt-3"
+                onClick={handleSaveChanges}
+              >
+                Save Changes
+              </button>
+            )}
+            <button className="btn btn-danger mt-3 ms-2" onClick={handleReset}>
+              Change Password
+            </button>
           </div>
         )}
-        <br></br>
-        <button class="btn btn-outline-primary" onClick={handleReset}>
-          Send Change Password Email
-        </button>
       </div>
     </section>
   );

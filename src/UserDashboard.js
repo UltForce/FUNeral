@@ -6,9 +6,19 @@ import {
   getUserReviewsFirestore,
   getUserRoleFirestore,
 } from "./firebase.js";
-import { Row, Col, Card, ListGroup, Button, Modal } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  ListGroup,
+  Button,
+  Modal,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
+
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -118,14 +128,19 @@ const UserDashboard = () => {
                 </ListGroup.Item>
               ) : (
                 pastAppointments.map((appointment) => (
-                  <ListGroup.Item
-                    key={appointment.id}
-                    onClick={() => handleShowDetails(appointment)}
-                    style={{ cursor: "pointer" }}
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>View Past Appointment Details</Tooltip>}
                   >
-                    {appointment.name} -{" "}
-                    {new Date(appointment.date).toLocaleString()}
-                  </ListGroup.Item>
+                    <ListGroup.Item
+                      key={appointment.id}
+                      onClick={() => handleShowDetails(appointment)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {appointment.name} -{" "}
+                      {new Date(appointment.date).toLocaleString()}
+                    </ListGroup.Item>
+                  </OverlayTrigger>
                 ))
               )}
             </ListGroup>
@@ -142,14 +157,21 @@ const UserDashboard = () => {
                 </ListGroup.Item>
               ) : (
                 futureAppointments.map((appointment) => (
-                  <ListGroup.Item
-                    key={appointment.id}
-                    onClick={() => handleShowDetails(appointment)}
-                    style={{ cursor: "pointer" }}
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip>View Current Appointment Details</Tooltip>
+                    }
                   >
-                    {appointment.name} -{" "}
-                    {new Date(appointment.date).toLocaleString()}
-                  </ListGroup.Item>
+                    <ListGroup.Item
+                      key={appointment.id}
+                      onClick={() => handleShowDetails(appointment)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {appointment.name} -{" "}
+                      {new Date(appointment.date).toLocaleString()}
+                    </ListGroup.Item>
+                  </OverlayTrigger>
                 ))
               )}
             </ListGroup>
@@ -169,7 +191,10 @@ const UserDashboard = () => {
                   <ListGroup.Item key={review.id}>
                     <h5>{review.title}</h5>
                     <p>{review.comment}</p>
-                    <p>Rating: {review.rating} stars</p>
+                    <p>
+                      Rating:{" "}
+                      <div className="stars">{"⭐".repeat(review.rating)}</div>
+                    </p>
                     <p>Status: {review.status}</p>
                   </ListGroup.Item>
                 ))
@@ -240,9 +265,14 @@ const UserDashboard = () => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>Close the details modal</Tooltip>}
+            >
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
+              </Button>
+            </OverlayTrigger>
           </Modal.Footer>
         </Modal>
       </div>

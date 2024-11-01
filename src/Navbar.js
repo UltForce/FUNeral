@@ -231,14 +231,6 @@ const Navbar = ({}) => {
                     </Link>
                   </li>
                   <li
-                    className={location.pathname === "/reports" ? "active" : ""}
-                  >
-                    <Link to="/reports">
-                      <FontAwesomeIcon icon={faBriefcase} />
-                      <span className="nav-label"> Reports</span>
-                    </Link>
-                  </li>
-                  <li
                     className={location.pathname === "/audit" ? "active" : ""}
                   >
                     <Link to="/audit">

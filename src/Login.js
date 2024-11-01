@@ -11,9 +11,13 @@ import {
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { FaGoogle } from "react-icons/fa";
+import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
+import { dba } from "./firebase"; // Ensure Firestore is initialized in your firebase.js file
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./login.css";
 import Swal from "sweetalert2";
+
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -114,26 +118,37 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Display success notification
-      Toast.fire({
-        icon: "success",
-        title: "Successfully logged in with Google",
-      });
+      // Check if the user exists in Firestore
+      const userDoc = await getDoc(doc(dba, "users", user.uid));
+      if (userDoc.exists()) {
+        // User exists, allow login
+        Toast.fire({
+          icon: "success",
+          title: "Successfully logged in with Google",
+        });
 
-      // Log the login event
-      const event = {
-        type: "Login",
-        userId: user.uid,
-        details: "User logged in with Google",
-      };
-      AuditLogger({ event });
+        const event = {
+          type: "Login",
+          userId: user.uid,
+          details: "User logged in with Google",
+        };
+        AuditLogger({ event });
 
-      // Check user role and redirect
-      const userRole = await getUserRoleFirestore(user.uid);
-      if (userRole === "admin") {
-        navigate("/dashboard");
+        // Check user role and redirect
+        const userRole = await getUserRoleFirestore(user.uid);
+        if (userRole === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/homepage");
+        }
       } else {
-        navigate("/homepage");
+        // User does not exist, show an error
+        Toast.fire({
+          icon: "error",
+          title: "Account not found. Please register first.",
+        });
+        await auth.signOut(); // Sign out if the user is not in Firestore
+        navigate("/login");
       }
     } catch (error) {
       console.error("Google Login Error:", error);
@@ -143,6 +158,7 @@ const Login = () => {
       });
     }
   };
+
   return (
     <section className="login">
       <div className="box">
@@ -171,13 +187,23 @@ const Login = () => {
           />
         </div>
         <br />
-        <button class="login-button" onClick={handleLogin}>
-          Login
-        </button>
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>Login with Email and Password</Tooltip>}
+        >
+          <button class="login-button" onClick={handleLogin}>
+            Login
+          </button>
+        </OverlayTrigger>
         <br></br>
-        <button className="google-login-button" onClick={handleGoogleLogin}>
-          <FaGoogle /> - Google Login
-        </button>   
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>Login using Google</Tooltip>}
+        >
+          <button className="google-login-button" onClick={handleGoogleLogin}>
+            <FaGoogle /> - Google Login
+          </button>
+        </OverlayTrigger>
         <p className="links">
           Forgot Password? <Link to="/reset">Recover</Link>
         </p>

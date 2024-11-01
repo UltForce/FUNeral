@@ -9,6 +9,7 @@ import {
   AuditLogger,
   getCurrentUserId,
   getUserRoleFirestore,
+  uploadImage,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +39,7 @@ const Inventory = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [selectedItem, setSelectedItem] = useState(null);
+  const [itemImage, setItemImage] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     quantity: "",
@@ -119,6 +121,9 @@ const Inventory = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const handleImageChange = (e) => {
+    setItemImage(e.target.files[0]);
+  };
 
   const handleShowModal = (mode, item = null, event = null) => {
     // Hide tooltip before changing status
@@ -169,33 +174,36 @@ const Inventory = () => {
     if (!confirmed) return;
 
     try {
+      const userId = getCurrentUserId();
+      // Upload image and get URL
+      const imageUrl = await uploadImage(itemImage);
+
       if (modalMode === "add") {
-        const userId = getCurrentUserId();
         const event = {
           type: "Inventory",
           userId: userId,
           details: "Admin added an item",
         };
         AuditLogger({ event });
-        await addInventoryItem(formData);
+        await addInventoryItem({ ...formData, imageUrl }); // Include imageUrl here
         Toast.fire({
           icon: "success",
           title: "Inventory item added successfully",
         });
       } else if (modalMode === "edit" && selectedItem) {
-        const userId = getCurrentUserId();
         const event = {
           type: "Inventory",
           userId: userId,
           details: "Admin updated an item",
         };
         AuditLogger({ event });
-        await updateInventoryItem(selectedItem.id, formData);
+        await updateInventoryItem(selectedItem.id, { ...formData, imageUrl }); // Include imageUrl here
         Toast.fire({
           icon: "success",
           title: "Inventory item updated successfully",
         });
       }
+
       fetchInventoryItems(); // Fetch items directly here
       handleCloseModal();
     } catch (error) {
@@ -259,6 +267,11 @@ const Inventory = () => {
     }
   };
 
+  const zoomImage = (imageUrl) => {
+    // Logic for zooming in on the image (e.g., opening in a modal)
+    window.open(imageUrl, "_blank"); // Simple example to open the image in a new tab
+  };
+
   return (
     <section className="inventory">
       <main className="main-content">
@@ -288,6 +301,7 @@ const Inventory = () => {
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Description</th>
+                <th>Image</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -298,6 +312,14 @@ const Inventory = () => {
                   <td>{item.quantity}</td>
                   <td>{item.price}</td>
                   <td>{item.description}</td>
+                  <td>
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      style={{ width: "50px", cursor: "pointer" }}
+                      onClick={() => zoomImage(item.imageUrl)}
+                    />
+                  </td>
                   <td>
                     <div>
                       {/* Edit Button with Tooltip */}
@@ -386,6 +408,16 @@ const Inventory = () => {
                 name="description"
                 value={formData.description}
                 onChange={handleFormChange}
+                required
+              />
+            </Form.Group>
+            <br />
+            <Form.Group controlId="formImage">
+              <Form.Label className="label-title">Image</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 required
               />
             </Form.Group>

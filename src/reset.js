@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { auth, sendPasswordResetEmail } from "./firebase"; // Make sure to import the necessary Firebase authentication functions
 import Swal from "sweetalert2";
-import './reset.css';
-
+import "./reset.css";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -39,7 +39,7 @@ const Reset = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          //await sendPasswordResetEmail(auth, email);
+          await sendPasswordResetEmail(auth, email);
           Swal.fire({
             title: "success",
             text: "Password reset link sent successfully.",
@@ -81,40 +81,51 @@ const Reset = () => {
       <h2 className="pass-title">Password Reset</h2>
       <div class="pass-border"></div>
       <div className="pass-body">
-      {resetSent ? (
-        <p>
-          Password reset email has been sent. Please check your email and follow
-          the instructions to reset your password.
-        </p>
-      ) : (
-        <>
+        {resetSent ? (
           <p>
-            Enter your email address, and we will send you a link to reset your
-            password.
+            Password reset email has been sent. Please check your email and
+            follow the instructions to reset your password.
           </p>
-          <br/>
-          <label>Email:</label>
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
-          />
-          <br />
-          <button
-            class="btn btn-outline-primary"
-            onClick={handleReset}
-            onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+        ) : (
+          <>
+            <p>
+              Enter your email address, and we will send you a link to reset
+              your password.
+            </p>
+            <br />
+            <label>Email:</label>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+            />
+            <br />
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>Send Password reset Link to Email</Tooltip>}
+            >
+              <button
+                class="btn btn-outline-primary"
+                onClick={handleReset}
+                onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+              >
+                Send Reset Email
+              </button>
+            </OverlayTrigger>
+          </>
+        )}
+        <br />
+        <p>
+          Remember your password?{" "}
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip>See Login page</Tooltip>}
           >
-            Send Reset Email
-          </button>
-        </>
-      )}
-      <br />
-      <p>
-        Remember your password? <Link to="/login">Login here</Link>
-      </p>
+            <Link to="/login">Login here</Link>
+          </OverlayTrigger>
+        </p>
       </div>
     </div>
   );

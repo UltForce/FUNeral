@@ -10,8 +10,10 @@ import {
   AuditLogger,
   sendNotification,
 } from "./firebase.js"; // Assume these functions are defined in your firebase.js
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "./about.css";
+import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Add this import
 
 const Toast = Swal.mixin({
   toast: true,
@@ -35,6 +37,7 @@ const About = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [profilePictureURL, setProfilePictureURL] = useState(""); // Add state for profile picture URL
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -50,6 +53,8 @@ const About = () => {
         if (userDetails) {
           setFirstName(userDetails.firstname || "");
           setLastName(userDetails.lastname || "");
+          // Fetch the profile picture URL
+          setProfilePictureURL(userDetails.profilePictureURL || ""); // Ensure the userDetails have this field
         }
       }
     });
@@ -57,7 +62,7 @@ const About = () => {
     const fetchTestimonials = async () => {
       const publishedTestimonials = await getPublishedTestimonials(); // Fetch published testimonials
 
-      // Sort testimonials by highest rating first, and then by most recent
+      // Sort testimonials by highest rating first, then by most recent timestamp
       const sortedTestimonials = publishedTestimonials.sort((a, b) => {
         if (b.rating === a.rating) {
           return b.timestamp - a.timestamp; // Sort by most recent if ratings are the same
@@ -65,8 +70,13 @@ const About = () => {
         return b.rating - a.rating; // Sort by highest rating first
       });
 
-      // Limit to top 4 testimonials
-      setTestimonials(sortedTestimonials.slice(0, 4));
+      // Shuffle the sorted testimonials randomly
+      const shuffledTestimonials = sortedTestimonials.sort(
+        () => 0.5 - Math.random()
+      );
+
+      // Limit to a maximum of 5 testimonials
+      setTestimonials(shuffledTestimonials.slice(0, 5));
     };
 
     fetchTestimonials();
@@ -85,7 +95,6 @@ const About = () => {
       return;
     }
 
-    // Check if the user has already submitted a testimonial
     const existingTestimonial = testimonials.find(
       (testimonial) => testimonial.userId === currentUserId
     );
@@ -123,12 +132,13 @@ const About = () => {
       await sendNotification(title, content, currentUserId, recipient);
 
       await submitTestimonialFirestore({
-        userId: currentUserId, // Include user ID
+        userId: currentUserId,
         firstname,
         lastname,
         comment,
         rating,
-        status: "pending", // Default status
+        profilePictureURL, // Include profile picture URL in the submission
+        status: "pending",
       });
 
       // Clear the form
@@ -184,6 +194,15 @@ const About = () => {
           {testimonials.slice(0, 4).map((testimonial) => (
             <div key={testimonial.id} className="testimonial">
               <div className="testimonial-content">
+                {/* Display profile picture or placeholder */}
+                <img
+                  src={
+                    testimonial.profilePictureURL ||
+                    "path/to/placeholder/image.jpg"
+                  } // Replace with your placeholder image path
+                  alt={`${testimonial.firstname} ${testimonial.lastname}`}
+                  className="profile-picture"
+                />
                 <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
                 <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
                 <p className="review-description">{testimonial.comment}</p>
@@ -208,9 +227,14 @@ const About = () => {
               />
             </div>
             <div className="mb-3 star-rating">{renderStars()}</div>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>Send for approval</Tooltip>}
+            >
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </OverlayTrigger>
           </form>
         </section>
       )}

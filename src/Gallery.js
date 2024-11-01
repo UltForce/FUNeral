@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./gallery.css"; // Import CSS file for styling
 import { useNavigate } from "react-router-dom";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const Gallery = () => {
   const navigate = useNavigate(); // Initialize navigate function
@@ -80,26 +81,35 @@ const Gallery = () => {
       {!selectedAlbum ? (
         <div className="album-selector">
           {albums.map((album) => (
-            <div
-              key={album.id}
-              className="album-cover"
-              onClick={() => handleAlbumClick(album)}
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip>View Album</Tooltip>}
             >
-              <img
-                src={album.coverImage}
-                alt={album.title}
-                className="album-image"
-              />
-              <p className="album-title">{album.title}</p>
-            </div>
+              <div
+                key={album.id}
+                className="album-cover"
+                onClick={() => handleAlbumClick(album)}
+              >
+                <img
+                  src={album.coverImage}
+                  alt={album.title}
+                  className="album-image"
+                />
+                <p className="album-title">{album.title}</p>
+              </div>
+            </OverlayTrigger>
           ))}
         </div>
       ) : (
         <div className="album-preview">
-          <button className="return-button" onClick={returnToGallery}>
-            Return to Album Gallery
-          </button>
-
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip>Return to Album View</Tooltip>}
+          >
+            <button className="return-button" onClick={returnToGallery}>
+              Return to Album Gallery
+            </button>
+          </OverlayTrigger>
           <div className="preview-container">
             <img src={previewImage} alt="Preview" className="preview-image" />
           </div>

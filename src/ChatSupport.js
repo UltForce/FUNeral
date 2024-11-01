@@ -1,7 +1,7 @@
 // ChatSupport.js
 import React, { useState } from "react";
 import "./ChatSupport.css";
-
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 const ChatSupport = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -11,12 +11,17 @@ const ChatSupport = () => {
 
   return (
     <div className="chat-support">
-      <button className="chat-icon" onClick={toggleChat}>
-        <img
-          src="https://img.icons8.com/ios-filled/50/ffffff/chat.png"
-          alt="Chat Icon"
-        />
-      </button>
+      <OverlayTrigger
+        placement="left"
+        overlay={<Tooltip>Chat with our AI</Tooltip>}
+      >
+        <button className="chat-icon" onClick={toggleChat}>
+          <img
+            src="https://img.icons8.com/ios-filled/50/ffffff/chat.png"
+            alt="Chat Icon"
+          />
+        </button>
+      </OverlayTrigger>
       {isChatOpen && (
         <div className="chat-box">
           <iframe
