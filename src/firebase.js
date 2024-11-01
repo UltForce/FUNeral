@@ -32,12 +32,12 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Firebase configuration for the main app
 const firebaseConfig = {
-  apiKey: "AIzaSyDWwBbQ29OasLNPDgJyuct1X55gkiNXGYI",
-  authDomain: "funeral-81aff.firebaseapp.com",
-  projectId: "funeral-81aff",
-  storageBucket: "funeral-81aff.appspot.com",
-  messagingSenderId: "938666208645",
-  appId: "1:938666208645:web:5afa1086623efe668268ec",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_ID,
 };
 
 // Initialize Firebase
