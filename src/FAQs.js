@@ -25,7 +25,7 @@ const FAQs = () => {
     <section className="faqs">
       <div>
         <h1 className="faqs-title">FREQUENTLY ASKED QUESTIONS</h1>
-        <div class="faqs-border"></div>
+        <div className="faqs-border"></div>
         <div className="accordion-container centered">
           <div className="accordion" id="faqsAccordion">
             <div className="row">

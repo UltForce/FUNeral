@@ -573,13 +573,11 @@ const Booking = ({}) => {
     const startDate = moment(selectInfo.startStr).tz("Asia/Manila"); // Convert selected date to Singapore Time (GMT+8)
     const currentDate = moment().tz("Asia/Manila"); // Get current date in Singapore Time
     const calendarApi = calendarRef.current.getApi();
-    const startDate2 = moment(selectInfo.startStr).tz("Asia/Manila").format(); // Convert selected date to Singapore Time (GMT+8)
-    const currentDate2 = moment().tz("Asia/Manila").format(); // Get current date in Singapore Time
-    console.log(startDate2);
-    console.log(currentDate2);
+    //console.log(startDate2);
+    //console.log(currentDate2);
     // Set the selected date for display
     setSelectedDate(startDate.format("MMMM DD h:mm A")); // Format the date as "Month, Day HH AM/PM"
-    console.log(currentDate2);
+    //console.log(currentDate2);
     if (selectInfo.view.type === "dayGridMonth") {
       //Check if the selected date (day) is in the past
       if (startDate.isBefore(currentDate, "day")) {
@@ -589,7 +587,7 @@ const Booking = ({}) => {
           icon: "error",
           title: "Cannot select past dates.",
         });
-        console.log("Cannot select past dates.");
+        //console.log("Cannot select past dates.");
         return;
       }
       calendarApi.changeView("timeGridDay", startDate3);
@@ -602,7 +600,7 @@ const Booking = ({}) => {
           icon: "error",
           title: "Cannot select past dates.",
         });
-        console.log("Cannot select past dates.");
+        //console.log("Cannot select past dates.");
         return;
       }
       setIsValidDaySelected(true);
@@ -661,7 +659,7 @@ const Booking = ({}) => {
           }}
         >
           <h1 className="appointment-booking-title">APPOINTMENT BOOKING</h1>{" "}
-          <div class="booking-border"></div>
+          <div className="booking-border"></div>
           <p className="selectedDate" style={{ marginLeft: "20px" }}>
             Selected Date:{" "}
             <strong>{selectedDate ? selectedDate : "None selected"}</strong>

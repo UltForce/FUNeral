@@ -110,7 +110,7 @@ const createAppointment = async (userId, appointmentData) => {
     // Update the appointment data with the appointmentId
     await updateDoc(appointmentRef, { appointmentId });
 
-    console.log("Appointment created successfully with ID: ", appointmentId);
+    //console.log("Appointment created successfully with ID: ", appointmentId);
   } catch (error) {
     console.error("Error creating appointment:", error.message);
   }
@@ -234,7 +234,7 @@ const getUserData = async (userId) => {
     }
   } catch (error) {
     console.error("Error fetching user data from Firestore:", error.message);
-    throw error; // You can handle this error in the calling code
+    return null;
   }
 };
 
@@ -262,7 +262,7 @@ const updateAppointment = async (userId, appointmentId, newData) => {
     // Update the appointment document with the new data
     await updateDoc(appointmentDocRef, newData);
 
-    console.log("Appointment updated successfully!");
+    //console.log("Appointment updated successfully!");
   } catch (error) {
     console.error("Error updating appointment:", error.message);
   }
@@ -276,7 +276,7 @@ const updateAppointmentStatus = async (appointmentId, newStatus) => {
     // Update the appointment document with the new status
     await updateDoc(appointmentDocRef, { status: newStatus });
 
-    console.log("Appointment updated successfully!");
+    //console.log("Appointment updated successfully!");
   } catch (error) {
     console.error("Error updating appointment:", error.message);
   }
@@ -287,7 +287,7 @@ const deleteAppointment = async (appointmentId) => {
   try {
     const appointmentDocRef = doc(dba, "appointments", appointmentId);
     await deleteDoc(appointmentDocRef);
-    console.log("Appointment deleted successfully!");
+    //console.log("Appointment deleted successfully!");
   } catch (error) {
     console.error("Error deleting appointment:", error.message);
   }
@@ -326,7 +326,7 @@ const generateReports = async () => {
     // Save Blob as Excel file
     saveAs(excelBlob, "reports.xlsx");
 
-    console.log("Reports generated successfully");
+    //console.log("Reports generated successfully");
   } catch (error) {
     console.error("Error generating reports:", error.message);
   }
@@ -334,7 +334,7 @@ const generateReports = async () => {
 
 const AuditLogger = async ({ event }) => {
   try {
-    console.log("Event object:", event); // Log the event object
+    //console.log("Event object:", event); // Log the event object
     if (!event || !event.type || !event.userId || !event.details) {
       throw new Error("Invalid event object");
     }
@@ -346,7 +346,7 @@ const AuditLogger = async ({ event }) => {
       details: event.details,
     });
 
-    console.log("Audit log added successfully with ID: ", auditLogRef.id);
+    //console.log("Audit log added successfully with ID: ", auditLogRef.id);
   } catch (error) {
     console.error("Error adding audit log:", error.message);
   }
@@ -391,7 +391,7 @@ const addInventoryItem = async (itemData) => {
   try {
     // Create a new document in the "inventory" collection
     const inventoryRef = await addDoc(collection(dba, "inventory"), itemData);
-    console.log("Inventory item added successfully with ID: ", inventoryRef.id);
+    //console.log("Inventory item added successfully with ID: ", inventoryRef.id);
   } catch (error) {
     console.error("Error adding inventory item:", error.message);
     throw error; // Re-throw the error to be handled in the calling code
@@ -432,7 +432,7 @@ const updateInventoryItem = async (itemId, newData) => {
 
     // Update the inventory item document with the new data
     await updateDoc(itemDocRef, newData);
-    console.log("Inventory item updated successfully!");
+    //console.log("Inventory item updated successfully!");
   } catch (error) {
     console.error("Error updating inventory item:", error.message);
     throw error; // Re-throw the error to be handled in the calling code
@@ -447,7 +447,7 @@ const deleteInventoryItem = async (itemId) => {
 
     // Delete the inventory item document
     await deleteDoc(itemDocRef);
-    console.log("Inventory item deleted successfully!");
+    //console.log("Inventory item deleted successfully!");
   } catch (error) {
     console.error("Error deleting inventory item:", error.message);
     throw error; // Re-throw the error to be handled in the calling code
@@ -472,7 +472,7 @@ const getPublishedTestimonials = async () => {
 const submitTestimonialFirestore = async (testimonialData) => {
   try {
     await addDoc(collection(dba, "testimonials"), testimonialData);
-    console.log("Testimonial submitted successfully!");
+    //console.log("Testimonial submitted successfully!");
   } catch (error) {
     console.error("Error submitting testimonial:", error.message);
   }
@@ -509,7 +509,7 @@ const updateReviewStatusFirestore = async (reviewId, newStatus) => {
   try {
     const reviewDocRef = doc(dba, "testimonials", reviewId);
     await updateDoc(reviewDocRef, { status: newStatus });
-    console.log("Testimonial status updated successfully!");
+    //console.log("Testimonial status updated successfully!");
   } catch (error) {
     console.error("Error updating testimonial status:", error.message);
   }
@@ -520,7 +520,7 @@ const deleteReviewFirestore = async (reviewId) => {
   try {
     const reviewDocRef = doc(dba, "testimonials", reviewId);
     await deleteDoc(reviewDocRef);
-    console.log("Review deleted successfully!");
+    //console.log("Review deleted successfully!");
   } catch (error) {
     console.error("Error deleting testimonial:", error.message);
   }
@@ -584,7 +584,7 @@ export const sendNotification = async (title, content, userId, recipient) => {
 
     // Add the notification to the 'notifications' collection
     await addDoc(collection(dba, "notifications"), notification);
-    console.log("Notification sent successfully:", notification);
+    //console.log("Notification sent successfully:", notification);
   } catch (error) {
     console.error("Error sending notification:", error);
   }
@@ -622,19 +622,19 @@ const fetchAdminNotifications = async () => {
 export const markNotificationAsRead = async (notificationId) => {
   const notificationRef = doc(dba, "notifications", notificationId); // Reference to the specific notification
   await updateDoc(notificationRef, { isRead: true }); // Update the document
-  console.log("Notification marked as read!");
+  //console.log("Notification marked as read!");
 };
 
 export const markNotificationAsUnread = async (notificationId) => {
   const notificationRef = doc(dba, "notifications", notificationId); // Reference to the specific notification
   await updateDoc(notificationRef, { isRead: false }); // Update the document
-  console.log("Notification marked as unread!");
+  //console.log("Notification marked as unread!");
 };
 
 export const deleteNotification = async (notificationId) => {
   const notificationRef = doc(dba, "notifications", notificationId); // Reference to the specific notification
   await deleteDoc(notificationRef); // Delete the document
-  console.log("Notification deleted!");
+  //console.log("Notification deleted!");
 };
 
 export const updateProfilePictureUrl = async (userId, downloadUrl) => {

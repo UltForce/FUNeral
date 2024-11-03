@@ -31,7 +31,7 @@ import {
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { LogoutContext } from "./LogoutContext"; // Update the path as necessary
 import "./App.css"; // Import your CSS file for animations
 
@@ -47,6 +47,7 @@ const Layout = ({ children }) => {
 const App = () => {
   const location = useLocation(); // Use location to manage route transitions
   const { logoutInProgress } = useContext(LogoutContext); // Use the context
+  const nodeRef = useRef(null);
 
   return (
     <SwitchTransition>
@@ -54,8 +55,9 @@ const App = () => {
         key={location.key}
         classNames="page"
         timeout={logoutInProgress ? 0 : 300} // No transition during logout
+        nodeRef={nodeRef}
       >
-        <div className="page">
+        <div className="page" ref={nodeRef}>
           <Routes location={location}>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />

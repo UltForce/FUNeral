@@ -106,15 +106,15 @@ const Dashboard = () => {
 
   const fetchNotifications = async () => {
     const userId = getCurrentUserId();
-    console.log("User ID:", userId); // Check if userId is valid
+    ////console.log("User ID:", userId); // Check if userId is valid
     if (!userId) return; // Exit if userId is not valid
 
     const userRole = await getUserRoleFirestore(userId);
-    console.log("User Role:", userRole); // Check if userRole is valid
+    ////console.log("User Role:", userRole); // Check if userRole is valid
 
     if (userRole === "admin") {
       const notificationsData = await fetchAdminNotifications();
-      console.log("Admin Notifications:", notificationsData); // Check notifications data
+      ////console.log("Admin Notifications:", notificationsData); // Check notifications data
       // Check if there are unread notifications
       const unreadExists = notificationsData.some(
         (notification) => !notification.isRead
@@ -123,7 +123,7 @@ const Dashboard = () => {
       setNotifications(notificationsData);
     } else {
       const notificationsData = await fetchUserNotifications();
-      console.log("User Notifications:", notificationsData); // Check notifications data
+      ////console.log("User Notifications:", notificationsData); // Check notifications data
       // Check if there are unread notifications
       const unreadExists = notificationsData.some(
         (notification) => !notification.isRead
@@ -368,7 +368,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/*<div class="custom-page-loader" id="page-loader2"></div>*/}
+          {/*<div className="custom-page-loader" id="page-loader2"></div>*/}
           <Container fluid>
             <Row className="mt-4">
               <Col md={4}>

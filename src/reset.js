@@ -79,7 +79,7 @@ const Reset = () => {
   return (
     <div className="reset">
       <h2 className="pass-title">Password Reset</h2>
-      <div class="pass-border"></div>
+      <div className="pass-border"></div>
       <div className="pass-body">
         {resetSent ? (
           <p>
@@ -107,7 +107,7 @@ const Reset = () => {
               overlay={<Tooltip>Send Password reset Link to Email</Tooltip>}
             >
               <button
-                class="btn btn-outline-primary"
+                className="btn btn-outline-primary"
                 onClick={handleReset}
                 onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
               >

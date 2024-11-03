@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
 import "./dashboard.css";
-import './Audit.css';
+import "./Audit.css";
 const Audit = () => {
   const navigate = useNavigate();
   const [auditLogs, setAuditLogs] = useState([]);
@@ -43,14 +43,15 @@ const Audit = () => {
             const timestamp = data.timestamp ? data.timestamp.toDate() : "";
             return {
               id: doc.id,
-              firstname: userData ? userData.firstname : "",
-              lastname: userData ? userData.lastname : "",
+              firstname: userData ? userData.firstname : "Unknown",
+              lastname: userData ? userData.lastname : "User",
               eventType: data.eventType,
               timestamp: timestamp,
               details: data.details,
             };
           })
         );
+
         setAuditLogs(logs);
       } catch (error) {
         console.error("Error fetching audit logs:", error);
@@ -127,35 +128,35 @@ const Audit = () => {
   return (
     <section className="audit">
       <main className="main-content">
-      <div className="audit-dashboard-box">
+        <div className="audit-dashboard-box">
           <h1 className="centered">Audit Logs</h1>
         </div>
-      <div className="customerReport">
-        {auditLogs && auditLogs.length > 0 ? (
-          <table id="auditTable" className="display ">
-            <thead>
-              <tr>
-                <th>Event Type</th>
-                <th>Name</th>
-                <th>Timestamp</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {auditLogs.map((log) => (
-                <tr key={log.id}>
-                  <td>{log.eventType}</td>
-                  <td>{`${log.firstname} ${log.lastname}`}</td>
-                  <td>{formatTimestamp(log.timestamp)}</td>
-                  <td>{log.details}</td>
+        <div className="customerReport">
+          {auditLogs && auditLogs.length > 0 ? (
+            <table id="auditTable" className="display ">
+              <thead>
+                <tr>
+                  <th>Event Type</th>
+                  <th>Name</th>
+                  <th>Timestamp</th>
+                  <th>Details</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No audits</p>
-        )}
-      </div>
+              </thead>
+              <tbody>
+                {auditLogs.map((log) => (
+                  <tr key={log.id}>
+                    <td>{log.eventType}</td>
+                    <td>{`${log.firstname} ${log.lastname}`}</td>
+                    <td>{formatTimestamp(log.timestamp)}</td>
+                    <td>{log.details}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No audits</p>
+          )}
+        </div>
       </main>
     </section>
   );

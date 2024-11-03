@@ -33,7 +33,7 @@ const Homepage = () => {
         if (docSnap.exists()) {
           setContent(docSnap.data());
         } else {
-          console.log("No content found");
+          //console.log("No content found");
         }
       } catch (error) {
         console.error("Error fetching content:", error);
@@ -131,8 +131,8 @@ const Homepage = () => {
       <section className="snap-section section5">
         <h1>Our Service</h1>
         <br></br>
-        <div class="row">
-          <div class="grid">
+        <div className="row">
+          <div className="grid">
             <img
               src="https://i.imgur.com/K7N8bDq.jpg"
               alt="Comforting Hearts"
@@ -144,7 +144,7 @@ const Homepage = () => {
               aliqua.
             </p>
           </div>
-          <div class="grid">
+          <div className="grid">
             <img
               src="https://i.imgur.com/K7N8bDq.jpg"
               alt="Respectful Farewells"
@@ -156,7 +156,7 @@ const Homepage = () => {
               aliqua.
             </p>
           </div>
-          <div class="grid">
+          <div className="grid">
             <img
               src="https://i.imgur.com/K7N8bDq.jpg"
               alt="Dignified Services"
@@ -168,7 +168,7 @@ const Homepage = () => {
               aliqua.
             </p>
           </div>
-          <div class="grid">
+          <div className="grid">
             <img
               src="https://i.imgur.com/K7N8bDq.jpg"
               alt="Cherished Memories"
@@ -180,7 +180,7 @@ const Homepage = () => {
               aliqua.
             </p>
           </div>
-          <div class="grid">
+          <div className="grid">
             <img
               src="https://i.imgur.com/K7N8bDq.jpg"
               alt="Honoring Legacies"
@@ -192,7 +192,7 @@ const Homepage = () => {
               aliqua.
             </p>
           </div>
-          <div class="grid">
+          <div className="grid">
             <img src="https://i.imgur.com/K7N8bDq.jpg" alt="Guiding Grace" />
             <h2>Guiding Grace</h2>
             <p>
@@ -208,8 +208,8 @@ const Homepage = () => {
       </section>
       <section className="snap-section section7">
         <h1>BLOGS & ARTICLES</h1>
-        <div class="blogs">
-          <div class="article">
+        <div className="blogs">
+          <div className="article">
             <img src="https://i.imgur.com/C4k6X3A.jpg" alt="Funeral Theme" />
             <h2>Filipino Beliefs You Should Respect When Attending Wakes</h2>
             <p>
@@ -219,7 +219,7 @@ const Homepage = () => {
             </p>
             <button>Read More</button>
           </div>
-          <div class="article">
+          <div className="article">
             <img
               src="https://i.imgur.com/C4k6X3A.jpg"
               alt="Floral Arrangement"
@@ -232,7 +232,7 @@ const Homepage = () => {
             </p>
             <button>Read More</button>
           </div>
-          <div class="article">
+          <div className="article">
             <img
               src="https://i.imgur.com/C4k6X3A.jpg"
               alt="Lights and Candles"

@@ -55,7 +55,7 @@ const Register = () => {
   const PasswordInputRef = useRef(null);
   const ConfirmPasswordInputRef = useRef(null);
   const navigate = useNavigate();
-  const [termsChecked, setTermsChecked] = useState(false); // State for tracking if terms are checked
+  const [termsChecked, setTermsChecked] = useState(false); // State htmlFor tracking if terms are checked
   const handleGoogleSignIn = async () => {
     if (
       !confirmPassword ||
@@ -163,7 +163,7 @@ const Register = () => {
             }
           });
         } catch (error) {
-          console.log("Firebase error:", error.code);
+          //console.log("Firebase error:", error.code);
           if (error.code === "auth/email-already-in-use") {
             Toast.fire({
               icon: "error",
@@ -224,7 +224,7 @@ const Register = () => {
       <div className="register-box">
         <h2 className="register-title">Register</h2>
         <p className="register-info">
-          Fill Out The Form Carefully For Registration
+          Fill Out The Form Carefully htmlFor Registration
         </p>
         <br />
         <div className="row">
@@ -234,7 +234,7 @@ const Register = () => {
               <div className="form-floating mb-3 col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingFirst"
                   placeholder="First Name"
                   value={firstname}
@@ -248,14 +248,14 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingFirst">
+                <label className="register-label" htmlFor="floatingFirst">
                   First Name
                 </label>
               </div>
               <div className="  form-floating mb-3  col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingLast"
                   placeholder="Last Name"
                   value={lastname}
@@ -270,7 +270,7 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingLast">
+                <label className="register-label" htmlFor="floatingLast">
                   Last Name
                 </label>
               </div>
@@ -281,7 +281,7 @@ const Register = () => {
                 <div className="  form-floating mb-3  col-md-6">
                   <input
                     type="number"
-                    class="form-control"
+                    className="form-control"
                     id="floatingMobile"
                     placeholder="Mobile Number"
                     value={mobilenumber}
@@ -299,7 +299,7 @@ const Register = () => {
                       }
                     }}
                   />
-                  <label className="register-label" for="floatingMobile">
+                  <label className="register-label" htmlFor="floatingMobile">
                     Mobile Number
                   </label>
                 </div>
@@ -313,7 +313,7 @@ const Register = () => {
                 <div className="  form-floating mb-3  col-md-6">
                   <input
                     type="number"
-                    class="form-control"
+                    className="form-control"
                     id="floatingLand"
                     placeholder="Landline Number"
                     value={landlinenumber}
@@ -331,7 +331,7 @@ const Register = () => {
                       }
                     }}
                   />
-                  <label className="register-label" for="floatingLand">
+                  <label className="register-label" htmlFor="floatingLand">
                     Landline Number
                   </label>
                 </div>
@@ -339,7 +339,7 @@ const Register = () => {
               <div className="  form-floating mb-3  col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingRegion"
                   placeholder="Region"
                   value={region}
@@ -354,14 +354,14 @@ const Register = () => {
                   onKeyPress={handleKeyPress}
                   ref={RegionInputRef}
                 />
-                <label className="register-label" for="floatingRegion">
+                <label className="register-label" htmlFor="floatingRegion">
                   Region
                 </label>
               </div>
               <div className="  form-floating mb-3  col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingCity"
                   placeholder="City"
                   value={city}
@@ -376,14 +376,14 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingCity">
+                <label className="register-label" htmlFor="floatingCity">
                   City
                 </label>
               </div>
               <div className="  form-floating mb-3  col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingBarangay"
                   placeholder="Barangay"
                   value={barangay}
@@ -398,14 +398,14 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingBarangay">
+                <label className="register-label" htmlFor="floatingBarangay">
                   Barangay
                 </label>
               </div>
               <div className="form-floating mb-3  col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingStreet"
                   placeholder="Street"
                   value={street}
@@ -420,14 +420,14 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingStreet">
+                <label className="register-label" htmlFor="floatingStreet">
                   Street
                 </label>
               </div>
               <div className=" form-floating mb-3  col-md-6">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingUnit"
                   placeholder="Unit"
                   value={unit}
@@ -442,7 +442,7 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingUnit">
+                <label className="register-label" htmlFor="floatingUnit">
                   Unit
                 </label>
               </div>
@@ -450,7 +450,7 @@ const Register = () => {
               {/* <div className=" form-floating mb-3  col-md-6">
                 <input
                   type="email"
-                  class="form-control"
+                  className="form-control"
                   id="floatingEmail"
                   placeholder="Email"
                   value={email}
@@ -465,7 +465,7 @@ const Register = () => {
                     }
                   }}
                 />
-                <label className="register-label" for="floatingEmail">
+                <label className="register-label" htmlFor="floatingEmail">
                   Email
                 </label>
               </div> */}
@@ -476,7 +476,7 @@ const Register = () => {
                 <div className=" form-floating mb-3  col-md-6">
                   <input
                     type="password"
-                    class="form-control"
+                    className="form-control"
                     id="floatingPass"
                     placeholder="Password"
                     value={password}
@@ -491,7 +491,7 @@ const Register = () => {
                       }
                     }}
                   />
-                  <label className="register-label" for="floatingPass">
+                  <label className="register-label" htmlFor="floatingPass">
                     Password
                   </label>
                 </div>

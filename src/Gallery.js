@@ -82,11 +82,11 @@ const Gallery = () => {
         <div className="album-selector">
           {albums.map((album) => (
             <OverlayTrigger
+              key={album.id} // Key is now on OverlayTrigger
               placement="right"
               overlay={<Tooltip>View Album</Tooltip>}
             >
               <div
-                key={album.id}
                 className="album-cover"
                 onClick={() => handleAlbumClick(album)}
               >
@@ -126,11 +126,11 @@ const Gallery = () => {
             <div className="thumbnail-container">
               {selectedAlbum.images
                 .slice(thumbnailIndex, thumbnailIndex + thumbnailsPerPage)
-                .map((image, index) => (
+                .map((image) => (
                   <img
-                    key={index}
+                    key={image} // Use `image` URL as the key
                     src={image}
-                    alt={`Thumbnail ${index}`}
+                    alt="Thumbnail"
                     className={`thumbnail ${
                       previewImage === image ? "active" : ""
                     }`}

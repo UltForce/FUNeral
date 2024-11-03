@@ -99,7 +99,7 @@ const Reviews = () => {
         emailParams,
         "0Tz3RouZf3BXZaSmh" // Replace with your EmailJS user ID
       );
-      console.log("Email sent successfully");
+      //console.log("Email sent successfully");
     } catch (error) {
       console.error("Failed to send email:", error);
     }

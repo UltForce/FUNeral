@@ -164,7 +164,7 @@ const Login = () => {
       <div className="box">
         <img src="JROA.jpg" height="200px" />
         <h2>LOGIN</h2>
-        <div class="inputs">
+        <div className="inputs">
           <input
             type="email"
             id="floatingInput"
@@ -174,7 +174,7 @@ const Login = () => {
             onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
           />
         </div>
-        <div class="inputs">
+        <div className="inputs">
           <input
             type="password"
             id="floatingPassword"
@@ -191,7 +191,7 @@ const Login = () => {
           placement="right"
           overlay={<Tooltip>Login with Email and Password</Tooltip>}
         >
-          <button class="login-button" onClick={handleLogin}>
+          <button className="login-button" onClick={handleLogin}>
             Login
           </button>
         </OverlayTrigger>

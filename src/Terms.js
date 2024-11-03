@@ -27,7 +27,7 @@ const Terms = () => {
     <section className="terms">
       <div>
         <h1 className="terms-title">TERMS & CONDITIONS</h1>
-        <div class="terms-border"></div>
+        <div className="terms-border"></div>
       </div>
     </section>
     <section className="body">
