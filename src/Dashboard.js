@@ -308,8 +308,8 @@ const Dashboard = () => {
             <div className="title-notification-container">
               <h1>Dashboard</h1>
               <div className="notification-container">
-                <button onClick={toggleDropdown}>
-                  <FontAwesomeIcon icon={faBell} />
+                <button onClick={toggleDropdown} className="admin-notify-button">
+                  <FontAwesomeIcon icon={faBell} className="bell-icon"/>
                   {hasUnreadNotifications && <span className="red-dot"></span>}
                 </button>
                 {isDropdownOpen && (
@@ -324,6 +324,7 @@ const Dashboard = () => {
                             notification.isRead ? "read" : "unread"
                           }`}
                         >
+                          <div className="notification-info">
                           <h4>{notification.title}</h4>
                           <p>{notification.content}</p>
                           <small>
@@ -333,12 +334,13 @@ const Dashboard = () => {
                                 : notification.timestamp.toDate()
                             ).toLocaleString()}
                           </small>
-                          <br />
-
+                          
+                          <div className="notification-buttons">
                           {/* Conditionally render the mark as read/unread button */}
                           {!notification.isRead ? (
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
+                              className="read-button"
                             >
                               Mark as Read
                             </button>
@@ -347,6 +349,7 @@ const Dashboard = () => {
                               onClick={() =>
                                 handleMarkAsUnread(notification.id)
                               }
+                              className="unread-button"
                             >
                               Mark as Unread
                             </button>
@@ -356,9 +359,12 @@ const Dashboard = () => {
                             onClick={() =>
                               handleDeleteNotification(notification.id)
                             }
+                            className="dismiss-button"
                           >
                             Dismiss
                           </button>
+                          </div>
+                          </div>
                         </div>
                       ))
                     )}
@@ -370,56 +376,74 @@ const Dashboard = () => {
 
           {/*<div className="custom-page-loader" id="page-loader2"></div>*/}
           <Container fluid>
-            <Row className="mt-4">
-              <Col md={4}>
+            <Row className="cards-row">
+              <Col className="cards-total">
                 <Card
                   className="text-center stats-card"
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
-                    <FontAwesomeIcon icon={faUsers} size="3x" />
-                    <Card.Title>Total Customers</Card.Title>
-                    <Card.Text>
-                      <h1>{totalUsers}</h1>
-                      <p>Till Today</p>
-                    </Card.Text>
+                    <div className="stats-first-column">
+                      <div className="stats-icon">
+                      <FontAwesomeIcon icon={faUsers} size="4x" className="stats-icons"/>
+                      </div>
+                    </div>
+                    <div className="stats-second-column">
+                      <Card.Title>Total Customers</Card.Title>
+                      <Card.Text>
+                        <h1>{totalUsers}</h1>
+                        <p>Till Today</p>
+                      </Card.Text>
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={4}>
+              <Col className="cards-total">
                 <Card
                   className="text-center stats-card"
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
-                    <FontAwesomeIcon icon={faCalendarDay} size="3x" />
+                  <div className="stats-first-column">
+                    <div className="stats-icon">
+                      <FontAwesomeIcon icon={faCalendarDay} size="4x" />
+                    </div>
+                  </div>
+                  <div className="stats-second-column">
                     <Card.Title>Today's Appointments</Card.Title>
                     <Card.Text>
                       <h1>{todaysAppointments.length}</h1>
                       <p>{new Date().toLocaleDateString()}</p>
                     </Card.Text>
+                  </div>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={4}>
+              <Col className="cards-total">
                 <Card
                   className="text-center stats-card"
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
-                    <FontAwesomeIcon icon={faCheckCircle} size="3x" />
+                  <div className="stats-first-column">
+                    <div className="stats-icon">
+                    <FontAwesomeIcon icon={faCheckCircle} size="4x" />
+                    </div>
+                  </div>
+                  <div className="stats-second-column">
                     <Card.Title>Finished Appointments</Card.Title>
                     <Card.Text>
                       <h1>{completedAppointments}</h1>
                       <p>All Time</p>
                     </Card.Text>
+                  </div>
                   </Card.Body>
                 </Card>
               </Col>
             </Row>
 
-            <Row className="mt-4">
-              <Col md={4}>
+            <Row className="cards-row">
+              <Col className="cards-total">
                 <Card
                   style={{ height: "450px", overflowY: "auto" }}
                   className="today-appointments"
@@ -427,7 +451,7 @@ const Dashboard = () => {
                   <Card.Header>Today's Appointments</Card.Header>
                   <ListGroup variant="flush">
                     {todaysAppointments.length === 0 ? (
-                      <ListGroup.Item className="text-center">
+                      <ListGroup.Item className="today-appointment-list">
                         No appointments today
                       </ListGroup.Item>
                     ) : (
@@ -451,7 +475,7 @@ const Dashboard = () => {
                 </Card>
               </Col>
 
-              <Col md={4}>
+              <Col className="cards-total">
                 <Card
                   style={{
                     height: "450px",
@@ -495,7 +519,7 @@ const Dashboard = () => {
                 </Card>
               </Col>
 
-              <Col md={4}>
+              <Col className="cards-total">
                 <Card
                   style={{ height: "450px", width: "100%" }}
                   className="dashboard-calendar"

@@ -366,7 +366,7 @@ const Appointments = () => {
                           <FontAwesomeIcon icon={faEye} />
                         </Button>
                       </OverlayTrigger>
-                      <Dropdown className="action-button">
+                      <Dropdown className="actions-button">
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Actions
                         </Dropdown.Toggle>
@@ -402,13 +402,13 @@ const Appointments = () => {
 
         {/* Appointment Details Modal */}
         <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Appointment Details</Modal.Title>
+          <Modal.Header closeButton className="admin-appointment-header">
+            <Modal.Title className="admin-appointment-title">Appointment Details</Modal.Title>
           </Modal.Header>
-          <Modal.Body className="appointment-details-box">
+          <Modal.Body className="admin-appointment-details-box">
             {selectedAppointment ? (
               <>
-                <h4>{selectedAppointment.name}</h4>
+                <h4 className="admin-appointment-user">{selectedAppointment.name}</h4>
                 <p className="first-details">
                   <strong>Date:</strong>{" "}
                   {formatDateTime(selectedAppointment.date)}
@@ -453,7 +453,7 @@ const Appointments = () => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseDetailsModal}>
+            <Button variant="secondary" onClick={handleCloseDetailsModal} className="close2-button">
               Close
             </Button>
           </Modal.Footer>

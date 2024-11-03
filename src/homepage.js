@@ -131,8 +131,8 @@ const Homepage = () => {
       <section className="snap-section section5">
         <h1>Our Service</h1>
         <br></br>
-        <div className="row">
-          <div className="grid">
+        <div class="homepage-row">
+          <div class="grid">
             <img
               src="https://i.imgur.com/K7N8bDq.jpg"
               alt="Comforting Hearts"

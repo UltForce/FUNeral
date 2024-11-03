@@ -27,7 +27,7 @@
     "datatables.net": "^2.1.4",
     "emailjs-com": "^3.2.0",
     "file-saver": "^2.0.5",
-    "firebase": "^10.13.0",
+    "firebase": "^11.0.1",
     "funeral": "github:UltForce/FUNeral",
     "jquery": "^3.7.1",
     "moment-timezone": "^0.5.45",

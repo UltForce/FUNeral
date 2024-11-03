@@ -16,10 +16,12 @@ nav ul li {
 }
 
 nav ul li a {
-  color: white;
+  color: #FCF2D8;
+  font-size: 13px;
   text-decoration: none;
   display: flex;
   align-items: center;
+  border-radius: 15px;
   padding: 0.5rem 1rem; /* Padding to ensure clickable area */
 }
 
@@ -80,7 +82,7 @@ nav ul li a .nav-label {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333;
+  background-color: #18020C;
   color: white;
   display: flex;
   justify-content: center;
@@ -149,6 +151,7 @@ nav ul.centeredNav li.active a {
   background-color: #ddd;
   color: black;
   transform: scale(1.1); /* Increase size by 10% */
+  border-radius: 15px;
 }
 
 .no-transition {
@@ -164,15 +167,15 @@ nav ul.centeredNav li.active a {
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background-color: #f7cc4c;
   border: 1px solid #ccc;
   z-index: 1000;
+  padding: 10px;
   width: 200px;
-  width: 300px; /* Adjust width as needed */
-  overflow-y: auto;
   width: 300px; /* Set the width of the dropdown */
   max-height: 400px; /* Set a fixed max height */
   overflow-y: auto; /* Enable vertical scrolling */
+  border-radius: 20px;
 }
 
 .notification {
@@ -182,11 +185,106 @@ nav ul.centeredNav li.active a {
 }
 
 .notification.read {
-  background-color: #f9f9f9;
+  background-color: #d1ed96;
+  border-radius: 10px;
 }
 
 .notification.unread {
-  background-color: #e8f5e9; /* Light green for unread */
+  background-color: #f5f095;
+  border-radius: 10px;
+}
+
+.notification.unread, .notification.read .notification-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.notification.unread, .notification.read .notification-info h4 {
+  color: #795548;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.notification.unread, .notification.read  .notification-info p {
+  font-weight: 300;
+}
+
+.notification.unread, .notification.read .notification-info small {
+  font-weight: 500;
+  color: #8b3c11;
+}
+
+.notification.unread, .notification.read .notification-buttons {
+  padding-top: 10px;
+}
+
+.notification.unread, .notification.read .notification-buttons .read-button, .unread-button, .dismiss-button {
+ margin: 0px 5px;
+ border-radius: 10px;
+ border: none;
+ font-weight: 500;
+ padding: 5px 10px;
+}
+
+.notification.unread, .notification.read .notification-buttons .read-button {
+  background-color: rgb(41, 216, 41);
+  color: black
+}
+
+.notification.unread .notification-buttons .read-button:hover {
+  background-color: rgb(31, 193, 31);
+  color: black
+}
+
+.notification.read .notification-buttons .unread-button {
+  background-color: rgb(228, 165, 31);
+  color: black
+}
+
+.notification.read .notification-buttons .unread-button:hover {
+  background-color: rgb(184, 134, 27);
+  color: black
+}
+
+.notification.unread, .notification.read .notification-buttons .dismiss-button {
+  background-color: rgb(183, 32, 32);
+  color: white
+}
+
+.notification.unread, .notification.read .notification-buttons .dismiss-button:hover {
+  background-color: rgb(143, 25, 25);
+  color: white
+}
+
+.notify-button {
+  border: none;
+  background-color: #18020C;
+}
+
+.notify-button:hover {
+  border: none;
+  background-color: #18020C;
+}
+
+.notify-button .bell-icon {
+  width: 20px;
+  height: auto;
+  background-color: #18020C;
+  color: #FDF9AA;
+}
+
+.notify-button .bell-icon:hover {
+  background-color: #18020C;
+  color: #FDF9AA;
+}
+
+.notification-dropdown .no-notif {
+  text-align: center;
+  margin: 5px;
+  font-weight: 400;
 }
 
 .red-dot {
@@ -197,6 +295,7 @@ nav ul.centeredNav li.active a {
   height: 10px;
   background-color: red;
   border-radius: 50%;
+  border: 2px solid #18020C;
 }
 
 .notification-dropdown::-webkit-scrollbar {

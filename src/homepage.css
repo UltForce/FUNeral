@@ -145,7 +145,7 @@
   }
 
 /* General styling */
-.row {
+.homepage-row {
   display: flex;
   height: 500px;
   width: 100%;

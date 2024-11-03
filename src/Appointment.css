@@ -10,6 +10,7 @@
     border-radius: 20px;
     display: flex;
     justify-content: center;
+    margin-top: auto;
 }
 
 .dashboard-appointment nav button {
@@ -22,6 +23,7 @@
     padding-top: 10px;
     font-weight: 400;
     text-align: center;
+    margin-top: auto;
 }
 
 .dashboard-appointment .main-content {
@@ -131,10 +133,57 @@
     font-size: 13px;
 }
 
-.dashboard-appointment .action-button .dropdown-toggle {
+.dashboard-appointment .actions-button .dropdown-toggle {
     font-size: 15px;
 }
 
-.dashboard-appointment .action-button {
+.dashboard-appointment .actions-button {
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
+
+.admin-appointment-header {
+    color: white;
+}
+
+.admin-appointment-title {
+    font-weight: 400;
+    margin: 0 0 0 85px;
+    font-size: 25px;
+}
+
+.admin-appointment-details-box {
+    display: block;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+    margin: 10px 0; 
+    padding: 13px 20px;
+}
+
+.admin-appointment-details-box .first-details,
+.second-details {
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
+}
+
+.admin-appointment-details-box .first-details strong,
+.second-details strong {
+  font-weight: 500;
+  color: #c89d53;
+}
+
+.admin-appointment-details-box .postmortem-title, .admin-appointment-user {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8b5e11;
+  text-decoration: underline;
+}
+
+/* .dashboard-appointment .dt-info, nav {
+    position: relative;
+    bottom: 0;
+} */

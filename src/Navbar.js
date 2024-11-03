@@ -316,8 +316,8 @@ const Navbar = ({}) => {
             {isLoggedIn && (
               <li>
                 <div className="notification-container">
-                  <button onClick={toggleDropdown}>
-                    <FontAwesomeIcon icon={faBell} />
+                  <button onClick={toggleDropdown} className="notify-button">
+                    <FontAwesomeIcon icon={faBell} className="bell-icon"/>
                     {hasUnreadNotifications && (
                       <span className="red-dot"></span>
                     )}
@@ -334,6 +334,7 @@ const Navbar = ({}) => {
                               notification.isRead ? "read" : "unread"
                             }`}
                           >
+                            <div className="notification-info">
                             <h4>{notification.title}</h4>
                             <p>{notification.content}</p>
                             <small>
@@ -343,14 +344,15 @@ const Navbar = ({}) => {
                                   : notification.timestamp.toDate()
                               ).toLocaleString()}
                             </small>
-                            <br />
-
+                      
+                            <div className="notification-buttons">
                             {/* Conditionally render the mark as read/unread button */}
                             {!notification.isRead ? (
                               <button
                                 onClick={() =>
                                   handleMarkAsRead(notification.id)
                                 }
+                                className="read-button"
                               >
                                 Mark as Read
                               </button>
@@ -359,6 +361,7 @@ const Navbar = ({}) => {
                                 onClick={() =>
                                   handleMarkAsUnread(notification.id)
                                 }
+                                className="unread-button"
                               >
                                 Mark as Unread
                               </button>
@@ -368,9 +371,12 @@ const Navbar = ({}) => {
                               onClick={() =>
                                 handleDeleteNotification(notification.id)
                               }
+                              className="dismiss-button"
                             >
                               Dismiss
                             </button>
+                            </div>
+                            </div>
                           </div>
                         ))
                       )}
