@@ -84,6 +84,13 @@
     font-size: 18px;
 }
 
+.fc .fc-toolbar {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 30px;
+}
+
 .fc .fc-toolbar-title {
     font-size: 35px;
 }
@@ -92,8 +99,13 @@
     background-color: #FDF9AA;
     color: black;
     border-color: #CAA971;
-    width: 50px;
+    width: 70px;
     height:40px;
+    font-weight: 500;
+}
+
+.fc .fc-toolbar-chunk .btn-group button::first-letter {
+   text-transform: capitalize;
 }
 
 .book-appointment-button {
