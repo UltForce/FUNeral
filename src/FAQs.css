@@ -2,10 +2,10 @@
     background-color: #CAA971;
     font-family: 'Rubik';
     scroll-snap-align: start;
-    height: 100vh;
+    height: auto;
     margin-top: 4rem;
     padding: 1rem;
-    overflow: auto;
+    overflow: visible;
 }
 
 .faqs-title {

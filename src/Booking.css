@@ -46,6 +46,11 @@
         margin: 0%; 
         padding: 38px 21px;
     }
+
+    .book-appointment-button {
+        height: 55px;
+        width: 25%;
+    }
 }
 
 /* For laptop screens */
@@ -53,6 +58,11 @@
     .booking-box {
         margin: 0%;
         padding: 31px 22px;
+    }
+
+    .book-appointment-button {
+        height: 55px;
+        width: 35%;
     }
 }
 
@@ -62,6 +72,11 @@
         margin: 0%;
         padding: 31px 22px;
     }
+
+    .book-appointment-button {
+        height: 55px;
+        width: 35%;
+    }
 }
 
 /* For mobile screens */
@@ -69,6 +84,11 @@
     .booking-box {
         margin: 0%;
         padding: 47px 15px
+    }
+
+    .book-appointment-button {
+        width: 283px;
+        height: 71px;
     }
 }
 
@@ -113,8 +133,8 @@
     text-align: center;
     display:block;
     margin:auto;
-    height: 55px;
-    width: 25%;
+    /* height: 55px;
+    width: 25%; */
     font-size: 30px;
     border-color: #8B5E11;
 }

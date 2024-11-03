@@ -2,10 +2,10 @@
     background-color: #CAA971;
     font-family: 'Rubik';
     scroll-snap-align: start;
-    height: 100vh;
+    height: auto;
     margin-top: 4rem;
     padding: 1rem;
-    overflow: auto;
+    overflow:visible;
 }
 
 .register-title {
@@ -31,7 +31,7 @@
 /* For desktop screens */
 @media only screen and (min-width: 1200px) {
     .register-box {
-        margin: 0% 13%; 
+        margin: 4% 13%; 
         padding: 8px 30px;
     }
 }
@@ -39,7 +39,7 @@
 /* For laptop screens */
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
     .register-box {
-        margin: 0% 11%; 
+        margin: 4% 11%; 
         padding: 8px 33px;
     }
 }
@@ -47,7 +47,7 @@
 /* For tablet screens */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     .register-box {
-        margin: 1% 8%; 
+        margin: 2% 8%; 
         padding: 12px 40px;
     }
 }
@@ -55,7 +55,7 @@
 /* For mobile screens */
 @media only screen and (max-width: 767px) {
     .register-box {
-        margin: 0% 0%; 
+        margin: 5% 0%; 
         padding: 0px 20px;
     }
 }

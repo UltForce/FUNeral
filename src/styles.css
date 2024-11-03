@@ -137,9 +137,11 @@ footer {
   color: white; /* Text color for the first column */
 }
 
+/* footer */
+
 .footer {
-  margin-top: 0;
-  background-color: #333;
+  margin:auto;
+  background-color: #18020C;
   color: white;
   padding: 20px 0;
   text-align: center;
@@ -153,10 +155,29 @@ footer {
   margin: 0 auto;
 }
 
+.first-footer-content p, .second-footer-content p {
+  text-align: justify;
+  font-size: 16px;
+}
+
+.first-footer-content {
+  padding: 0 20px;
+}
+
+.second-footer-content {
+  padding: 0 20px;
+}
+
+.jroa-copyright {
+  text-align: center;
+  font-size: 16px;
+  padding-top: 10px;
+}
+
 .social-media a {
-  color: white;
+  color: rgb(219, 217, 217);
   text-decoration: none;
-  margin-right: 10px;
+  margin-right: 65px;
 }
 
 .contact-info p {
