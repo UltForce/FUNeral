@@ -9,7 +9,6 @@ import {
   fetchAdminNotifications,
   markNotificationAsRead,
   deleteNotification,
-  markNotificationAsUnread,
 } from "./firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,7 +24,6 @@ import {
   faAddressBook,
   faClapperboard,
   faClipboard,
-  faBriefcase,
   faBox,
   faFileAlt,
   faStar,

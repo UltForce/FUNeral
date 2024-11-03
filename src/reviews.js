@@ -11,7 +11,6 @@ import {
 import $ from "jquery";
 import "datatables.net";
 import {
-  auth,
   getReviewsFirestore,
   updateReviewStatusFirestore,
   deleteReviewFirestore,

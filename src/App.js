@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Login from "./Login";
 import Register from "./Register";
@@ -22,7 +21,7 @@ import Content from "./content";
 import Reviews from "./reviews";
 import UserDashboard from "./UserDashboard";
 import { LogoutProvider } from "./LogoutContext";
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,

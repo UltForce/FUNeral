@@ -13,7 +13,6 @@ import {
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "./about.css";
-import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Add this import
 
 const Toast = Swal.mixin({
   toast: true,
