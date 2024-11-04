@@ -12,6 +12,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 import { FaEdit } from "react-icons/fa"; // Icon library for edit icon
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import './account.css';
 const placeholderProfilePicture = "https://via.placeholder.com/150"; // Placeholder profile picture URL
 
 const Toast = Swal.mixin({
@@ -211,97 +212,110 @@ const Account = () => {
   };
 
   return (
-    <section className="background-image section content-user">
-      <div className="centered page-transition">
-        <h1 className="page-title">Account</h1>
-        {user && userData && (
-          <div className="centered">
-            <p className="lead">
-              Welcome, {userData.firstname} {userData.lastname}!
-            </p>
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <img
-                src={profilePictureURL || placeholderProfilePicture}
-                alt="Profile"
-                style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-              />
+    <section className="account">
+      <div className="account-contents">
+        <h1 className="account-profile-title">USER PROFILE</h1>
+        <div className="account-details-box">
+          
+          {user && userData && (
+            <div className="account-details">
+              <div className="first-account-details">
+                <p className="account-username">
+                  Welcome, <br/>
+                  <strong>{userData.firstname} {userData.lastname}</strong>!
+                </p>
+                <div style={{ position: "relative", display: "inline-block" }}>
+                  <img
+                    src={profilePictureURL || placeholderProfilePicture}
+                    alt="Profile"
+                    style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+                    className="user-profile-pic"
+                  />
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleProfilePictureChange}
-                style={{ display: "none" }}
-                id="profilePictureInput"
-              />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePictureChange}
+                    style={{ display: "none" }}
+                    id="profilePictureInput"
+                  />
 
-              <OverlayTrigger
-                placement="right"
-                overlay={<Tooltip>Upload your Profile Picture</Tooltip>}
-              >
-                <label
-                  htmlFor="profilePictureInput"
-                  style={{
-                    position: "absolute",
-                    top: "5px",
-                    right: "5px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <FaEdit size={20} color="gray" />
-                </label>
-              </OverlayTrigger>
+                  <OverlayTrigger
+                    placement="right"
+                    overlay={<Tooltip>Upload your Profile Picture</Tooltip>}
+                  >
+                    <label
+                      htmlFor="profilePictureInput"
+                      style={{
+                        position: "absolute",
+                        top: "5px",
+                        right: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <FaEdit size={20} color="gray" />
+                    </label>
+                  </OverlayTrigger>
+                </div>
+              </div>
+              <br />
+              {/* Ensure the second-account-details div is also wrapped within the first-account-details */}
+              <div className="second-account-details">
+                <table className="account-table">
+                  <tbody className="account-table-details">
+                    <tr>
+                      <th className="account-table-label">Email:</th>
+                      <td className="user-account-email">{user.email}</td>
+                    </tr>
+                    {[
+                      "mobilenumber",
+                      "landlinenumber",
+                      "region",
+                      "city",
+                      "barangay",
+                      "street",
+                      "unit",
+                    ].map((field) => (
+                      <tr key={field}>
+                        <th className="account-table-label">{field.replace(/([A-Z])/g, " $1")}</th>
+                        <td>
+                          <input
+                            type="text"
+                            name={field}
+                            value={editableData[field] || ""}
+                            className="account-table-info"
+                            onChange={handleEditChange}
+                            style={{ width: "100%" }}
+                            readOnly={!editMode} // Set to readonly based on edit mode
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="account-buttons">
+                  <button
+                    className="cancel-edit-button"
+                    onClick={toggleEditMode}
+                  >
+                    {editMode ? "Cancel" : "Edit"}
+                  </button>
+                  {editMode && (
+                    <button
+                      className="save-changes-button"
+                      onClick={handleSaveChanges}
+                    >
+                      Save Changes
+                    </button>
+                  )}
+                  <button className="change-pass-button" onClick={handleReset}>
+                    Change Password
+                  </button>
+                </div>
+              </div>
             </div>
-            <br />
-            <table className="account-table">
-              <tbody>
-                <tr>
-                  <th>Email:</th>
-                  <td>{user.email}</td>
-                </tr>
-                {[
-                  "mobilenumber",
-                  "landlinenumber",
-                  "region",
-                  "city",
-                  "barangay",
-                  "street",
-                  "unit",
-                ].map((field) => (
-                  <tr key={field}>
-                    <th>{field.replace(/([A-Z])/g, " $1")}</th>
-                    <td>
-                      <input
-                        type="text"
-                        name={field}
-                        value={editableData[field] || ""}
-                        onChange={handleEditChange}
-                        style={{ width: "100%" }}
-                        readOnly={!editMode} // Set to readonly based on edit mode
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <button
-              className="btn btn-outline-secondary mt-3 ms-2"
-              onClick={toggleEditMode}
-            >
-              {editMode ? "Cancel" : "Edit"}
-            </button>
-            {editMode && (
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handleSaveChanges}
-              >
-                Save Changes
-              </button>
-            )}
-            <button className="btn btn-danger mt-3 ms-2" onClick={handleReset}>
-              Change Password
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </section>
   );

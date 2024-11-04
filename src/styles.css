@@ -109,33 +109,10 @@ header h1 {
   font-size: 2em;
 }
 
-footer {
+/* footer {
   margin-top: 20px;
   text-align: center;
-}
-
-.account-table {
-  width: 100%;
-  border-collapse: collapse; /* Remove border spacing */
-}
-
-.account-table th,
-.account-table td {
-  border: 1px solid #ddd; /* Add border to cells */
-  padding: 8px;
-  text-align: left;
-}
-
-.account-table th {
-  background-color: #333; /* Header background color */
-  color: white; /* Header text color */
-}
-
-.account-table th:first-child,
-.account-table td:first-child {
-  background-color: #333; /* Highlight the first column */
-  color: white; /* Text color for the first column */
-}
+} */
 
 /* footer */
 

@@ -1,0 +1,133 @@
+.account {
+    background-color: #CAA971;
+    font-family: 'Rubik';
+    scroll-snap-align: start;
+    height: auto;
+    margin-top: 4rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.account-profile-title {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 50px;
+}
+
+.account-details-box {
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#e3d08d;
+    filter: drop-shadow(0 0 0.75rem black);
+    width: 70%;
+    margin: 30px auto;
+}
+
+.account-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+}
+
+.first-account-details {
+    margin: 12px -40px 93px 50px;
+}
+
+.second-account-details {
+    width: 90%;
+    margin: 46px 28px;
+}
+
+.account-username {
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.account-username strong {
+    color: #8b3c11;
+}
+
+.user-profile-pic {
+    border: 2px solid black;
+}
+
+.account-table {
+    width: 100%;
+    border-spacing: 50px 10px; 
+    border-collapse: separate;
+}
+  
+.account-table-details {
+    border: none;
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+.account-table-label {
+    background-color: #18020C; /* Header background color */
+    color: #FDF9AA; /* Header text color */
+    font-weight: 500;
+    text-align: center;
+    border-radius: 50px ;
+    padding: 5px 10px;
+}
+
+.user-account-email {
+    font-weight: 500;
+    padding: 0 10px;
+}
+
+.account-table-info {
+    border-radius: 30px;
+    padding: 5px 10px;
+    border: 2px solid #4d4642;
+}
+
+.account-buttons {
+    margin: 5px 50px;
+    font-size: 15px;
+}
+
+.cancel-edit-button {
+    margin-left: .5rem !important;
+    margin-top: 1rem !important;
+    background-color: #81817e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 13px;
+    font-weight: 500;
+}
+
+.save-changes-button {
+    margin-top: 1rem !important;
+    margin-left: 10px;
+    padding: 8px 13px;
+    background-color: rgb(31, 193, 31);
+    border: none;
+    border-radius: 5px;
+    color: #18020C;
+    font-weight: 500;
+}
+
+.save-changes-button:hover {
+    background-color: rgb(115, 228, 115);
+    color: #18020C;
+}
+
+.change-pass-button {
+    margin-left: 10px;
+    margin-top: 1rem !important;
+    padding: 8px 13px;
+    background-color: #fa8a29;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+}
+  
+.change-pass-button:hover {
+    background-color: #f0b37d;
+    color: #18020C;
+}
