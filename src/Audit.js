@@ -10,9 +10,12 @@ import $ from "jquery";
 import "datatables.net";
 import "./dashboard.css";
 import "./Audit.css";
+import Loader from "./Loader"; // Import Loader
+
 const Audit = () => {
   const navigate = useNavigate();
   const [auditLogs, setAuditLogs] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const dataTableRef = useRef(null);
 
   useEffect(() => {
@@ -53,8 +56,10 @@ const Audit = () => {
         );
 
         setAuditLogs(logs);
+        setLoading(false); // Hide loader after data is fetched
       } catch (error) {
         console.error("Error fetching audit logs:", error);
+        setLoading(false); // Hide loader even if there's an error
       }
     };
 
@@ -63,20 +68,15 @@ const Audit = () => {
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp || isNaN(timestamp)) {
-      return ""; // Return empty string or any other default value
+      return ""; 
     }
-
     const dateTime = new Date(timestamp);
-
-    // Extract date, day of the week, and hour
     const year = dateTime.getFullYear();
-    const month = ("0" + (dateTime.getMonth() + 1)).slice(-2); // Adding leading zero for single digit months
-    const day = ("0" + dateTime.getDate()).slice(-2); // Adding leading zero for single digit days
-    const hour = ("0" + dateTime.getHours()).slice(-2); // Adding leading zero for single digit hours
-    const minutes = ("0" + dateTime.getMinutes()).slice(-2); // Adding leading zero for single digit minutes
-    const seconds = ("0" + dateTime.getSeconds()).slice(-2); // Adding leading zero for single digit seconds
-
-    // Format date string with spaces and without minutes and seconds
+    const month = ("0" + (dateTime.getMonth() + 1)).slice(-2);
+    const day = ("0" + dateTime.getDate()).slice(-2);
+    const hour = ("0" + dateTime.getHours()).slice(-2);
+    const minutes = ("0" + dateTime.getMinutes()).slice(-2);
+    const seconds = ("0" + dateTime.getSeconds()).slice(-2);
     return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
   };
 
@@ -118,7 +118,6 @@ const Audit = () => {
 
   useEffect(() => {
     return () => {
-      // Cleanup function to destroy DataTable instance when component unmounts
       if ($.fn.DataTable.isDataTable("#auditTable")) {
         dataTableRef.current.destroy();
       }
@@ -128,12 +127,13 @@ const Audit = () => {
   return (
     <section className="audit">
       <main className="main-content">
+        {loading && <Loader />} {/* Display loader while loading */}
         <div className="audit-dashboard-box">
           <h1 className="centered">Audit Logs</h1>
         </div>
         <div className="customerReport">
           {auditLogs && auditLogs.length > 0 ? (
-            <table id="auditTable" className="display ">
+            <table id="auditTable" className="display">
               <thead>
                 <tr>
                   <th>Event Type</th>

@@ -12,6 +12,7 @@ import {
   getUserRoleFirestore,
   sendNotification,
   getUserEmailById,
+  toggleArchiveStatus,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +28,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import "./Appointment.css";
-
+import Loader from "./Loader.js";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -44,6 +45,7 @@ const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
   const navigate = useNavigate();
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -66,7 +68,9 @@ const Appointments = () => {
       try {
         const appointments = await getAppointments();
         setAppointments(appointments);
+        setLoading(false); // Hide loader after data is fetched
       } catch (error) {
+        setLoading(false); // Hide loader after data is fetched
         console.error("Error fetching appointments:", error.message);
       }
     };
@@ -179,6 +183,7 @@ const Appointments = () => {
     try {
       const appointment = appointments.find((r) => r.id === appointmentId);
       if (action === "delete") {
+        setLoading(true); // Set loading state to true
         const userId = getCurrentUserId();
         const event = {
           type: "Appointment",
@@ -198,7 +203,28 @@ const Appointments = () => {
           icon: "success",
           title: "Appointment deleted successfully",
         });
+      } else if (action === "archive") {
+        setLoading(true); // Set loading state to true
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Appointment",
+          userId: userId,
+          details: "Admin archived an appointment",
+        };
+        AuditLogger({ event });
+
+        const title = "Appointment archived";
+        const content = `Your appointment has been archived by an admin`;
+        const recipient = appointment.userId;
+
+        await sendNotification(title, content, userId, recipient);
+        await toggleArchiveStatus(appointmentId, "appointments", true);
+        Toast.fire({
+          icon: "success",
+          title: "Appointment archived successfully",
+        });
       } else {
+        setLoading(true); // Set loading state to true
         const userId = getCurrentUserId();
         const event = {
           type: "Appointment",
@@ -238,6 +264,10 @@ const Appointments = () => {
           title: `Appointment status changed to ${action}`,
         });
       }
+      // Destroy DataTable before updating the state
+      if ($.fn.DataTable.isDataTable("#appointmentsTable")) {
+        $("#appointmentsTable").DataTable().destroy();
+      }
       await fetchAppointments(); // Refresh the appointments list
       const userId = getCurrentUserId();
       const event = {
@@ -248,6 +278,7 @@ const Appointments = () => {
         }`,
       };
       AuditLogger({ event });
+      setLoading(false); // Set loading state to true
     } catch (error) {
       console.error(`Error handling action (${action}):`, error.message);
       alert(`An error occurred while performing the action (${action}).`);
@@ -261,6 +292,7 @@ const Appointments = () => {
       "completed",
       "canceled",
       "delete",
+      "archive",
     ];
     return allActions.filter((action) => action !== status);
   };
@@ -268,10 +300,10 @@ const Appointments = () => {
   return (
     <section className="dashboard-appointment">
       <main className="main-content">
+        {loading && <Loader />} {/* Use the Loader component here */}
         <div className="appointments-dashboard-box">
           <h1 className="centered">Appointments</h1>
         </div>
-
         <div className="customerReport">
           <div className="appointment-reports">
             {/* <h3>
@@ -399,16 +431,19 @@ const Appointments = () => {
           )}
         </div>
         <br />
-
         {/* Appointment Details Modal */}
         <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
           <Modal.Header closeButton className="admin-appointment-header">
-            <Modal.Title className="admin-appointment-title">Appointment Details</Modal.Title>
+            <Modal.Title className="admin-appointment-title">
+              Appointment Details
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="admin-appointment-details-box">
             {selectedAppointment ? (
               <>
-                <h4 className="admin-appointment-user">{selectedAppointment.name}</h4>
+                <h4 className="admin-appointment-user">
+                  {selectedAppointment.name}
+                </h4>
                 <p className="first-details">
                   <strong>Date:</strong>{" "}
                   {formatDateTime(selectedAppointment.date)}
@@ -453,7 +488,11 @@ const Appointments = () => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseDetailsModal} className="close2-button">
+            <Button
+              variant="secondary"
+              onClick={handleCloseDetailsModal}
+              className="close2-button"
+            >
               Close
             </Button>
           </Modal.Footer>

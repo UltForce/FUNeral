@@ -20,7 +20,8 @@ import Inventory from "./Inventory";
 import Content from "./content";
 import Reviews from "./reviews";
 import UserDashboard from "./UserDashboard";
-import { LogoutProvider } from "./LogoutContext";
+import Transaction from "./Transaction";
+import Archive from "./Archive";
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -32,7 +33,6 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useContext, useRef } from "react";
-import { LogoutContext } from "./LogoutContext"; // Update the path as necessary
 import "./App.css"; // Import your CSS file for animations
 
 const Layout = ({ children }) => {
@@ -46,7 +46,6 @@ const Layout = ({ children }) => {
 
 const App = () => {
   const location = useLocation(); // Use location to manage route transitions
-  const { logoutInProgress } = useContext(LogoutContext); // Use the context
   const nodeRef = useRef(null);
 
   return (
@@ -54,7 +53,7 @@ const App = () => {
       <CSSTransition
         key={location.key}
         classNames="page"
-        timeout={logoutInProgress ? 0 : 300} // No transition during logout
+        timeout={300} // No transition during logout
         nodeRef={nodeRef}
       >
         <div className="page" ref={nodeRef}>
@@ -82,6 +81,8 @@ const App = () => {
             <Route path="/content" element={<Content />} />
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/userdashboard" element={<UserDashboard />} />
+            <Route path="/transaction" element={<Transaction />} />
+            <Route path="/archive" element={<Archive />} />
             <Route path="*" element={<Homepage />} />
           </Routes>
         </div>
@@ -93,14 +94,12 @@ const App = () => {
 function AppWithRouter() {
   return (
     <Router>
-      <LogoutProvider>
-        <Layout>
-          <Navbar />
-          <App />
-          <Footer />
-          <ToastContainer />
-        </Layout>
-      </LogoutProvider>
+      <Layout>
+        <Navbar />
+        <App />
+        <Footer />
+        <ToastContainer />
+      </Layout>
     </Router>
   );
 }

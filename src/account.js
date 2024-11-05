@@ -12,7 +12,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 import { FaEdit } from "react-icons/fa"; // Icon library for edit icon
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import './account.css';
+import "./account.css";
+import Loader from "./Loader";
 const placeholderProfilePicture = "https://via.placeholder.com/150"; // Placeholder profile picture URL
 
 const Toast = Swal.mixin({
@@ -35,6 +36,7 @@ const Account = () => {
   const [profilePictureURL, setProfilePictureURL] = useState("");
   const [editableData, setEditableData] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state
   const [originalData, setOriginalData] = useState({}); // Store original data for canceling
 
   useEffect(() => {
@@ -80,7 +82,9 @@ const Account = () => {
       };
       setEditableData(initialEditableData);
       setOriginalData(initialEditableData); // Store the original data right after setting it
+      setLoading(false); // Hide loader after data is fetched
     } catch (error) {
+      setLoading(false); // Hide loader after data is fetched
       console.error("Error fetching user data:", error.message);
       setUserData(null);
     }
@@ -95,6 +99,7 @@ const Account = () => {
 
   const handleProfilePictureUpload = async (file) => {
     try {
+      setLoading(true); // Hide loader after data is fetched
       const storage = getStorage();
       const storageRef = ref(
         storage,
@@ -112,7 +117,9 @@ const Account = () => {
         "Profile picture uploaded successfully.",
         "success"
       );
+      setLoading(false); // Hide loader after data is fetched
     } catch (error) {
+      setLoading(false); // Hide loader after data is fetched
       console.error("Error uploading profile picture:", error.message);
       Swal.fire(
         "Upload Failed",
@@ -173,12 +180,15 @@ const Account = () => {
 
     if (result.isConfirmed) {
       try {
+        setLoading(true); // Hide loader after data is fetched
         const userDocRef = doc(dba, "users", user.uid);
         await updateDoc(userDocRef, editableData);
         Swal.fire("Updated!", "Your information has been updated.", "success");
         fetchUserData(user.uid); // Refresh the user data after saving
         setEditMode(false); // Exit edit mode after saving
+        setLoading(false); // Hide loader after data is fetched
       } catch (error) {
+        setLoading(false); // Hide loader after data is fetched
         console.error("Error saving user information:", error.message);
         Swal.fire(
           "Update Failed",
@@ -213,22 +223,29 @@ const Account = () => {
 
   return (
     <section className="account">
+      {loading && <Loader />} {/* Display loader while loading */}
       <div className="account-contents">
         <h1 className="account-profile-title">USER PROFILE</h1>
         <div className="account-details-box">
-          
           {user && userData && (
             <div className="account-details">
               <div className="first-account-details">
                 <p className="account-username">
-                  Welcome, <br/>
-                  <strong>{userData.firstname} {userData.lastname}</strong>!
+                  Welcome, <br />
+                  <strong>
+                    {userData.firstname} {userData.lastname}
+                  </strong>
+                  !
                 </p>
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <img
                     src={profilePictureURL || placeholderProfilePicture}
                     alt="Profile"
-                    style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      borderRadius: "50%",
+                    }}
                     className="user-profile-pic"
                   />
 
@@ -277,7 +294,9 @@ const Account = () => {
                       "unit",
                     ].map((field) => (
                       <tr key={field}>
-                        <th className="account-table-label">{field.replace(/([A-Z])/g, " $1")}</th>
+                        <th className="account-table-label">
+                          {field.replace(/([A-Z])/g, " $1")}
+                        </th>
                         <td>
                           <input
                             type="text"

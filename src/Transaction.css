@@ -1,18 +1,18 @@
-.inventory {
+.transaction {
   display: flex !important;
   min-height: 100vh !important; /* Full height */
   background-color: #f0e6dc !important; /* Override global background */
   font-family: "Rubik";
 }
 
-.inventory .main-content {
+.transaction .main-content {
   flex-grow: 1 !important;
   background-color: #caa971 !important; /* Maintain background */
   padding: 20px !important;
   margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
 }
 
-.inventory-dashboard-box {
+.transaction-dashboard-box {
   display: block;
   border: 1px solid #ffffff;
   border-radius: 20px;
@@ -33,18 +33,18 @@
   margin: 0; /* Remove default margins */
 }
 
-.add-inventory {
+.add-transaction {
   cursor: pointer;
   margin-left: 20px;
 }
 
-#inventoryTable {
+#transactionTable {
   border-radius: 10px;
   font-weight: 400;
   font-size: 15px;
 }
 
-#inventoryTable th {
+#transactionTable th {
   background-color: #d9d9d9;
   font-weight: 500;
   font-size: 20px;
@@ -53,35 +53,35 @@
   overflow: hidden;
 }
 
-#inventoryTable td {
+#transactionTable td {
   background-color: white;
   text-align: center;
   border: 1px solid black;
 }
 
-.inventory nav {
+.transaction nav {
   background-color: #333333;
   border-radius: 20px;
   display: flex;
   justify-content: center;
 }
 
-.inventory nav button {
+.transaction nav button {
   border-radius: 5px;
   font-size: 15px;
 }
 
-.inventory-header {
+.transaction-header {
   color: white;
 }
 
-.inventory-title {
+.transaction-title {
   font-weight: 400;
   margin: 0 0 0 168px;
   font-size: 25px;
 }
 
-.inventory-details-box {
+.transaction-details-box {
   display: block;
   border: 1px solid #4d4642;
   border-radius: 20px;
@@ -90,7 +90,7 @@
   padding: 13px 20px;
 }
 
-.edit-item-button {
+.edit-transaction-button {
   background-color: #fdf9aa;
   color: black;
   border: 1px solid #6a6868;
@@ -99,7 +99,7 @@
   margin: auto;
 }
 
-.edit-item-button:hover {
+.edit-transaction-button:hover {
   background-color: #caa971;
   color: #4d4642;
   border: 1px solid #caa971;

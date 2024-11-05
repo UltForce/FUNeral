@@ -1,39 +1,53 @@
 .terms {
-    background-color: #CAA971;
-    font-family: 'Rubik';
-    scroll-snap-align: start;
-    height: auto;
-    margin-top: 4rem;
-    padding: 1rem;
-    overflow: visible;
-}
-
-.body {
-    font-family: 'Rubik';
-    background-color: #FCF2D8;
-    width: 100%;
-    height:100vh;
-}
-
-.terms-border {
-    display: block;
-    width: 350px;
-    height: 3px;
-    background: #18020C;
-    margin: 8px auto 65px;
+  background-color: #caa971;
+  font-family: "Rubik";
+  scroll-snap-align: start;
+  height: auto;
+  margin-top: 4rem;
+  padding: 1rem;
+  overflow: visible;
 }
 
 .terms-title {
-    padding-top: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-size: 50px;
+  padding-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 50px;
+}
+
+.terms-border {
+  display: block;
+  width: 350px;
+  height: 3px;
+  background: #18020c;
+  margin: 8px auto 65px;
 }
 
 .no-terms {
-    text-align: center;
-    margin: 40px auto;
-    font-size: 20px;
+  text-align: center;
+  margin: 40px auto;
+  font-size: 20px;
+}
+
+.accordion-item {
+  background-color: #fcf2d8;
+}
+
+.accordion-item button {
+  background-color: #fcf2d8;
+  color: #8b5e11;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.accordion-body {
+  color: #18020c;
+  font-size: 15px;
+  text-align: justify;
+}
+
+.body {
+  min-height: 60vh !important; /* Full height */
 }

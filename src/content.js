@@ -14,10 +14,10 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Tooltip } from "bootstrap";
+import Loader from "./Loader.js";
 import "./content.css";
 
 const Toast = Swal.mixin({
@@ -38,6 +38,7 @@ const Content = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add"); // add or edit
   const [selectedContent, setSelectedContent] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
   const [formData, setFormData] = useState({
     page: "faqs", // Can be faqs or terms
     title: "",
@@ -65,6 +66,7 @@ const Content = () => {
     const fetchData = async () => {
       const data = await getContent();
       setContent(data);
+      setLoading(false); // Hide loader after data is fetched
     };
 
     fetchData();
@@ -96,13 +98,6 @@ const Content = () => {
           stripeClasses: ["stripe1", "stripe2"],
         });
       }
-      // Initialize Bootstrap tooltips
-      const tooltipTriggerList = document.querySelectorAll(
-        '[data-bs-toggle="tooltip"]'
-      );
-      tooltipTriggerList.forEach(
-        (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
-      );
     }
   }, [content]);
 
@@ -112,13 +107,6 @@ const Content = () => {
   };
 
   const handleShowModal = (mode, item = null, event = null) => {
-    if (event) {
-      const tooltipElement = event.currentTarget;
-      const tooltipInstance = Tooltip.getInstance(tooltipElement);
-      if (tooltipInstance) {
-        tooltipInstance.hide();
-      }
-    }
     setModalMode(mode);
     setSelectedContent(item);
     setFormData({
@@ -145,6 +133,7 @@ const Content = () => {
 
     if (result.isConfirmed) {
       try {
+        setLoading(true); // Set loading state to true
         if (modalMode === "edit" && selectedContent) {
           const userId = getCurrentUserId();
           const event = {
@@ -176,6 +165,7 @@ const Content = () => {
         const data = await getContent();
         setContent(data);
         handleCloseModal();
+        setLoading(false); // Set loading state to true
       } catch (error) {
         console.error("Error managing content:", error.message);
         alert("An error occurred while managing content.");
@@ -194,6 +184,7 @@ const Content = () => {
 
     if (result.isConfirmed) {
       try {
+        setLoading(true); // Set loading state to true
         const userId = getCurrentUserId();
         const event = {
           type: "Content",
@@ -201,13 +192,19 @@ const Content = () => {
           details: "Admin deleted a content",
         };
         AuditLogger({ event });
+
         await deleteContent(id);
         Toast.fire({
           icon: "success",
           title: "Content deleted successfully",
         });
+        // Destroy DataTable before updating the state
+        if ($.fn.DataTable.isDataTable("#contentTable")) {
+          $("#contentTable").DataTable().destroy();
+        }
         const data = await getContent();
         setContent(data);
+        setLoading(false); // Set loading state to true
       } catch (error) {
         console.error("Error deleting content:", error.message);
         alert("An error occurred while deleting content.");
@@ -218,22 +215,29 @@ const Content = () => {
   return (
     <section className="manage-content">
       <main className="main-content">
+        {loading && <Loader />} {/* Use the Loader component here */}
         <div className="content-dashboard-box">
           <div className="header-container">
             <h1 className="centered">Manage Content</h1>
-            <a className="add-inventory" onClick={() => handleShowModal("add")}>
-              <img src="add.png" style={{ height: "30px" }}></img>
-            </a>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>Add Content</Tooltip>}
+            >
+              <a
+                className="add-inventory"
+                onClick={() => handleShowModal("add")}
+              >
+                <img src="add.png" style={{ height: "30px" }}></img>
+              </a>
+            </OverlayTrigger>
           </div>
         </div>
-
         {/* tanggalin na dapat itong button*/}
         <Button
           className="add-button"
           variant="primary"
           onClick={() => handleShowModal("add")}
         ></Button>
-
         {content.length === 0 ? (
           <p className="text-center">No content available</p>
         ) : (
@@ -254,31 +258,36 @@ const Content = () => {
                   <td>{item.body}</td>
                   <td>
                     <div>
-                      {/* Edit Button with Tooltip */}
-                      <button
-                        className="btn btn-warning"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Edit Item"
-                        onClick={(event) =>
-                          handleShowModal("edit", item, event)
-                        }
+                      {/* Edit Button with OverlayTrigger for Tooltip */}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Edit Content</Tooltip>}
                       >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>{" "}
-                      {/* Delete Button with Tooltip */}
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        title="Delete Item"
-                        onClick={(event) => {
-                          handleDelete(item.id, event);
-                        }}
+                        <button
+                          className="btn btn-warning"
+                          type="button"
+                          onClick={(event) => {
+                            handleShowModal("edit", item, event);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                      </OverlayTrigger>{" "}
+                      {/* Delete Button with OverlayTrigger for Tooltip */}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Delete Content</Tooltip>}
                       >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
+                        <button
+                          className="btn btn-danger"
+                          type="button"
+                          onClick={(event) => {
+                            handleDelete(item.id, event);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                      </OverlayTrigger>
                     </div>
                   </td>
                 </tr>

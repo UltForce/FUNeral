@@ -1,0 +1,11 @@
+/* Loader.css */
+.loader {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 1;
+  background: url(/public/Chunk-4s-154px.gif) center no-repeat #fff;
+}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getContent } from "./firebase"; // Import your Firestore helper function
-import './FAQs.css';
-
+import "./FAQs.css";
+import Loader from "./Loader";
 const FAQs = () => {
   const [faqs, setFaqs] = useState([]);
-
+  const [loading, setLoading] = useState(true); // Add loading state
   useEffect(() => {
     // Fetch content from Firestore
     const fetchData = async () => {
@@ -13,7 +13,9 @@ const FAQs = () => {
         // Filter content to show only FAQs
         const faqsContent = allContent.filter((item) => item.page === "faqs");
         setFaqs(faqsContent);
+        setLoading(false); // Hide loader after data is fetched
       } catch (error) {
+        setLoading(false); // Hide loader after data is fetched
         console.error("Error fetching FAQs:", error);
       }
     };
@@ -22,10 +24,15 @@ const FAQs = () => {
   }, []);
 
   return (
-    <section className="faqs">
-      <div>
-        <h1 className="faqs-title">FREQUENTLY ASKED QUESTIONS</h1>
-        <div className="faqs-border"></div>
+    <div>
+      <section className="faqs">
+        {loading && <Loader />} {/* Display loader while loading */}
+        <div>
+          <h1 className="faqs-title">FREQUENTLY ASKED QUESTIONS</h1>
+          <div className="faqs-border"></div>
+        </div>
+      </section>
+      <section className="body">
         <div className="accordion-container centered">
           <div className="accordion" id="faqsAccordion">
             <div className="row">
@@ -56,15 +63,15 @@ const FAQs = () => {
                         <div className="accordion-body">{faq.body}</div>
                       </div>
                     </div>
-                    <br/>
+                    <br />
                   </div>
                 ))
               )}
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

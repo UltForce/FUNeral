@@ -15,12 +15,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Tooltip } from "bootstrap";
 import "./Inventory.css";
-
+import Loader from "./Loader.js";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -40,6 +39,7 @@ const Inventory = () => {
   const [modalMode, setModalMode] = useState("add");
   const [selectedItem, setSelectedItem] = useState(null);
   const [itemImage, setItemImage] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
   const [formData, setFormData] = useState({
     name: "",
     quantity: "",
@@ -68,7 +68,9 @@ const Inventory = () => {
     try {
       const items = await getInventoryItems();
       setInventoryItems(items);
+      setLoading(false); // Hide loader after data is fetched
     } catch (error) {
+      setLoading(false); // Hide loader after data is fetched
       console.error("Error fetching inventory items:", error.message);
       Toast.fire({
         icon: "error",
@@ -107,13 +109,6 @@ const Inventory = () => {
           stripeClasses: ["stripe1", "stripe2"],
         });
       }
-      // Initialize Bootstrap tooltips
-      const tooltipTriggerList = document.querySelectorAll(
-        '[data-bs-toggle="tooltip"]'
-      );
-      tooltipTriggerList.forEach(
-        (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
-      );
     }
   }, [inventoryItems]);
 
@@ -126,14 +121,6 @@ const Inventory = () => {
   };
 
   const handleShowModal = (mode, item = null, event = null) => {
-    // Hide tooltip before changing status
-    if (event) {
-      const tooltipElement = event.currentTarget;
-      const tooltipInstance = Tooltip.getInstance(tooltipElement);
-      if (tooltipInstance) {
-        tooltipInstance.hide();
-      }
-    }
     setModalMode(mode);
     setSelectedItem(item);
     if (item) {
@@ -174,6 +161,7 @@ const Inventory = () => {
     if (!confirmed) return;
 
     try {
+      setLoading(true); // Set loading state to true
       const userId = getCurrentUserId();
       // Upload image and get URL
       const imageUrl = await uploadImage(itemImage);
@@ -206,6 +194,7 @@ const Inventory = () => {
 
       fetchInventoryItems(); // Fetch items directly here
       handleCloseModal();
+      setLoading(false); // Set loading state to true
     } catch (error) {
       console.error(
         `Error ${modalMode === "add" ? "adding" : "updating"} inventory item:`,
@@ -232,19 +221,11 @@ const Inventory = () => {
   };
 
   const handleDelete = async (itemId, event = null) => {
-    // Hide tooltip before changing status
-    if (event) {
-      const tooltipElement = event.currentTarget;
-      const tooltipInstance = Tooltip.getInstance(tooltipElement);
-      if (tooltipInstance) {
-        tooltipInstance.hide();
-      }
-    }
-
     const confirmedId = await handleDeleteConfirmation(itemId);
     if (!confirmedId) return;
 
     try {
+      setLoading(true); // Set loading state to true
       const userId = getCurrentUserId();
       const logEvent = {
         type: "Inventory",
@@ -257,7 +238,12 @@ const Inventory = () => {
         icon: "success",
         title: "Inventory item deleted successfully",
       });
+      // Destroy DataTable before updating the state
+      if ($.fn.DataTable.isDataTable("#inventoryTable")) {
+        $("#inventoryTable").DataTable().destroy();
+      }
       fetchInventoryItems();
+      setLoading(false); // Set loading state to true
     } catch (error) {
       console.error("Error deleting inventory item:", error.message);
       Toast.fire({
@@ -275,22 +261,23 @@ const Inventory = () => {
   return (
     <section className="inventory">
       <main className="main-content">
+        {loading && <Loader />} {/* Use the Loader component here */}
         <div className="inventory-dashboard-box">
           <div className="header-container">
             <h1 className="centered">Inventory</h1>
-            <a className="add-inventory" onClick={() => handleShowModal("add")}>
-              <img src="add.png" style={{ height: "30px" }}></img>
-            </a>
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>Add Inventory</Tooltip>}
+            >
+              <a
+                className="add-inventory"
+                onClick={() => handleShowModal("add")}
+              >
+                <img src="add.png" style={{ height: "30px" }}></img>
+              </a>
+            </OverlayTrigger>
           </div>
         </div>
-
-        {/* tanggalin na dapat itong button*/}
-        <Button
-          variant="primary"
-          className="add-button"
-          onClick={() => handleShowModal("add")}
-        ></Button>
-
         {inventoryItems.length === 0 ? (
           <p className="text-center">No items available</p>
         ) : (
@@ -322,31 +309,36 @@ const Inventory = () => {
                   </td>
                   <td>
                     <div>
-                      {/* Edit Button with Tooltip */}
-                      <button
-                        className="btn btn-warning"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Edit Item"
-                        onClick={(event) => {
-                          handleShowModal("edit", item, event);
-                        }}
+                      {/* Edit Button with OverlayTrigger for Tooltip */}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Edit Item</Tooltip>}
                       >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>{" "}
-                      {/* Delete Button with Tooltip */}
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        title="Delete Item"
-                        onClick={(event) => {
-                          handleDelete(item.id, event);
-                        }}
+                        <button
+                          className="btn btn-warning"
+                          type="button"
+                          onClick={(event) => {
+                            handleShowModal("edit", item, event);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                      </OverlayTrigger>{" "}
+                      {/* Delete Button with OverlayTrigger for Tooltip */}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Delete Item</Tooltip>}
                       >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
+                        <button
+                          className="btn btn-danger"
+                          type="button"
+                          onClick={(event) => {
+                            handleDelete(item.id, event);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                      </OverlayTrigger>
                     </div>
                   </td>
                 </tr>

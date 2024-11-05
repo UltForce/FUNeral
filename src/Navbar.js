@@ -28,12 +28,13 @@ import {
   faFileAlt,
   faStar,
   faBell,
+  faExchangeAlt,
+  faArchive,
 } from "@fortawesome/free-solid-svg-icons";
 import "./navbar.css";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-import { useContext } from "react";
-import { LogoutContext } from "./LogoutContext"; // Update the path as necessary
+
 
 const Toast = Swal.mixin({
   toast: true,
@@ -52,7 +53,6 @@ const Navbar = ({}) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { setLogoutInProgress } = useContext(LogoutContext); // Use the context
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -125,7 +125,6 @@ const Navbar = ({}) => {
   };
 
   const handleLogout = async () => {
-    setLogoutInProgress(true); // Set the logout in progress
     Swal.fire({
       icon: "question",
       title: "Do you want to logout?",
@@ -204,6 +203,16 @@ const Navbar = ({}) => {
                   </li>
                   <li
                     className={
+                      location.pathname === "/transaction" ? "active" : ""
+                    }
+                  >
+                    <Link to="/transaction">
+                      <FontAwesomeIcon icon={faExchangeAlt} />
+                      <span className="nav-label"> Transaction</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={
                       location.pathname === "/inventory" ? "active" : ""
                     }
                   >
@@ -229,6 +238,14 @@ const Navbar = ({}) => {
                     </Link>
                   </li>
                   <li
+                    className={location.pathname === "/archive" ? "active" : ""}
+                  >
+                    <Link to="/archive">
+                      <FontAwesomeIcon icon={faArchive} />
+                      <span className="nav-label"> Archive</span>
+                    </Link>
+                  </li>
+                  <li
                     className={location.pathname === "/audit" ? "active" : ""}
                   >
                     <Link to="/audit">
@@ -237,10 +254,10 @@ const Navbar = ({}) => {
                     </Link>
                   </li>
                   <li>
-                    <Link onClick={handleLogout} className="no-transition">
+                    <a onClick={handleLogout} className="no-transition">
                       <FontAwesomeIcon icon={faSignOutAlt} />
                       <span className="nav-label"> Logout</span>
-                    </Link>
+                    </a>
                   </li>
                 </>
               )}
@@ -317,7 +334,7 @@ const Navbar = ({}) => {
               <li>
                 <div className="notification-container">
                   <button onClick={toggleDropdown} className="notify-button">
-                    <FontAwesomeIcon icon={faBell} className="bell-icon"/>
+                    <FontAwesomeIcon icon={faBell} className="bell-icon" />
                     {hasUnreadNotifications && (
                       <span className="red-dot"></span>
                     )}
@@ -335,47 +352,47 @@ const Navbar = ({}) => {
                             }`}
                           >
                             <div className="notification-info">
-                            <h4>{notification.title}</h4>
-                            <p>{notification.content}</p>
-                            <small>
-                              {new Date(
-                                notification.timestamp instanceof Date
-                                  ? notification.timestamp
-                                  : notification.timestamp.toDate()
-                              ).toLocaleString()}
-                            </small>
-                      
-                            <div className="notification-buttons">
-                            {/* Conditionally render the mark as read/unread button */}
-                            {!notification.isRead ? (
-                              <button
-                                onClick={() =>
-                                  handleMarkAsRead(notification.id)
-                                }
-                                className="read-button"
-                              >
-                                Mark as Read
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() =>
-                                  handleMarkAsUnread(notification.id)
-                                }
-                                className="unread-button"
-                              >
-                                Mark as Unread
-                              </button>
-                            )}
+                              <h4>{notification.title}</h4>
+                              <p>{notification.content}</p>
+                              <small>
+                                {new Date(
+                                  notification.timestamp instanceof Date
+                                    ? notification.timestamp
+                                    : notification.timestamp.toDate()
+                                ).toLocaleString()}
+                              </small>
 
-                            <button
-                              onClick={() =>
-                                handleDeleteNotification(notification.id)
-                              }
-                              className="dismiss-button"
-                            >
-                              Dismiss
-                            </button>
-                            </div>
+                              <div className="notification-buttons">
+                                {/* Conditionally render the mark as read/unread button */}
+                                {!notification.isRead ? (
+                                  <button
+                                    onClick={() =>
+                                      handleMarkAsRead(notification.id)
+                                    }
+                                    className="read-button"
+                                  >
+                                    Mark as Read
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={() =>
+                                      handleMarkAsUnread(notification.id)
+                                    }
+                                    className="unread-button"
+                                  >
+                                    Mark as Unread
+                                  </button>
+                                )}
+
+                                <button
+                                  onClick={() =>
+                                    handleDeleteNotification(notification.id)
+                                  }
+                                  className="dismiss-button"
+                                >
+                                  Dismiss
+                                </button>
+                              </div>
                             </div>
                           </div>
                         ))
@@ -396,10 +413,10 @@ const Navbar = ({}) => {
                   </Link>
                 </li>
                 <li>
-                  <Link onClick={handleLogout} className="no-transition">
+                  <a onClick={handleLogout} className="no-transition">
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     <span className="nav-label"> Logout</span>
-                  </Link>
+                  </a>
                 </li>
               </>
             )}

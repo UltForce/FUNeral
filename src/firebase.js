@@ -97,6 +97,7 @@ const createAppointment = async (userId, appointmentData) => {
     appointmentData.userId = userId;
     appointmentData.DeathCertificate = deathCertificateURL;
     appointmentData.status = appointmentData.status || "pending"; // Set default value to "pending" if status is not provided
+    appointmentData.isArchived = false; // Default isArchived to false
 
     // Create a new document in the "appointments" collection
     const appointmentRef = await addDoc(
@@ -249,8 +250,44 @@ const getUsers = async () => {
 };
 
 const getAppointments = async () => {
-  const appointments = await getAllAppointments();
-  return appointments;
+  const appointmentsRef = collection(dba, "appointments"); // Reference to the appointments collection
+  const q = query(appointmentsRef, where("isArchived", "==", false)); // Query to filter out archived appointments
+  const querySnapshot = await getDocs(q);
+
+  return querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+};
+
+const fetchArchivedData = async () => {
+  try {
+    const archivedData = {
+      appointments: [],
+      transactions: [],
+    };
+
+    // Fetch archived appointments
+    const appointmentsSnapshot = await getDocs(
+      query(collection(dba, "appointments"), where("isArchived", "==", true))
+    );
+    appointmentsSnapshot.forEach((doc) => {
+      archivedData.appointments.push({ id: doc.id, ...doc.data() });
+    });
+
+    // Fetch archived transactions
+    const transactionsSnapshot = await getDocs(
+      query(collection(dba, "transactions"), where("isArchived", "==", true))
+    );
+    transactionsSnapshot.forEach((doc) => {
+      archivedData.transactions.push({ id: doc.id, ...doc.data() });
+    });
+
+    return archivedData;
+  } catch (error) {
+    console.error("Error fetching archived data:", error.message);
+    return { appointments: [], transactions: [] };
+  }
 };
 
 // Function to update an appointment
@@ -642,6 +679,176 @@ export const updateProfilePictureUrl = async (userId, downloadUrl) => {
   await updateDoc(userRef, { profilePictureUrl: downloadUrl });
 };
 
+// Function to add a transaction
+export const addTransaction = async (transactionData) => {
+  try {
+    const newTransaction = {
+      ...transactionData,
+      status: "processing", // Default status
+      date: Timestamp.now(), // Current date as default
+      isArchived: false, // Default isArchived to false
+    };
+
+    // Create a new document in the "transaction" collection
+    const transactionRef = await addDoc(
+      collection(dba, "transactions"),
+      newTransaction
+    );
+    console.log("Transaction added successfully with ID: ", transactionRef.id);
+  } catch (error) {
+    console.error("Error adding transaction:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
+  }
+};
+
+// Function to get all non-archived transactions
+export const getTransactions = async () => {
+  try {
+    // Query the "transactions" collection for non-archived transactions
+    const transactionsRef = collection(dba, "transactions");
+    const q = query(transactionsRef, where("isArchived", "==", false)); // Only fetch transactions where isArchived is false
+    const snapshot = await getDocs(q); // Execute the query
+    const transactions = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return transactions; // Return the filtered transactions
+  } catch (error) {
+    console.error("Error getting transactions:", error.message);
+    return []; // Return an empty array in case of error
+  }
+};
+
+// Function to update a transaction
+export const updateTransaction = async (transactionId, newData) => {
+  try {
+    // Construct the reference to the transaction document
+    const transactionDocRef = doc(dba, "transactions", transactionId);
+
+    // Update the transaction document with the new data
+    await updateDoc(transactionDocRef, newData);
+    console.log("Transaction updated successfully!");
+  } catch (error) {
+    console.error("Error updating transaction:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
+  }
+};
+
+// Function to delete a transaction
+export const deleteTransaction = async (transactionId) => {
+  try {
+    // Construct the reference to the transaction document
+    const transactionDocRef = doc(dba, "transactions", transactionId);
+
+    // Delete the transaction document
+    await deleteDoc(transactionDocRef);
+    console.log("Transaction deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting transaction:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
+  }
+};
+
+// Function to get users with role "user" who have an appointment with status "completed"
+export const getUsersWithCompletedAppointments = async () => {
+  try {
+    // Step 1: Get users with role "user"
+    const usersQuery = query(
+      collection(dba, "users"),
+      where("role", "==", "user")
+    );
+    const usersSnapshot = await getDocs(usersQuery);
+    const users = usersSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // Step 2: Get appointments with status "completed"
+    const completedAppointmentsQuery = query(
+      collection(dba, "appointments"),
+      where("status", "==", "completed")
+    );
+    const appointmentsSnapshot = await getDocs(completedAppointmentsQuery);
+    const appointments = appointmentsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // Step 3: Filter users who have a "completed" appointment
+    const usersWithCompletedAppointments = users.filter((user) =>
+      appointments.some((appointment) => appointment.userId === user.id)
+    );
+
+    return usersWithCompletedAppointments;
+  } catch (error) {
+    console.error(
+      "Error getting users with completed appointments:",
+      error.message
+    );
+    return [];
+  }
+};
+
+const updateTransactionStatus = async (transactionId, newStatus) => {
+  try {
+    // Construct the reference to the appointment document
+    const transactionDocRef = doc(dba, "transactions", transactionId);
+
+    // Update the appointment document with the new status
+    await updateDoc(transactionDocRef, { status: newStatus });
+
+    //console.log("Appointment updated successfully!");
+  } catch (error) {
+    console.error("Error updating transaction:", error.message);
+  }
+};
+
+// Function to get transactions for the currently logged-in user
+export const getUserTransactions = async (userId) => {
+  try {
+    // Query the "transaction" collection where the userId matches
+    const q = query(
+      collection(dba, "transactions"),
+      where("orderedById", "==", userId)
+    );
+    const snapshot = await getDocs(q);
+    const transactions = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return transactions;
+  } catch (error) {
+    console.error("Error getting user transactions:", error.message);
+    return []; // Return an empty array in case of error
+  }
+};
+
+const toggleArchiveStatus = async (docId, collectionName, isArchived) => {
+  try {
+    // Verify that the collection name is either "appointments" or "transactions"
+    if (!["appointments", "transactions"].includes(collectionName)) {
+      throw new Error(
+        "Invalid collection name. Use 'appointments' or 'transactions'."
+      );
+    }
+
+    // Reference to the document in the specified collection
+    const docRef = doc(dba, collectionName, docId);
+
+    // Update the isArchived status
+    await updateDoc(docRef, { isArchived });
+
+    console.log(
+      `Document in ${collectionName} with ID ${docId} archive status set to ${isArchived}`
+    );
+  } catch (error) {
+    console.error(
+      `Error updating archive status for ${collectionName}:`,
+      error.message
+    );
+  }
+};
+
 export {
   getAuth,
   auth,
@@ -698,4 +905,7 @@ export {
   fetchAdminNotifications,
   getUserReviewsFirestore,
   uploadImage,
+  updateTransactionStatus,
+  fetchArchivedData,
+  toggleArchiveStatus,
 };

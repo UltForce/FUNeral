@@ -5,6 +5,7 @@ import {
   getCurrentUserId,
   getUserReviewsFirestore,
   getUserRoleFirestore,
+  getUserTransactions,
 } from "./firebase.js";
 import {
   Card,
@@ -16,6 +17,7 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
+import Loader from "./Loader.js";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -23,9 +25,12 @@ const UserDashboard = () => {
   const [futureAppointments, setFutureAppointments] = useState([]);
   const [pastAppointments, setPastAppointments] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [userTransactions, setUserTransactions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
-
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state
   useEffect(() => {
     const checkUserLoginStatus = async () => {
       const user = auth.currentUser;
@@ -50,6 +55,7 @@ const UserDashboard = () => {
       try {
         const userAppointments = await getUserAppointments(userId);
         const userReviews = await getUserReviewsFirestore(userId);
+        const transactions = await getUserTransactions(userId);
         const currentDate = new Date();
 
         const future = userAppointments.filter(
@@ -62,7 +68,10 @@ const UserDashboard = () => {
         setFutureAppointments(future);
         setPastAppointments(past);
         setReviews(userReviews);
+        setUserTransactions(transactions);
+        setLoading(false); // Set loading state to true
       } catch (error) {
+        setLoading(false); // Set loading state to true
         console.error("Error fetching user data:", error.message);
       }
     };
@@ -106,8 +115,16 @@ const UserDashboard = () => {
     }
   };
 
+  const handleShowDetailsModal = (transaction) => {
+    setSelectedTransaction(transaction);
+    setShowDetailsModal(true);
+  };
+
+  const handleCloseDetailsModal = () => setShowDetailsModal(false);
+
   return (
     <div className="section content-user">
+      {loading && <Loader />} {/* Use the Loader component here */}
       <div
         style={{
           display: "grid",
@@ -204,9 +221,29 @@ const UserDashboard = () => {
         <div>
           <Card>
             <Card.Header>Transaction Details</Card.Header>
-            <Card.Body>
-              <p>This section is reserved for transaction details.</p>
-            </Card.Body>
+            <ListGroup variant="flush">
+              {userTransactions.length > 0 ? (
+                userTransactions.map((transaction) => (
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>View Transaction Details</Tooltip>}
+                  >
+                    <ListGroup.Item
+                      key={transaction.id}
+                      onClick={() => handleShowDetailsModal(transaction)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <strong>Transaction ID:</strong> {transaction.id}
+                      {/* You can add more transaction details here if needed */}
+                    </ListGroup.Item>
+                  </OverlayTrigger>
+                ))
+              ) : (
+                <ListGroup.Item className="text-center">
+                  No transactions found for the current user.
+                </ListGroup.Item>
+              )}
+            </ListGroup>
           </Card>
         </div>
 
@@ -271,6 +308,95 @@ const UserDashboard = () => {
                 Close
               </Button>
             </OverlayTrigger>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Transaction Details Modal */}
+        <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
+          <Modal.Header closeButton className="admin-appointment-header">
+            <Modal.Title className="admin-appointment-title">
+              Transaction Details
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="admin-appointment-details-box">
+            {selectedTransaction ? (
+              <>
+                <h4 className="admin-appointment-user">
+                  {selectedTransaction.deceasedName || "N/A"}
+                </h4>
+                <p className="first-details">
+                  <strong>Date:</strong>{" "}
+                  {formatDateTime(selectedTransaction.dateOfBurial)}
+                  <br />
+                  <strong>Time of Burial:</strong>{" "}
+                  {selectedTransaction.timeOfBurial}
+                  <br />
+                  <strong>Ordered By:</strong> {selectedTransaction.orderedBy}
+                  <br />
+                  <strong>Address:</strong> {selectedTransaction.address}
+                  <br />
+                  <strong>Cemetery:</strong> {selectedTransaction.cemetery}
+                  <br />
+                  <strong>Status:</strong>{" "}
+                  {getStatusBadge(selectedTransaction.status)}
+                </p>
+                <br />
+                <h4 className="postmortem-title">Particulars Details:</h4>
+                <p className="second-details">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>Particulars</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        "casket",
+                        "hearse",
+                        "funServicesArrangements",
+                        "permits",
+                        "embalming",
+                        "cemeteryExpenses",
+                        "otherExpenses",
+                      ].map((field) => (
+                        <tr key={field}>
+                          <td>{field.replace(/([A-Z])/g, " $1")}</td>
+                          <td>
+                            {selectedTransaction[field]?.particulars || "N/A"}
+                          </td>
+                          <td>{selectedTransaction[field]?.amount || "N/A"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </p>
+                <br />
+                <h4 className="financial-summary-title">Financial Summary:</h4>
+                <p className="financial-summary-details">
+                  <strong>Total Amount:</strong> $
+                  {selectedTransaction.totalAmount || "0.00"}
+                  <br />
+                  <strong>Deposit:</strong> $
+                  {selectedTransaction.deposit || "0.00"}
+                  <br />
+                  <strong>Balance:</strong> $
+                  {selectedTransaction.balance || "0.00"}
+                </p>
+              </>
+            ) : (
+              <p>No details available</p>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={handleCloseDetailsModal}
+              className="close2-button"
+            >
+              Close
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>

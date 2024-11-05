@@ -1,7 +1,7 @@
 import emailjs from "emailjs-com"; // Import EmailJS
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Tooltip } from "bootstrap";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -18,19 +18,21 @@ import {
   getCurrentUserId,
   getUserRoleFirestore,
   sendNotification,
-  getUserEmailById, // Add a function to get the user's email by their ID
+  getUserEmailById,
 } from "./firebase.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import './reviews.css';
-
+import "./reviews.css";
+import Loader from "./Loader"; // Import the Loader component
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 const MySwal = withReactContent(Swal);
 
 const Reviews = () => {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -52,7 +54,9 @@ const Reviews = () => {
     const fetchReviews = async () => {
       const reviewsData = await getReviewsFirestore();
       setReviews(reviewsData);
+      setLoading(false); // Hide loader after data is fetched
     };
+
     fetchReviews();
   }, []);
 
@@ -60,26 +64,8 @@ const Reviews = () => {
   useEffect(() => {
     if (reviews.length) {
       $("#reviewsTable").DataTable();
-      const tooltipTriggerList = document.querySelectorAll(
-        '[data-bs-toggle="tooltip"]'
-      );
-      tooltipTriggerList.forEach(
-        (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
-      );
     }
   }, [reviews]);
-
-  const hideTooltips = () => {
-    const tooltipTriggerList = document.querySelectorAll(
-      '[data-bs-toggle="tooltip"]'
-    );
-    tooltipTriggerList.forEach((tooltipTriggerEl) => {
-      const tooltipInstance = Tooltip.getInstance(tooltipTriggerEl);
-      if (tooltipInstance) {
-        tooltipInstance.hide();
-      }
-    });
-  };
 
   const sendEmailNotification = async (
     recipientEmail,
@@ -97,16 +83,15 @@ const Reviews = () => {
         "service_5f3k3ms", // Replace with your EmailJS service ID
         "template_g1w6f2a", // Replace with your EmailJS template ID
         emailParams,
-        "0Tz3RouZf3BXZaSmh" // Replace with your EmailJS user ID
+        "0Tz3RouM2ClDa9JZ3" // Replace with your EmailJS user ID
       );
-      //console.log("Email sent successfully");
     } catch (error) {
-      console.error("Failed to send email:", error);
+      console.error("Failed to send email notification:", error);
     }
   };
 
   const handleStatusChange = async (reviewId, newStatus, event) => {
-    hideTooltips(); // Hide tooltips before showing SweetAlert
+    setLoading(true); // Set loading state to true
 
     const result = await MySwal.fire({
       title: `Are you sure you want to ${
@@ -141,13 +126,6 @@ const Reviews = () => {
 
       await sendNotification(title, content, userId, recipient);
 
-      /* 
-      // Send an email notification to the review owner
-      if (newStatus === "published") {
-        await sendEmailNotification(recipientEmail, recipientName, newStatus);
-      }
-*/
-
       setReviews(
         reviews.map((review) =>
           review.id === reviewId ? { ...review, status: newStatus } : review
@@ -158,10 +136,11 @@ const Reviews = () => {
         title: "Review status updated successfully",
       });
     }
+    setLoading(false); // Set loading state to false after completion
   };
 
   const handleDelete = async (reviewId, event) => {
-    hideTooltips();
+    setLoading(true); // Set loading state to true
 
     const result = await MySwal.fire({
       title: "Are you sure you want to delete this review?",
@@ -187,78 +166,101 @@ const Reviews = () => {
 
       await sendNotification(title, content, userId, recipient);
       await deleteReviewFirestore(reviewId);
-
+      // Destroy DataTable before updating the state
+      if ($.fn.DataTable.isDataTable("#reviewsTable")) {
+        $("#reviewsTable").DataTable().destroy();
+      }
       setReviews(reviews.filter((review) => review.id !== reviewId));
       MySwal.fire({
         icon: "success",
         title: "Review deleted successfully",
       });
     }
+    setLoading(false); // Set loading state to false after completion
   };
 
   return (
     <section className="reviews">
       <main className="main-content">
+        {loading && <Loader />} {/* Use the Loader component here */}
         <div className="review-dashboard-box">
           <h1 className="centered">Manage Content</h1>
         </div>
-      <table id="reviewsTable" className="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Comment</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reviews.map((review) => (
-            <tr key={review.id}>
-              <td>{`${review.firstname} ${review.lastname}`}</td>
-              <td>{review.rating}</td>
-              <td>{review.comment}</td>
-              <td>{review.status}</td>
-              <td>
-                <div>
-                  <button
-                    className="btn btn-success"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title={
-                      review.status === "pending" ? "Publish" : "Set to Pending"
-                    }
-                    onClick={(e) =>
-                      handleStatusChange(
-                        review.id,
-                        review.status === "pending" ? "published" : "pending",
-                        e
-                      )
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon={
-                        review.status === "pending"
-                          ? faCheckCircle
-                          : faTimesCircle
-                      }
-                    />
-                  </button>{" "}
-                  <button
-                    className="btn btn-danger"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title="Delete Review"
-                    onClick={(e) => handleDelete(review.id, e)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </div>
-              </td>
+        <table id="reviewsTable" className="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Rating</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {reviews.map((review) => (
+              <tr key={review.id}>
+                <td>{`${review.firstname} ${review.lastname}`}</td>
+                <td>{review.rating}</td>
+                <td>{review.comment}</td>
+                <td>{review.status}</td>
+                <td>
+                  <div>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Toggle Status</Tooltip>} // Changed Tooltip text for clarity
+                    >
+                      <span>
+                        {" "}
+                        {/* Use a span to ensure a single child is passed */}
+                        <button
+                          className="btn btn-success"
+                          title={
+                            review.status === "pending"
+                              ? "Publish"
+                              : "Set to Pending"
+                          }
+                          onClick={(e) =>
+                            handleStatusChange(
+                              review.id,
+                              review.status === "pending"
+                                ? "published"
+                                : "pending",
+                              e
+                            )
+                          }
+                        >
+                          <FontAwesomeIcon
+                            icon={
+                              review.status === "pending"
+                                ? faCheckCircle
+                                : faTimesCircle
+                            }
+                          />
+                        </button>
+                      </span>
+                    </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Delete Review</Tooltip>}
+                    >
+                      <span>
+                        {" "}
+                        {/* Use a span to ensure a single child is passed */}
+                        <button
+                          className="btn btn-danger"
+                          title="Delete Review"
+                          onClick={(e) => handleDelete(review.id, e)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                      </span>
+                    </OverlayTrigger>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </main>
     </section>
   );
