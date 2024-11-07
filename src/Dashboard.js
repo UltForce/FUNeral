@@ -106,32 +106,36 @@ const Dashboard = () => {
 
   const fetchNotifications = async () => {
     const userId = getCurrentUserId();
-    ////console.log("User ID:", userId); // Check if userId is valid
     if (!userId) return; // Exit if userId is not valid
 
     const userRole = await getUserRoleFirestore(userId);
-    ////console.log("User Role:", userRole); // Check if userRole is valid
+
+    let notificationsData = [];
 
     if (userRole === "admin") {
-      const notificationsData = await fetchAdminNotifications();
-      ////console.log("Admin Notifications:", notificationsData); // Check notifications data
-      // Check if there are unread notifications
-      const unreadExists = notificationsData.some(
-        (notification) => !notification.isRead
-      );
-      setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
-      setNotifications(notificationsData);
+      notificationsData = await fetchAdminNotifications();
     } else {
-      const notificationsData = await fetchUserNotifications();
-      ////console.log("User Notifications:", notificationsData); // Check notifications data
-      // Check if there are unread notifications
-      const unreadExists = notificationsData.some(
-        (notification) => !notification.isRead
-      );
-      setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
-      setNotifications(notificationsData);
+      notificationsData = await fetchUserNotifications();
     }
+
+    // Sort notifications by unread status and timestamp (most recent first)
+    notificationsData.sort((a, b) => {
+      // First, prioritize unread notifications (false is treated as greater than true)
+      if (!a.isRead && b.isRead) return -1;
+      if (a.isRead && !b.isRead) return 1;
+
+      // If both are the same (both read or both unread), prioritize by most recent (timestamp descending)
+      return b.timestamp - a.timestamp;
+    });
+
+    // Check if there are unread notifications
+    const unreadExists = notificationsData.some(
+      (notification) => !notification.isRead
+    );
+    setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
+    setNotifications(notificationsData);
   };
+
   const handleMarkAsRead = async (notificationId) => {
     await markNotificationAsRead(notificationId);
     fetchNotifications(); // Refresh notifications after marking as read
@@ -140,11 +144,6 @@ const Dashboard = () => {
   const handleDeleteNotification = async (notificationId) => {
     await deleteNotification(notificationId);
     fetchNotifications(); // Refresh notifications after deletion
-  };
-
-  const handleMarkAsUnread = async (notificationId) => {
-    await markNotificationAsRead(notificationId); // Mark as unread
-    fetchNotifications(); // Refresh notifications after marking as unread
   };
 
   // window load
@@ -308,8 +307,11 @@ const Dashboard = () => {
             <div className="title-notification-container">
               <h1>Dashboard</h1>
               <div className="notification-container">
-                <button onClick={toggleDropdown} className="admin-notify-button">
-                  <FontAwesomeIcon icon={faBell} className="bell-icon"/>
+                <button
+                  onClick={toggleDropdown}
+                  className="admin-notify-button"
+                >
+                  <FontAwesomeIcon icon={faBell} className="bell-icon" />
                   {hasUnreadNotifications && <span className="red-dot"></span>}
                 </button>
                 {isDropdownOpen && (
@@ -325,45 +327,37 @@ const Dashboard = () => {
                           }`}
                         >
                           <div className="notification-info">
-                          <h4>{notification.title}</h4>
-                          <p>{notification.content}</p>
-                          <small>
-                            {new Date(
-                              notification.timestamp instanceof Date
-                                ? notification.timestamp
-                                : notification.timestamp.toDate()
-                            ).toLocaleString()}
-                          </small>
-                          
-                          <div className="notification-buttons">
-                          {/* Conditionally render the mark as read/unread button */}
-                          {!notification.isRead ? (
-                            <button
-                              onClick={() => handleMarkAsRead(notification.id)}
-                              className="read-button"
-                            >
-                              Mark as Read
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() =>
-                                handleMarkAsUnread(notification.id)
-                              }
-                              className="unread-button"
-                            >
-                              Mark as Unread
-                            </button>
-                          )}
+                            <h4>{notification.title}</h4>
+                            <p>{notification.content}</p>
+                            <small>
+                              {new Date(
+                                notification.timestamp instanceof Date
+                                  ? notification.timestamp
+                                  : notification.timestamp.toDate()
+                              ).toLocaleString()}
+                            </small>
 
-                          <button
-                            onClick={() =>
-                              handleDeleteNotification(notification.id)
-                            }
-                            className="dismiss-button"
-                          >
-                            Dismiss
-                          </button>
-                          </div>
+                            <div className="notification-buttons">
+                              {/* Conditionally render the mark as read/unread button */}
+
+                              <button
+                                onClick={() =>
+                                  handleMarkAsRead(notification.id)
+                                }
+                                className="read-button"
+                              >
+                                Mark as Read
+                              </button>
+
+                              <button
+                                onClick={() =>
+                                  handleDeleteNotification(notification.id)
+                                }
+                                className="dismiss-button"
+                              >
+                                Dismiss
+                              </button>
+                            </div>
                           </div>
                         </div>
                       ))
@@ -385,7 +379,11 @@ const Dashboard = () => {
                   <Card.Body>
                     <div className="stats-first-column">
                       <div className="stats-icon">
-                      <FontAwesomeIcon icon={faUsers} size="4x" className="stats-icons"/>
+                        <FontAwesomeIcon
+                          icon={faUsers}
+                          size="4x"
+                          className="stats-icons"
+                        />
                       </div>
                     </div>
                     <div className="stats-second-column">
@@ -404,18 +402,18 @@ const Dashboard = () => {
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
-                  <div className="stats-first-column">
-                    <div className="stats-icon">
-                      <FontAwesomeIcon icon={faCalendarDay} size="4x" />
+                    <div className="stats-first-column">
+                      <div className="stats-icon">
+                        <FontAwesomeIcon icon={faCalendarDay} size="4x" />
+                      </div>
                     </div>
-                  </div>
-                  <div className="stats-second-column">
-                    <Card.Title>Today's Appointments</Card.Title>
-                    <Card.Text>
-                      <h1>{todaysAppointments.length}</h1>
-                      <p>{new Date().toLocaleDateString()}</p>
-                    </Card.Text>
-                  </div>
+                    <div className="stats-second-column">
+                      <Card.Title>Today's Appointments</Card.Title>
+                      <Card.Text>
+                        <h1>{todaysAppointments.length}</h1>
+                        <p>{new Date().toLocaleDateString()}</p>
+                      </Card.Text>
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>
@@ -425,18 +423,18 @@ const Dashboard = () => {
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   <Card.Body>
-                  <div className="stats-first-column">
-                    <div className="stats-icon">
-                    <FontAwesomeIcon icon={faCheckCircle} size="4x" />
+                    <div className="stats-first-column">
+                      <div className="stats-icon">
+                        <FontAwesomeIcon icon={faCheckCircle} size="4x" />
+                      </div>
                     </div>
-                  </div>
-                  <div className="stats-second-column">
-                    <Card.Title>Finished Appointments</Card.Title>
-                    <Card.Text>
-                      <h1>{completedAppointments}</h1>
-                      <p>All Time</p>
-                    </Card.Text>
-                  </div>
+                    <div className="stats-second-column">
+                      <Card.Title>Finished Appointments</Card.Title>
+                      <Card.Text>
+                        <h1>{completedAppointments}</h1>
+                        <p>All Time</p>
+                      </Card.Text>
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>

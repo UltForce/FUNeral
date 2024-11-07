@@ -6,7 +6,7 @@
 }
 
 .chat-icon {
-  background-color: #18020C;
+  background-color: #18020c;
   padding: 15px;
   border: none;
   border-radius: 50%;
@@ -32,8 +32,15 @@
   right: 20px; /* Adjusted for new position */
   width: 350px;
   height: 430px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow: hidden;
+}
+
+df-messenger .df-messenger__chat-msg-agent img {
+  content: url("https://path_to_your_image.jpg"); /* Link to your custom avatar */
+  width: 40px; /* Adjust width as needed */
+  height: 40px; /* Adjust height as needed */
+  border-radius: 50%; /* Optional: make it circular */
 }

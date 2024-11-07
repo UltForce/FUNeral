@@ -184,7 +184,7 @@ const Reviews = () => {
       <main className="main-content">
         {loading && <Loader />} {/* Use the Loader component here */}
         <div className="review-dashboard-box">
-          <h1 className="centered">Manage Content</h1>
+          <h1 className="centered">Manage Reviews</h1>
         </div>
         <table id="reviewsTable" className="table table-striped table-hover">
           <thead>

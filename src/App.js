@@ -22,6 +22,7 @@ import Reviews from "./reviews";
 import UserDashboard from "./UserDashboard";
 import Transaction from "./Transaction";
 import Archive from "./Archive";
+import Reports from "./Reports";
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -83,6 +84,7 @@ const App = () => {
             <Route path="/userdashboard" element={<UserDashboard />} />
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/archive" element={<Archive />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="*" element={<Homepage />} />
           </Routes>
         </div>

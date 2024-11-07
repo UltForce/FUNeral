@@ -1,0 +1,109 @@
+.report {
+  display: flex !important;
+  min-height: 100vh !important; /* Full height */
+  background-color: #f0e6dc !important; /* Override global background */
+  font-family: "Rubik";
+}
+
+.report .main-content {
+  flex-grow: 1 !important;
+  background-color: #caa971 !important; /* Maintain background */
+  padding: 20px !important;
+  margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+
+.report-dashboard-box {
+  display: block;
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  background-color: #ffffff;
+  padding: 18px 38px;
+  margin-bottom: 10px;
+}
+
+.header-container {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+}
+
+.header-container h1 {
+  flex-grow: 1; /* Allow the heading to grow and take available space */
+  text-align: center; /* Center the heading text */
+  margin: 0; /* Remove default margins */
+}
+
+#reportTable {
+  border-radius: 10px;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+#reportTable th {
+  background-color: #d9d9d9;
+  font-weight: 500;
+  font-size: 20px;
+  border: 1px solid black;
+  text-align: center;
+  overflow: hidden;
+}
+
+#reportTable td {
+  background-color: white;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.report nav {
+  background-color: #333333;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.report nav button {
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.report-header {
+  color: white;
+}
+
+.report-title {
+  font-weight: 400;
+  margin: 0 0 0 168px;
+  font-size: 25px;
+}
+
+.report-details-box {
+  display: block;
+  border: 1px solid #4d4642;
+  border-radius: 20px;
+  background-color: #fcf2d8;
+  margin: 10px 0;
+  padding: 13px 20px;
+}
+
+.edit-item-button {
+  background-color: #fdf9aa;
+  color: black;
+  border: 1px solid #6a6868;
+  font-size: 15px;
+  display: block;
+  margin: auto;
+}
+
+.edit-item-button:hover {
+  background-color: #caa971;
+  color: #4d4642;
+  border: 1px solid #caa971;
+}
+
+/* temporary css - tanggalin if natanggal na yung button sa js  */
+.add-button {
+  pointer-events: none;
+  cursor: not-allowed;
+  background: transparent;
+  border: none !important;
+}

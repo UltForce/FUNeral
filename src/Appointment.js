@@ -4,6 +4,7 @@ import {
   generateReports,
   deleteAppointment,
   updateAppointmentStatus,
+  generateReportsPDF,
 } from "./firebase.js";
 import {
   getAppointments,
@@ -132,10 +133,32 @@ const Appointments = () => {
 
   const handleGenerateReports = async () => {
     try {
-      await generateReports();
+      const table = $("#appointmentsTable").DataTable();
+
+      // Use DataTables API to get visible rows with current search and sort applied
+      const tableData = [];
+      table.rows({ search: "applied" }).every(function () {
+        const row = this.node(); // Access the DOM node of the row
+        const cells = $(row).find("td"); // Find all <td> elements in the row
+
+        // Push an array of cell text values to tableData, matching PDF columns
+        tableData.push([
+          $(cells[0]).text(), // Name
+          $(cells[1]).text(), // Date
+          $(cells[2]).text(), // Phone Number
+          $(cells[3]).text(), // Plan
+          $(cells[4]).text(), // Notes
+          $(cells[5]).text(), // Status
+        ]);
+      });
+
+      // Pass the formatted table data to generate the PDF
+      await generateReportsPDF(tableData);
+
+      // Show success message and log audit event
       Toast.fire({
         icon: "success",
-        title: "Reports successfully generated..",
+        title: "Reports successfully generated.",
       });
       const userId = getCurrentUserId();
       const event = {
@@ -353,7 +376,7 @@ const Appointments = () => {
             </table>
             <OverlayTrigger
               placement="right"
-              overlay={<Tooltip>Export to CSV file</Tooltip>}
+              overlay={<Tooltip>Export to PDF file</Tooltip>}
             >
               <button
                 className="generate-report-button"

@@ -14,6 +14,7 @@ import {
   deleteTransaction,
   updateTransactionStatus,
   toggleArchiveStatus,
+  generateTransactionReportsPDF,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +27,7 @@ import {
   Form,
   OverlayTrigger,
   Tooltip,
+  Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -61,6 +63,8 @@ const Transaction = () => {
   const [transactions, setTransactions] = useState([]);
   const [deposit, setDeposit] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [filterType, setFilterType] = useState("all");
+  const [selectedDate, setSelectedDate] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
   const [formData, setFormData] = useState({
     deceasedName: "",
@@ -523,6 +527,48 @@ const Transaction = () => {
     });
   };
 
+  const handleGenerateReports = async () => {
+    try {
+      const table = $("#transactionTable").DataTable();
+
+      // Use DataTables API to get visible rows with current search and sort applied
+      const tableData = [];
+      table.rows({ search: "applied" }).every(function () {
+        const row = this.node(); // Access the DOM node of the row
+        const cells = $(row).find("td"); // Find all <td> elements in the row
+
+        // Push an array of cell text values to tableData, matching PDF columns
+        tableData.push([
+          $(cells[0]).text(), 
+          $(cells[1]).text(),
+          $(cells[2]).text(),
+          $(cells[3]).text(), 
+          $(cells[4]).text(), 
+          $(cells[5]).text(), 
+        ]);
+      });
+
+      // Pass the formatted table data to generate the PDF
+      await generateTransactionReportsPDF(tableData);
+
+      // Show success message and log audit event
+      Toast.fire({
+        icon: "success",
+        title: "Reports successfully generated.",
+      });
+      const userId = getCurrentUserId();
+      const event = {
+        type: "Report",
+        userId: userId,
+        details: "User generated a report",
+      };
+      AuditLogger({ event });
+    } catch (error) {
+      console.error("Error generating reports:", error.message);
+      alert("An error occurred while generating reports.");
+    }
+  };
+
   return (
     <section className="dashboard-appointment">
       <main className="main-content">
@@ -540,6 +586,17 @@ const Transaction = () => {
             </OverlayTrigger>
           </div>
         </div>
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>Export to PDF file</Tooltip>}
+        >
+          <button
+            className="generate-report-button"
+            onClick={handleGenerateReports}
+          >
+            Generate Reports
+          </button>
+        </OverlayTrigger>
         {transactions.length === 0 ? (
           <p className="text-center">No transactions available</p>
         ) : (

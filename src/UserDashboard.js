@@ -6,6 +6,7 @@ import {
   getUserReviewsFirestore,
   getUserRoleFirestore,
   getUserTransactions,
+  updateReviewFirestore,
 } from "./firebase.js";
 import {
   Card,
@@ -14,10 +15,24 @@ import {
   Modal,
   OverlayTrigger,
   Tooltip,
+  Form,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
 import Loader from "./Loader.js";
+import Swal from "sweetalert2";
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+});
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -30,6 +45,9 @@ const UserDashboard = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(5);
+  const [editReviewId, setEditReviewId] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
   useEffect(() => {
     const checkUserLoginStatus = async () => {
@@ -79,6 +97,12 @@ const UserDashboard = () => {
     fetchUserData();
   }, []);
 
+  const fetchReviews = async () => {
+    const currentUserId = getCurrentUserId();
+    const userReviews = await getUserReviewsFirestore(currentUserId);
+    setReviews(userReviews);
+  };
+
   const handleShowDetails = (appointment) => {
     setSelectedAppointment(appointment);
     setShowModal(true);
@@ -121,6 +145,59 @@ const UserDashboard = () => {
   };
 
   const handleCloseDetailsModal = () => setShowDetailsModal(false);
+
+  // Function to handle updating the testimonial
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to update your testimonial?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    });
+
+    if (result.isConfirmed) {
+      setLoading(false); // Set loading state to true
+      const updatedReview = {
+        comment,
+        rating,
+        status: "pending", // Keep status as pending (you can customize this based on your requirements)
+      };
+
+      await updateReviewFirestore(editReviewId, updatedReview);
+
+      // Clear the form and reset the state
+      setComment("");
+      setRating(5);
+      setEditReviewId(null);
+      fetchReviews();
+      handleCloseEditModal();
+      setLoading(true); // Set loading state to true
+      // Show success toast
+      Swal.fire({
+        icon: "success",
+        title: "Testimonial updated successfully!",
+      });
+    }
+    setLoading(false); // Set loading state to true
+  };
+
+  // Function to start editing a review
+  const startEditReview = (review) => {
+    setEditReviewId(review.id);
+    setComment(review.comment);
+    setRating(review.rating);
+  };
+
+  const handleCloseEditModal = () => {
+    setEditReviewId(null); // Close the modal by setting editReviewId to null
+    setComment("");
+    setRating(5); // Reset the form fields if necessary
+  };
 
   return (
     <div className="section content-user">
@@ -211,11 +288,61 @@ const UserDashboard = () => {
                       <div className="stars">{"⭐".repeat(review.rating)}</div>
                     </p>
                     <p>Status: {review.status}</p>
+                    {/* Show Edit button only if the review is still pending */}
+                    {review.status === "pending" && (
+                      <OverlayTrigger
+                        placement="right"
+                        overlay={<Tooltip>Edit your review</Tooltip>}
+                      >
+                        <Button
+                          variant="warning"
+                          onClick={() => startEditReview(review)}
+                        >
+                          Edit
+                        </Button>
+                      </OverlayTrigger>
+                    )}
                   </ListGroup.Item>
                 ))
               )}
             </ListGroup>
           </Card>
+
+          {/* Modal to edit testimonial */}
+          <Modal show={editReviewId !== null} onHide={handleCloseEditModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Your Testimonial</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <form onSubmit={handleEditSubmit}>
+                <div className="mb-3">
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Your comment"
+                    required
+                    className="form-control"
+                    rows="3"
+                  />
+                </div>
+                <div className="mb-3 star-rating">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={`star ${star <= rating ? "filled" : "faded"}`}
+                      onClick={() => setRating(star)} // Set the rating when clicked
+                      style={{ cursor: "pointer" }} // Make stars clickable
+                    >
+                      &#9733;
+                    </span>
+                  ))}
+                </div>
+                <Button type="submit" variant="primary">
+                  Update Testimonial
+                </Button>
+              </form>
+            </Modal.Body>
+          </Modal>
         </div>
 
         <div>

@@ -30,11 +30,11 @@ import {
   faBell,
   faExchangeAlt,
   faArchive,
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import "./navbar.css";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
-
 
 const Toast = Swal.mixin({
   toast: true,
@@ -82,31 +82,34 @@ const Navbar = ({}) => {
 
   const fetchNotifications = async () => {
     const userId = getCurrentUserId();
-    //console.log("User ID:", userId); // Check if userId is valid
     if (!userId) return; // Exit if userId is not valid
 
     const userRole = await getUserRoleFirestore(userId);
-    //console.log("User Role:", userRole); // Check if userRole is valid
+
+    let notificationsData = [];
 
     if (userRole === "admin") {
-      const notificationsData = await fetchAdminNotifications();
-      //console.log("Admin Notifications:", notificationsData); // Check notifications data
-      // Check if there are unread notifications
-      const unreadExists = notificationsData.some(
-        (notification) => !notification.isRead
-      );
-      setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
-      setNotifications(notificationsData);
+      notificationsData = await fetchAdminNotifications();
     } else {
-      const notificationsData = await fetchUserNotifications();
-      //console.log("User Notifications:", notificationsData); // Check notifications data
-      // Check if there are unread notifications
-      const unreadExists = notificationsData.some(
-        (notification) => !notification.isRead
-      );
-      setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
-      setNotifications(notificationsData);
+      notificationsData = await fetchUserNotifications();
     }
+
+    // Sort notifications by unread status and timestamp (most recent first)
+    notificationsData.sort((a, b) => {
+      // First, prioritize unread notifications (false is treated as greater than true)
+      if (!a.isRead && b.isRead) return -1;
+      if (a.isRead && !b.isRead) return 1;
+
+      // If both are the same (both read or both unread), prioritize by most recent (timestamp descending)
+      return b.timestamp - a.timestamp;
+    });
+
+    // Check if there are unread notifications
+    const unreadExists = notificationsData.some(
+      (notification) => !notification.isRead
+    );
+    setHasUnreadNotifications(unreadExists); // Show red dot if there are unread notifications
+    setNotifications(notificationsData);
   };
 
   const handleMarkAsRead = async (notificationId) => {
@@ -117,11 +120,6 @@ const Navbar = ({}) => {
   const handleDeleteNotification = async (notificationId) => {
     await deleteNotification(notificationId);
     fetchNotifications(); // Refresh notifications after deletion
-  };
-
-  const handleMarkAsUnread = async (notificationId) => {
-    await markNotificationAsRead(notificationId); // Mark as unread
-    fetchNotifications(); // Refresh notifications after marking as unread
   };
 
   const handleLogout = async () => {
@@ -235,6 +233,14 @@ const Navbar = ({}) => {
                     <Link to="/reviews">
                       <FontAwesomeIcon icon={faStar} />
                       <span className="nav-label"> Reviews</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/reports" ? "active" : ""}
+                  >
+                    <Link to="/reports">
+                      <FontAwesomeIcon icon={faFile} />
+                      <span className="nav-label"> Reports</span>
                     </Link>
                   </li>
                   <li
@@ -374,14 +380,7 @@ const Navbar = ({}) => {
                                     Mark as Read
                                   </button>
                                 ) : (
-                                  <button
-                                    onClick={() =>
-                                      handleMarkAsUnread(notification.id)
-                                    }
-                                    className="unread-button"
-                                  >
-                                    Mark as Unread
-                                  </button>
+                                  <p> </p>
                                 )}
 
                                 <button

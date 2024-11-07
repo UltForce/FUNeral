@@ -249,12 +249,15 @@ nav ul.centeredNav li.active a {
   color: black;
 }
 
-.notification.read .notification-buttons .unread-button {
+.notification.read .notification-buttons .unread-button .read-button {
   background-color: rgb(228, 165, 31);
   color: black;
 }
 
-.notification.read .notification-buttons .unread-button:hover {
+.notification.read
+  .notification-buttons
+  .unread-button:hover
+  .read-button:hover {
   background-color: rgb(184, 134, 27);
   color: black;
 }
