@@ -9,6 +9,7 @@ import {
   updateReviewFirestore,
   AuditLogger,
   sendNotification,
+  deleteReviewFirestore,
 } from "./firebase.js";
 import {
   Card,
@@ -221,6 +222,70 @@ const UserDashboard = () => {
     setRating(5); // Reset the form fields if necessary
   };
 
+  // Function to handle review deletion
+  const handleDeleteReview = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete this testimonial?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      setLoading(true); // Show loader
+
+      try {
+        // Delete the review from Firestore
+        await deleteReviewFirestore(editReviewId);
+
+        // Log deletion in audit logs
+        const loggedInUserId = getCurrentUserId();
+        const event = {
+          type: "Testimonial",
+          userId: loggedInUserId,
+          details: "User deleted a testimonial",
+        };
+        AuditLogger({ event });
+
+        // Send a notification to admin
+        const title = "Testimonial deleted";
+        const content = `A testimonial with ID ${editReviewId} has been deleted`;
+        const recipient = "admin";
+
+        await sendNotification(title, content, loggedInUserId, recipient);
+
+        // Refresh the testimonials list and close the modal
+        fetchReviews();
+        handleCloseEditModal();
+
+        // Show success toast
+        Swal.fire({
+          icon: "success",
+          title: "Testimonial deleted successfully!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Testimonial deleted successfully",
+            });
+          }
+        });
+      } catch (error) {
+        console.error("Error deleting testimonial:", error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Failed to delete testimonial",
+          text: "An error occurred while trying to delete the testimonial. Please try again later.",
+        });
+      } finally {
+        setLoading(false); // Hide loader
+      }
+    }
+  };
+
   return (
     <div className="section content-user">
       {loading && <Loader />} {/* Use the Loader component here */}
@@ -324,6 +389,14 @@ const UserDashboard = () => {
                         </Button>
                       </OverlayTrigger>
                     )}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Delete your review</Tooltip>}
+                    >
+                      <Button variant="danger" onClick={handleDeleteReview}>
+                        Delete Testimonial
+                      </Button>
+                    </OverlayTrigger>
                   </ListGroup.Item>
                 ))
               )}

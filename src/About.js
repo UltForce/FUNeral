@@ -176,6 +176,8 @@ const About = () => {
     ));
   };
 
+
+
   return (
     <div className="snapping-container content-user">
       {loading && <Loader />} {/* Display loader while loading */}
