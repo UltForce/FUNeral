@@ -1,16 +1,8 @@
 import emailjs from "emailjs-com"; // Import EmailJS
 import React, { useState, useEffect } from "react";
 import {
-  generateReports,
-  deleteAppointment,
-  updateAppointmentStatus,
-} from "./firebase.js";
-import {
-  getAppointments,
   getCurrentUserId,
-  AuditLogger,
   getUserRoleFirestore,
-  sendNotification,
   getUserEmailById,
   fetchArchivedData,
   toggleArchiveStatus,
@@ -19,13 +11,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import {
-  Dropdown,
-  Button,
-  Modal,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
+import { Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faArchive } from "@fortawesome/free-solid-svg-icons";
 import "./Appointment.css";
@@ -104,8 +90,6 @@ const Archive = () => {
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-      toast: true,
-      position: "top-end",
     });
 
     if (result.isConfirmed) {
@@ -115,16 +99,21 @@ const Archive = () => {
         type === "appointment" ? "appointments" : "transactions",
         !item.isArchived
       );
-
       Swal.fire({
+        title: "success",
+        text: "Archive status updated",
         icon: "success",
-        title: "Archive status updated",
-        toast: true,
-        position: "top-end",
-        timer: 3000,
-        showConfirmButton: false,
+        heightAuto: false,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Confirm",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Archive status updated",
+          });
+        }
       });
-
       // Destroy DataTable before updating the state
       if ($.fn.DataTable.isDataTable("#appointmentsTable")) {
         $("#appointmentsTable").DataTable().destroy();

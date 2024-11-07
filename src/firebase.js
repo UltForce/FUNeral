@@ -400,20 +400,6 @@ const generateReports = async () => {
   }
 };
 
-const formatDateTime = (dateTimeString) => {
-  const dateTime = new Date(dateTimeString);
-  if (!dateTimeString) {
-    return "N/A";
-  }
-  const year = dateTime.getFullYear();
-  const month = ("0" + (dateTime.getMonth() + 1)).slice(-2);
-  const day = ("0" + dateTime.getDate()).slice(-2);
-  const dayOfWeek = dateTime.toLocaleDateString("en-US", { weekday: "long" });
-  const hour = ("0" + dateTime.getHours()).slice(-2);
-  const minutes = ("0" + dateTime.getMinutes()).slice(-2);
-  return `${year}-${month}-${day} ${dayOfWeek} ${hour}:${minutes}`;
-};
-
 const generateReportsPDF = async (
   tableData,
   filename = "Appointments_Report"

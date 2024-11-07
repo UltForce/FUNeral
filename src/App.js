@@ -33,7 +33,7 @@ import {
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import "./App.css"; // Import your CSS file for animations
 
 const Layout = ({ children }) => {

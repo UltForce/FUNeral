@@ -23,11 +23,20 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import "./reviews.css";
 import Loader from "./Loader"; // Import the Loader component
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-const MySwal = withReactContent(Swal);
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+});
 
 const Reviews = () => {
   const navigate = useNavigate();
@@ -93,7 +102,7 @@ const Reviews = () => {
   const handleStatusChange = async (reviewId, newStatus, event) => {
     setLoading(true); // Set loading state to true
 
-    const result = await MySwal.fire({
+    const result = await Swal.fire({
       title: `Are you sure you want to ${
         newStatus === "published" ? "publish" : "set to pending"
       } this review?`,
@@ -131,9 +140,17 @@ const Reviews = () => {
           review.id === reviewId ? { ...review, status: newStatus } : review
         )
       );
-      MySwal.fire({
-        icon: "success",
-        title: "Review status updated successfully",
+      Swal.fire(
+        "updated!",
+        "Review status updated successfully",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Review status updated successfully",
+          });
+        }
       });
     }
     setLoading(false); // Set loading state to false after completion
@@ -142,7 +159,7 @@ const Reviews = () => {
   const handleDelete = async (reviewId, event) => {
     setLoading(true); // Set loading state to true
 
-    const result = await MySwal.fire({
+    const result = await Toast.fire({
       title: "Are you sure you want to delete this review?",
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -171,9 +188,17 @@ const Reviews = () => {
         $("#reviewsTable").DataTable().destroy();
       }
       setReviews(reviews.filter((review) => review.id !== reviewId));
-      MySwal.fire({
-        icon: "success",
-        title: "Review deleted successfully",
+      Swal.fire(
+        "deleted!",
+        "Review deleted successfully",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Review deleted successfully",
+          });
+        }
       });
     }
     setLoading(false); // Set loading state to false after completion

@@ -174,9 +174,17 @@ const Inventory = () => {
         };
         AuditLogger({ event });
         await addInventoryItem({ ...formData, imageUrl }); // Include imageUrl here
-        Toast.fire({
-          icon: "success",
-          title: "Inventory item added successfully",
+        Swal.fire(
+          "Added!",
+          "Inventory item added successfully",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Inventory item added successfully",
+            });
+          }
         });
       } else if (modalMode === "edit" && selectedItem) {
         const event = {
@@ -186,9 +194,17 @@ const Inventory = () => {
         };
         AuditLogger({ event });
         await updateInventoryItem(selectedItem.id, { ...formData, imageUrl }); // Include imageUrl here
-        Toast.fire({
-          icon: "success",
-          title: "Inventory item updated successfully",
+        Swal.fire(
+          "Updated!",
+          "Inventory item updated successfully",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Inventory item updated successfully",
+            });
+          }
         });
       }
 
@@ -234,10 +250,19 @@ const Inventory = () => {
       };
       AuditLogger({ event: logEvent });
       await deleteInventoryItem(itemId);
-      Toast.fire({
-        icon: "success",
-        title: "Inventory item deleted successfully",
+      Swal.fire(
+        "Deleted!",
+        "Inventory item deleted successfully",
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Inventory item deleted successfully",
+          });
+        }
       });
+
       // Destroy DataTable before updating the state
       if ($.fn.DataTable.isDataTable("#inventoryTable")) {
         $("#inventoryTable").DataTable().destroy();
@@ -300,12 +325,17 @@ const Inventory = () => {
                   <td>{item.price}</td>
                   <td>{item.description}</td>
                   <td>
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      style={{ width: "50px", cursor: "pointer" }}
-                      onClick={() => zoomImage(item.imageUrl)}
-                    />
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>Preview Image</Tooltip>}
+                    >
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        style={{ width: "50px", cursor: "pointer" }}
+                        onClick={() => zoomImage(item.imageUrl)}
+                      />
+                    </OverlayTrigger>
                   </td>
                   <td>
                     <div>

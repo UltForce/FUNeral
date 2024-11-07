@@ -7,6 +7,8 @@ import {
   getUserRoleFirestore,
   getUserTransactions,
   updateReviewFirestore,
+  AuditLogger,
+  sendNotification,
 } from "./firebase.js";
 import {
   Card,
@@ -15,7 +17,6 @@ import {
   Modal,
   OverlayTrigger,
   Tooltip,
-  Form,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
@@ -169,6 +170,20 @@ const UserDashboard = () => {
       };
 
       await updateReviewFirestore(editReviewId, updatedReview);
+      const loggedInUserId = getCurrentUserId();
+      const event = {
+        type: "Testimonial", // Type of event
+        userId: loggedInUserId, // User ID associated with the event
+        details: "User edited an existing testimonial", // Details of the event
+      };
+      // Call the AuditLogger function with the event object
+      AuditLogger({ event });
+
+      const title = "Pending appointment edited";
+      const content = `A pending review ${editReviewId} has been edited`;
+      const recipient = "admin";
+
+      await sendNotification(title, content, loggedInUserId, recipient);
 
       // Clear the form and reset the state
       setComment("");
@@ -181,6 +196,13 @@ const UserDashboard = () => {
       Swal.fire({
         icon: "success",
         title: "Testimonial updated successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Testimonial updated successfully",
+          });
+        }
       });
     }
     setLoading(false); // Set loading state to true
@@ -337,9 +359,18 @@ const UserDashboard = () => {
                     </span>
                   ))}
                 </div>
-                <Button type="submit" variant="primary">
-                  Update Testimonial
-                </Button>
+                <div className="d-flex justify-content-end">
+                  <Button
+                    variant="secondary"
+                    onClick={handleCloseEditModal}
+                    className="me-2"
+                  >
+                    Close
+                  </Button>
+                  <Button type="submit" variant="primary">
+                    Update Testimonial
+                  </Button>
+                </div>
               </form>
             </Modal.Body>
           </Modal>

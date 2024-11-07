@@ -144,10 +144,16 @@ const Content = () => {
           AuditLogger({ event });
 
           await updateContent(selectedContent.id, formData);
-          Toast.fire({
-            icon: "success",
-            title: "Content updated successfully",
-          });
+          Swal.fire("updated!", "Content updated successfully", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                Toast.fire({
+                  icon: "success",
+                  title: "Content updated successfully",
+                });
+              }
+            }
+          );
         } else {
           const userId = getCurrentUserId();
           const event = {
@@ -157,10 +163,16 @@ const Content = () => {
           };
           AuditLogger({ event });
           await addContent(formData);
-          Toast.fire({
-            icon: "success",
-            title: "Content added successfully",
-          });
+          Swal.fire("added!", "Content added successfully", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                Toast.fire({
+                  icon: "success",
+                  title: "Content added successfully",
+                });
+              }
+            }
+          );
         }
         const data = await getContent();
         setContent(data);
@@ -194,10 +206,17 @@ const Content = () => {
         AuditLogger({ event });
 
         await deleteContent(id);
-        Toast.fire({
-          icon: "success",
-          title: "Content deleted successfully",
-        });
+        Swal.fire("deleted!", "Content deleted successfully", "success").then(
+          (result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: "Content deleted successfully",
+              });
+            }
+          }
+        );
+
         // Destroy DataTable before updating the state
         if ($.fn.DataTable.isDataTable("#contentTable")) {
           $("#contentTable").DataTable().destroy();

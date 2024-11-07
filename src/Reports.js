@@ -1,11 +1,5 @@
-import emailjs from "emailjs-com"; // Import EmailJS
 import React, { useState, useEffect } from "react";
 import {
-  generateReports,
-  deleteAppointment,
-  updateAppointmentStatus,
-  generateReportsPDF,
-  addReport,
   getReportsFromFirestore,
   getUserData,
   getDocs,
@@ -13,9 +7,7 @@ import {
   deleteReport,
 } from "./firebase.js";
 import {
-  getAppointments,
   getCurrentUserId,
-  AuditLogger,
   getUserRoleFirestore,
   collection,
 } from "./firebase.js";
@@ -23,15 +15,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
-import {
-  Dropdown,
-  Button,
-  Modal,
-  OverlayTrigger,
-  Tooltip,
-  Form,
-  Col,
-} from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./Reports.css";
@@ -52,7 +36,6 @@ const Toast = Swal.mixin({
 const Reports = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(false); // Add loading state
-  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -194,9 +177,21 @@ const Reports = () => {
         await deleteReport(reportId);
 
         // Show success notification
-        Toast.fire({
+
+        Swal.fire({
+          title: "success",
+          text: "Report deleted successfully",
           icon: "success",
-          title: "Report deleted successfully",
+          heightAuto: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Confirm",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Report deleted successfully",
+            });
+          }
         });
         // Destroy DataTable before updating the state
         if ($.fn.DataTable.isDataTable("#reportTable")) {

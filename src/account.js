@@ -116,7 +116,14 @@ const Account = () => {
         "Upload Successful",
         "Profile picture uploaded successfully.",
         "success"
-      );
+      ).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Profile Picture updated successfully",
+          });
+        }
+      });
       setLoading(false); // Hide loader after data is fetched
     } catch (error) {
       setLoading(false); // Hide loader after data is fetched
@@ -183,7 +190,18 @@ const Account = () => {
         setLoading(true); // Hide loader after data is fetched
         const userDocRef = doc(dba, "users", user.uid);
         await updateDoc(userDocRef, editableData);
-        Swal.fire("Updated!", "Your information has been updated.", "success");
+        Swal.fire(
+          "Updated!",
+          "Your information has been updated.",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Account updated successfully",
+            });
+          }
+        });
         fetchUserData(user.uid); // Refresh the user data after saving
         setEditMode(false); // Exit edit mode after saving
         setLoading(false); // Hide loader after data is fetched

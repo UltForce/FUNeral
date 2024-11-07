@@ -224,7 +224,7 @@ const Register = () => {
       <div className="register-box">
         <h2 className="register-title">Register</h2>
         <p className="register-info">
-          Fill Out The Form Carefully htmlFor Registration
+          Fill Out The Form Carefully For Registration
         </p>
         <br />
         <div className="row">
@@ -238,7 +238,6 @@ const Register = () => {
                   id="floatingFirst"
                   placeholder="First Name"
                   value={firstname}
-                  //onChange={(e) => setFirstname(e.target.value)}
                   onKeyPress={handleKeyPress}
                   onChange={(e) => {
                     const firstnamevalue = e.target.value;
@@ -259,7 +258,6 @@ const Register = () => {
                   id="floatingLast"
                   placeholder="Last Name"
                   value={lastname}
-                  //onChange={(e) => setLastname(e.target.value)}
                   onKeyPress={handleKeyPress}
                   ref={LastNameInputRef}
                   onChange={(e) => {
@@ -285,7 +283,6 @@ const Register = () => {
                     id="floatingMobile"
                     placeholder="Mobile Number"
                     value={mobilenumber}
-                    //onChange={(e) => setMobilenumber(e.target.value)}
                     onKeyPress={handleKeyPress}
                     ref={MobileNumberInputRef}
                     onChange={(e) => {
@@ -317,7 +314,6 @@ const Register = () => {
                     id="floatingLand"
                     placeholder="Landline Number"
                     value={landlinenumber}
-                    //onChange={(e) => setLandlinenumber(e.target.value)}
                     onKeyPress={handleKeyPress}
                     ref={LandlineNumberInputRef}
                     onChange={(e) => {
@@ -343,7 +339,6 @@ const Register = () => {
                   id="floatingRegion"
                   placeholder="Region"
                   value={region}
-                  //onChange={(e) => setRegion(e.target.value)}
                   onChange={(e) => {
                     const regionvalue = e.target.value;
                     if (regionvalue.length <= 128) {
@@ -365,7 +360,6 @@ const Register = () => {
                   id="floatingCity"
                   placeholder="City"
                   value={city}
-                  //onChange={(e) => setCity(e.target.value)}
                   onKeyPress={handleKeyPress}
                   ref={CityInputRef}
                   onChange={(e) => {
@@ -387,7 +381,6 @@ const Register = () => {
                   id="floatingBarangay"
                   placeholder="Barangay"
                   value={barangay}
-                  //onChange={(e) => setBarangay(e.target.value)}
                   onKeyPress={handleKeyPress}
                   ref={BarangayInputRef}
                   onChange={(e) => {
@@ -409,7 +402,6 @@ const Register = () => {
                   id="floatingStreet"
                   placeholder="Street"
                   value={street}
-                  //onChange={(e) => setStreet(e.target.value)}
                   onKeyPress={handleKeyPress}
                   ref={StreetInputRef}
                   onChange={(e) => {
@@ -431,7 +423,6 @@ const Register = () => {
                   id="floatingUnit"
                   placeholder="Unit"
                   value={unit}
-                  //onChange={(e) => setUnit(e.target.value)}
                   onKeyPress={handleKeyPress}
                   ref={UnitInputRef}
                   onChange={(e) => {
@@ -447,28 +438,6 @@ const Register = () => {
                 </label>
               </div>
               <div className="col-md-6"></div>
-              {/* <div className=" form-floating mb-3  col-md-6">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="floatingEmail"
-                  placeholder="Email"
-                  value={email}
-                  //onChange={(e) => setEmail(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  ref={EmailInputRef}
-                  onChange={(e) => {
-                    const emailvalue = e.target.value;
-                    if (emailvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setEmail(emailvalue);
-                    }
-                  }}
-                />
-                <label className="register-label" htmlFor="floatingEmail">
-                  Email
-                </label>
-              </div> */}
               <OverlayTrigger
                 placement="bottom"
                 overlay={<Tooltip>Must be 6 characters long</Tooltip>}
@@ -480,7 +449,6 @@ const Register = () => {
                     id="floatingPass"
                     placeholder="Password"
                     value={password}
-                    //onChange={(e) => setPassword(e.target.value)}
                     onKeyPress={handleKeyPress}
                     ref={PasswordInputRef}
                     onChange={(e) => {

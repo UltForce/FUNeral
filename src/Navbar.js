@@ -48,7 +48,7 @@ const Toast = Swal.mixin({
   },
 });
 
-const Navbar = ({}) => {
+const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();

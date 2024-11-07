@@ -1,7 +1,6 @@
 import emailjs from "emailjs-com"; // Import EmailJS
 import { React, useState, useEffect, useCallback } from "react";
 import {
-  getAppointments,
   getCurrentUserId,
   AuditLogger,
   getUserRoleFirestore,
@@ -27,13 +26,10 @@ import {
   Form,
   OverlayTrigger,
   Tooltip,
-  Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./Transaction.css";
-import { orderBy } from "firebase/firestore";
-import { update } from "@react-spring/web";
 import Loader from "./Loader.js";
 const Toast = Swal.mixin({
   toast: true,
@@ -49,9 +45,7 @@ const Toast = Swal.mixin({
 
 const Transaction = () => {
   const [users, setUsers] = useState([]);
-  const [appointments, setAppointments] = useState([]);
   const navigate = useNavigate();
-  const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const handleShow = () => setShowModal(true);
   const handleClose1 = () => setShowModal(false);
@@ -61,10 +55,7 @@ const Transaction = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [transactions, setTransactions] = useState([]);
-  const [deposit, setDeposit] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [filterType, setFilterType] = useState("all");
-  const [selectedDate, setSelectedDate] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
   const [formData, setFormData] = useState({
     deceasedName: "",
@@ -110,6 +101,7 @@ const Transaction = () => {
     formData.cemeteryExpenses,
     formData.otherExpenses,
     formData.deposit,
+    formData,
   ]);
 
   useEffect(() => {
@@ -248,8 +240,26 @@ const Transaction = () => {
         return <span className="badge bg-secondary">{status}</span>;
     }
   };
+
   const handleAction = async (action, transactionId) => {
     try {
+      // Show SweetAlert confirmation first
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: `You are about to change the transaction status to "${action}". This action cannot be undone.`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, proceed",
+        cancelButtonText: "Cancel",
+      });
+
+      // If the user confirms, proceed with the action
+      if (!result.isConfirmed) {
+        return; // Exit if the user canceled
+      }
+
       setLoading(true); // Set loading state to true
       const transaction = transactions.find((r) => r.id === transactionId);
 
@@ -264,6 +274,7 @@ const Transaction = () => {
       const content = `Your Transaction status has been changed to ${action}`;
       const recipient = transaction.orderedById;
       await sendNotification(title, content, userId, recipient);
+
       // Check if the action is "archive"
       if (action === "archive") {
         await toggleArchiveStatus(transactionId, "transactions", true);
@@ -272,11 +283,19 @@ const Transaction = () => {
           $("#transactionTable").DataTable().destroy();
         }
         await fetchTransactions(); // Refresh the appointments list
-        Toast.fire({
-          icon: "success",
-          title: `Transaction archived successfully.`,
+        Swal.fire(
+          "Archived!",
+          `Transaction archived successfully.`,
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: `Transaction archived successfully.`,
+            });
+          }
         });
-        setLoading(false); // Set loading state to true
+        setLoading(false); // Set loading state to false
         return; // Exit the function early to prevent further actions
       }
 
@@ -297,17 +316,24 @@ const Transaction = () => {
       const templateID = "template_g1w6f2a";
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
-      /*
-        // Send the email
-        await emailjs.send(serviceID, templateID, emailParams, userID);
-*/
-      Toast.fire({
-        icon: "success",
-        title: `Transaction status changed to ${action}`,
+      // Uncomment the following to send the email (if required)
+      // await emailjs.send(serviceID, templateID, emailParams, userID);
+
+      Swal.fire(
+        "Updated!",
+        `Transaction status changed to ${action}`,
+        "success"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: `Transaction status changed to ${action}`,
+          });
+        }
       });
 
       await fetchTransactions(); // Refresh the appointments list
-      setLoading(false); // Set loading state to true
+      setLoading(false); // Set loading state to false
     } catch (error) {
       console.error(`Error handling action (${action}):`, error.message);
       alert(`An error occurred while performing the action (${action}).`);
@@ -323,11 +349,6 @@ const Transaction = () => {
       "archive",
     ];
     return allActions.filter((action) => action !== status);
-  };
-
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
   };
 
   const handleShowModal = (mode, transaction = null, event = null) => {
@@ -414,10 +435,16 @@ const Transaction = () => {
         };
         await addTransaction({ ...formData });
         AuditLogger({ event });
-        Toast.fire({
-          icon: "success",
-          title: "Transaction added successfully",
-        });
+        Swal.fire("Added!", "Transaction added successfully", "success").then(
+          (result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: "Transaction added successfully",
+              });
+            }
+          }
+        );
       } else if (modalMode === "edit" && selectedTransaction) {
         const event = {
           type: "Transaction",
@@ -426,9 +453,17 @@ const Transaction = () => {
         };
         AuditLogger({ event });
         await updateTransaction(selectedTransaction.id, { ...formData }); // Include imageUrl here
-        Toast.fire({
-          icon: "success",
-          title: "Transaction updated successfully",
+        Swal.fire(
+          "Updated!",
+          "Transaction updated successfully",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Transaction updated successfully",
+            });
+          }
         });
       }
       fetchTransactions();
@@ -476,10 +511,16 @@ const Transaction = () => {
       AuditLogger({ event: logEvent });
 
       await deleteTransaction(transactionId);
-      Toast.fire({
-        icon: "success",
-        title: "Transaction deleted successfully",
-      });
+      Swal.fire("Deleted!", "Transaction deleted successfully", "success").then(
+        (result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Transaction deleted successfully",
+            });
+          }
+        }
+      );
       // Destroy DataTable before updating the state
       if ($.fn.DataTable.isDataTable("#transactionTable")) {
         $("#transactionTable").DataTable().destroy();
@@ -529,6 +570,24 @@ const Transaction = () => {
 
   const handleGenerateReports = async () => {
     try {
+      // Show SweetAlert confirmation first
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You are about to generate the transaction report. Do you want to proceed?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, generate report",
+        cancelButtonText: "Cancel",
+      });
+
+      // If the user cancels, exit the function
+      if (!result.isConfirmed) {
+        return; // Exit the function if the user canceled
+      }
+
+      // If the user confirms, proceed with generating the report
       const table = $("#transactionTable").DataTable();
 
       // Use DataTables API to get visible rows with current search and sort applied
@@ -539,23 +598,29 @@ const Transaction = () => {
 
         // Push an array of cell text values to tableData, matching PDF columns
         tableData.push([
-          $(cells[0]).text(), 
+          $(cells[0]).text(),
           $(cells[1]).text(),
           $(cells[2]).text(),
-          $(cells[3]).text(), 
-          $(cells[4]).text(), 
-          $(cells[5]).text(), 
+          $(cells[3]).text(),
+          $(cells[4]).text(),
+          $(cells[5]).text(),
         ]);
       });
 
       // Pass the formatted table data to generate the PDF
       await generateTransactionReportsPDF(tableData);
 
-      // Show success message and log audit event
-      Toast.fire({
-        icon: "success",
-        title: "Reports successfully generated.",
-      });
+      Swal.fire("Generated!", "Reports successfully generated", "success").then(
+        (result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Reports successfully generated",
+            });
+          }
+        }
+      );
+
       const userId = getCurrentUserId();
       const event = {
         type: "Report",

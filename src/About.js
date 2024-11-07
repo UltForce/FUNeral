@@ -9,11 +9,12 @@ import {
   getUserDetails,
   AuditLogger,
   sendNotification,
+  getUserReviewsFirestore,
 } from "./firebase.js"; // Assume these functions are defined in your firebase.js
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "./about.css";
-
+import Loader from "./Loader.js";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -36,7 +37,9 @@ const About = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [loading, setLoading] = useState(false); // Add loading state
   const [profilePictureURL, setProfilePictureURL] = useState(""); // Add state for profile picture URL
+  const [hasSubmittedTestimonial, setHasSubmittedTestimonial] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -55,6 +58,10 @@ const About = () => {
           // Fetch the profile picture URL
           setProfilePictureURL(userDetails.profilePictureURL || ""); // Ensure the userDetails have this field
         }
+
+        // Check if the user has already submitted a testimonial
+        const userReviews = await getUserReviewsFirestore(userId);
+        setHasSubmittedTestimonial(userReviews.length > 0);
       }
     });
 
@@ -117,6 +124,7 @@ const About = () => {
     });
 
     if (result.isConfirmed) {
+      setLoading(true);
       const event = {
         type: "Testimonial",
         userId: currentUserId,
@@ -149,6 +157,8 @@ const About = () => {
         icon: "success",
         title: "Testimonial request sent successfully!",
       });
+      setHasSubmittedTestimonial(true);
+      setLoading(false);
     }
   };
 
@@ -168,6 +178,7 @@ const About = () => {
 
   return (
     <div className="snapping-container content-user">
+      {loading && <Loader />} {/* Display loader while loading */}
       <section className="snap-section about-us-section">
         <h2>About Us</h2>
         <h3>Address</h3>
@@ -186,7 +197,6 @@ const About = () => {
         <h3>Contact No.</h3>
         <p>0909 081 3396 / 0935 354 4006</p>
       </section>
-
       <section className="snap-section testimonials-section">
         <h2>Testimonials</h2>
         <div className="testimonials-grid">
@@ -210,8 +220,7 @@ const About = () => {
           ))}
         </div>
       </section>
-
-      {isLoggedIn && (
+      {isLoggedIn && !hasSubmittedTestimonial && (
         <section className="submit-testimonial-section section">
           <h3>Add Your Testimonial</h3>
           <form onSubmit={handleSubmit}>

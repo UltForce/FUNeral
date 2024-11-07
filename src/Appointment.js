@@ -1,7 +1,6 @@
 import emailjs from "emailjs-com"; // Import EmailJS
 import React, { useState, useEffect } from "react";
 import {
-  generateReports,
   deleteAppointment,
   updateAppointmentStatus,
   generateReportsPDF,
@@ -132,44 +131,65 @@ const Appointments = () => {
   }, [appointments]);
 
   const handleGenerateReports = async () => {
-    try {
-      const table = $("#appointmentsTable").DataTable();
+    // Display confirmation dialog before generating reports
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to generate the report?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, generate it!",
+    });
 
-      // Use DataTables API to get visible rows with current search and sort applied
-      const tableData = [];
-      table.rows({ search: "applied" }).every(function () {
-        const row = this.node(); // Access the DOM node of the row
-        const cells = $(row).find("td"); // Find all <td> elements in the row
+    if (result.isConfirmed) {
+      try {
+        const table = $("#appointmentsTable").DataTable();
 
-        // Push an array of cell text values to tableData, matching PDF columns
-        tableData.push([
-          $(cells[0]).text(), // Name
-          $(cells[1]).text(), // Date
-          $(cells[2]).text(), // Phone Number
-          $(cells[3]).text(), // Plan
-          $(cells[4]).text(), // Notes
-          $(cells[5]).text(), // Status
-        ]);
-      });
+        // Use DataTables API to get visible rows with current search and sort applied
+        const tableData = [];
+        table.rows({ search: "applied" }).every(function () {
+          const row = this.node(); // Access the DOM node of the row
+          const cells = $(row).find("td"); // Find all <td> elements in the row
 
-      // Pass the formatted table data to generate the PDF
-      await generateReportsPDF(tableData);
+          // Push an array of cell text values to tableData, matching PDF columns
+          tableData.push([
+            $(cells[0]).text(), // Name
+            $(cells[1]).text(), // Date
+            $(cells[2]).text(), // Phone Number
+            $(cells[3]).text(), // Plan
+            $(cells[4]).text(), // Notes
+            $(cells[5]).text(), // Status
+          ]);
+        });
 
-      // Show success message and log audit event
-      Toast.fire({
-        icon: "success",
-        title: "Reports successfully generated.",
-      });
-      const userId = getCurrentUserId();
-      const event = {
-        type: "Report",
-        userId: userId,
-        details: "User generated a report",
-      };
-      AuditLogger({ event });
-    } catch (error) {
-      console.error("Error generating reports:", error.message);
-      alert("An error occurred while generating reports.");
+        // Pass the formatted table data to generate the PDF
+        await generateReportsPDF(tableData);
+
+        // Show success message and log audit event
+        Swal.fire(
+          "Generated!",
+          "Reports successfully generated.",
+          "success"
+        ).then((result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Reports successfully generated.",
+            });
+          }
+        });
+        const userId = getCurrentUserId();
+        const event = {
+          type: "Report",
+          userId: userId,
+          details: "User generated a report",
+        };
+        AuditLogger({ event });
+      } catch (error) {
+        console.error("Error generating reports:", error.message);
+        alert("An error occurred while generating reports.");
+      }
     }
   };
 
@@ -204,104 +224,144 @@ const Appointments = () => {
 
   const handleAction = async (action, appointmentId) => {
     try {
-      const appointment = appointments.find((r) => r.id === appointmentId);
-      if (action === "delete") {
+      // Set up action-specific confirmation messages
+      const actionMessages = {
+        delete: {
+          title: "Are you sure?",
+          text: "This will permanently delete the appointment.",
+          confirmButtonText: "Yes, delete it!",
+        },
+        archive: {
+          title: "Are you sure?",
+          text: "This will archive the appointment.",
+          confirmButtonText: "Yes, archive it!",
+        },
+        status: {
+          title: "Are you sure?",
+          text: `This will change the status of the appointment to ${action}.`,
+          confirmButtonText: "Yes, change it!",
+        },
+      };
+
+      // Select the appropriate message for the action
+      const confirmationMessage =
+        action === "delete"
+          ? actionMessages.delete
+          : action === "archive"
+          ? actionMessages.archive
+          : actionMessages.status;
+
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        title: confirmationMessage.title,
+        text: confirmationMessage.text,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: confirmationMessage.confirmButtonText,
+      });
+
+      // Proceed only if the user confirmed
+      if (result.isConfirmed) {
+        const appointment = appointments.find((r) => r.id === appointmentId);
         setLoading(true); // Set loading state to true
         const userId = getCurrentUserId();
-        const event = {
-          type: "Appointment",
-          userId: userId,
-          details: "Admin deleted an appointment",
-        };
-        AuditLogger({ event });
-
-        const title = "Appointment deleted";
-        const content = `Your appointment has been deleted by an admin`;
         const recipient = appointment.userId;
+        let event, title, content;
 
-        await sendNotification(title, content, userId, recipient);
+        if (action === "delete") {
+          event = {
+            type: "Appointment",
+            userId,
+            details: "Admin deleted an appointment",
+          };
+          title = "Appointment deleted";
+          content = "Your appointment has been deleted by an admin";
+          await sendNotification(title, content, userId, recipient);
+          await deleteAppointment(appointmentId);
+          Swal.fire(
+            "Deleted!",
+            "Appointment deleted successfully",
+            "success"
+          ).then((result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: "Appointment deleted successfully",
+              });
+            }
+          });
+        } else if (action === "archive") {
+          event = {
+            type: "Appointment",
+            userId,
+            details: "Admin archived an appointment",
+          };
+          title = "Appointment archived";
+          content = "Your appointment has been archived by an admin";
+          await sendNotification(title, content, userId, recipient);
+          await toggleArchiveStatus(appointmentId, "appointments", true);
+          Swal.fire(
+            "Archived!",
+            "Appointment archived successfully",
+            "success"
+          ).then((result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: "Appointment archived successfully",
+              });
+            }
+          });
+        } else {
+          event = {
+            type: "Appointment",
+            userId,
+            details: "Admin changed the status of an appointment",
+          };
+          title = "Appointment status changed";
+          content = `Your appointment status has been changed to ${action}`;
+          await sendNotification(title, content, userId, recipient);
+          await updateAppointmentStatus(appointmentId, action);
 
-        await deleteAppointment(appointmentId);
-        Toast.fire({
-          icon: "success",
-          title: "Appointment deleted successfully",
-        });
-      } else if (action === "archive") {
-        setLoading(true); // Set loading state to true
-        const userId = getCurrentUserId();
-        const event = {
-          type: "Appointment",
-          userId: userId,
-          details: "Admin archived an appointment",
-        };
-        AuditLogger({ event });
-
-        const title = "Appointment archived";
-        const content = `Your appointment has been archived by an admin`;
-        const recipient = appointment.userId;
-
-        await sendNotification(title, content, userId, recipient);
-        await toggleArchiveStatus(appointmentId, "appointments", true);
-        Toast.fire({
-          icon: "success",
-          title: "Appointment archived successfully",
-        });
-      } else {
-        setLoading(true); // Set loading state to true
-        const userId = getCurrentUserId();
-        const event = {
-          type: "Appointment",
-          userId: userId,
-          details: "Admin changed the status of an appointment",
-        };
-        AuditLogger({ event });
-        const title = "Appointment status changed";
-        const content = `Your appointment status has been changed to ${action}`;
-        const recipient = appointment.userId;
-
-        await sendNotification(title, content, userId, recipient);
-
-        await updateAppointmentStatus(appointmentId, action);
-
-        // Fetch the user's email based on userId
-        const userEmail = await getUserEmailById(userId);
-
-        // Send email notification using EmailJS
-        const emailParams = {
-          to_name: appointment.name, // Name of the recipient
-          status: action, // New status
-          email: userEmail, // Email of the recipient retrieved from userId
-        };
-
-        // Replace these with your actual EmailJS credentials
-        const serviceID = "service_5f3k3ms";
-        const templateID = "template_g1w6f2a";
-        const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
-
-        /*
+          // Fetch user's email and send email notification using EmailJS
+          const userEmail = await getUserEmailById(userId);
+          const emailParams = {
+            to_name: appointment.name,
+            status: action,
+            email: userEmail,
+          };
+          const serviceID = "service_5f3k3ms";
+          const templateID = "template_g1w6f2a";
+          const userID = "0Tz3RouZf3BXZaSmh";
+          /*
         // Send the email
         await emailjs.send(serviceID, templateID, emailParams, userID);
-*/
-        Toast.fire({
-          icon: "success",
-          title: `Appointment status changed to ${action}`,
-        });
+        */
+
+          Swal.fire(
+            "Status!",
+            `Appointment status changed to ${action}`,
+            "success"
+          ).then((result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: `Appointment status changed to ${action}`,
+              });
+            }
+          });
+        }
+
+        // Log event and refresh appointments list
+        AuditLogger({ event });
+        if ($.fn.DataTable.isDataTable("#appointmentsTable")) {
+          $("#appointmentsTable").DataTable().destroy();
+        }
+        await fetchAppointments();
+        setLoading(false);
       }
-      // Destroy DataTable before updating the state
-      if ($.fn.DataTable.isDataTable("#appointmentsTable")) {
-        $("#appointmentsTable").DataTable().destroy();
-      }
-      await fetchAppointments(); // Refresh the appointments list
-      const userId = getCurrentUserId();
-      const event = {
-        type: "Appointment",
-        userId: userId,
-        details: `Appointment ${
-          action === "delete" ? "deleted" : `status changed to ${action}`
-        }`,
-      };
-      AuditLogger({ event });
-      setLoading(false); // Set loading state to true
     } catch (error) {
       console.error(`Error handling action (${action}):`, error.message);
       alert(`An error occurred while performing the action (${action}).`);
