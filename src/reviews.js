@@ -188,18 +188,16 @@ const Reviews = () => {
         $("#reviewsTable").DataTable().destroy();
       }
       setReviews(reviews.filter((review) => review.id !== reviewId));
-      Swal.fire(
-        "deleted!",
-        "Review deleted successfully",
-        "success"
-      ).then((result) => {
-        if (result.isConfirmed) {
-          Toast.fire({
-            icon: "success",
-            title: "Review deleted successfully",
-          });
+      Swal.fire("deleted!", "Review deleted successfully", "success").then(
+        (result) => {
+          if (result.isConfirmed) {
+            Toast.fire({
+              icon: "success",
+              title: "Review deleted successfully",
+            });
+          }
         }
-      });
+      );
     }
     setLoading(false); // Set loading state to false after completion
   };
@@ -222,68 +220,72 @@ const Reviews = () => {
             </tr>
           </thead>
           <tbody>
-            {reviews.map((review) => (
-              <tr key={review.id}>
-                <td>{`${review.firstname} ${review.lastname}`}</td>
-                <td>{review.rating}</td>
-                <td>{review.comment}</td>
-                <td>{review.status}</td>
-                <td>
-                  <div>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={<Tooltip>Toggle Status</Tooltip>} // Changed Tooltip text for clarity
-                    >
-                      <span>
-                        {" "}
-                        {/* Use a span to ensure a single child is passed */}
-                        <button
-                          className="btn btn-success"
-                          title={
-                            review.status === "pending"
-                              ? "Publish"
-                              : "Set to Pending"
-                          }
-                          onClick={(e) =>
-                            handleStatusChange(
-                              review.id,
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <tr key={review.id}>
+                  <td>{`${review.firstname} ${review.lastname}`}</td>
+                  <td>{review.rating}</td>
+                  <td>{review.comment}</td>
+                  <td>{review.status}</td>
+                  <td>
+                    <div>
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Toggle Status</Tooltip>}
+                      >
+                        <span>
+                          <button
+                            className="btn btn-success"
+                            title={
                               review.status === "pending"
-                                ? "published"
-                                : "pending",
-                              e
-                            )
-                          }
-                        >
-                          <FontAwesomeIcon
-                            icon={
-                              review.status === "pending"
-                                ? faCheckCircle
-                                : faTimesCircle
+                                ? "Publish"
+                                : "Set to Pending"
                             }
-                          />
-                        </button>
-                      </span>
-                    </OverlayTrigger>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={<Tooltip>Delete Review</Tooltip>}
-                    >
-                      <span>
-                        {" "}
-                        {/* Use a span to ensure a single child is passed */}
-                        <button
-                          className="btn btn-danger"
-                          title="Delete Review"
-                          onClick={(e) => handleDelete(review.id, e)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                        </button>
-                      </span>
-                    </OverlayTrigger>
-                  </div>
+                            onClick={(e) =>
+                              handleStatusChange(
+                                review.id,
+                                review.status === "pending"
+                                  ? "published"
+                                  : "pending",
+                                e
+                              )
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={
+                                review.status === "pending"
+                                  ? faCheckCircle
+                                  : faTimesCircle
+                              }
+                            />
+                          </button>
+                        </span>
+                      </OverlayTrigger>
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Delete Review</Tooltip>}
+                      >
+                        <span>
+                          <button
+                            className="btn btn-danger"
+                            title="Delete Review"
+                            onClick={(e) => handleDelete(review.id, e)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </span>
+                      </OverlayTrigger>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  No reviews available
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </main>
