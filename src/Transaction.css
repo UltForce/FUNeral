@@ -117,11 +117,67 @@
 
 .transaction-details-box {
   display: block;
-  border: 1px solid #4d4642;
-  border-radius: 20px;
-  background-color: #fcf2d8;
-  margin: 10px 0;
-  padding: 13px 20px;
+  border: 1px solid #4d4642; 
+  border-radius: 20px; 
+  background-color:#FCF2D8;
+  margin: 10px 0; 
+  padding: 35px 20px;
+}
+
+.transaction-details-box .first-details,
+.second-details {
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
+}
+
+.transaction-details-box .first-details strong,
+.second-details strong {
+  font-weight: 500;
+  color: #c89d53;
+}
+
+.particulars-title, .admin-appointment-user {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8b5e11;
+  text-decoration: underline;
+}
+
+
+.transaction-details-box .first-details, .financial-summary-details {
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
+}
+
+.transaction-details-box .first-details strong,
+.second-details strong, .financial-summary-details strong {
+  font-weight: 500;
+  color: #c89d53;
+}
+
+.transaction-details-box .particulars-title, .admin-transaction-user, .financial-summary-title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8b5e11;
+  text-decoration: underline;
+}
+
+.transaction-details-box .second-details th {
+  color: #523709;
+  font-weight: 800;
+  text-decoration: underline;
+  padding: 0 25px;
+}
+
+.transaction-details-box .second-details {
+  padding: 10px;
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
 }
 
 .transaction .actions-button {

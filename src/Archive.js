@@ -14,7 +14,7 @@ import "datatables.net";
 import { Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faArchive } from "@fortawesome/free-solid-svg-icons";
-import "./Appointment.css";
+import "./Archive.css";
 import Loader from "./Loader.js";
 const Toast = Swal.mixin({
   toast: true,
@@ -188,10 +188,10 @@ const Archive = () => {
   };
 
   return (
-    <section className="dashboard-appointment">
+    <section className="archive">
       <main className="main-content">
         {loading && <Loader />} {/* Use the Loader component here */}
-        <div className="appointments-dashboard-box">
+        <div className="archive-dashboard-box">
           <h1 className="centered">Archived Items</h1>
         </div>
         <div className="customerReport">
@@ -286,14 +286,14 @@ const Archive = () => {
         <br />
         {/* Appointment Details Modal */}
         <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>
+          <Modal.Header closeButton className="transaction-header">
+            <Modal.Title className="transaction-title">
               {selectedType === "appointment"
                 ? "Appointment Details"
                 : "Transaction Details"}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body className="admin-appointment-details-box">
+          <Modal.Body className="transaction-details-box">
             {selectedItem ? (
               selectedType === "appointment" ? (
                 <>
@@ -358,7 +358,8 @@ const Archive = () => {
                     {getStatusBadge(selectedItem.status)}
                   </p>
                   <br />
-                  <h4 className="postmortem-title">Particulars Details:</h4>
+                  <div className="transaction-border"></div>
+                  <h4 className="particulars-title">Particulars Details:</h4>
                   <p className="second-details">
                     <table>
                       <thead>
@@ -395,7 +396,8 @@ const Archive = () => {
                       </tbody>
                     </table>
                   </p>
-                  <br />
+                  
+                  <div className="transaction-border"></div>
                   <h4 className="financial-summary-title">
                     Financial Summary:
                   </h4>

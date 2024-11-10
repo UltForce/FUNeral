@@ -765,7 +765,7 @@ const Transaction = () => {
               {modalMode === "add" ? "Add New Transaction" : "Edit Transaction"}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body className="details-box">
+          <Modal.Body className="transaction-details-box">
             <Form>
               <Form.Group controlId="formDeceasedName">
                 <Form.Label className="label-title">
@@ -895,7 +895,7 @@ const Transaction = () => {
           <Modal.Header closeButton className="transaction-header">
             <Modal.Title className="transaction-particulars-title">Particulars</Modal.Title>
           </Modal.Header>
-          <Modal.Body className="details-box">
+          <Modal.Body className="transaction-details-box">
             <Form onSubmit={handleSubmit}>
               <table bordered className="particulars-table">
                 <thead>
@@ -1007,12 +1007,12 @@ const Transaction = () => {
         </Modal>
         {/* Appointment Details Modal */}
         <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
-          <Modal.Header closeButton className="admin-appointment-header">
-            <Modal.Title className="admin-appointment-title">
+          <Modal.Header closeButton className="transaction-header">
+            <Modal.Title className="transaction-title">
               Transaction Details
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body className="admin-appointment-details-box">
+          <Modal.Body className="transaction-details-box">
             {selectedTransaction ? (
               <>
                 <h4 className="admin-appointment-user">
@@ -1035,7 +1035,8 @@ const Transaction = () => {
                   {getStatusBadge(selectedTransaction.status)}
                 </p>
                 <br />
-                <h4 className="postmortem-title">Particulars Details:</h4>
+                <div className="transaction-border"></div>
+                <h4 className="particulars-title">Particulars Details:</h4>
                 <p className="second-details">
                   <table>
                     <thead>
@@ -1072,7 +1073,7 @@ const Transaction = () => {
                     </tbody>
                   </table>
                 </p>
-                <br />
+                <div className="transaction-border"></div>
                 <h4 className="financial-summary-title">Financial Summary:</h4>
                 <p className="financial-summary-details">
                   <strong>Total Amount:</strong> $
