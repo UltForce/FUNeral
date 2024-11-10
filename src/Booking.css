@@ -22,6 +22,12 @@
     margin: 5px auto 20px;
 }
 
+.date-and-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
 .selectedDate {
     font-size: 15px;
     padding-bottom: 10px;
@@ -51,6 +57,32 @@
         height: 55px;
         width: 25%;
     }
+
+    .edit-delete-button {
+        width: 45%;
+    }
+
+    .edit-appointment-button {
+        background-color: #FDF9AA;
+        color: #4d4642;
+        text-align: center;
+        margin: 1px 9px;
+        height: 40px;
+        width: 45%;
+        font-size: 16px;
+        border-color: #8B5E11;
+    }
+    
+    .delete-appointment-button {
+        background-color: #8e2510;
+        color: white;
+        text-align: center;
+        margin: 1px 7px;
+        height: 40px;
+        width: 45%;
+        font-size: 16px;
+        border-color: #8e2510;
+    }
 }
 
 /* For laptop screens */
@@ -63,6 +95,32 @@
     .book-appointment-button {
         height: 55px;
         width: 35%;
+    }
+
+    .edit-delete-button {
+        width: 45%;
+    }
+
+    .edit-appointment-button {
+        background-color: #FDF9AA;
+        color: #4d4642;
+        text-align: center;
+        margin: 1px 9px;
+        height: 40px;
+        width: 45%;
+        font-size: 16px;
+        border-color: #8B5E11;
+    }
+    
+    .delete-appointment-button {
+        background-color: #8e2510;
+        color: white;
+        text-align: center;
+        margin: 1px 7px;
+        height: 40px;
+        width: 45%;
+        font-size: 15px;
+        border-color: #8e2510;
     }
 }
 
@@ -77,6 +135,32 @@
         height: 55px;
         width: 35%;
     }
+
+    .edit-delete-button {
+        width: 50%;
+    }
+
+    .edit-appointment-button {
+        background-color: #FDF9AA;
+        color: #4d4642;
+        text-align: center;
+        margin: 1px 9px;
+        height: 40px;
+        width: 45%;
+        font-size: 16px;
+        border-color: #8B5E11;
+    }
+    
+    .delete-appointment-button {
+        background-color: #8e2510;
+        color: white;
+        text-align: center;
+        margin: 1px 7px;
+        height: 40px;
+        width: 45%;
+        font-size: 14px;
+        border-color: #8e2510;
+    }
 }
 
 /* For mobile screens */
@@ -89,6 +173,32 @@
     .book-appointment-button {
         width: 283px;
         height: 71px;
+    }
+
+    .edit-delete-button {
+        width: 57%;
+    }
+
+    .edit-appointment-button {
+        background-color: #FDF9AA;
+        color: #4d4642;
+        text-align: center;
+        margin: 1px 9px;
+        height: 40px;
+        width: 45%;
+        font-size: 16px;
+        border-color: #8B5E11;
+    }
+    
+    .delete-appointment-button {
+        background-color: #8e2510;
+        color: white;
+        text-align: center;
+        margin: 1px 7px;
+        height: 40px;
+        width: 45%;
+        font-size: 16px;
+        border-color: #8e2510;
     }
 }
 
@@ -196,6 +306,25 @@
     resize: none;
 }
 
+.booking .drop-down button {
+    background-color: #EBEBEB;
+    width: 100%;
+    border: 1px solid #6A6868;
+    color: black;
+}
+
+.booking .drop-down button::after {
+    background-color: #bfbebe;
+}
+
+.booking .dropdown-menu.show {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #EBEBEB;
+    border: 1px solid #6A6868;
+}
+
 .buttons {
     display: flex;
     justify-content: space-between;
@@ -233,26 +362,4 @@
     font-size: 25px;
 }
 
-.edit-appointment-button {
-    background-color: #FDF9AA;
-    color: #4d4642;
-    text-align: center;
-    display:block;
-    margin:auto;
-    height: 55px;
-    width: 25%;
-    font-size: 20px;
-    border-color: #8B5E11;
-}
 
-.delete-appointment-button {
-    background-color: #8e2510;
-    color: white;
-    text-align: center;
-    display:block;
-    margin:auto;
-    height: 55px;
-    width: 25%;
-    font-size: 20px;
-    border-color: #8e2510;
-}
