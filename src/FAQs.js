@@ -32,7 +32,7 @@ const FAQs = () => {
           <div className="faqs-border"></div>
         </div>
       </section>
-      <section className="body">
+      <section className="body-faqs">
         <div className="accordion-container centered">
           <div className="accordion" id="faqsAccordion">
             <div className="row">
