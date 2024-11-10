@@ -76,12 +76,18 @@
 
 .content-header {
     color: white;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between title and close button */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Ensure it takes full width */
 }
-
+  
 .content-title {
+    flex-grow: 1; /* Allow the title to grow and take available space */
+    text-align: center; /* Center the title text */
     font-weight: 400;
-    margin: 0 0 0 168px;
     font-size: 25px;
+    margin: 0; /* Remove default margins */
 }
 
 .content-details-box {
@@ -91,6 +97,12 @@
     background-color:#FCF2D8;
     margin: 10px 0; 
     padding: 13px 20px;
+}
+
+.content-details-box .label-title {
+    margin-left: 2px;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .edit-content-button {

@@ -440,6 +440,7 @@ const Inventory = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
+                className="inventory-img"
                 required
               />
             </Form.Group>

@@ -18,7 +18,7 @@
   border-radius: 20px;
   background-color: #ffffff;
   padding: 18px 38px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .header-container {
@@ -77,12 +77,18 @@
 
 .inventory-header {
   color: white;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between title and close button */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure it takes full width */
 }
 
 .inventory-title {
+  flex-grow: 1; /* Allow the title to grow and take available space */
+  text-align: center; /* Center the title text */
   font-weight: 400;
-  margin: 0 0 0 168px;
   font-size: 25px;
+  margin: 0; /* Remove default margins */
 }
 
 .inventory-details-box {
@@ -92,6 +98,12 @@
   background-color: #fcf2d8;
   margin: 10px 0;
   padding: 13px 20px;
+}
+
+.inventory-img {
+  background-color: #EBEBEB;
+  border: 1px solid #6A6868;
+  color: #4d4642;
 }
 
 .edit-item-button {

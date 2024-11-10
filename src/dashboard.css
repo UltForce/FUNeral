@@ -272,12 +272,18 @@
 
 .appointment-header {
   color: white;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between title and close button */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure it takes full width */
 }
 
 .appointment-title {
+  flex-grow: 1; /* Allow the title to grow and take available space */
+  text-align: center; /* Center the title text */
   font-weight: 400;
-  margin: 0 0 0 100px;
   font-size: 25px;
+  margin: 0; /* Remove default margins */
 }
 
 .appointment-details-box {
