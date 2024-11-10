@@ -55,7 +55,6 @@
 }
 
 .report nav {
-  background-color: #333333;
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -64,6 +63,11 @@
 .report nav button {
   border-radius: 5px;
   font-size: 15px;
+  padding: 3px 10px;
+  margin: 0 2px;
+  background-color: #333;
+  color: white;
+  font-weight: 600;
 }
 
 .report-header {

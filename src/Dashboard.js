@@ -339,16 +339,18 @@ const Dashboard = () => {
 
                             <div className="notification-buttons">
                               {/* Conditionally render the mark as read/unread button */}
-
-                              <button
-                                onClick={() =>
-                                  handleMarkAsRead(notification.id)
-                                }
-                                className="read-button"
-                              >
-                                Mark as Read
-                              </button>
-
+                              {!notification.isRead ? (
+                                <button
+                                  onClick={() =>
+                                    handleMarkAsRead(notification.id)
+                                  }
+                                  className="read-button"
+                                >
+                                  Mark as Read
+                                </button>
+                              ) : (
+                                <p> </p>
+                              )}
                               <button
                                 onClick={() =>
                                   handleDeleteNotification(notification.id)
@@ -485,7 +487,7 @@ const Dashboard = () => {
                   <Card.Body>
                     {selectedAppointment ? (
                       <>
-                        <Card.Title>{selectedAppointment.name}</Card.Title>
+                        <Card.Title className="next-appointment-user-name">{selectedAppointment.name}</Card.Title>
                         <Card.Text className="next-appointment-details">
                           <strong>Time:</strong>{" "}
                           <div className="date-box">
@@ -549,7 +551,7 @@ const Dashboard = () => {
         <Modal.Body className="appointment-details-box">
           {selectedAppointment ? (
             <>
-              <h4>{selectedAppointment.name}</h4>
+              <h4 className="appointment-details-user-name">{selectedAppointment.name}</h4>
               <p className="first-details">
                 <strong>Date:</strong>{" "}
                 {formatDateTime(selectedAppointment.date)}

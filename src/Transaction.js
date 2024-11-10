@@ -635,7 +635,7 @@ const Transaction = () => {
   };
 
   return (
-    <section className="dashboard-appointment">
+    <section className="transaction">
       <main className="main-content">
         {loading && <Loader />} {/* Use the Loader component here */}
         <div className="transaction-dashboard-box">
@@ -656,7 +656,7 @@ const Transaction = () => {
           overlay={<Tooltip>Export to PDF file</Tooltip>}
         >
           <button
-            className="generate-report-button"
+            className="transaction-generate-report-button"
             onClick={handleGenerateReports}
           >
             Generate Reports
@@ -687,7 +687,7 @@ const Transaction = () => {
                   <td>{transaction.cemetery}</td>
                   <td>{getStatusBadge(transaction.status)}</td>
                   <td>
-                    <div>
+                    <div className="transaction-buttons">
                       <OverlayTrigger
                         placement="top"
                         overlay={<Tooltip>Show Appointment Details</Tooltip>}
@@ -730,7 +730,7 @@ const Transaction = () => {
                           type="button"
                           onClick={(event) => {
                             handleShowModal("edit", transaction, event);
-                          }}
+                          }}                         
                         >
                           <FontAwesomeIcon icon={faEdit} />
                         </button>
@@ -760,8 +760,8 @@ const Transaction = () => {
         <br />
         {/* First Modal */}
         <Modal show={showModal} onHide={handleClose1}>
-          <Modal.Header closeButton className="booking-header">
-            <Modal.Title className="booking-title">
+          <Modal.Header closeButton className="transaction-header">
+            <Modal.Title className="transaction-title">
               {modalMode === "add" ? "Add New Transaction" : "Edit Transaction"}
             </Modal.Title>
           </Modal.Header>
@@ -892,12 +892,12 @@ const Transaction = () => {
         </Modal>
         {/* Second Modal for Particulars */}
         <Modal show={showModal2} onHide={handleClose2}>
-          <Modal.Header closeButton className="booking-header">
-            <Modal.Title className="mortem-title">Particulars</Modal.Title>
+          <Modal.Header closeButton className="transaction-header">
+            <Modal.Title className="transaction-particulars-title">Particulars</Modal.Title>
           </Modal.Header>
           <Modal.Body className="details-box">
             <Form onSubmit={handleSubmit}>
-              <table bordered>
+              <table bordered className="particulars-table">
                 <thead>
                   <tr>
                     <th>Particulars</th>
@@ -923,6 +923,7 @@ const Transaction = () => {
                           <Form.Control
                             type="text"
                             placeholder="Enter particulars"
+                            className="input-details"
                             value={formData[item].particulars}
                             onChange={(e) =>
                               setFormData({
@@ -941,6 +942,7 @@ const Transaction = () => {
                           <Form.Control
                             type="number"
                             placeholder="Enter amount"
+                            className="amount-input-details"
                             value={formData[item].amount}
                             onChange={(e) => {
                               const newAmount = e.target.value;
@@ -960,20 +962,21 @@ const Transaction = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="2" style={{ textAlign: "right" }}>
+                    <td colSpan="2" style={{ textAlign: "right" }} className="total-amount">
                       <strong>Total Amount:</strong> $
                       {formData.totalAmount.toFixed(2)}
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="2" style={{ textAlign: "right" }}>
+                    <td colSpan="2" style={{ textAlign: "center" }}>
                       <Form.Group controlId="depositAmount">
-                        <Form.Label>
+                        <Form.Label className="deposit-title">
                           <strong>Deposit:</strong>
                         </Form.Label>
                         <Form.Control
                           type="number"
                           placeholder="Enter deposit amount"
+                          className="deposit-input"
                           value={formData.deposit}
                           onChange={(e) => handleDepositChange(e.target.value)}
                         />
@@ -981,13 +984,13 @@ const Transaction = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="2" style={{ textAlign: "right" }}>
+                    <td colSpan="2" style={{ textAlign: "center" }} className="balance">
                       <strong>Balance:</strong> ${formData.balance.toFixed(2)}
                     </td>
                   </tr>
                 </tfoot>
               </table>
-              <div className="buttons">
+              <div className="add-transaction-buttons">
                 <Button variant="secondary" onClick={handleReturn}>
                   Back
                 </Button>

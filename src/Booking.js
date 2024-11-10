@@ -27,6 +27,8 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { Button, Modal, Form } from "react-bootstrap";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import "./Booking.css";
 // Toast configuration for displaying messages
 const Toast = Swal.mixin({
@@ -660,10 +662,39 @@ const Booking = ({}) => {
         >
           <h1 className="appointment-booking-title">APPOINTMENT BOOKING</h1>{" "}
           <div className="booking-border"></div>
-          <p className="selectedDate" style={{ marginLeft: "20px" }}>
-            Selected Date:{" "}
-            <strong>{selectedDate ? selectedDate : "None selected"}</strong>
-          </p>
+          <div className="date-and-buttons">
+            <p className="selectedDate" style={{ marginLeft: "20px" }}>
+              Selected Date:{" "}
+              <strong>{selectedDate ? selectedDate : "None selected"}</strong>
+            </p>
+            {/* Only show the Edit button if the user has a pending appointment */}
+            {appointments.some(
+              (appointment) =>
+                appointment.userId === getCurrentUserId() &&
+                appointment.status === "pending"
+            ) && (
+              <>
+              <div className="edit-delete-button">
+                <Button
+                  variant="warning"
+                  className="edit-appointment-button"
+                  onClick={handleEditClick}
+                >
+                  Edit Appointment
+                </Button>
+                
+                <Button
+                  variant="danger"
+                  className="delete-appointment-button"
+                  onClick={handleDeleteAppointment}
+                >
+                  Delete Appointment
+                </Button>
+                </div>
+              </>
+            )}
+          </div>
+          
           <div className="booking-box">
             <FullCalendar
               ref={calendarRef}
@@ -830,16 +861,18 @@ const Booking = ({}) => {
               <br />
               <Form.Group controlId="formDeceasedSex">
                 <Form.Label className="label-title">Deceased Sex</Form.Label>
-                <Form.Control
-                  className="input-details"
-                  type="number"
-                  placeholder="Enter deceased's sex"
+                <Form.Select
+                  className="sex-select"
+                  required
                   value={formData.DeceasedSex}
                   onChange={(e) =>
                     setFormData({ ...formData, DeceasedSex: e.target.value })
                   }
-                  required
-                />
+                >
+                  <option value="">Enter deceased's sex</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </Form.Select>
               </Form.Group>
               <br />
               <Form.Group controlId="formDeceasedBirthday">
@@ -978,30 +1011,7 @@ const Booking = ({}) => {
         </Button>
       )}
       <br />
-      {/* Only show the Edit button if the user has a pending appointment */}
-      {appointments.some(
-        (appointment) =>
-          appointment.userId === getCurrentUserId() &&
-          appointment.status === "pending"
-      ) && (
-        <>
-          <Button
-            variant="warning"
-            className="edit-appointment-button"
-            onClick={handleEditClick}
-          >
-            Edit Appointment
-          </Button>
-          <br />
-          <Button
-            variant="danger"
-            className="delete-appointment-button"
-            onClick={handleDeleteAppointment}
-          >
-            Delete Appointment
-          </Button>
-        </>
-      )}
+      
       <br />
     </section>
   );

@@ -249,6 +249,12 @@
   margin-top: 10px;
 }
 
+.admin-dashboard .next-appointment-user-name {
+  color: #634b42;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
 .admin-dashboard .show-more-button {
   background-color: #6a6868;
   color: white;
@@ -281,6 +287,12 @@
   background-color: #fcf2d8;
   margin: 10px 0;
   padding: 13px 20px;
+}
+
+.appointment-details-box .appointment-details-user-name {
+  color: #634b42;
+  text-align: center;
+  font-size: 20px;
 }
 
 .appointment-details-box .first-details,
@@ -446,16 +458,6 @@
 
 .admin-dashboard .notification.unread .notification-buttons .read-button:hover {
   background-color: rgb(31, 193, 31);
-  color: black
-}
-
-.admin-dashboard .notification.read .notification-buttons .unread-button {
-  background-color: rgb(228, 165, 31);
-  color: black
-}
-
-.admin-dashboard .notification.read .notification-buttons .unread-button:hover {
-  background-color: rgb(184, 134, 27);
   color: black
 }
 

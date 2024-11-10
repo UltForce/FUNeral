@@ -50,4 +50,6 @@
 
 .body {
   min-height: 60vh !important; /* Full height */
+  font-family: 'Rubik';
+  background-color: #FCF2D8;
 }

@@ -1,6 +1,5 @@
 /* Common navbar styles */
 nav {
-  background-color: #333;
   color: white;
   padding: 1rem;
 }
@@ -195,8 +194,7 @@ nav ul.centeredNav li.active a {
   border-radius: 10px;
 }
 
-.notification.unread,
-.notification.read .notification-info {
+.notification-info {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -204,33 +202,26 @@ nav ul.centeredNav li.active a {
   text-align: center;
 }
 
-.notification.unread,
-.notification.read .notification-info h4 {
+.notification-info h4 {
   color: #795548;
   font-weight: 600;
   text-decoration: underline;
 }
 
-.notification.unread,
-.notification.read .notification-info p {
+.notification-info p {
   font-weight: 300;
 }
 
-.notification.unread,
-.notification.read .notification-info small {
+.notification-info small {
   font-weight: 500;
   color: #8b3c11;
 }
 
-.notification.unread,
-.notification.read .notification-buttons {
+.notification-buttons {
   padding-top: 10px;
 }
 
-.notification.unread,
-.notification.read .notification-buttons .read-button,
-.unread-button,
-.dismiss-button {
+.notification-buttons button{
   margin: 0px 5px;
   border-radius: 10px;
   border: none;
@@ -238,8 +229,7 @@ nav ul.centeredNav li.active a {
   padding: 5px 10px;
 }
 
-.notification.unread,
-.notification.read .notification-buttons .read-button {
+.notification.unread .notification-buttons .read-button {
   background-color: rgb(41, 216, 41);
   color: black;
 }
@@ -249,27 +239,12 @@ nav ul.centeredNav li.active a {
   color: black;
 }
 
-.notification.read .notification-buttons .unread-button .read-button {
-  background-color: rgb(228, 165, 31);
-  color: black;
-}
-
-.notification.read
-  .notification-buttons
-  .unread-button:hover
-  .read-button:hover {
-  background-color: rgb(184, 134, 27);
-  color: black;
-}
-
-.notification.unread,
-.notification.read .notification-buttons .dismiss-button {
+.notification-buttons .dismiss-button {
   background-color: rgb(183, 32, 32);
   color: white;
 }
 
-.notification.unread,
-.notification.read .notification-buttons .dismiss-button:hover {
+.notification-buttons .dismiss-button:hover {
   background-color: rgb(143, 25, 25);
   color: white;
 }
