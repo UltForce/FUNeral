@@ -294,7 +294,7 @@
     font-weight: 400;
 }
 
-.plan-select {
+.plan-select, .sex-select {
     background-color: #EBEBEB;
     border: 1px solid #6A6868;
 }
@@ -304,25 +304,6 @@
     border: 1px solid #6A6868;
     color: #4d4642;
     resize: none;
-}
-
-.booking .drop-down button {
-    background-color: #EBEBEB;
-    width: 100%;
-    border: 1px solid #6A6868;
-    color: black;
-}
-
-.booking .drop-down button::after {
-    background-color: #bfbebe;
-}
-
-.booking .dropdown-menu.show {
-    display: block;
-    width: 100%;
-    margin: 0 auto;
-    background-color: #EBEBEB;
-    border: 1px solid #6A6868;
 }
 
 .buttons {

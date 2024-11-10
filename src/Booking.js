@@ -861,18 +861,18 @@ const Booking = ({}) => {
               <br />
               <Form.Group controlId="formDeceasedSex">
                 <Form.Label className="label-title">Deceased Sex</Form.Label>
-                <DropdownButton
-                  id="dropdown-basic-button"
-                  title={formData.DeceasedSex || "Select deceased's sex"}
-                  className="drop-down"
-                  onSelect={(eventKey) => {
-                    setFormData({ ...formData, DeceasedSex: eventKey });
-                  }}
+                <Form.Select
+                  className="sex-select"
                   required
+                  value={formData.DeceasedSex}
+                  onChange={(e) =>
+                    setFormData({ ...formData, DeceasedSex: e.target.value })
+                  }
                 >
-                  <Dropdown.Item eventKey="Male">Male</Dropdown.Item>
-                  <Dropdown.Item eventKey="Female">Female</Dropdown.Item>
-                </DropdownButton>
+                  <option value="">Enter deceased's sex</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </Form.Select>
               </Form.Group>
               <br />
               <Form.Group controlId="formDeceasedBirthday">
