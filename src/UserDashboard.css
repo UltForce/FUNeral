@@ -1,3 +1,202 @@
+.user-dashboard {
+  background-color: #CAA971;
+  font-family: 'Rubik';
+  scroll-snap-align: start;
+  height: auto;
+  margin-top: 4rem;
+  padding: 1rem;
+  overflow: auto;
+}
+
+.user-dashboard .card {
+  background-color: #f1f1f1;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 250px;
+}
+
+.user-title-box {
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  background-color: #ffffff;
+  padding: 18px 38px;
+  margin-bottom: 20px;
+}
+
+.user-cards-total .card-header{
+  background-color: #f8f9fa; /* Adjust background color if needed */
+  color: #8b5e11;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 20px;
+  border: 1px solid #beb9b9;
+  width: 100%;
+}
+
+.past-appointments .past-appointment-list {
+  text-align: center !important;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.past-appointments .no-past-appointment-list {
+  text-align: center !important;
+  padding-top: 10px;
+  background-color: #f1f1f1;
+}
+
+.current-appointments .current-appointment-list {
+  text-align: center !important;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.current-appointments .no-current-appointment-list {
+  text-align: center !important;
+  padding-top: 10px;
+  display: flex;
+  background-color: #f1f1f1;
+}
+
+.your-reviews .your-review-list {
+  text-align: center !important;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: none;
+}
+
+.your-reviews .no-reviews-list {
+  text-align: center !important;
+  padding-top: 10px;
+  background-color: #f1f1f1;
+  border: none;
+}
+
+.transaction-details .user-transaction {
+  text-align: center !important;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: none;
+}
+
+.transaction-details .no-transactions {
+  text-align: center !important;
+  padding-top: 10px;
+  background-color: #f1f1f1;
+  border: none;
+}
+
+.user-appointment-header {
+  color: white;
+}
+
+.user-appointment-title {
+  font-weight: 400;
+  margin: 0 0 0 85px;
+  font-size: 25px;
+}
+
+.user-appointment-details-box {
+  display: block;
+  border: 1px solid #4d4642; 
+  border-radius: 20px; 
+  background-color:#FCF2D8;
+  margin: 10px 0; 
+  padding: 13px 20px;
+}
+
+.user-appointment-details-box .first-details,
+.second-details {
+text-align: center;
+font-size: 15px;
+color: #18020c;
+}
+
+.user-appointment-details-box .first-details strong,
+.second-details strong {
+font-weight: 500;
+color: #c89d53;
+}
+
+.user-appointment-details-box .postmortem-title, .admin-appointment-user {
+text-align: center;
+font-weight: 500;
+font-size: 20px;
+color: #8b5e11;
+text-decoration: underline;
+}
+
+.transaction-border {
+  display: block;
+  width: 340px;
+  height: 2px;
+  background: #18020C;
+  margin: 5px auto 20px;
+}
+
+.user-transaction-header {
+  color: white;
+}
+
+.user-transaction-title {
+  font-weight: 400;
+  margin: 0 0 0 97px;
+  font-size: 25px;
+}
+
+.user-transaction-details-box {
+  display: block;
+  border: 1px solid #4d4642; 
+  border-radius: 20px; 
+  background-color:#FCF2D8;
+  margin: 10px 0; 
+  padding: 35px 20px;
+}
+
+.user-transaction-details-box .first-details, .financial-summary-details {
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
+}
+
+.user-transaction-details-box .first-details strong,
+.second-details strong, .financial-summary-details strong {
+  font-weight: 500;
+  color: #c89d53;
+}
+
+.user-transaction-details-box .particulars-title, .admin-transaction-user, .financial-summary-title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8b5e11;
+  text-decoration: underline;
+}
+
+.user-transaction-details-box .second-details th {
+  color: #523709;
+  font-weight: 800;
+  text-decoration: underline;
+  padding: 0 25px;
+}
+
+.user-transaction-details-box .second-details {
+  padding: 10px;
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
+}
+
+.user-transaction-details-box .financial-summary-details {
+
+}
+
 .view-details-button {
   margin-left: 10px; /* Adjust space between dropdown and button */
   color: #007bff; /* Bootstrap primary color */

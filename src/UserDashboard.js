@@ -287,8 +287,11 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="section content-user">
+    <div className="user-dashboard">
       {loading && <Loader />} {/* Use the Loader component here */}
+      <div className="user-title-box">
+        <h1>Dashboard</h1>
+      </div>
       <div
         style={{
           display: "grid",
@@ -297,12 +300,12 @@ const UserDashboard = () => {
           gap: "10px", // Reduced gap between cards
         }}
       >
-        <div>
-          <Card>
+        <div className="user-cards-total">
+          <Card className="past-appointments">
             <Card.Header>Past Appointments</Card.Header>
             <ListGroup variant="flush">
               {pastAppointments.length === 0 ? (
-                <ListGroup.Item className="text-center">
+                <ListGroup.Item className="no-past-appointment-list">
                   No past appointments found.
                 </ListGroup.Item>
               ) : (
@@ -315,6 +318,7 @@ const UserDashboard = () => {
                       key={appointment.id}
                       onClick={() => handleShowDetails(appointment)}
                       style={{ cursor: "pointer" }}
+                      className="past-appointment-list"
                     >
                       {appointment.name} -{" "}
                       {new Date(appointment.date).toLocaleString()}
@@ -326,12 +330,12 @@ const UserDashboard = () => {
           </Card>
         </div>
 
-        <div>
-          <Card>
+        <div className="user-cards-total">
+          <Card className="current-appointments">
             <Card.Header>Current Appointment</Card.Header>
             <ListGroup variant="flush">
               {futureAppointments.length === 0 ? (
-                <ListGroup.Item className="text-center">
+                <ListGroup.Item className="no-current-appointment-list">
                   No current appointment found.
                 </ListGroup.Item>
               ) : (
@@ -346,6 +350,7 @@ const UserDashboard = () => {
                       key={appointment.id}
                       onClick={() => handleShowDetails(appointment)}
                       style={{ cursor: "pointer" }}
+                      className="current-appointment-list"
                     >
                       {appointment.name} -{" "}
                       {new Date(appointment.date).toLocaleString()}
@@ -357,17 +362,19 @@ const UserDashboard = () => {
           </Card>
         </div>
 
-        <div>
-          <Card>
+        <div className="user-cards-total">
+          <Card className="your-reviews">
             <Card.Header>Your Reviews</Card.Header>
             <ListGroup variant="flush">
               {reviews.length === 0 ? (
-                <ListGroup.Item className="text-center">
+                <div className="no-reviews">
+                <ListGroup.Item className="no-reviews-list">
                   No reviews found.
                 </ListGroup.Item>
+                </div>
               ) : (
                 reviews.map((review) => (
-                  <ListGroup.Item key={review.id}>
+                  <ListGroup.Item key={review.id} className="your-review-list">
                     <h5>{review.title}</h5>
                     <p>{review.comment}</p>
                     <p>
@@ -449,8 +456,8 @@ const UserDashboard = () => {
           </Modal>
         </div>
 
-        <div>
-          <Card>
+        <div className="user-cards-total">
+          <Card className="transaction-details">
             <Card.Header>Transaction Details</Card.Header>
             <ListGroup variant="flush">
               {userTransactions.length > 0 ? (
@@ -463,6 +470,7 @@ const UserDashboard = () => {
                       key={transaction.id}
                       onClick={() => handleShowDetailsModal(transaction)}
                       style={{ cursor: "pointer" }}
+                      className="user-transaction"
                     >
                       <strong>Transaction ID:</strong> {transaction.id}
                       {/* You can add more transaction details here if needed */}
@@ -470,7 +478,7 @@ const UserDashboard = () => {
                   </OverlayTrigger>
                 ))
               ) : (
-                <ListGroup.Item className="text-center">
+                <ListGroup.Item className="no-transactions">
                   No transactions found for the current user.
                 </ListGroup.Item>
               )}
@@ -480,13 +488,13 @@ const UserDashboard = () => {
 
         {/* Appointment Details Modal */}
         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Appointment Details</Modal.Title>
+          <Modal.Header closeButton className="user-appointment-header"> 
+            <Modal.Title className="user-appointment-title">Appointment Details</Modal.Title>
           </Modal.Header>
-          <Modal.Body className="appointment-details-box">
+          <Modal.Body className="user-appointment-details-box">
             {selectedAppointment ? (
               <>
-                <h4>{selectedAppointment.name}</h4>
+                <h4 className="admin-appointment-user">{selectedAppointment.name}</h4>
                 <p className="first-details">
                   <strong>Date:</strong>{" "}
                   {formatDateTime(selectedAppointment.date)}
@@ -535,7 +543,7 @@ const UserDashboard = () => {
               placement="top"
               overlay={<Tooltip>Close the details modal</Tooltip>}
             >
-              <Button variant="secondary" onClick={handleCloseModal}>
+              <Button variant="secondary" onClick={handleCloseModal} className="close2-button">
                 Close
               </Button>
             </OverlayTrigger>
@@ -544,15 +552,15 @@ const UserDashboard = () => {
 
         {/* Transaction Details Modal */}
         <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
-          <Modal.Header closeButton className="admin-appointment-header">
-            <Modal.Title className="admin-appointment-title">
+          <Modal.Header closeButton className="user-transaction-header">
+            <Modal.Title className="user-transaction-title">
               Transaction Details
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body className="admin-appointment-details-box">
+          <Modal.Body className="user-transaction-details-box">
             {selectedTransaction ? (
               <>
-                <h4 className="admin-appointment-user">
+                <h4 className="admin-transaction-user">
                   {selectedTransaction.deceasedName || "N/A"}
                 </h4>
                 <p className="first-details">
@@ -572,7 +580,8 @@ const UserDashboard = () => {
                   {getStatusBadge(selectedTransaction.status)}
                 </p>
                 <br />
-                <h4 className="postmortem-title">Particulars Details:</h4>
+                <div className="transaction-border"></div>
+                <h4 className="particulars-title">Particulars Details:</h4>
                 <p className="second-details">
                   <table>
                     <thead>
@@ -603,7 +612,7 @@ const UserDashboard = () => {
                     </tbody>
                   </table>
                 </p>
-                <br />
+                <div className="transaction-border"></div>
                 <h4 className="financial-summary-title">Financial Summary:</h4>
                 <p className="financial-summary-details">
                   <strong>Total Amount:</strong> $
