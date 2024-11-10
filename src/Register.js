@@ -140,13 +140,9 @@ const Register = () => {
           };
           await sendEmailVerification(user);
           AuditLogger({ event });
-          // Check user role and redirect
-          const userRole = await getUserRoleFirestore(user.uid);
-          if (userRole === "admin") {
-            navigate("/dashboard");
-          } else {
-            navigate("/homepage");
-          }
+
+          navigate("/homepage");
+
           Swal.fire({
             title: "success",
             text: "Account registered successfully",

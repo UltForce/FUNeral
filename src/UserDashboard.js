@@ -222,8 +222,7 @@ const UserDashboard = () => {
     setRating(5); // Reset the form fields if necessary
   };
 
-  // Function to handle review deletion
-  const handleDeleteReview = async () => {
+  const handleDeleteReview = async (reviewId) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to delete this testimonial?",
@@ -235,11 +234,16 @@ const UserDashboard = () => {
     });
 
     if (result.isConfirmed) {
+      if (!reviewId) {
+        console.error("No review ID selected for deletion");
+        return;
+      }
+
       setLoading(true); // Show loader
 
       try {
         // Delete the review from Firestore
-        await deleteReviewFirestore(editReviewId);
+        await deleteReviewFirestore(reviewId);
 
         // Log deletion in audit logs
         const loggedInUserId = getCurrentUserId();
@@ -252,7 +256,7 @@ const UserDashboard = () => {
 
         // Send a notification to admin
         const title = "Testimonial deleted";
-        const content = `A testimonial with ID ${editReviewId} has been deleted`;
+        const content = `A testimonial with ID ${reviewId} has been deleted`;
         const recipient = "admin";
 
         await sendNotification(title, content, loggedInUserId, recipient);
@@ -361,45 +365,42 @@ const UserDashboard = () => {
           <Card>
             <Card.Header>Your Reviews</Card.Header>
             <ListGroup variant="flush">
-              {reviews.length === 0 ? (
-                <ListGroup.Item className="text-center">
-                  No reviews found.
-                </ListGroup.Item>
-              ) : (
-                reviews.map((review) => (
-                  <ListGroup.Item key={review.id}>
-                    <h5>{review.title}</h5>
-                    <p>{review.comment}</p>
-                    <p>
-                      Rating:{" "}
-                      <div className="stars">{"⭐".repeat(review.rating)}</div>
-                    </p>
-                    <p>Status: {review.status}</p>
-                    {/* Show Edit button only if the review is still pending */}
-                    {review.status === "pending" && (
-                      <OverlayTrigger
-                        placement="right"
-                        overlay={<Tooltip>Edit your review</Tooltip>}
-                      >
-                        <Button
-                          variant="warning"
-                          onClick={() => startEditReview(review)}
-                        >
-                          Edit
-                        </Button>
-                      </OverlayTrigger>
-                    )}
+              {reviews.map((review) => (
+                <ListGroup.Item key={review.id}>
+                  <h5>{review.title}</h5>
+                  <p>{review.comment}</p>
+                  <p>
+                    Rating:{" "}
+                    <div className="stars">{"⭐".repeat(review.rating)}</div>
+                  </p>
+                  <p>Status: {review.status}</p>
+                  {/* Show Edit button only if the review is still pending */}
+                  {review.status === "pending" && (
                     <OverlayTrigger
-                      placement="top"
-                      overlay={<Tooltip>Delete your review</Tooltip>}
+                      placement="right"
+                      overlay={<Tooltip>Edit your review</Tooltip>}
                     >
-                      <Button variant="danger" onClick={handleDeleteReview}>
-                        Delete Testimonial
+                      <Button
+                        variant="warning"
+                        onClick={() => startEditReview(review)}
+                      >
+                        Edit
                       </Button>
                     </OverlayTrigger>
-                  </ListGroup.Item>
-                ))
-              )}
+                  )}
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>Delete your review</Tooltip>}
+                  >
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDeleteReview(review.id)}
+                    >
+                      Delete Testimonial
+                    </Button>
+                  </OverlayTrigger>
+                </ListGroup.Item>
+              ))}
             </ListGroup>
           </Card>
 

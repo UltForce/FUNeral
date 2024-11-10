@@ -802,12 +802,16 @@ export const updateReviewFirestore = async (reviewId, updatedData) => {
   }
 };
 
-// Function to delete a review
 const deleteReviewFirestore = async (reviewId) => {
+  if (!reviewId) {
+    console.error("Invalid review ID");
+    return;
+  }
+
   try {
     const reviewDocRef = doc(dba, "testimonials", reviewId);
     await deleteDoc(reviewDocRef);
-    //console.log("Review deleted successfully!");
+    console.log("Review deleted successfully!");
   } catch (error) {
     console.error("Error deleting testimonial:", error.message);
   }
