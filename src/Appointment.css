@@ -6,7 +6,6 @@
 }
 
 .dashboard-appointment nav {
-  background-color: #333333;
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -20,7 +19,7 @@
 
 .dt-info {
   font-size: 15px;
-  padding-top: 10px;
+  padding-top: 30px;
   font-weight: 400;
   text-align: center;
   margin-top: auto;
@@ -43,11 +42,11 @@
 
 .appointment-reports {
   display: flex;
-  align-items: center;
   padding: 20px 0;
-  justify-content: space-around;
-  flex-direction: column;
+  flex-direction: row;
   font-size: 15px;
+  align-items: center;
+  justify-content: center;
 }
 
 .appointment-reports .appointment-list-table {
@@ -115,10 +114,11 @@
 
 .generate-report-button {
   border-radius: 10px;
-  margin-top: 10px;
   background-color: #5581bf;
   color: white;
   font-size: 15px;
+  padding: 15px 12px;
+  margin: 0 13px;
   border: 1px solid #5581bf;
 }
 
