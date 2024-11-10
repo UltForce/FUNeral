@@ -21,6 +21,23 @@
   margin-bottom: 10px;
 }
 
+.transaction-generate-report-button {
+  border-radius: 10px;
+  background-color: #5581bf;
+  color: white;
+  font-size: 15px;
+  padding: 7px 12px;
+  display: block;
+  margin: 15px auto;
+  border: 1px solid #5581bf;
+}
+
+.transaction-generate-report-button:hover {
+  background-color: #304768;
+  color: white;
+  border: 1px solid #304768;
+}
+
 .header-container {
   display: flex; /* Use flexbox for alignment */
   justify-content: space-between; /* Space between items */
@@ -68,6 +85,11 @@
 .transaction nav button {
   border-radius: 5px;
   font-size: 15px;
+  padding: 3px 10px;
+  margin: 0 2px;
+  background-color: #333;
+  color: white;
+  font-weight: 600;
 }
 
 .transaction-header {
@@ -76,7 +98,13 @@
 
 .transaction-title {
   font-weight: 400;
-  margin: 0 0 0 168px;
+  margin: 0 0 0 95px;
+  font-size: 25px;
+}
+
+.transaction-particulars-title {
+  font-weight: 400;
+  margin: 0 0 0 140px;
   font-size: 25px;
 }
 
@@ -89,19 +117,81 @@
   padding: 13px 20px;
 }
 
+.transaction .actions-button {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.transaction-buttons {
+  margin: 10px 0;
+}
+
 .edit-transaction-button {
   background-color: #fdf9aa;
   color: black;
   border: 1px solid #6a6868;
   font-size: 15px;
   display: block;
-  margin: auto;
 }
 
 .edit-transaction-button:hover {
   background-color: #caa971;
   color: #4d4642;
   border: 1px solid #caa971;
+}
+
+/* Modals */
+
+.particulars-table {
+  margin: 20px auto;
+}
+
+.particulars-table th {
+  text-align: center;
+  font-size: 17px;
+  text-decoration: underline;
+  font-weight: 500;
+  color: #4d4642;
+}
+
+.particulars-table .amount-input-details {
+  background-color: #EBEBEB;
+  border: 1px solid #6A6868;
+  color: #4d4642;
+  resize: none;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.particulars-table .label-title {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  margin-left: 2px;
+  margin-top: 10px;
+}
+
+.total-amount {
+  padding: 10px 10px;
+}
+
+.deposit-input {
+  background-color: #EBEBEB;
+  border: 1px solid #6A6868;
+  color: #4d4642;
+}
+
+.balance {
+  padding-top: 10px;
+}
+
+.add-transaction-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 /* temporary css - tanggalin if natanggal na yung button sa js  */
