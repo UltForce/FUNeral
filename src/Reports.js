@@ -255,6 +255,8 @@ const Reports = () => {
                       <button
                         onClick={() => handleDownload(report.pdfUrl)}
                         title="Download PDF"
+                        className="download-pdf-button"
+
                       >
                         <FontAwesomeIcon icon={faDownload} />
                       </button>
@@ -262,7 +264,7 @@ const Reports = () => {
                         placement="top"
                         overlay={<Tooltip>Delete Report</Tooltip>}
                       >
-                        <button onClick={(e) => handleDelete(report.id, e)}>
+                        <button onClick={(e) => handleDelete(report.id, e)} className="delete-report-button">
                           <FontAwesomeIcon icon={faTrash} />
                         </button>
                       </OverlayTrigger>

@@ -18,7 +18,7 @@
   border-radius: 20px;
   background-color: #ffffff;
   padding: 18px 38px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .header-container {
@@ -52,6 +52,7 @@
   background-color: white;
   text-align: center;
   border: 1px solid black;
+  padding: 10px;
 }
 
 .report nav {
@@ -70,44 +71,31 @@
   font-weight: 600;
 }
 
-.report-header {
+.download-pdf-button {
+  background-color: #65c467;
+  border-radius: 5px;
+  border: none;
+  margin: 0 5px;
+  font-size: 13px;
+  width: 30px;
+  height: 27px;
+}
+
+.download-pdf-button:hover {
+  background-color: #63bb64;
+}
+
+.delete-report-button {
+  background-color: #dc3545;
   color: white;
+  border-radius: 5px;
+  border: none;
+  font-size: 13px;
+  width: 30px;
+  height: 27px;
 }
 
-.report-title {
-  font-weight: 400;
-  margin: 0 0 0 168px;
-  font-size: 25px;
-}
-
-.report-details-box {
-  display: block;
-  border: 1px solid #4d4642;
-  border-radius: 20px;
-  background-color: #fcf2d8;
-  margin: 10px 0;
-  padding: 13px 20px;
-}
-
-.edit-item-button {
-  background-color: #fdf9aa;
-  color: black;
-  border: 1px solid #6a6868;
-  font-size: 15px;
-  display: block;
-  margin: auto;
-}
-
-.edit-item-button:hover {
-  background-color: #caa971;
-  color: #4d4642;
-  border: 1px solid #caa971;
-}
-
-/* temporary css - tanggalin if natanggal na yung button sa js  */
-.add-button {
-  pointer-events: none;
-  cursor: not-allowed;
-  background: transparent;
-  border: none !important;
+.delete-report-button:hover {
+  background-color: #b02a37;
+  color: white;
 }
