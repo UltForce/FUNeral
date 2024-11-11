@@ -263,12 +263,18 @@
 
 .booking-header {
     color: white;
-}
-
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between title and close button */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Ensure it takes full width */
+  }
+  
 .booking-title {
+    flex-grow: 1; /* Allow the title to grow and take available space */
+    text-align: center; /* Center the title text */
     font-weight: 400;
-    margin: 0 0 0 125px;
     font-size: 25px;
+    margin: 0; /* Remove default margins */
 }
 
 .details-box {
@@ -292,6 +298,7 @@
 .label-title {
     font-size: 14px;
     font-weight: 400;
+    margin-left: 2px;
 }
 
 .plan-select, .sex-select {
@@ -338,9 +345,11 @@
 }
 
 .mortem-title {
+    flex-grow: 1;
+    text-align: center;
     font-weight: 400;
-    margin: 0 0 0 105px;
     font-size: 25px;
+    margin: 0;
 }
 
 

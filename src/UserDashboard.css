@@ -94,12 +94,18 @@
 
 .user-appointment-header {
   color: white;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between title and close button */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure it takes full width */
 }
 
 .user-appointment-title {
+  flex-grow: 1; /* Allow the title to grow and take available space */
+  text-align: center; /* Center the title text */
   font-weight: 400;
-  margin: 0 0 0 85px;
   font-size: 25px;
+  margin: 0; /* Remove default margins */
 }
 
 .user-appointment-details-box {
@@ -124,7 +130,7 @@ font-weight: 500;
 color: #c89d53;
 }
 
-.user-appointment-details-box .postmortem-title, .admin-appointment-user {
+.postmortem-title, .particulars-title, .admin-appointment-user {
 text-align: center;
 font-weight: 500;
 font-size: 20px;
@@ -142,12 +148,18 @@ text-decoration: underline;
 
 .user-transaction-header {
   color: white;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between title and close button */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure it takes full width */
 }
 
 .user-transaction-title {
+  flex-grow: 1; /* Allow the title to grow and take available space */
+  text-align: center; /* Center the title text */
   font-weight: 400;
-  margin: 0 0 0 97px;
   font-size: 25px;
+  margin: 0; /* Remove default margins */
 }
 
 .user-transaction-details-box {
@@ -191,10 +203,6 @@ text-decoration: underline;
   text-align: center;
   font-size: 15px;
   color: #18020c;
-}
-
-.user-transaction-details-box .financial-summary-details {
-
 }
 
 .view-details-button {

@@ -1,0 +1,68 @@
+.archive {
+    display: flex !important;
+    min-height: 100vh !important; /* Full height */
+    background-color: #f0e6dc !important; /* Override global background */
+    font-family: "Rubik";
+  }
+  
+.archive nav {
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+
+.archive nav button {
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 3px 10px;
+    margin: 0 2px;
+    background-color: #333;
+    color: white;
+    font-weight: 600;
+}
+
+.dt-info {
+    font-size: 15px;
+    padding-top: 30px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: auto;
+}
+
+.archive .main-content {
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
+    margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+
+.archive-dashboard-box {
+    display: block;
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    background-color: #ffffff;
+    padding: 18px 38px;
+}
+
+.dt-length {
+    margin-right: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+  
+.dt-search {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+  
+.dt-search input {
+    border-radius: 10px;
+    margin-left: 5px;
+    border: 1px solid #beb9b9;
+}
