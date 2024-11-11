@@ -298,18 +298,51 @@ const fetchArchivedData = async () => {
   }
 };
 
-// Function to update an appointment
-const updateAppointment = async (userId, appointmentId, newData) => {
+const filterUndefinedFields = (data) => {
+  return Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => value !== undefined)
+  );
+};
+
+const updateAppointment = async (appointmentId, newData) => {
   try {
     // Construct the reference to the appointment document
     const appointmentDocRef = doc(dba, "appointments", appointmentId);
 
-    // Update the appointment document with the new data
-    await updateDoc(appointmentDocRef, newData);
+    // Retrieve the current item data from Firestore
+    const appointmentSnapshot = await getDoc(appointmentDocRef);
+    const appointmentData = appointmentSnapshot.data();
 
-    //console.log("Appointment updated successfully!");
+    // Handle file upload for DeathCertificate if a new file is provided
+    if (newData.DeathCertificate instanceof File) {
+      const storage = getStorage();
+      const storageRef = ref(
+        storage,
+        `deathCertificates/${appointmentData.userId}/${appointmentId}.pdf`
+      );
+
+      // Upload the new DeathCertificate file
+      await uploadBytes(storageRef, newData.DeathCertificate);
+
+      // Get the download URL
+      const deathCertificateURL = await getDownloadURL(storageRef);
+
+      // Update newData to store only the URL, not the file itself
+      newData.DeathCertificate = deathCertificateURL;
+    } else if (!newData.DeathCertificate) {
+      // If no new DeathCertificate provided, use the existing one if available
+      newData.DeathCertificate = appointmentData.DeathCertificate || "";
+    }
+
+    // Filter out any undefined fields from newData
+    const filteredData = filterUndefinedFields(newData);
+
+    // Update the appointment document with the filtered data
+    await updateDoc(appointmentDocRef, filteredData);
+    console.log("Appointment updated successfully!");
   } catch (error) {
     console.error("Error updating appointment:", error.message);
+    throw error; // Re-throw the error to be handled in the calling code
   }
 };
 
@@ -700,15 +733,33 @@ const getInventoryItems = async () => {
   }
 };
 
-// Function to update an inventory item
+// Function to update an inventory item and delete the old image if a new image is provided
 const updateInventoryItem = async (itemId, newData) => {
   try {
     // Construct the reference to the inventory item document
     const itemDocRef = doc(dba, "inventory", itemId);
 
+    // Retrieve the current item data from Firestore
+    const itemSnapshot = await getDoc(itemDocRef);
+    const itemData = itemSnapshot.data();
+
+    // If there's an existing image URL and a new image URL is provided, delete the old image
+    if (
+      itemData?.imageUrl &&
+      newData.imageUrl &&
+      itemData.imageUrl !== newData.imageUrl
+    ) {
+      const storage = getStorage();
+      const oldImageRef = ref(storage, itemData.imageUrl);
+
+      // Delete the old image from Firebase Storage
+      await deleteObject(oldImageRef);
+      console.log("Old image deleted successfully from Firebase Storage.");
+    }
+
     // Update the inventory item document with the new data
     await updateDoc(itemDocRef, newData);
-    //console.log("Inventory item updated successfully!");
+    console.log("Inventory item updated successfully!");
   } catch (error) {
     console.error("Error updating inventory item:", error.message);
     throw error; // Re-throw the error to be handled in the calling code

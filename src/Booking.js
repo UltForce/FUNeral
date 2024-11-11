@@ -27,8 +27,8 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
 import { Button, Modal, Form } from "react-bootstrap";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import "./Booking.css";
 // Toast configuration for displaying messages
 const Toast = Swal.mixin({
@@ -67,8 +67,6 @@ const Booking = ({}) => {
     // State for form data
     name: "",
     date: "",
-    appointmentType: "",
-    serviceType: "",
     phoneNumber: "",
     notes: "",
     plan: "",
@@ -133,8 +131,6 @@ const Booking = ({}) => {
     setFormData({
       // State for form data
       name: "",
-      appointmentType: "",
-      serviceType: "",
       phoneNumber: "",
       notes: "",
       plan: "",
@@ -252,8 +248,6 @@ const Booking = ({}) => {
           // State for form data
           appointmentId: appointmentId,
           name: clickedAppointment.name,
-          appointmentType: clickedAppointment.appointmentType,
-          serviceType: clickedAppointment.serviceType,
           phoneNumber: clickedAppointment.phoneNumber,
           notes: clickedAppointment.notes,
           plan: clickedAppointment.plan,
@@ -318,11 +312,9 @@ const Booking = ({}) => {
         denyButtonText: `No`,
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await updateAppointment(loggedInUserId, formData.appointmentId, {
+          await updateAppointment(formData.appointmentId, {
             name: formData.name,
             date: formData.date,
-            appointmentType: formData.appointmentType,
-            serviceType: formData.serviceType,
             phoneNumber: formData.phoneNumber,
             notes: formData.notes,
             plan: formData.plan,
@@ -395,8 +387,6 @@ const Booking = ({}) => {
             userId: loggedInUserId,
             name: formData.name,
             date: selectedDate,
-            appointmentType: formData.appointmentType,
-            serviceType: formData.serviceType,
             phoneNumber: formData.phoneNumber,
             notes: formData.notes,
             plan: formData.plan,
@@ -462,8 +452,6 @@ const Booking = ({}) => {
         appointmentId: pendingAppointment.id,
         name: pendingAppointment.name,
         date: pendingAppointment.date,
-        appointmentType: pendingAppointment.appointmentType,
-        serviceType: pendingAppointment.serviceType,
         phoneNumber: pendingAppointment.phoneNumber,
         notes: pendingAppointment.notes,
         plan: pendingAppointment.plan,
@@ -674,27 +662,26 @@ const Booking = ({}) => {
                 appointment.status === "pending"
             ) && (
               <>
-              <div className="edit-delete-button">
-                <Button
-                  variant="warning"
-                  className="edit-appointment-button"
-                  onClick={handleEditClick}
-                >
-                  Edit Appointment
-                </Button>
-                
-                <Button
-                  variant="danger"
-                  className="delete-appointment-button"
-                  onClick={handleDeleteAppointment}
-                >
-                  Delete Appointment
-                </Button>
+                <div className="edit-delete-button">
+                  <Button
+                    variant="warning"
+                    className="edit-appointment-button"
+                    onClick={handleEditClick}
+                  >
+                    Edit Appointment
+                  </Button>
+
+                  <Button
+                    variant="danger"
+                    className="delete-appointment-button"
+                    onClick={handleDeleteAppointment}
+                  >
+                    Delete Appointment
+                  </Button>
                 </div>
               </>
             )}
           </div>
-          
           <div className="booking-box">
             <FullCalendar
               ref={calendarRef}
@@ -1011,7 +998,7 @@ const Booking = ({}) => {
         </Button>
       )}
       <br />
-      
+
       <br />
     </section>
   );
