@@ -242,17 +242,6 @@ const Dashboard = () => {
     }
   }, [appointments]);
 
-  const statusColors = {
-    pending: "orange",
-    canceled: "red",
-    approved: "blue",
-    completed: "green",
-  };
-
-  const getStatusColor = (status) => {
-    return statusColors[status] || "gray";
-  };
-
   const formatDateTime = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     if (!dateTimeString) {
@@ -461,13 +450,8 @@ const Dashboard = () => {
                           key={appointment.id}
                         >
                           {appointment.name} - {appointment.plan} -{" "}
-                          {formatDateTime(appointment.date)}
-                          <Badge
-                            bg={getStatusColor(appointment.status)}
-                            className="float-right"
-                          >
-                            {appointment.status}
-                          </Badge>
+                          {formatDateTime(appointment.date)}{" "}
+                          {getStatusBadge(appointment.status)}
                         </ListGroup.Item>
                       ))
                     )}
@@ -487,7 +471,9 @@ const Dashboard = () => {
                   <Card.Body>
                     {selectedAppointment ? (
                       <>
-                        <Card.Title className="next-appointment-user-name">{selectedAppointment.name}</Card.Title>
+                        <Card.Title className="next-appointment-user-name">
+                          {selectedAppointment.name}
+                        </Card.Title>
                         <Card.Text className="next-appointment-details">
                           <strong>Time:</strong>{" "}
                           <div className="date-box">
@@ -551,7 +537,9 @@ const Dashboard = () => {
         <Modal.Body className="appointment-details-box">
           {selectedAppointment ? (
             <>
-              <h4 className="appointment-details-user-name">{selectedAppointment.name}</h4>
+              <h4 className="appointment-details-user-name">
+                {selectedAppointment.name}
+              </h4>
               <p className="first-details">
                 <strong>Date:</strong>{" "}
                 {formatDateTime(selectedAppointment.date)}
