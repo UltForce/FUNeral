@@ -8,13 +8,19 @@ import {
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUserId, dba } from "./firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
 import { FaEdit } from "react-icons/fa"; // Icon library for edit icon
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "./account.css";
 import Loader from "./Loader";
-const placeholderProfilePicture = "https://via.placeholder.com/150"; // Placeholder profile picture URL
+const placeholderProfilePicture = "/placeholder.jpg"; // Placeholder profile picture URL
 
 const Toast = Swal.mixin({
   toast: true,
@@ -99,7 +105,14 @@ const Account = () => {
 
   const handleProfilePictureUpload = async (file) => {
     try {
-      setLoading(true); // Hide loader after data is fetched
+      setLoading(true);
+
+      // Store the current profile picture URL to delete later, if it exists
+      const currentProfilePictureURL =
+        profilePictureURL !== placeholderProfilePicture
+          ? profilePictureURL
+          : null;
+
       const storage = getStorage();
       const storageRef = ref(
         storage,
@@ -108,10 +121,12 @@ const Account = () => {
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
 
+      // Update Firestore with the new profile picture URL
       const userDocRef = doc(dba, "users", user.uid);
       await updateDoc(userDocRef, { profilePictureURL: downloadURL });
 
-      setProfilePictureURL(downloadURL); // Update the profile picture URL in the component's state
+      // Update the profile picture URL in the component's state
+      setProfilePictureURL(downloadURL);
       Swal.fire(
         "Upload Successful",
         "Profile picture uploaded successfully.",
@@ -124,9 +139,17 @@ const Account = () => {
           });
         }
       });
-      setLoading(false); // Hide loader after data is fetched
+
+      // Delete the previous profile picture if it exists and is not the placeholder
+      if (currentProfilePictureURL) {
+        const previousFileRef = ref(storage, currentProfilePictureURL);
+        await deleteObject(previousFileRef);
+        console.log("Previous profile picture deleted successfully.");
+      }
+
+      setLoading(false);
     } catch (error) {
-      setLoading(false); // Hide loader after data is fetched
+      setLoading(false);
       console.error("Error uploading profile picture:", error.message);
       Swal.fire(
         "Upload Failed",

@@ -252,19 +252,22 @@ const Reports = () => {
                         </a>
                       </OverlayTrigger>
                       &nbsp;
-                      <button
+                      {/* <button
                         onClick={() => handleDownload(report.pdfUrl)}
                         title="Download PDF"
                         className="download-pdf-button"
 
                       >
                         <FontAwesomeIcon icon={faDownload} />
-                      </button>
+                      </button> */}
                       <OverlayTrigger
                         placement="top"
                         overlay={<Tooltip>Delete Report</Tooltip>}
                       >
-                        <button onClick={(e) => handleDelete(report.id, e)} className="delete-report-button">
+                        <button
+                          onClick={(e) => handleDelete(report.id, e)}
+                          className="delete-report-button"
+                        >
                           <FontAwesomeIcon icon={faTrash} />
                         </button>
                       </OverlayTrigger>

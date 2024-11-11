@@ -176,8 +176,6 @@ const About = () => {
     ));
   };
 
-
-
   return (
     <div className="snapping-container content-user">
       {loading && <Loader />} {/* Display loader while loading */}
@@ -207,10 +205,7 @@ const About = () => {
               <div className="testimonial-content">
                 {/* Display profile picture or placeholder */}
                 <img
-                  src={
-                    testimonial.profilePictureURL ||
-                    "path/to/placeholder/image.jpg"
-                  } // Replace with your placeholder image path
+                  src={testimonial.profilePictureURL || "/placeholder.jpg"} // Replace with your placeholder image path
                   alt={`${testimonial.firstname} ${testimonial.lastname}`}
                   className="profile-picture"
                 />

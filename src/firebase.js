@@ -476,7 +476,7 @@ const addReport = async (reportData, pdfBlob, filename) => {
 const uploadReportPDF = async (file, reportId) => {
   try {
     const storage = getStorage();
-    const storageRef = ref(storage, `reports/${reportId}/report`);
+    const storageRef = ref(storage, `reports/${reportId}/report.pdf`);
 
     await uploadBytes(storageRef, file);
     const fileUrl = await getDownloadURL(storageRef);
@@ -491,7 +491,7 @@ const uploadReportPDF = async (file, reportId) => {
 
 const generateTransactionReportsPDF = async (
   tableData,
-  filename = "report"
+  filename = "report.pdf"
 ) => {
   try {
     const userId = getCurrentUserId();
