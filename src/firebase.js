@@ -715,15 +715,33 @@ const updateInventoryItem = async (itemId, newData) => {
   }
 };
 
-// Function to delete an inventory item
+// Function to delete an inventory item, including its image from Firebase Storage
 const deleteInventoryItem = async (itemId) => {
   try {
     // Construct the reference to the inventory item document
     const itemDocRef = doc(dba, "inventory", itemId);
 
-    // Delete the inventory item document
+    // Get the inventory item document data
+    const itemSnapshot = await getDoc(itemDocRef);
+    const itemData = itemSnapshot.data();
+
+    // If the item doesn't exist or has no imageURL, log a warning and return
+    if (!itemData || !itemData.imageUrl) {
+      console.error("Item not found or no imageURL associated with the item.");
+      return;
+    }
+
+    // Delete the image from Firebase Storage using the imageURL stored in Firestore
+    const storage = getStorage();
+    const imageRef = ref(storage, itemData.imageUrl);
+
+    // Attempt to delete the image
+    await deleteObject(imageRef);
+    console.log("Image deleted successfully from Firebase Storage.");
+
+    // Now delete the Firestore inventory item document
     await deleteDoc(itemDocRef);
-    //console.log("Inventory item deleted successfully!");
+    console.log("Inventory item document deleted successfully from Firestore.");
   } catch (error) {
     console.error("Error deleting inventory item:", error.message);
     throw error; // Re-throw the error to be handled in the calling code

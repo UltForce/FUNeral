@@ -23,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
 import Loader from "./Loader.js";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -222,7 +224,7 @@ const UserDashboard = () => {
     setRating(5); // Reset the form fields if necessary
   };
 
-  const handleDeleteReview = async (reviewId) => {
+  const handleDeleteReview = async (reviewId, event) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to delete this testimonial?",
@@ -372,9 +374,9 @@ const UserDashboard = () => {
             <ListGroup variant="flush">
               {reviews.length === 0 ? (
                 <div className="no-reviews">
-                <ListGroup.Item className="no-reviews-list">
-                  No reviews found.
-                </ListGroup.Item>
+                  <ListGroup.Item className="no-reviews-list">
+                    No reviews found.
+                  </ListGroup.Item>
                 </div>
               ) : (
                 reviews.map((review) => (
@@ -396,17 +398,23 @@ const UserDashboard = () => {
                           variant="warning"
                           onClick={() => startEditReview(review)}
                         >
-                          Edit
+                          <FontAwesomeIcon icon={faEdit} />
                         </Button>
                       </OverlayTrigger>
                     )}
                     <OverlayTrigger
                       placement="top"
-                      overlay={<Tooltip>Delete your review</Tooltip>}
+                      overlay={<Tooltip>Delete Item</Tooltip>}
                     >
-                      <Button variant="danger" onClick={handleDeleteReview}>
-                        Delete Testimonial
-                      </Button>
+                      <button
+                        className="btn btn-danger"
+                        type="button"
+                        onClick={(event) => {
+                          handleDeleteReview(review.id, event);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
                     </OverlayTrigger>
                   </ListGroup.Item>
                 ))
@@ -492,13 +500,17 @@ const UserDashboard = () => {
 
         {/* Appointment Details Modal */}
         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton className="user-appointment-header"> 
-            <Modal.Title className="user-appointment-title">Appointment Details</Modal.Title>
+          <Modal.Header closeButton className="user-appointment-header">
+            <Modal.Title className="user-appointment-title">
+              Appointment Details
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="user-appointment-details-box">
             {selectedAppointment ? (
               <>
-                <h4 className="admin-appointment-user">{selectedAppointment.name}</h4>
+                <h4 className="admin-appointment-user">
+                  {selectedAppointment.name}
+                </h4>
                 <p className="first-details">
                   <strong>Date:</strong>{" "}
                   {formatDateTime(selectedAppointment.date)}
@@ -547,7 +559,11 @@ const UserDashboard = () => {
               placement="top"
               overlay={<Tooltip>Close the details modal</Tooltip>}
             >
-              <Button variant="secondary" onClick={handleCloseModal} className="close2-button">
+              <Button
+                variant="secondary"
+                onClick={handleCloseModal}
+                className="close2-button"
+              >
                 Close
               </Button>
             </OverlayTrigger>

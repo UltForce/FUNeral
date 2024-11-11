@@ -157,9 +157,7 @@ const Reviews = () => {
   };
 
   const handleDelete = async (reviewId, event) => {
-    setLoading(true); // Set loading state to true
-
-    const result = await Toast.fire({
+    const result = await Swal.fire({
       title: "Are you sure you want to delete this review?",
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -168,6 +166,7 @@ const Reviews = () => {
     });
 
     if (result.isConfirmed) {
+      setLoading(true); // Set loading state to true
       const userId = getCurrentUserId();
       const review = reviews.find((r) => r.id === reviewId);
       const event = {

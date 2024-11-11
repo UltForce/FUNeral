@@ -80,17 +80,7 @@ const Login = () => {
     }
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      // Check if the pressed key is Enter
-      if (event.target.id === "floatingInput") {
-        // If the Enter key is pressed on the email input field
-        passwordInputRef.current.focus(); // Move focus to the password input field
-      } else {
-        handleLogin(); // Call handleLogin function when Enter key is pressed on password field
-      }
-    }
-  };
+  
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -171,7 +161,7 @@ const Login = () => {
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+           // onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
           />
         </div>
         <div className="inputs">
@@ -182,7 +172,7 @@ const Login = () => {
             autoComplete="off"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+           // onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
             ref={passwordInputRef} // Set the ref to the password input field
           />
         </div>

@@ -34,7 +34,7 @@ const Toast = Swal.mixin({
 
 const Content = () => {
   const navigate = useNavigate();
-  const [content, setContent] = useState([]);
+  const [contents, setContents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add"); // add or edit
   const [selectedContent, setSelectedContent] = useState(null);
@@ -65,7 +65,7 @@ const Content = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getContent();
-      setContent(data);
+      setContents(data);
       setLoading(false); // Hide loader after data is fetched
     };
 
@@ -73,33 +73,35 @@ const Content = () => {
   }, []);
 
   useEffect(() => {
-    if (content.length > 0) {
-      if (!$.fn.DataTable.isDataTable("#contentTable")) {
-        $("#contentTable").DataTable({
-          lengthMenu: [10, 25, 50, 75, 100],
-          pagingType: "full_numbers",
-          order: [],
-          columnDefs: [{ targets: "no-sort", orderable: false }],
-          drawCallback: function () {
-            $(this.api().table().container())
-              .find("td")
-              .css("border", "1px solid #ddd");
-          },
-          rowCallback: function (row) {
-            $(row).hover(
-              function () {
-                $(this).addClass("hover");
-              },
-              function () {
-                $(this).removeClass("hover");
-              }
-            );
-          },
-          stripeClasses: ["stripe1", "stripe2"],
-        });
+    if (contents.length > 0) {
+      if ($.fn.DataTable.isDataTable("#contentTable")) {
+        $("#contentTable").DataTable().destroy(); // Destroy existing instance before re-initializing
       }
+
+      $("#contentTable").DataTable({
+        lengthMenu: [10, 25, 50, 75, 100],
+        pagingType: "full_numbers",
+        order: [],
+        columnDefs: [{ targets: "no-sort", orderable: false }],
+        drawCallback: function () {
+          $(this.api().table().container())
+            .find("td")
+            .css("border", "1px solid #ddd");
+        },
+        rowCallback: function (row) {
+          $(row).hover(
+            function () {
+              $(this).addClass("hover");
+            },
+            function () {
+              $(this).removeClass("hover");
+            }
+          );
+        },
+        stripeClasses: ["stripe1", "stripe2"],
+      });
     }
-  }, [content]);
+  }, [contents]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -175,7 +177,11 @@ const Content = () => {
           );
         }
         const data = await getContent();
-        setContent(data);
+        setContents(data);
+        // Destroy the current DataTable instance before updating
+        if ($.fn.DataTable.isDataTable("#contentTable")) {
+          $("#contentTable").DataTable().destroy();
+        }
         handleCloseModal();
         setLoading(false); // Set loading state to true
       } catch (error) {
@@ -221,8 +227,9 @@ const Content = () => {
         if ($.fn.DataTable.isDataTable("#contentTable")) {
           $("#contentTable").DataTable().destroy();
         }
-        const data = await getContent();
-        setContent(data);
+        setContents((prevContents) =>
+          prevContents.filter((content) => content.id !== id)
+        );
         setLoading(false); // Set loading state to true
       } catch (error) {
         console.error("Error deleting content:", error.message);
@@ -257,7 +264,7 @@ const Content = () => {
           variant="primary"
           onClick={() => handleShowModal("add")}
         ></Button>
-        {content.length === 0 ? (
+        {contents.length === 0 ? (
           <p className="text-center">No content available</p>
         ) : (
           <table className="display" id="contentTable">
@@ -270,11 +277,11 @@ const Content = () => {
               </tr>
             </thead>
             <tbody>
-              {content.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.page}</td>
-                  <td>{item.title}</td>
-                  <td>{item.body}</td>
+              {contents.map((content) => (
+                <tr key={content.id}>
+                  <td>{content.page}</td>
+                  <td>{content.title}</td>
+                  <td>{content.body}</td>
                   <td>
                     <div>
                       {/* Edit Button with OverlayTrigger for Tooltip */}
@@ -286,7 +293,7 @@ const Content = () => {
                           className="btn btn-warning"
                           type="button"
                           onClick={(event) => {
-                            handleShowModal("edit", item, event);
+                            handleShowModal("edit", content, event);
                           }}
                         >
                           <FontAwesomeIcon icon={faEdit} />
@@ -301,7 +308,7 @@ const Content = () => {
                           className="btn btn-danger"
                           type="button"
                           onClick={(event) => {
-                            handleDelete(item.id, event);
+                            handleDelete(content.id, event);
                           }}
                         >
                           <FontAwesomeIcon icon={faTrash} />

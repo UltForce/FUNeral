@@ -174,6 +174,7 @@ const Inventory = () => {
         };
         AuditLogger({ event });
         await addInventoryItem({ ...formData, imageUrl }); // Include imageUrl here
+
         Swal.fire(
           "Added!",
           "Inventory item added successfully",
@@ -194,6 +195,7 @@ const Inventory = () => {
         };
         AuditLogger({ event });
         await updateInventoryItem(selectedItem.id, { ...formData, imageUrl }); // Include imageUrl here
+
         Swal.fire(
           "Updated!",
           "Inventory item updated successfully",
@@ -207,8 +209,11 @@ const Inventory = () => {
           }
         });
       }
-
-      fetchInventoryItems(); // Fetch items directly here
+      fetchInventoryItems();
+      // Destroy DataTable before updating the state
+      if ($.fn.DataTable.isDataTable("#inventoryTable")) {
+        $("#inventoryTable").DataTable().destroy();
+      }
       handleCloseModal();
       setLoading(false); // Set loading state to true
     } catch (error) {

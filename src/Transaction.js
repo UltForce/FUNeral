@@ -466,6 +466,10 @@ const Transaction = () => {
           }
         });
       }
+      // Destroy DataTable before updating the state
+      if ($.fn.DataTable.isDataTable("#transactionTable")) {
+        $("#transactionTable").DataTable().destroy();
+      }
       fetchTransactions();
       handleCloseModal();
       handleClose2();
@@ -730,7 +734,7 @@ const Transaction = () => {
                           type="button"
                           onClick={(event) => {
                             handleShowModal("edit", transaction, event);
-                          }}                         
+                          }}
                         >
                           <FontAwesomeIcon icon={faEdit} />
                         </button>
@@ -893,7 +897,9 @@ const Transaction = () => {
         {/* Second Modal for Particulars */}
         <Modal show={showModal2} onHide={handleClose2}>
           <Modal.Header closeButton className="transaction-header">
-            <Modal.Title className="transaction-particulars-title">Particulars</Modal.Title>
+            <Modal.Title className="transaction-particulars-title">
+              Particulars
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className="details-box">
             <Form onSubmit={handleSubmit}>
@@ -962,7 +968,11 @@ const Transaction = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan="2" style={{ textAlign: "right" }} className="total-amount">
+                    <td
+                      colSpan="2"
+                      style={{ textAlign: "right" }}
+                      className="total-amount"
+                    >
                       <strong>Total Amount:</strong> $
                       {formData.totalAmount.toFixed(2)}
                     </td>
@@ -984,7 +994,11 @@ const Transaction = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="2" style={{ textAlign: "center" }} className="balance">
+                    <td
+                      colSpan="2"
+                      style={{ textAlign: "center" }}
+                      className="balance"
+                    >
                       <strong>Balance:</strong> ${formData.balance.toFixed(2)}
                     </td>
                   </tr>
