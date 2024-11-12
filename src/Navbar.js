@@ -184,7 +184,7 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/dashboard">
-                      <FontAwesomeIcon icon={faClapperboard} />
+                      
                       <span className="nav-label"> Dashboard</span>
                     </Link>
                   </li>
@@ -195,7 +195,7 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/appointments">
-                      <FontAwesomeIcon icon={faCalendar} />
+                     
                       <span className="nav-label"> Appointments</span>
                     </Link>
                   </li>
@@ -205,7 +205,7 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/transaction">
-                      <FontAwesomeIcon icon={faExchangeAlt} />
+                      
                       <span className="nav-label"> Transaction</span>
                     </Link>
                   </li>
@@ -215,7 +215,7 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/inventory">
-                      <FontAwesomeIcon icon={faBox} />
+                      
                       <span className="nav-label"> Inventory</span>
                     </Link>
                   </li>
@@ -223,7 +223,7 @@ const Navbar = () => {
                     className={location.pathname === "/content" ? "active" : ""}
                   >
                     <Link to="/content">
-                      <FontAwesomeIcon icon={faFileAlt} />
+                      
                       <span className="nav-label"> Content</span>
                     </Link>
                   </li>
@@ -231,7 +231,7 @@ const Navbar = () => {
                     className={location.pathname === "/reviews" ? "active" : ""}
                   >
                     <Link to="/reviews">
-                      <FontAwesomeIcon icon={faStar} />
+                     
                       <span className="nav-label"> Reviews</span>
                     </Link>
                   </li>
@@ -239,7 +239,7 @@ const Navbar = () => {
                     className={location.pathname === "/reports" ? "active" : ""}
                   >
                     <Link to="/reports">
-                      <FontAwesomeIcon icon={faFile} />
+                      
                       <span className="nav-label"> Reports</span>
                     </Link>
                   </li>
@@ -247,7 +247,7 @@ const Navbar = () => {
                     className={location.pathname === "/archive" ? "active" : ""}
                   >
                     <Link to="/archive">
-                      <FontAwesomeIcon icon={faArchive} />
+                    
                       <span className="nav-label"> Archive</span>
                     </Link>
                   </li>
@@ -255,13 +255,13 @@ const Navbar = () => {
                     className={location.pathname === "/audit" ? "active" : ""}
                   >
                     <Link to="/audit">
-                      <FontAwesomeIcon icon={faClipboard} />
+                     
                       <span className="nav-label"> Audit</span>
                     </Link>
                   </li>
                   <li>
                     <a onClick={handleLogout} className="no-transition">
-                      <FontAwesomeIcon icon={faSignOutAlt} />
+                      
                       <span className="nav-label"> Logout</span>
                     </a>
                   </li>
@@ -273,7 +273,7 @@ const Navbar = () => {
       ) : (
         <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
-          <ul className="centeredNav">
+          <ul className="menu">
             {isLoggedIn && (
               <li
                 className={
@@ -281,61 +281,68 @@ const Navbar = () => {
                 }
               >
                 <Link to="/userdashboard">
-                  <FontAwesomeIcon icon={faClapperboard} />
-                  <span className="nav-label"> Dashboard</span>
+                  
+                  <span className="menu-container"> Dashboard</span>
+                
                 </Link>
               </li>
             )}
             <li className={location.pathname === "/homepage" ? "active" : ""}>
               <Link to="/homepage">
-                <FontAwesomeIcon icon={faHome} />
-                <span className="nav-label"> Home</span>
+                
+                <span className="menu-container"> Home</span>
               </Link>
             </li>
             <li className={location.pathname === "/about" ? "active" : ""}>
               <Link to="/about">
-                <FontAwesomeIcon icon={faInfoCircle} />
-                <span className="nav-label"> About us</span>
+               
+                <span className="menu-container"> About us</span>
               </Link>
             </li>
             <li className={location.pathname === "/gallery" ? "active" : ""}>
+            
               <Link to="/gallery">
-                <FontAwesomeIcon icon={faImage} />
-                <span className="nav-label"> Gallery</span>
+               
+                <span className="menu-container"> Gallery</span>
+
               </Link>
             </li>
+            
             {isLoggedIn && (
               <>
                 <li
                   className={location.pathname === "/services" ? "active" : ""}
                 >
+
                   <Link to="/services">
-                    <FontAwesomeIcon icon={faTag} />
-                    <span className="nav-label"> Services</span>
+                    
+                    <span className="menu-container"> Services</span>
                   </Link>
                 </li>
                 <li
                   className={location.pathname === "/booking" ? "active" : ""}
                 >
                   <Link to="/booking">
-                    <FontAwesomeIcon icon={faCalendar} />
-                    <span className="nav-label"> Book now</span>
+                    
+                    <span className="menu-container"> Book now</span>
                   </Link>
                 </li>
               </>
             )}
             <li className={location.pathname === "/terms" ? "active" : ""}>
               <Link to="/terms">
-                <FontAwesomeIcon icon={faCog} />
-                <span className="nav-label"> Terms & Conditions</span>
+               
+                <span className="menu-container"> Terms & Conditions</span>
               </Link>
             </li>
             <li className={location.pathname === "/faqs" ? "active" : ""}>
               <Link to="/faqs">
-                <FontAwesomeIcon icon={faQuestionCircle} />
-                <span className="nav-label"> FAQs</span>
+                
+                <span className="menu-container"> FAQs</span>
               </Link>
             </li>
+
+            
             {isLoggedIn && (
               <li>
                 <div className="notification-container">
@@ -408,13 +415,13 @@ const Navbar = () => {
                 >
                   <Link to="/account">
                     <FontAwesomeIcon icon={faUser} />
-                    <span className="nav-label"> Account</span>
+                    <span className="menu-container"> Account</span>
                   </Link>
                 </li>
                 <li>
                   <a onClick={handleLogout} className="no-transition">
                     <FontAwesomeIcon icon={faSignOutAlt} />
-                    <span className="nav-label"> Logout</span>
+                    <span className="menu-container"> Logout</span>
                   </a>
                 </li>
               </>
@@ -423,8 +430,8 @@ const Navbar = () => {
               <>
                 <li className={location.pathname === "/login" ? "active" : ""}>
                   <Link to="/login">
-                    <FontAwesomeIcon icon={faUser} />
-                    <span className="nav-label"> Login</span>
+                    
+                    <span className="login-button-nav"> LOGIN</span>
                   </Link>
                 </li>
                 <li
@@ -440,6 +447,7 @@ const Navbar = () => {
           </ul>
         </nav>
       )}
+      
     </>
   );
 };
