@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     let responseMessage = "";
 
-    if (intentName === "Welcome Intent") {
+    if (intentName === "Welcome") {
       responseMessage = "Hello! How can I help you today?";
     } else {
       responseMessage = "Sorry, I didn't understand that.";

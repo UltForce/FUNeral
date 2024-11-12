@@ -25,22 +25,22 @@ const Homepage = () => {
       }
     });
 
-    const fetchContent = async () => {
-      const db = getFirestore();
-      const contentDoc = doc(db, "staticContent", "content");
-      try {
-        const docSnap = await getDoc(contentDoc);
-        if (docSnap.exists()) {
-          setContent(docSnap.data());
-        } else {
-          //console.log("No content found");
-        }
-      } catch (error) {
-        console.error("Error fetching content:", error);
-      }
-    };
+    // const fetchContent = async () => {
+    //   const db = getFirestore();
+    //   const contentDoc = doc(db, "staticContent", "content");
+    //   try {
+    //     const docSnap = await getDoc(contentDoc);
+    //     if (docSnap.exists()) {
+    //       setContent(docSnap.data());
+    //     } else {
+    //       //console.log("No content found");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching content:", error);
+    //   }
+    // };
 
-    fetchContent();
+    // fetchContent();
 
     return () => unsubscribe();
   }, []);

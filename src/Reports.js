@@ -35,7 +35,7 @@ const Toast = Swal.mixin({
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(true); // Add loading state
   const navigate = useNavigate();
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {

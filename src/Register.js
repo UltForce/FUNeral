@@ -12,10 +12,13 @@ import {
 } from "./firebase";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
-import { sendEmailVerification, signInWithPopup } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
-import { linkWithCredential } from "firebase/auth";
-import { EmailAuthProvider } from "firebase/auth";
+import {
+  sendEmailVerification,
+  signInWithPopup,
+  GoogleAuthProvider,
+  linkWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import { FaGoogle } from "react-icons/fa"; // Import FontAwesome icons
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "./Register.css";
@@ -57,6 +60,8 @@ const Register = () => {
   const navigate = useNavigate();
   const [termsChecked, setTermsChecked] = useState(false); // State htmlFor tracking if terms are checked
   const handleGoogleSignIn = async () => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (
       !confirmPassword ||
       !password ||
@@ -77,12 +82,13 @@ const Register = () => {
       return; // Exit early if fields are empty
     }
 
-    if (password.length < 6) {
+    if (!passwordRegex.test(password)) {
       Toast.fire({
         icon: "error",
-        title: "Password must be at least 6 characters long.",
+        title:
+          "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.",
       });
-      return; // Exit early if password is less than 6 characters
+      return; // Exit early if password does not meet the criteria
     }
 
     if (password !== confirmPassword) {
@@ -436,7 +442,12 @@ const Register = () => {
               <div className="col-md-6"></div>
               <OverlayTrigger
                 placement="bottom"
-                overlay={<Tooltip>Must be 6 characters long</Tooltip>}
+                overlay={
+                  <Tooltip>
+                    Must be 8 characters long, have an uppercase, lowercase,
+                    special, and numeric character
+                  </Tooltip>
+                }
               >
                 <div className=" form-floating mb-3  col-md-6">
                   <input
