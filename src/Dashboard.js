@@ -438,6 +438,7 @@ const Dashboard = () => {
                   className="today-appointments"
                 >
                   <Card.Header>Today's Appointments</Card.Header>
+                  <Card.Body>
                   <ListGroup variant="flush">
                     {todaysAppointments.length === 0 ? (
                       <ListGroup.Item className="today-appointment-list">
@@ -449,13 +450,24 @@ const Dashboard = () => {
                           className="appointment-list"
                           key={appointment.id}
                         >
-                          {appointment.name} - {appointment.plan} -{" "}
-                          {formatDateTime(appointment.date)}{" "}
-                          {getStatusBadge(appointment.status)}
+                          <div className="today-appointment-name">
+                            <strong>{appointment.name}</strong>
+                          </div>
+                          
+                          <div className="plan-date-status">
+                            <p className="appointment-plan">{appointment.plan}</p>  
+                            <p className="appointment-date">
+                              {" "}
+                              {formatDateTime(appointment.date)}
+                            </p>
+                            <p>{" "} {getStatusBadge(appointment.status)}</p>
+                          </div>
+                          
                         </ListGroup.Item>
                       ))
                     )}
                   </ListGroup>
+                  </Card.Body>
                 </Card>
               </Col>
 
