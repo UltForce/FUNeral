@@ -85,7 +85,7 @@ h2 {
     color: #FDF9AA;
 }
 
-.login-button {
+.login .login-button {
     border-radius: 10px;
     width: 30%;
     font-size: 20px;

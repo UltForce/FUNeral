@@ -25,6 +25,8 @@ import Loader from "./Loader.js";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -51,6 +53,7 @@ const UserDashboard = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
+  const [date, setDate] = useState(new Date());
   const [editReviewId, setEditReviewId] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
   useEffect(() => {
@@ -298,12 +301,14 @@ const UserDashboard = () => {
       <div className="user-title-box">
         <h1>Dashboard</h1>
       </div>
-      <div
+      <div className="user-dashboard-info">
+      <div className="user-dashboard-info-inner"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gridTemplateRows: "1fr 1fr",
           gap: "10px", // Reduced gap between cards
+          width: "100%",
         }}
       >
         <div className="user-cards-total">
@@ -326,8 +331,9 @@ const UserDashboard = () => {
                       style={{ cursor: "pointer" }}
                       className="past-appointment-list"
                     >
-                      {appointment.name} -{" "}
-                      {new Date(appointment.date).toLocaleString()}
+                      <strong className="past-name">{appointment.name} </strong> 
+                      -{" "}
+                      <strong className="past-date">{new Date(appointment.date).toLocaleString()}</strong>
                     </ListGroup.Item>
                   </OverlayTrigger>
                 ))
@@ -358,8 +364,13 @@ const UserDashboard = () => {
                       style={{ cursor: "pointer" }}
                       className="current-appointment-list"
                     >
-                      {appointment.name} -{" "}
-                      {new Date(appointment.date).toLocaleString()}
+                      <div className="current-name-date">
+                        <strong>{appointment.name}</strong>
+                        <div className="current-appointment-date">
+                          {new Date(appointment.date).toLocaleString()}
+                        </div>
+                      </div>
+                      
                     </ListGroup.Item>
                   </OverlayTrigger>
                 ))
@@ -484,7 +495,9 @@ const UserDashboard = () => {
                       style={{ cursor: "pointer" }}
                       className="user-transaction"
                     >
-                      <strong>Transaction ID:</strong> {transaction.id}
+                      <p className="user-transaction-id">
+                        <strong>Transaction ID:</strong> {transaction.id}
+                      </p>
                       {/* You can add more transaction details here if needed */}
                     </ListGroup.Item>
                   </OverlayTrigger>
@@ -659,6 +672,26 @@ const UserDashboard = () => {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        
+      </div>
+      <div className="user-dashboard-calendar">
+        <Card
+          style={{ height: "525px", width: "100%" }}
+          className="dashboard-calendar"
+        >
+          <Card.Header>Calendar</Card.Header>
+          <Card.Body
+            style={{ height: "100%", padding: 0, width: "100%" }}
+          >
+            <Calendar
+              onChange={setDate}
+              value={date}
+              className="calendar"
+            />
+          </Card.Body>
+        </Card>
+      </div>
       </div>
     </div>
   );

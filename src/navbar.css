@@ -297,23 +297,23 @@ nav ul.centeredNav li.active a {
 
 .notify-button {
   border: none;
-  background-color: #18020c;
+  background-color: #2b0a0a;
 }
 
 .notify-button:hover {
   border: none;
-  background-color: #18020c;
+  background-color: #2b0a0a;
 }
 
 .notify-button .bell-icon {
   width: 20px;
   height: auto;
-  background-color: #18020c;
+  background-color: #2b0a0a;
   color: #fdf9aa;
 }
 
 .notify-button .bell-icon:hover {
-  background-color: #18020c;
+  background-color: #2b0a0a;
   color: #fdf9aa;
 }
 
@@ -331,22 +331,22 @@ nav ul.centeredNav li.active a {
   height: 10px;
   background-color: red;
   border-radius: 50%;
-  border: 2px solid #18020c;
+  border: 2px solid #2b0a0a;
 }
 
 .login-button {
-  background-color: #f7e6a6; /* Light yellow background */
+  /* background-color: #f7e6a6; 
   color: black;
-  padding: 8px 15px;
+  padding: 8px 15px; */
   border: none;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   font-weight: bold;
   cursor: pointer;
   font-family: Arial, sans-serif;
 }
 
 .login-button-nav {
-  background-color: #f7e6a6; /* Light yellow background */
+  background-color: #f7e6a6;
   color: black;
   padding: 8px 15px;
   border: none;
