@@ -299,6 +299,7 @@
   color: #634b42;
   text-align: center;
   font-size: 20px;
+  text-decoration: underline;
 }
 
 .appointment-details-box .first-details,
@@ -358,6 +359,46 @@
   font-weight: 400;
   font-size: 15px;
   text-align: center;
+}
+
+.today-appointments .today-appointment-name {
+  background-color: #ebebeb;
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  height: 35px;
+  display: block;
+  margin: 10px auto;
+}
+
+.today-appointments .appointment-list strong {
+  color: #8B5E11;
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 18px;
+  text-align: center;
+}
+
+.today-appointments .appointment-list .appointment-plan {
+  color: #c0b92e;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.today-appointments .appointment-list .appointment-date {
+  color: black;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.today-appointments .appointment-list .plan-date-status {
+  background-color: #FCF2D8;
+  border: 1px solid #aaa;
+  border-radius: 15px;
+  padding: 3px 10px;
+  margin: 5px 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .admin-dashboard .today-appointments .today-appointment-list {

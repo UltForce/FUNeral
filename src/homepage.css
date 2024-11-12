@@ -300,4 +300,148 @@
   }
   
 
+/* Gallery section styling */
+.gallery-section {
+  background-color: #CAA971;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.gallery-header {
+  background-color: #CAA971;
+  padding: 20px;
+}
+
+.gallery-header h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.gallery-header p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+/* Gallery images container */
+.gallery-images {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+  background-color: #E3D18D;
+  flex-wrap: wrap; /* Allows images to wrap on smaller screens */
+  height: 60vh; /* Set the height to 60% of the viewport */
+  width: 100vw; /* Make the container full width */
+  align-items: center; /* Center items vertically if necessary */
+  padding: 20px; /* Add padding if needed to separate images from edges */
+  box-sizing: border-box; /* Ensures padding doesn't affect total width */
+}
+
+/* Gallery image styling */
+.gallery-images img {
+  width: 300px;
+  height: 300px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gallery-images {
+    gap: 20px; /* Reduce the gap between images on tablets */
+  }
   
+  .gallery-images img {
+    width: 250px;
+    height: 250px; /* Smaller images on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-header h2 {
+    font-size: 20px; /* Smaller title font for mobile screens */
+  }
+
+  .gallery-header p {
+    font-size: 14px;
+  }
+
+  .gallery-images {
+    gap: 10px; /* Minimal gap on mobile */
+  }
+  
+  .gallery-images img {
+    width: 100%; /* Full-width images on mobile */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 300px; /* Ensure images don’t get too large on smaller devices */
+  }
+}
+
+/* Main section container */
+.care-section {
+  display: flex;
+  align-items: center;
+  padding: 40px;
+  background-color: #CAA971;
+  font-family: Arial, sans-serif;
+}
+
+/* Image container */
+.images-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Overlapping images */
+.rounded-image {
+  width: 250px; /* Adjust as needed */
+  height: 400px; /* Adjust as needed */
+  border-radius: 150px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+}
+
+/* Position each image with an offset to create overlap */
+.rounded-image:first-child {
+  left: -10px; /* Move the first image slightly to the left */
+  top: -250px; /* Move the first image slightly up */
+  z-index: 1; /* Make it appear above the second image */
+}
+
+.rounded-image:last-child {
+  left: 150px; /* Move the second image slightly to the right */
+  top: -150px; /* Move the second image slightly down */
+}
+
+
+/* Text container */
+.text-container {
+  flex: 1;
+  padding: 20px;
+  color: #F9F9F9;
+  max-width: 1000px;
+  text-align: justify;
+}
+
+.text-container h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #F9F9F9;
+  margin-bottom: 15px;
+}
+
+.text-container p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+

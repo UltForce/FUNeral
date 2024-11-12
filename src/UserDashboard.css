@@ -3,13 +3,12 @@
   font-family: 'Rubik';
   scroll-snap-align: start;
   height: auto;
-  margin-top: 4rem;
   padding: 1rem;
   overflow: auto;
 }
 
 .user-dashboard .card {
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -19,6 +18,7 @@
   justify-content: flex-start;
   align-items: center;
   height: 250px;
+  width: 450px;
 }
 
 .user-title-box {
@@ -29,67 +29,161 @@
   margin-bottom: 20px;
 }
 
-.user-cards-total .card-header{
-  background-color: #f8f9fa; /* Adjust background color if needed */
+.user-cards-total .card-header {
+  background-color: white; /* Adjust background color if needed */
   color: #8b5e11;
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 500;
   border-radius: 20px;
   border: 1px solid #beb9b9;
   width: 100%;
 }
 
+.user-dashboard-calendar .card-header {
+  background-color: #f8f9fa; /* Adjust background color if needed */
+  color: #8b5e11;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 20px;
+  border: 1px solid #beb9b9;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.past-appointments {
+  overflow-y: auto;
+}
+
 .past-appointments .past-appointment-list {
   text-align: center !important;
   padding: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
+  font-weight: 500;
 }
 
 .past-appointments .no-past-appointment-list {
   text-align: center !important;
   padding-top: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
+  display: flex; /* Use flexbox for the list item */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100px;
+}
+
+.past-appointments .past-name {
+  color: #523709;
+}
+
+.past-appointments .past-date {
+  color: #c89d53;
 }
 
 .current-appointments .current-appointment-list {
   text-align: center !important;
   padding: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
+  font-size: 15px;
+  display: flex; /* Use flexbox for the list item */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100px;
 }
 
 .current-appointments .no-current-appointment-list {
   text-align: center !important;
+  background-color: #FCF2D8;
   padding-top: 10px;
-  display: flex;
-  background-color: #f1f1f1;
+  display: flex; /* Use flexbox for the list item */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100px;
+}
+
+.current-appointments .current-appointment-date {
+  background-color: #F5F095;
+  border-radius: 10px;
+  padding: 5px 15px;
+  margin-top: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.current-appointments .current-name-date {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack name and date vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  text-align: center; /* Center text */
+  width: 100%; /* Ensure it takes full width */
+}
+
+.current-appointments .current-name-date strong {
+  text-decoration: underline;
+  color: #523709;
 }
 
 .your-reviews .your-review-list {
   text-align: center !important;
   padding: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
   border: none;
 }
 
 .your-reviews .no-reviews-list {
   text-align: center !important;
   padding-top: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
   border: none;
+  display: flex; /* Use flexbox for the list item */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100px;
 }
 
 .transaction-details .user-transaction {
   text-align: center !important;
   padding: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
   border: none;
+  display: flex; /* Use flexbox for the list item */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100px;
 }
 
 .transaction-details .no-transactions {
   text-align: center !important;
   padding-top: 10px;
-  background-color: #f1f1f1;
+  background-color: #FCF2D8;
   border: none;
+  display: flex; /* Use flexbox for the list item */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  height: 100px;
+}
+
+.transaction-details .user-transaction-id {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack name and date vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  text-align: center; /* Center text */
+  width: 100%; /* Ensure it takes full width */
+  font-size: 15px;
+  color: #c89d53;
+  font-weight: 500;
+}
+
+.transaction-details .user-transaction-id strong {
+  margin-bottom: 5px;
+  text-decoration: underline;
+  color: #18020c;
 }
 
 .user-appointment-header {
@@ -203,6 +297,48 @@ text-decoration: underline;
   text-align: center;
   font-size: 15px;
   color: #18020c;
+}
+
+.user-dashboard-container {
+  display: grid;
+  grid-template-columns: 1fr 300px; /* Adjust the width of the calendar */
+  gap: 20px; /* Space between the info and calendar */
+}
+
+.user-dashboard-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns for the user info cards */
+  grid-template-rows: repeat(2, auto); /* Two rows for the user info cards */
+  gap: 10px; /* Space between user info cards */
+}
+
+.user-dashboard-calendar {
+  height: 100%; /* Ensure the calendar takes full height */
+}
+
+.user-dashboard-calendar .dashboard-calendar {
+  padding: 20px 55px;
+  background-color: white;
+}
+
+.user-dashboard-calendar .calendar {
+  width: 100%;
+  height: 85%;
+}
+
+.user-dashboard-calendar .react-calendar__month-view__weekdays {
+  font-size: 15px;
+}
+
+.user-dashboard-calendar .react-calendar__navigation span {
+  color: white;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+.user-dashboard-calendar .react-calendar__month-view__days {
+  font-size: 18px;
+  line-height: 30px;
 }
 
 .view-details-button {

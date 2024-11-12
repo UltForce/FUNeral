@@ -120,12 +120,25 @@ const Homepage = () => {
           </div>
         </div>
       </section>
-
-      <section className="snap-section section3">
-        <h1>{content.aboutUsText || "About Us"}</h1>
-      </section>
+      
       <section className="snap-section section4">
-        <h1>Compassionate Care in Your Time of Need</h1>
+        <section className="care-section">
+      <div className="images-container">
+        <img src="image1.jpg" alt="Service Image 1" className="rounded-image" />
+        <img src="image2.jpg" alt="Service Image 2" className="rounded-image" />
+      </div>
+      
+
+
+      <div className="text-container">
+        <h1>Compassionate Care In Your Time Of Need</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          <br /><br />
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
+        </p>
+      </div>
+    </section>
       </section>
 
       <section className="snap-section section5">
@@ -205,6 +218,22 @@ const Homepage = () => {
       </section>
       <section className="snap-section section6">
         <h1>Our Gallery</h1>
+        <div className="gallery-section">
+      <div className="gallery-header">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
+        </p>
+      </div>
+
+      <div className="gallery-images">
+        <img src="path/to/image1.jpg" alt="Gallery Item 1" />
+        <img src="path/to/image2.jpg" alt="Gallery Item 2" />
+        <img src="path/to/image3.jpg" alt="Gallery Item 3" />
+      </div>
+    </div>
       </section>
       <section className="snap-section section7">
         <h1>BLOGS & ARTICLES</h1>

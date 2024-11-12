@@ -40,6 +40,7 @@ const About = () => {
   const [loading, setLoading] = useState(false); // Add loading state
   const [profilePictureURL, setProfilePictureURL] = useState(""); // Add state for profile picture URL
   const [hasSubmittedTestimonial, setHasSubmittedTestimonial] = useState(false);
+  const [flipped, setFlipped] = useState(Array(5).fill(false)); // Track which images are flipped
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -176,13 +177,32 @@ const About = () => {
     ));
   };
 
+// Function to handle the flipping of an image
+const handleFlip = (index) => {
+  const newFlipped = [...flipped];
+  newFlipped[index] = !newFlipped[index];
+  setFlipped(newFlipped);
+};
+
+  // List of images and text to display
+  const images = [
+    { src: 'https://via.placeholder.com/200', text: 'Image 1 Description' },
+    { src: 'https://via.placeholder.com/200', text: 'Image 2 Description' },
+    { src: 'https://via.placeholder.com/200', text: 'Image 3 Description' },
+    { src: 'https://via.placeholder.com/200', text: 'Image 4 Description' },
+    { src: 'https://via.placeholder.com/200', text: 'Image 5 Description' },
+  ];
+
+
   return (
     <div className="snapping-container content-user">
       {loading && <Loader />} {/* Display loader while loading */}
+
       <section className="snap-section about-us-section">
         <h2>About Us</h2>
         <h3>Address</h3>
         <p>64 K4th Kamuning, Quezon City</p>
+
         {/* Embed Google Maps */}
         <iframe
           title="J.ROA Funeral Services"
@@ -197,6 +217,7 @@ const About = () => {
         <h3>Contact No.</h3>
         <p>0909 081 3396 / 0935 354 4006</p>
       </section>
+
       <section className="snap-section testimonials-section">
         <h2>Testimonials</h2>
         <div className="testimonials-grid">
@@ -205,11 +226,11 @@ const About = () => {
               <div className="testimonial-content">
                 {/* Display profile picture or placeholder */}
                 <img
-                  src={testimonial.profilePictureURL || "/placeholder.jpg"} // Replace with your placeholder image path
+                  src={testimonial.profilePictureURL || '/placeholder.jpg'} // Replace with your placeholder image path
                   alt={`${testimonial.firstname} ${testimonial.lastname}`}
                   className="profile-picture"
                 />
-                <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
+                <div className="stars">{'⭐'.repeat(testimonial.rating)}</div>
                 <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
                 <p className="review-description">{testimonial.comment}</p>
               </div>
@@ -217,6 +238,24 @@ const About = () => {
           ))}
         </div>
       </section>
+
+      {/* Steps Section with Flippable Images (now after Testimonials) */}
+      <div className="steps">
+        <h2>Steps</h2>
+        <div className="image-container">
+          {images.map((image, index) => (
+            <div key={index} className="image-wrapper" onClick={() => handleFlip(index)}>
+              <div className={`flip-card ${flipped[index] ? 'flipped' : ''}`}>
+                <div className="front" style={{ backgroundImage: `url(${image.src})` }}></div>
+                <div className="back">
+                  <p>{image.text}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {isLoggedIn && !hasSubmittedTestimonial && (
         <section className="submit-testimonial-section section">
           <h3>Add Your Testimonial</h3>
