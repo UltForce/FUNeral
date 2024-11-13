@@ -36,74 +36,87 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import "./App.css"; // Import your CSS file for animations
 
-const Layout = ({ children }) => {
-  return (
-    <>
-      {children}
-      <ChatSupport /> {/* Chat support available on every page */}
-    </>
-  );
-};
+const Layout = ({ showFooter, children }) => (
+  <>
+    <Navbar />
+    {children}
+    <ChatSupport />
+    {showFooter && <Footer />}
+    <ToastContainer />
+  </>
+);
 
 const App = () => {
-  const location = useLocation(); // Use location to manage route transitions
+  const location = useLocation();
+
+  // Define paths where the footer should NOT appear
+  const pathsWithoutFooter = [
+    "/dashboard",
+    "/appointments",
+    "/content",
+    "/reviews",
+    "/transaction",
+    "/archive",
+    "/reports",
+    "/audit",
+    "/inventory",
+  ];
+
+  // Determine whether the footer should be displayed
+  const showFooter = !pathsWithoutFooter.includes(location.pathname);
+
   const nodeRef = useRef(null);
 
   return (
-    <SwitchTransition>
-      <CSSTransition
-        key={location.key}
-        classNames="page"
-        timeout={300} // No transition during logout
-        nodeRef={nodeRef}
-      >
-        <div className="page" ref={nodeRef}>
-          <Routes location={location}>
-            <Route path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/homepage" element={<Homepage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/gallery" element={<Gallery />} />
+    <Layout showFooter={showFooter}>
+      <SwitchTransition>
+        <CSSTransition
+          key={location.key}
+          classNames="page"
+          timeout={300} // No transition during logout
+          nodeRef={nodeRef}
+        >
+          <div className="page" ref={nodeRef}>
+            <Routes location={location}>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/homepage" element={<Homepage />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/gallery" element={<Gallery />} />
 
-            <Route path="/services" element={<Services />} />
-            <Route
-              path="/booking"
-              element={<Booking element={<Booking />} />}
-            />
-            <Route path="/faqs" element={<FAQs />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/reset" element={<Reset />} />
-            <Route path="/audit" element={<Audit />} />
-            <Route path="/appointments" element={<Appointments />} />
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/content" element={<Content />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/userdashboard" element={<UserDashboard />} />
-            <Route path="/transaction" element={<Transaction />} />
-            <Route path="/archive" element={<Archive />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="*" element={<Homepage />} />
-          </Routes>
-        </div>
-      </CSSTransition>
-    </SwitchTransition>
+              <Route path="/services" element={<Services />} />
+              <Route
+                path="/booking"
+                element={<Booking element={<Booking />} />}
+              />
+              <Route path="/faqs" element={<FAQs />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/reset" element={<Reset />} />
+              <Route path="/audit" element={<Audit />} />
+              <Route path="/appointments" element={<Appointments />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/content" element={<Content />} />
+              <Route path="/reviews" element={<Reviews />} />
+              <Route path="/userdashboard" element={<UserDashboard />} />
+              <Route path="/transaction" element={<Transaction />} />
+              <Route path="/archive" element={<Archive />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="*" element={<Homepage />} />
+            </Routes>
+          </div>
+        </CSSTransition>
+      </SwitchTransition>
+    </Layout>
   );
 };
 
-function AppWithRouter() {
-  return (
-    <Router>
-      <Layout>
-        <Navbar />
-        <App />
-        <Footer />
-        <ToastContainer />
-      </Layout>
-    </Router>
-  );
-}
+const AppWithRouter = () => (
+  <Router>
+    <App />
+  </Router>
+);
 
 export default AppWithRouter;
