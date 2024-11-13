@@ -24,7 +24,7 @@ const Footer = () => {
           <div className="operation-hours">
             <p><strong>Operation Hours:</strong>
             <br/>
-            Temoporary Text
+            Open for Business 24/7
             </p>
           </div>
 

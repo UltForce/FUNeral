@@ -347,6 +347,9 @@ const UserDashboard = () => {
                         -{" "}
                         <strong className="past-date">
                           {new Date(appointment.date).toLocaleString()}{" "}
+                        </strong>
+                        -{" "}
+                        <strong className="past-status">
                           {getStatusBadge(appointment.status)}
                         </strong>
                       </ListGroup.Item>
@@ -410,15 +413,15 @@ const UserDashboard = () => {
                       key={review.id}
                       className="your-review-list"
                     >
-                      <h5>{review.title}</h5>
-                      <p>{review.comment}</p>
-                      <p>
+                      <h5 className="review-title">{review.title}</h5>
+                      <p className="review-comment">{review.comment}</p>
+                      <p className="review-stars">
                         Rating:{" "}
                         <div className="stars">
                           {"⭐".repeat(review.rating)}
                         </div>
                       </p>
-                      <p>Status: {review.status}</p>
+                      <p className="review-status"><strong>Status: </strong>{review.status}</p>
                       {/* Show Edit button only if the review is still pending */}
                       {review.status === "pending" && (
                         <OverlayTrigger

@@ -19,6 +19,7 @@
   align-items: center;
   height: 250px;
   width: 450px;
+  margin: auto;
 }
 
 .user-title-box {
@@ -56,7 +57,7 @@
 
 .past-appointments .past-appointment-list {
   text-align: center !important;
-  padding: 10px;
+  padding: 15px;
   background-color: #fcf2d8;
   font-weight: 500;
 }
@@ -78,6 +79,10 @@
 
 .past-appointments .past-date {
   color: #c89d53;
+}
+
+.past-appointments .past-status {
+  margin-left: 2px;
 }
 
 .current-appointments .current-appointment-list {
@@ -125,9 +130,13 @@
   color: #523709;
 }
 
+.your-reviews {
+  overflow: auto;
+}
+
 .your-reviews .your-review-list {
   text-align: center !important;
-  padding: 10px;
+  padding: 5px;
   background-color: #fcf2d8;
   border: none;
 }
@@ -142,6 +151,37 @@
   justify-content: center; /* Center items vertically */
   align-items: center; /* Center items horizontally */
   height: 100px;
+}
+
+.your-reviews .review-comment {
+  color: #18020c;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.your-reviews .review-stars {
+  font-weight: 500;
+  color: #8b5e11;
+  font-size: 15px;
+}
+
+.your-reviews .review-stars .stars {
+  color: #ffcc00;
+  font-size: 15px;
+}
+
+.your-reviews .review-status {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.your-reviews .review-status strong {
+  color:#523709;
+  font-weight: 500;
+}
+
+.your-reviews button {
+  margin: 2px;
 }
 
 .transaction-details .user-transaction {
@@ -333,7 +373,7 @@
 }
 
 .user-dashboard-calendar .react-calendar__month-view__weekdays {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .user-dashboard-calendar .react-calendar__navigation span {
