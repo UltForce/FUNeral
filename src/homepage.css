@@ -155,7 +155,7 @@
 }
 
 .grid {
-  height:220px;
+  height:230px;
   width: 30%;
   background-color: #E3D18D;
   border-radius: 10px;
@@ -164,8 +164,8 @@
 }
 
 .grid img {
-  width: 30%;
-  height: 70px;
+  width: 100px;
+  height: auto;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -178,10 +178,10 @@
 }
 
 .grid p {
-  margin-top: 5px;
+  margin-top: 0px;
   font-size: 12px;
   line-height: 1.5;
-  padding: 10px;
+  padding: 3px;
   font-family: "Rubik", sans-serif;
 }
 
@@ -413,7 +413,7 @@
 .rounded-image:first-child {
   left: -10px; /* Move the first image slightly to the left */
   top: -250px; /* Move the first image slightly up */
-  z-index: 1; /* Make it appear above the second image */
+  z-index: 0; /* Make it appear above the second image */
 }
 
 .rounded-image:last-child {
@@ -431,11 +431,11 @@
   text-align: justify;
 }
 
-.text-container h2 {
-  font-family: Georgia, serif;
+.text-container h3 {
+  font-family: "Rubrik";
   font-size: 24px;
   font-weight: bold;
-  color: #F9F9F9;
+  color: #E3D18D;
   margin-bottom: 15px;
 }
 

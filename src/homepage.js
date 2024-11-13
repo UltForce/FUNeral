@@ -83,7 +83,7 @@ const Homepage = () => {
       <section className="snap-section section2">
         <div className="container">
           <div className="homecard">
-            <img src="https://i.imgur.com/K7N8bDq.jpg" alt="Funeral Theme" />
+            <img src="/funeral pics/homepage2.jpg" alt="Funeral Theme" />
             <h3>FUNERAL THEME</h3>
             <p>
               Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing elit. Sed Do
@@ -94,7 +94,7 @@ const Homepage = () => {
           </div>
           <div className="homecard">
             <img
-              src="https://i.imgur.com/yV44L6G.jpg"
+              src="/funeral pics/flowers.jpg"
               alt="Floral Arrangement"
             />
             <h3>FLORAL ARRANGEMENT</h3>
@@ -107,7 +107,7 @@ const Homepage = () => {
           </div>
           <div className="homecard">
             <img
-              src="https://i.imgur.com/C4k6X3A.jpg"
+              src="/funeral pics/wake6.jpg"
               alt="Lights and Candles"
             />
             <h3>LIGHTS AND CANDLES</h3>
@@ -124,14 +124,14 @@ const Homepage = () => {
       <section className="snap-section section4">
         <section className="care-section">
       <div className="images-container">
-        <img src="image1.jpg" alt="Service Image 1" className="rounded-image" />
-        <img src="image2.jpg" alt="Service Image 2" className="rounded-image" />
+        <img src="/funeral pics/homepage1.jpg" alt="Service Image 1" className="rounded-image" />
+        <img src="funeral pics/homepage2.jpg" alt="Service Image 2" className="rounded-image" />
       </div>
       
 
 
       <div className="text-container">
-        <h1>Compassionate Care In Your Time Of Need</h1>
+        <h3>Compassionate Care In Your Time Of Need</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           <br /><br />
@@ -147,7 +147,7 @@ const Homepage = () => {
         <div class="homepage-row">
           <div class="grid">
             <img
-              src="https://i.imgur.com/K7N8bDq.jpg"
+              src="/ficons/comfortinghearts.png"
               alt="Comforting Hearts"
             />
             <h2>Comforting Hearts </h2>
@@ -159,7 +159,7 @@ const Homepage = () => {
           </div>
           <div className="grid">
             <img
-              src="https://i.imgur.com/K7N8bDq.jpg"
+              src="/ficons/respectful Farewell.png"
               alt="Respectful Farewells"
             />
             <h2>Respectful Farewells</h2>
@@ -171,7 +171,7 @@ const Homepage = () => {
           </div>
           <div className="grid">
             <img
-              src="https://i.imgur.com/K7N8bDq.jpg"
+              src="/ficons/Dignified Services.png"
               alt="Dignified Services"
             />
             <h2>Dignified Services</h2>
@@ -183,7 +183,7 @@ const Homepage = () => {
           </div>
           <div className="grid">
             <img
-              src="https://i.imgur.com/K7N8bDq.jpg"
+              src="/ficons/Cherised Memories.png"
               alt="Cherished Memories"
             />
             <h2>Cherished Memories</h2>
@@ -195,7 +195,7 @@ const Homepage = () => {
           </div>
           <div className="grid">
             <img
-              src="https://i.imgur.com/K7N8bDq.jpg"
+              src="/ficons/Honoring Legacies.png"
               alt="Honoring Legacies"
             />
             <h2>Honoring Legacies</h2>
@@ -206,7 +206,7 @@ const Homepage = () => {
             </p>
           </div>
           <div className="grid">
-            <img src="https://i.imgur.com/K7N8bDq.jpg" alt="Guiding Grace" />
+            <img src="/ficons/Guiding Grace.png" alt="Guiding Grace" />
             <h2>Guiding Grace</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -229,9 +229,9 @@ const Homepage = () => {
       </div>
 
       <div className="gallery-images">
-        <img src="path/to/image1.jpg" alt="Gallery Item 1" />
-        <img src="path/to/image2.jpg" alt="Gallery Item 2" />
-        <img src="path/to/image3.jpg" alt="Gallery Item 3" />
+        <img src="/funeral pics/wake4.jpg" alt="Our Gallery1" />
+        <img src="/funeral pics/wake5.jpg" alt="Our Gallery2" />
+        <img src="/funeral pics/homepage1.jpg" alt="Our Gallery3" />
       </div>
     </div>
       </section>
@@ -239,7 +239,7 @@ const Homepage = () => {
         <h1>BLOGS & ARTICLES</h1>
         <div className="blogs">
           <div className="article">
-            <img src="https://i.imgur.com/C4k6X3A.jpg" alt="Funeral Theme" />
+            <img src="/funeral pics/Blog1.jpg" alt="Blog1 Image" />
             <h2>Filipino Beliefs You Should Respect When Attending Wakes</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -250,8 +250,8 @@ const Homepage = () => {
           </div>
           <div className="article">
             <img
-              src="https://i.imgur.com/C4k6X3A.jpg"
-              alt="Floral Arrangement"
+              src="/funeral pics/blog2.jpg"
+              alt="Blog2 Image"
             />
             <h2>What Goes Into A Funeral Package, And How To Choose </h2>
             <p>
@@ -263,7 +263,7 @@ const Homepage = () => {
           </div>
           <div className="article">
             <img
-              src="https://i.imgur.com/C4k6X3A.jpg"
+              src="/funeral pics/blog3.jpg"
               alt="Lights and Candles"
             />
             <h2>What are the Death Traditions in the Phillippines?</h2>
