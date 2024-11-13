@@ -305,6 +305,7 @@ const Transaction = () => {
 
       // Send email notification using EmailJS
       const emailParams = {
+        type: "Transaction",
         to_name: transaction.name, // Name of the recipient
         status: action, // New status
         email: userEmail, // Email of the recipient retrieved from userId
@@ -316,7 +317,7 @@ const Transaction = () => {
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
       // Uncomment the following to send the email (if required)
-      // await emailjs.send(serviceID, templateID, emailParams, userID);
+      //await emailjs.send(serviceID, templateID, emailParams, userID);
 
       Swal.fire(
         "Updated!",
@@ -816,35 +817,45 @@ const Transaction = () => {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formOrderedBy">
-                <Form.Label className="label-title">Ordered By</Form.Label>
-                <Form.Control
-                  as="select"
-                  className="input-details"
-                  value={formData.orderedById}
-                  onChange={(e) => {
-                    const selectedUserId = e.target.value;
-                    const selectedUser = users.find(
-                      (user) => user.id === selectedUserId
-                    );
-                    setFormData({
-                      ...formData,
-                      orderedById: selectedUserId, // Set user ID
-                      orderedBy: selectedUser
-                        ? `${selectedUser.firstname} ${selectedUser.lastname}`
-                        : "", // Set display name
-                    });
-                  }}
-                  required
-                >
-                  <option value="">Select User</option>
-                  {users.map((user) => (
-                    <option key={user.id} value={user.id}>
-                      {user.firstname} {user.lastname}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Tooltip>
+                    Select a User with completed appointment and no processing
+                    transaction
+                  </Tooltip>
+                }
+              >
+                <Form.Group controlId="formOrderedBy">
+                  <Form.Label className="label-title">Ordered By</Form.Label>
+                  <Form.Control
+                    as="select"
+                    className="input-details"
+                    value={formData.orderedById}
+                    onChange={(e) => {
+                      const selectedUserId = e.target.value;
+                      const selectedUser = users.find(
+                        (user) => user.id === selectedUserId
+                      );
+                      setFormData({
+                        ...formData,
+                        orderedById: selectedUserId, // Set user ID
+                        orderedBy: selectedUser
+                          ? `${selectedUser.firstname} ${selectedUser.lastname}`
+                          : "", // Set display name
+                      });
+                    }}
+                    required
+                  >
+                    <option value="">Select User</option>
+                    {users.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.firstname} {user.lastname}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </OverlayTrigger>
               <br />
               <Form.Group controlId="formAddress">
                 <Form.Label className="label-title">Address</Form.Label>

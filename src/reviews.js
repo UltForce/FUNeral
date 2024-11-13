@@ -100,8 +100,6 @@ const Reviews = () => {
   };
 
   const handleStatusChange = async (reviewId, newStatus, event) => {
-    setLoading(true); // Set loading state to true
-
     const result = await Swal.fire({
       title: `Are you sure you want to ${
         newStatus === "published" ? "publish" : "set to pending"
@@ -113,6 +111,7 @@ const Reviews = () => {
     });
 
     if (result.isConfirmed) {
+      setLoading(true); // Set loading state to true
       const userId = getCurrentUserId();
       const review = reviews.find((r) => r.id === reviewId);
       const event = {
@@ -124,16 +123,35 @@ const Reviews = () => {
 
       await updateReviewStatusFirestore(reviewId, newStatus);
 
-      // Fetch the review owner's email
-      const recipientEmail = await getUserEmailById(review.userId);
-      const recipientName = `${review.firstname} ${review.lastname}`;
-
       // Send a notification
       const title = "Testimonial Status Updated";
       const content = `The status of your testimonial has been changed to ${newStatus}.`;
       const recipient = review.userId;
 
       await sendNotification(title, content, userId, recipient);
+
+      // Fetch the review owner's email
+      const recipientEmail = await getUserEmailById(review.userId);
+      const recipientName = `${review.firstname} ${review.lastname}`;
+
+      // Fetch the user's email based on userId
+      const userEmail = await getUserEmailById(userId);
+
+      // Send email notification using EmailJS
+      const emailParams = {
+        type: "Review",
+        to_name: recipientName, // Name of the recipient
+        status: newStatus, // New status
+        email: recipientEmail, // Email of the recipient retrieved from userId
+      };
+
+      // Replace these with your actual EmailJS credentials
+      const serviceID = "service_5f3k3ms";
+      const templateID = "template_g1w6f2a";
+      const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
+
+      // Uncomment the following to send the email (if required)
+      //await emailjs.send(serviceID, templateID, emailParams, userID);
 
       setReviews(
         reviews.map((review) =>

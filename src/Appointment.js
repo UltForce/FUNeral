@@ -328,6 +328,7 @@ const Appointments = () => {
           // Fetch user's email and send email notification using EmailJS
           const userEmail = await getUserEmailById(userId);
           const emailParams = {
+            type: "Appointment",
             to_name: appointment.name,
             status: action,
             email: userEmail,
@@ -335,10 +336,10 @@ const Appointments = () => {
           const serviceID = "service_5f3k3ms";
           const templateID = "template_g1w6f2a";
           const userID = "0Tz3RouZf3BXZaSmh";
-          /*
+          
         // Send the email
-        await emailjs.send(serviceID, templateID, emailParams, userID);
-        */
+        //await emailjs.send(serviceID, templateID, emailParams, userID);
+        
 
           Swal.fire(
             "Status!",
