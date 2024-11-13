@@ -51,7 +51,7 @@
     "three": "^0.167.1",
     "typeface-rubik": "^1.1.13",
     "web-vitals": "^2.1.4",
-    "webpack": "^4.47.0",
+    "webpack": "^5.96.1",
     "xlsx": "^0.18.5"
   },
   "scripts": {
