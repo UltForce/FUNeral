@@ -101,7 +101,6 @@ const Transaction = () => {
     formData.cemeteryExpenses,
     formData.otherExpenses,
     formData.deposit,
-    formData,
   ]);
 
   useEffect(() => {
@@ -973,7 +972,7 @@ const Transaction = () => {
                       style={{ textAlign: "right" }}
                       className="total-amount"
                     >
-                      <strong>Total Amount:</strong> $
+                      <strong>Total Amount:</strong> ₱
                       {formData.totalAmount.toFixed(2)}
                     </td>
                   </tr>
@@ -1090,13 +1089,13 @@ const Transaction = () => {
                 <div className="transaction-border"></div>
                 <h4 className="financial-summary-title">Financial Summary:</h4>
                 <p className="financial-summary-details">
-                  <strong>Total Amount:</strong> $
+                  <strong>Total Amount:</strong> ₱
                   {selectedTransaction.totalAmount || "0.00"}
                   <br />
-                  <strong>Deposit:</strong> $
+                  <strong>Deposit:</strong> ₱
                   {selectedTransaction.deposit || "0.00"}
                   <br />
-                  <strong>Balance:</strong> $
+                  <strong>Balance:</strong> ₱
                   {selectedTransaction.balance || "0.00"}
                 </p>
               </>

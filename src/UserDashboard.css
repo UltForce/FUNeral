@@ -1,6 +1,6 @@
 .user-dashboard {
-  background-color: #CAA971;
-  font-family: 'Rubik';
+  background-color: #caa971;
+  font-family: "Rubik";
   scroll-snap-align: start;
   height: auto;
   padding: 1rem;
@@ -8,7 +8,7 @@
 }
 
 .user-dashboard .card {
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -57,14 +57,14 @@
 .past-appointments .past-appointment-list {
   text-align: center !important;
   padding: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   font-weight: 500;
 }
 
 .past-appointments .no-past-appointment-list {
   text-align: center !important;
   padding-top: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   display: flex; /* Use flexbox for the list item */
   flex-direction: column; /* Stack items vertically */
   justify-content: center; /* Center items vertically */
@@ -83,7 +83,7 @@
 .current-appointments .current-appointment-list {
   text-align: center !important;
   padding: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   font-size: 15px;
   display: flex; /* Use flexbox for the list item */
   flex-direction: column; /* Stack items vertically */
@@ -94,7 +94,7 @@
 
 .current-appointments .no-current-appointment-list {
   text-align: center !important;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   padding-top: 10px;
   display: flex; /* Use flexbox for the list item */
   flex-direction: column; /* Stack items vertically */
@@ -104,7 +104,7 @@
 }
 
 .current-appointments .current-appointment-date {
-  background-color: #F5F095;
+  background-color: #f5f095;
   border-radius: 10px;
   padding: 5px 15px;
   margin-top: 5px;
@@ -128,14 +128,14 @@
 .your-reviews .your-review-list {
   text-align: center !important;
   padding: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   border: none;
 }
 
 .your-reviews .no-reviews-list {
   text-align: center !important;
   padding-top: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   border: none;
   display: flex; /* Use flexbox for the list item */
   flex-direction: column; /* Stack items vertically */
@@ -147,7 +147,7 @@
 .transaction-details .user-transaction {
   text-align: center !important;
   padding: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   border: none;
   display: flex; /* Use flexbox for the list item */
   flex-direction: column; /* Stack items vertically */
@@ -159,7 +159,7 @@
 .transaction-details .no-transactions {
   text-align: center !important;
   padding-top: 10px;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   border: none;
   display: flex; /* Use flexbox for the list item */
   flex-direction: column; /* Stack items vertically */
@@ -204,39 +204,41 @@
 
 .user-appointment-details-box {
   display: block;
-  border: 1px solid #4d4642; 
-  border-radius: 20px; 
-  background-color:#FCF2D8;
-  margin: 10px 0; 
+  border: 1px solid #4d4642;
+  border-radius: 20px;
+  background-color: #fcf2d8;
+  margin: 10px 0;
   padding: 13px 20px;
 }
 
 .user-appointment-details-box .first-details,
 .second-details {
-text-align: center;
-font-size: 15px;
-color: #18020c;
+  text-align: center;
+  font-size: 15px;
+  color: #18020c;
 }
 
 .user-appointment-details-box .first-details strong,
 .second-details strong {
-font-weight: 500;
-color: #c89d53;
+  font-weight: 500;
+  color: #c89d53;
 }
 
-.postmortem-title, .particulars-title, .admin-appointment-user {
-text-align: center;
-font-weight: 500;
-font-size: 20px;
-color: #8b5e11;
-text-decoration: underline;
+.postmortem-title,
+.particulars-title,
+.admin-appointment-user {
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  color: #8b5e11;
+  text-decoration: underline;
 }
 
 .transaction-border {
   display: block;
   width: 340px;
   height: 2px;
-  background: #18020C;
+  background: #18020c;
   margin: 5px auto 20px;
 }
 
@@ -258,26 +260,30 @@ text-decoration: underline;
 
 .user-transaction-details-box {
   display: block;
-  border: 1px solid #4d4642; 
-  border-radius: 20px; 
-  background-color:#FCF2D8;
-  margin: 10px 0; 
+  border: 1px solid #4d4642;
+  border-radius: 20px;
+  background-color: #fcf2d8;
+  margin: 10px 0;
   padding: 35px 20px;
 }
 
-.user-transaction-details-box .first-details, .financial-summary-details {
+.user-transaction-details-box .first-details,
+.financial-summary-details {
   text-align: center;
   font-size: 15px;
   color: #18020c;
 }
 
 .user-transaction-details-box .first-details strong,
-.second-details strong, .financial-summary-details strong {
+.second-details strong,
+.financial-summary-details strong {
   font-weight: 500;
   color: #c89d53;
 }
 
-.user-transaction-details-box .particulars-title, .admin-transaction-user, .financial-summary-title {
+.user-transaction-details-box .particulars-title,
+.admin-transaction-user,
+.financial-summary-title {
   text-align: center;
   font-weight: 500;
   font-size: 20px;
@@ -348,4 +354,17 @@ text-decoration: underline;
 
 .view-details-button:hover {
   color: #0056b3; /* Darker shade on hover */
+}
+
+.scrollable-list {
+  max-height: 300px; /* Set the height you want for the scrollable area */
+  overflow-y: auto; /* Enables vertical scrolling when the content overflows */
+}
+
+.past-appointments {
+  margin-bottom: 20px;
+}
+
+.transaction-details {
+  margin-bottom: 20px;
 }

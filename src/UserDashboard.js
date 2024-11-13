@@ -86,11 +86,20 @@ const UserDashboard = () => {
         const future = userAppointments.filter(
           (appointment) => new Date(appointment.date) >= currentDate
         );
+
         const past = userAppointments.filter(
           (appointment) => new Date(appointment.date) < currentDate
         );
 
-        setFutureAppointments(future);
+        // Sort future appointments by date and pick the first one (most recent upcoming)
+        const sortedFutureAppointments = future.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+        const mostRecentUpcomingAppointment = sortedFutureAppointments[0]; // Get the most recent upcoming appointment
+
+        setFutureAppointments(
+          mostRecentUpcomingAppointment ? [mostRecentUpcomingAppointment] : []
+        ); // Set only the first upcoming appointment
         setPastAppointments(past);
         setReviews(userReviews);
         setUserTransactions(transactions);
@@ -302,56 +311,61 @@ const UserDashboard = () => {
         <h1>Dashboard</h1>
       </div>
       <div className="user-dashboard-info">
-      <div className="user-dashboard-info-inner"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gridTemplateRows: "1fr 1fr",
-          gap: "10px", // Reduced gap between cards
-          width: "100%",
-        }}
-      >
-        <div className="user-cards-total">
-          <Card className="past-appointments">
-            <Card.Header>Past Appointments</Card.Header>
-            <ListGroup variant="flush">
-              {pastAppointments.length === 0 ? (
-                <ListGroup.Item className="no-past-appointment-list">
-                  No past appointments found.
-                </ListGroup.Item>
-              ) : (
-                pastAppointments.map((appointment) => (
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>View Past Appointment Details</Tooltip>}
-                  >
-                    <ListGroup.Item
-                      key={appointment.id}
-                      onClick={() => handleShowDetails(appointment)}
-                      style={{ cursor: "pointer" }}
-                      className="past-appointment-list"
+        <div
+          className="user-dashboard-info-inner"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr",
+            gap: "10px", // Reduced gap between cards
+            width: "100%",
+          }}
+        >
+          <div className="user-cards-total">
+            <Card className="past-appointments">
+              <Card.Header>Past Appointments</Card.Header>
+              <ListGroup variant="flush" className="scrollable-list">
+                {pastAppointments.length === 0 ? (
+                  <ListGroup.Item className="no-past-appointment-list">
+                    No past appointments found.
+                  </ListGroup.Item>
+                ) : (
+                  pastAppointments.map((appointment) => (
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>View Past Appointment Details</Tooltip>}
                     >
-                      <strong className="past-name">{appointment.name} </strong> 
-                      -{" "}
-                      <strong className="past-date">{new Date(appointment.date).toLocaleString()}</strong>
-                    </ListGroup.Item>
-                  </OverlayTrigger>
-                ))
-              )}
-            </ListGroup>
-          </Card>
-        </div>
+                      <ListGroup.Item
+                        key={appointment.id}
+                        onClick={() => handleShowDetails(appointment)}
+                        style={{ cursor: "pointer" }}
+                        className="past-appointment-list"
+                      >
+                        <strong className="past-name">
+                          {appointment.name}{" "}
+                        </strong>{" "}
+                        -{" "}
+                        <strong className="past-date">
+                          {new Date(appointment.date).toLocaleString()}{" "}
+                          {getStatusBadge(appointment.status)}
+                        </strong>
+                      </ListGroup.Item>
+                    </OverlayTrigger>
+                  ))
+                )}
+              </ListGroup>
+            </Card>
+          </div>
 
-        <div className="user-cards-total">
-          <Card className="current-appointments">
-            <Card.Header>Current Appointment</Card.Header>
-            <ListGroup variant="flush">
-              {futureAppointments.length === 0 ? (
-                <ListGroup.Item className="no-current-appointment-list">
-                  No current appointment found.
-                </ListGroup.Item>
-              ) : (
-                futureAppointments.map((appointment) => (
+          <div className="user-cards-total">
+            <Card className="current-appointments">
+              <Card.Header>Current Appointment</Card.Header>
+              <ListGroup variant="flush">
+                {futureAppointments.length === 0 ? (
+                  <ListGroup.Item className="no-current-appointment-list">
+                    No current appointment found.
+                  </ListGroup.Item>
+                ) : (
                   <OverlayTrigger
                     placement="top"
                     overlay={
@@ -359,339 +373,346 @@ const UserDashboard = () => {
                     }
                   >
                     <ListGroup.Item
-                      key={appointment.id}
-                      onClick={() => handleShowDetails(appointment)}
+                      key={futureAppointments[0].id} // Ensure we use the first (and only) appointment
+                      onClick={() => handleShowDetails(futureAppointments[0])}
                       style={{ cursor: "pointer" }}
                       className="current-appointment-list"
                     >
                       <div className="current-name-date">
-                        <strong>{appointment.name}</strong>
+                        <strong>{futureAppointments[0].name}</strong>
                         <div className="current-appointment-date">
-                          {new Date(appointment.date).toLocaleString()}
+                          {new Date(
+                            futureAppointments[0].date
+                          ).toLocaleString()}{" "}
+                          {getStatusBadge(futureAppointments[0].status)}
                         </div>
                       </div>
-                      
                     </ListGroup.Item>
                   </OverlayTrigger>
-                ))
-              )}
-            </ListGroup>
-          </Card>
-        </div>
+                )}
+              </ListGroup>
+            </Card>
+          </div>
 
-        <div className="user-cards-total">
-          <Card className="your-reviews">
-            <Card.Header>Your Reviews</Card.Header>
-            <ListGroup variant="flush">
-              {reviews.length === 0 ? (
-                <div className="no-reviews">
-                  <ListGroup.Item className="no-reviews-list">
-                    No reviews found.
-                  </ListGroup.Item>
-                </div>
-              ) : (
-                reviews.map((review) => (
-                  <ListGroup.Item key={review.id} className="your-review-list">
-                    <h5>{review.title}</h5>
-                    <p>{review.comment}</p>
-                    <p>
-                      Rating:{" "}
-                      <div className="stars">{"⭐".repeat(review.rating)}</div>
-                    </p>
-                    <p>Status: {review.status}</p>
-                    {/* Show Edit button only if the review is still pending */}
-                    {review.status === "pending" && (
-                      <OverlayTrigger
-                        placement="right"
-                        overlay={<Tooltip>Edit your review</Tooltip>}
-                      >
-                        <Button
-                          variant="warning"
-                          onClick={() => startEditReview(review)}
+          <div className="user-cards-total">
+            <Card className="your-reviews">
+              <Card.Header>Your Reviews</Card.Header>
+              <ListGroup variant="flush">
+                {reviews.length === 0 ? (
+                  <div className="no-reviews">
+                    <ListGroup.Item className="no-reviews-list">
+                      No reviews found.
+                    </ListGroup.Item>
+                  </div>
+                ) : (
+                  reviews.map((review) => (
+                    <ListGroup.Item
+                      key={review.id}
+                      className="your-review-list"
+                    >
+                      <h5>{review.title}</h5>
+                      <p>{review.comment}</p>
+                      <p>
+                        Rating:{" "}
+                        <div className="stars">
+                          {"⭐".repeat(review.rating)}
+                        </div>
+                      </p>
+                      <p>Status: {review.status}</p>
+                      {/* Show Edit button only if the review is still pending */}
+                      {review.status === "pending" && (
+                        <OverlayTrigger
+                          placement="right"
+                          overlay={<Tooltip>Edit your review</Tooltip>}
                         >
-                          <FontAwesomeIcon icon={faEdit} />
-                        </Button>
+                          <Button
+                            variant="warning"
+                            onClick={() => startEditReview(review)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} />
+                          </Button>
+                        </OverlayTrigger>
+                      )}
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Delete Item</Tooltip>}
+                      >
+                        <button
+                          className="btn btn-danger"
+                          type="button"
+                          onClick={(event) => {
+                            handleDeleteReview(review.id, event);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
                       </OverlayTrigger>
-                    )}
+                    </ListGroup.Item>
+                  ))
+                )}
+              </ListGroup>
+            </Card>
+
+            {/* Modal to edit testimonial */}
+            <Modal show={editReviewId !== null} onHide={handleCloseEditModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Your Testimonial</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form onSubmit={handleEditSubmit}>
+                  <div className="mb-3">
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="Your comment"
+                      required
+                      className="form-control"
+                      rows="3"
+                    />
+                  </div>
+                  <div className="mb-3 star-rating">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        className={`star ${
+                          star <= rating ? "filled" : "faded"
+                        }`}
+                        onClick={() => setRating(star)} // Set the rating when clicked
+                        style={{ cursor: "pointer" }} // Make stars clickable
+                      >
+                        &#9733;
+                      </span>
+                    ))}
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <Button
+                      variant="secondary"
+                      onClick={handleCloseEditModal}
+                      className="me-2"
+                    >
+                      Close
+                    </Button>
+                    <Button type="submit" variant="primary">
+                      Update Testimonial
+                    </Button>
+                  </div>
+                </form>
+              </Modal.Body>
+            </Modal>
+          </div>
+
+          <div className="user-cards-total">
+            <Card className="transaction-details">
+              <Card.Header>Transaction Details</Card.Header>
+              <ListGroup variant="flush" className="scrollable-list">
+                {userTransactions.length > 0 ? (
+                  userTransactions.map((transaction) => (
                     <OverlayTrigger
                       placement="top"
-                      overlay={<Tooltip>Delete Item</Tooltip>}
+                      overlay={<Tooltip>View Transaction Details</Tooltip>}
                     >
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={(event) => {
-                          handleDeleteReview(review.id, event);
-                        }}
+                      <ListGroup.Item
+                        key={transaction.id}
+                        onClick={() => handleShowDetailsModal(transaction)}
+                        style={{ cursor: "pointer" }}
+                        className="user-transaction"
                       >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
+                        <p className="user-transaction-id">
+                          <strong></strong> {transaction.dateOfBurial}
+                          {", "}
+                          {transaction.timeOfBurial}{" "}
+                          {getStatusBadge(transaction.status)}
+                        </p>
+                        {/* You can add more transaction details here if needed */}
+                      </ListGroup.Item>
                     </OverlayTrigger>
+                  ))
+                ) : (
+                  <ListGroup.Item className="no-transactions">
+                    No transactions found for the current user.
                   </ListGroup.Item>
-                ))
-              )}
-            </ListGroup>
-          </Card>
+                )}
+              </ListGroup>
+            </Card>
+          </div>
 
-          {/* Modal to edit testimonial */}
-          <Modal show={editReviewId !== null} onHide={handleCloseEditModal}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Your Testimonial</Modal.Title>
+          {/* Appointment Details Modal */}
+          <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header closeButton className="user-appointment-header">
+              <Modal.Title className="user-appointment-title">
+                Appointment Details
+              </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              <form onSubmit={handleEditSubmit}>
-                <div className="mb-3">
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Your comment"
-                    required
-                    className="form-control"
-                    rows="3"
-                  />
-                </div>
-                <div className="mb-3 star-rating">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      className={`star ${star <= rating ? "filled" : "faded"}`}
-                      onClick={() => setRating(star)} // Set the rating when clicked
-                      style={{ cursor: "pointer" }} // Make stars clickable
-                    >
-                      &#9733;
-                    </span>
-                  ))}
-                </div>
-                <div className="d-flex justify-content-end">
-                  <Button
-                    variant="secondary"
-                    onClick={handleCloseEditModal}
-                    className="me-2"
-                  >
-                    Close
-                  </Button>
-                  <Button type="submit" variant="primary">
-                    Update Testimonial
-                  </Button>
-                </div>
-              </form>
-            </Modal.Body>
-          </Modal>
-        </div>
-
-        <div className="user-cards-total">
-          <Card className="transaction-details">
-            <Card.Header>Transaction Details</Card.Header>
-            <ListGroup variant="flush">
-              {userTransactions.length > 0 ? (
-                userTransactions.map((transaction) => (
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={<Tooltip>View Transaction Details</Tooltip>}
-                  >
-                    <ListGroup.Item
-                      key={transaction.id}
-                      onClick={() => handleShowDetailsModal(transaction)}
-                      style={{ cursor: "pointer" }}
-                      className="user-transaction"
-                    >
-                      <p className="user-transaction-id">
-                        <strong>Transaction ID:</strong> {transaction.id}
-                      </p>
-                      {/* You can add more transaction details here if needed */}
-                    </ListGroup.Item>
-                  </OverlayTrigger>
-                ))
+            <Modal.Body className="user-appointment-details-box">
+              {selectedAppointment ? (
+                <>
+                  <h4 className="admin-appointment-user">
+                    {selectedAppointment.name}
+                  </h4>
+                  <p className="first-details">
+                    <strong>Date:</strong>{" "}
+                    {formatDateTime(selectedAppointment.date)}
+                    <br />
+                    <strong>Phone Number:</strong>{" "}
+                    {selectedAppointment.phoneNumber}
+                    <br />
+                    <strong>Plan:</strong> {selectedAppointment.plan}
+                    <br />
+                    <strong>Status:</strong>{" "}
+                    {getStatusBadge(selectedAppointment.status)}
+                    <br />
+                    <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
+                  </p>
+                  <br />
+                  <h4 className="postmortem-title">Post Mortem Details:</h4>
+                  <p className="second-details">
+                    <strong>Deceased Name: </strong>
+                    {selectedAppointment.DeceasedName}
+                    <br />
+                    <strong>Deceased Age: </strong>
+                    {selectedAppointment.DeceasedAge}
+                    <br />
+                    <strong>Deceased Sex: </strong>
+                    {selectedAppointment.DeceasedSex}
+                    <br />
+                    <strong>Deceased Birthday: </strong>
+                    {selectedAppointment.DeceasedBirthday}
+                    <br />
+                    <strong>Date of Death: </strong>
+                    {selectedAppointment.DateofDeath}
+                    <br />
+                    <strong>Place of Death: </strong>
+                    {selectedAppointment.PlaceofDeath}
+                    <br />
+                    <strong>Deceased Relationship: </strong>
+                    {selectedAppointment.DeceasedRelationship}
+                  </p>
+                </>
               ) : (
-                <ListGroup.Item className="no-transactions">
-                  No transactions found for the current user.
-                </ListGroup.Item>
+                <p>No details available</p>
               )}
-            </ListGroup>
-          </Card>
-        </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip>Close the details modal</Tooltip>}
+              >
+                <Button
+                  variant="secondary"
+                  onClick={handleCloseModal}
+                  className="close2-button"
+                >
+                  Close
+                </Button>
+              </OverlayTrigger>
+            </Modal.Footer>
+          </Modal>
 
-        {/* Appointment Details Modal */}
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton className="user-appointment-header">
-            <Modal.Title className="user-appointment-title">
-              Appointment Details
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="user-appointment-details-box">
-            {selectedAppointment ? (
-              <>
-                <h4 className="admin-appointment-user">
-                  {selectedAppointment.name}
-                </h4>
-                <p className="first-details">
-                  <strong>Date:</strong>{" "}
-                  {formatDateTime(selectedAppointment.date)}
+          {/* Transaction Details Modal */}
+          <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
+            <Modal.Header closeButton className="user-transaction-header">
+              <Modal.Title className="user-transaction-title">
+                Transaction Details
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="user-transaction-details-box">
+              {selectedTransaction ? (
+                <>
+                  <h4 className="admin-transaction-user">
+                    {selectedTransaction.deceasedName || "N/A"}
+                  </h4>
+                  <p className="first-details">
+                    <strong>Date of Burial:</strong>{" "}
+                    {selectedTransaction.dateOfBurial}
+                    <br />
+                    <strong>Time of Burial:</strong>{" "}
+                    {selectedTransaction.timeOfBurial}
+                    <br />
+                    <strong>Ordered By:</strong> {selectedTransaction.orderedBy}
+                    <br />
+                    <strong>Address:</strong> {selectedTransaction.address}
+                    <br />
+                    <strong>Cemetery:</strong> {selectedTransaction.cemetery}
+                    <br />
+                    <strong>Status:</strong>{" "}
+                    {getStatusBadge(selectedTransaction.status)}
+                  </p>
                   <br />
-                  <strong>Phone Number:</strong>{" "}
-                  {selectedAppointment.phoneNumber}
-                  <br />
-                  <strong>Plan:</strong> {selectedAppointment.plan}
-                  <br />
-                  <strong>Status:</strong>{" "}
-                  {getStatusBadge(selectedAppointment.status)}
-                  <br />
-                  <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
-                </p>
-                <br />
-                <h4 className="postmortem-title">Post Mortem Details:</h4>
-                <p className="second-details">
-                  <strong>Deceased Name: </strong>
-                  {selectedAppointment.DeceasedName}
-                  <br />
-                  <strong>Deceased Age: </strong>
-                  {selectedAppointment.DeceasedAge}
-                  <br />
-                  <strong>Deceased Sex: </strong>
-                  {selectedAppointment.DeceasedSex}
-                  <br />
-                  <strong>Deceased Birthday: </strong>
-                  {selectedAppointment.DeceasedBirthday}
-                  <br />
-                  <strong>Date of Death: </strong>
-                  {selectedAppointment.DateofDeath}
-                  <br />
-                  <strong>Place of Death: </strong>
-                  {selectedAppointment.PlaceofDeath}
-                  <br />
-                  <strong>Deceased Relationship: </strong>
-                  {selectedAppointment.DeceasedRelationship}
-                </p>
-              </>
-            ) : (
-              <p>No details available</p>
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip>Close the details modal</Tooltip>}
-            >
+                  <div className="transaction-border"></div>
+                  <h4 className="particulars-title">Particulars Details:</h4>
+                  <p className="second-details">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Category</th>
+                          <th>Particulars</th>
+                          <th>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          "casket",
+                          "hearse",
+                          "funServicesArrangements",
+                          "permits",
+                          "embalming",
+                          "cemeteryExpenses",
+                          "otherExpenses",
+                        ].map((field) => (
+                          <tr key={field}>
+                            <td>{field.replace(/([A-Z])/g, " $1")}</td>
+                            <td>
+                              {selectedTransaction[field]?.particulars || "N/A"}
+                            </td>
+                            <td>
+                              {selectedTransaction[field]?.amount || "N/A"}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </p>
+                  <div className="transaction-border"></div>
+                  <h4 className="financial-summary-title">
+                    Financial Summary:
+                  </h4>
+                  <p className="financial-summary-details">
+                    <strong>Total Amount:</strong> ₱
+                    {selectedTransaction.totalAmount || "0.00"}
+                    <br />
+                    <strong>Deposit:</strong> ₱
+                    {selectedTransaction.deposit || "0.00"}
+                    <br />
+                    <strong>Balance:</strong> ₱
+                    {selectedTransaction.balance || "0.00"}
+                  </p>
+                </>
+              ) : (
+                <p>No details available</p>
+              )}
+            </Modal.Body>
+            <Modal.Footer>
               <Button
                 variant="secondary"
-                onClick={handleCloseModal}
+                onClick={handleCloseDetailsModal}
                 className="close2-button"
               >
                 Close
               </Button>
-            </OverlayTrigger>
-          </Modal.Footer>
-        </Modal>
-
-        {/* Transaction Details Modal */}
-        <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
-          <Modal.Header closeButton className="user-transaction-header">
-            <Modal.Title className="user-transaction-title">
-              Transaction Details
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="user-transaction-details-box">
-            {selectedTransaction ? (
-              <>
-                <h4 className="admin-transaction-user">
-                  {selectedTransaction.deceasedName || "N/A"}
-                </h4>
-                <p className="first-details">
-                  <strong>Date:</strong>{" "}
-                  {formatDateTime(selectedTransaction.dateOfBurial)}
-                  <br />
-                  <strong>Time of Burial:</strong>{" "}
-                  {selectedTransaction.timeOfBurial}
-                  <br />
-                  <strong>Ordered By:</strong> {selectedTransaction.orderedBy}
-                  <br />
-                  <strong>Address:</strong> {selectedTransaction.address}
-                  <br />
-                  <strong>Cemetery:</strong> {selectedTransaction.cemetery}
-                  <br />
-                  <strong>Status:</strong>{" "}
-                  {getStatusBadge(selectedTransaction.status)}
-                </p>
-                <br />
-                <div className="transaction-border"></div>
-                <h4 className="particulars-title">Particulars Details:</h4>
-                <p className="second-details">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Category</th>
-                        <th>Particulars</th>
-                        <th>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        "casket",
-                        "hearse",
-                        "funServicesArrangements",
-                        "permits",
-                        "embalming",
-                        "cemeteryExpenses",
-                        "otherExpenses",
-                      ].map((field) => (
-                        <tr key={field}>
-                          <td>{field.replace(/([A-Z])/g, " $1")}</td>
-                          <td>
-                            {selectedTransaction[field]?.particulars || "N/A"}
-                          </td>
-                          <td>{selectedTransaction[field]?.amount || "N/A"}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </p>
-                <div className="transaction-border"></div>
-                <h4 className="financial-summary-title">Financial Summary:</h4>
-                <p className="financial-summary-details">
-                  <strong>Total Amount:</strong> $
-                  {selectedTransaction.totalAmount || "0.00"}
-                  <br />
-                  <strong>Deposit:</strong> $
-                  {selectedTransaction.deposit || "0.00"}
-                  <br />
-                  <strong>Balance:</strong> $
-                  {selectedTransaction.balance || "0.00"}
-                </p>
-              </>
-            ) : (
-              <p>No details available</p>
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={handleCloseDetailsModal}
-              className="close2-button"
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        
-      </div>
-      <div className="user-dashboard-calendar">
-        <Card
-          style={{ height: "525px", width: "100%" }}
-          className="dashboard-calendar"
-        >
-          <Card.Header>Calendar</Card.Header>
-          <Card.Body
-            style={{ height: "100%", padding: 0, width: "100%" }}
+            </Modal.Footer>
+          </Modal>
+        </div>
+        <div className="user-dashboard-calendar">
+          <Card
+            style={{ height: "525px", width: "100%" }}
+            className="dashboard-calendar"
           >
-            <Calendar
-              onChange={setDate}
-              value={date}
-              className="calendar"
-            />
-          </Card.Body>
-        </Card>
-      </div>
+            <Card.Header>Calendar</Card.Header>
+            <Card.Body style={{ height: "100%", padding: 0, width: "100%" }}>
+              <Calendar onChange={setDate} value={date} className="calendar" />
+            </Card.Body>
+          </Card>
+        </div>
       </div>
     </div>
   );

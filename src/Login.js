@@ -1,6 +1,6 @@
 // Login.js
 import "./styles.css"; // Import CSS file for styling
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   auth,
@@ -17,6 +17,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import "./login.css";
 import Swal from "sweetalert2";
+import { RoleContext } from "./RoleProvider"; // Assume we create a context provider for role management
 
 const Toast = Swal.mixin({
   toast: true,
@@ -33,6 +34,7 @@ const Toast = Swal.mixin({
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setRole } = useContext(RoleContext); // Access the role update function
   const passwordInputRef = useRef(null); // Create a ref for the password input field
   const navigate = useNavigate();
 
@@ -80,14 +82,13 @@ const Login = () => {
     }
   };
 
-  
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         try {
           // Fetch user role from Firestore
           const userRole = await getUserRoleFirestore(user.uid);
+          setRole(userRole); // Update the role globally
           if (userRole === "admin") {
             navigate("/dashboard"); // Redirect admin to the dashboard
           } else {
@@ -126,6 +127,7 @@ const Login = () => {
 
         // Check user role and redirect
         const userRole = await getUserRoleFirestore(user.uid);
+        setRole(userRole); // Update the role globally
         if (userRole === "admin") {
           navigate("/dashboard");
         } else {
@@ -161,7 +163,7 @@ const Login = () => {
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-           // onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+            // onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
           />
         </div>
         <div className="inputs">
@@ -172,7 +174,7 @@ const Login = () => {
             autoComplete="off"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-           // onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
+            // onKeyPress={handleKeyPress} // Call handleKeyPress function on key press
             ref={passwordInputRef} // Set the ref to the password input field
           />
         </div>

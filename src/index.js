@@ -5,12 +5,14 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "typeface-rubik";
-
+import { RoleProvider } from "./RoleProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <RoleProvider>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </RoleProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

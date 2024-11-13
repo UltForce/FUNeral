@@ -1097,15 +1097,33 @@ export const getUsersWithCompletedAppointments = async () => {
       ...doc.data(),
     }));
 
-    // Step 3: Filter users who have a "completed" appointment
-    const usersWithCompletedAppointments = users.filter((user) =>
-      appointments.some((appointment) => appointment.userId === user.id)
-    );
+    // Step 3: Get all transactions to check if the user has a "processing" status transaction
+    const transactionsQuery = collection(dba, "transactions");
+    const transactionsSnapshot = await getDocs(transactionsQuery);
+    const transactions = transactionsSnapshot.docs.map((doc) => doc.data());
 
-    return usersWithCompletedAppointments;
+    // Step 4: Filter users who have a completed appointment and no "processing" transaction
+    const eligibleUsers = users.filter((user) => {
+      // Check if the user has a completed appointment
+      const hasCompletedAppointment = appointments.some(
+        (appointment) => appointment.userId === user.id
+      );
+
+      // Check if the user already has a "processing" status transaction
+      const hasProcessingTransaction = transactions.some(
+        (transaction) =>
+          transaction.orderedById === user.id &&
+          transaction.status === "processing"
+      );
+
+      // Include users who have a completed appointment and no processing transaction
+      return hasCompletedAppointment && !hasProcessingTransaction;
+    });
+
+    return eligibleUsers;
   } catch (error) {
     console.error(
-      "Error getting users with completed appointments:",
+      "Error getting users with completed appointments and no processing status transaction:",
       error.message
     );
     return [];
