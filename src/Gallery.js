@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const Gallery = () => {
+  
+  
   const navigate = useNavigate(); // Initialize navigate function
 
   // Sample album data with placeholder funeral-related images

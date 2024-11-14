@@ -4,6 +4,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getCurrentUserId, getUserRoleFirestore, auth } from "./firebase.js";
 import "./homepage.css";
 import "typeface-rubik";
+import { Carousel } from 'react-carousel-minimal';
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -63,6 +64,40 @@ const Homepage = () => {
       </div>
     );
   };
+
+  const gallery = [
+    {
+      image: "/funeral pics/wake1.jpg",
+      caption: "Funeral"
+    },
+    {
+      image: "/funeral pics/flowers.jpg",
+      caption: "Flowers"
+    },
+    {
+      image: "/funeral pics/wake3.jpg",
+      caption: "Funeral"
+    },
+    {
+      image: "/funeral pics/wake5.jpg",
+      caption: "Funeral"
+    },
+    {
+      image: "/funeral pics/wake6.jpg",
+      caption: "Funeral"
+    },
+    
+
+  ];
+
+  const captionStyle = {
+    fontSize: '2em',
+    fontWeight: 'bold',
+  }
+  const slideNumberStyle = {
+    fontSize: '20px',
+    fontWeight: 'bold',
+  }
 
   return (
     <div className="snapping-container content-user">
@@ -229,9 +264,40 @@ const Homepage = () => {
       </div>
 
       <div className="gallery-images">
-        <img src="/funeral pics/wake4.jpg" alt="Our Gallery1" />
-        <img src="/funeral pics/wake5.jpg" alt="Our Gallery2" />
-        <img src="/funeral pics/homepage1.jpg" alt="Our Gallery3" />
+      <div style={{ textAlign: "center" }}>
+        
+        <div style={{
+          padding: "50 50px"
+        }}>
+          <Carousel
+            data={gallery}
+            time={2000}
+            margin-top="30px" 
+            width="850px"
+            height="400px"
+            captionStyle={captionStyle}
+            radius="10px"
+            slideNumber={true}
+            slideNumberStyle={slideNumberStyle}
+            captionPosition="bottom"
+            automatic={true}
+            dots={true}
+            pauseIconColor="white"
+            pauseIconSize="40px"
+            slideBackgroundColor="darkgrey"
+            slideImageFit="cover"
+            thumbnails={true}
+            thumbnailWidth="100px"
+            style={{
+              textAlign: "center",
+              maxWidth: "850px",
+              maxHeight: "500px",
+              margin: "40px auto",
+            }}
+          />
+        </div>
+      </div>
+    
       </div>
     </div>
       </section>

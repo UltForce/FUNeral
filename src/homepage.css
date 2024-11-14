@@ -313,43 +313,10 @@
   padding: 20px;
 }
 
-.gallery-header h2 {
-  font-family: Georgia, serif;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
 
-.gallery-header p {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  margin: 0 auto;
-  max-width: 800px;
-}
 
-/* Gallery images container */
-.gallery-images {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 30px;
-  background-color: #E3D18D;
-  flex-wrap: wrap; /* Allows images to wrap on smaller screens */
-  height: 60vh; /* Set the height to 60% of the viewport */
-  width: 100vw; /* Make the container full width */
-  align-items: center; /* Center items vertically if necessary */
-  padding: 20px; /* Add padding if needed to separate images from edges */
-  box-sizing: border-box; /* Ensures padding doesn't affect total width */
-}
 
-/* Gallery image styling */
-.gallery-images img {
-  width: 300px;
-  height: 300px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
