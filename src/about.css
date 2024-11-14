@@ -141,6 +141,8 @@ body, .content-user {
   background-color: #CAA971;
 }
 
+
+
 /* Each image wrapper */
 .image-wrapper {
   width: 250px; /* Set width of each image */
@@ -160,6 +162,9 @@ body, .content-user {
   background-color: #CAA971;
   border-radius: 20px; /* Optional, for rounded corners */
   /* Make sure the card flips */
+}
+.image-wrapper:hover{
+  transform: scale(1.05);
 }
 
 /* When flipped, rotate the card 180 degrees */
