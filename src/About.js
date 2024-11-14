@@ -186,11 +186,11 @@ const handleFlip = (index) => {
 
   // List of images and text to display
   const images = [
-    { src: 'https://via.placeholder.com/200', text: 'Image 1 Description' },
-    { src: 'https://via.placeholder.com/200', text: 'Image 2 Description' },
-    { src: 'https://via.placeholder.com/200', text: 'Image 3 Description' },
-    { src: 'https://via.placeholder.com/200', text: 'Image 4 Description' },
-    { src: 'https://via.placeholder.com/200', text: 'Image 5 Description' },
+    { src: '/steps/step1.png', text: 'step1' },
+    { src: '/steps/step2.png', text: 'step2' },
+    { src: '/steps/step3.png', text: 'step3' },
+    { src: '/steps/step4.png', text: 'step4' },
+    { src: '/steps/step5.png', text: 'step5' },
   ];
 
 
