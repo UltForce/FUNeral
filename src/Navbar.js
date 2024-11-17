@@ -274,19 +274,7 @@ const Navbar = () => {
         <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
           <ul className="menu">
-            {isLoggedIn && (
-              <li
-                className={
-                  location.pathname === "/userdashboard" ? "active" : ""
-                }
-              >
-                <Link to="/userdashboard">
-                  
-                  <span className="menu-container"> Dashboard</span>
-                
-                </Link>
-              </li>
-            )}
+            
             <li className={location.pathname === "/homepage" ? "active" : ""}>
               <Link to="/homepage">
                 
@@ -417,7 +405,22 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={faUser} />
                     <span className="menu-container"> Account</span>
                   </Link>
+
+                  
                 </li>
+                {isLoggedIn && (
+              <li
+                className={
+                  location.pathname === "/userdashboard" ? "active" : ""
+                }
+              >
+                <Link to="/userdashboard">
+                  
+                  <span className="menu-container"> Dashboard</span>
+                
+                </Link>
+              </li>
+            )}
                 <li>
                   <a onClick={handleLogout} className="no-transition">
                     <FontAwesomeIcon icon={faSignOutAlt} />
