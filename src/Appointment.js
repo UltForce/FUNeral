@@ -26,7 +26,7 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFile } from "@fortawesome/free-solid-svg-icons";
 import "./Appointment.css";
 import Loader from "./Loader.js";
 const Toast = Swal.mixin({
@@ -336,10 +336,9 @@ const Appointments = () => {
           const serviceID = "service_5f3k3ms";
           const templateID = "template_g1w6f2a";
           const userID = "0Tz3RouZf3BXZaSmh";
-          
-        // Send the email
-        //await emailjs.send(serviceID, templateID, emailParams, userID);
-        
+
+          // Send the email
+          //await emailjs.send(serviceID, templateID, emailParams, userID);
 
           Swal.fire(
             "Status!",
@@ -565,6 +564,20 @@ const Appointments = () => {
                   <br />
                   <strong>Deceased Relationship: </strong>
                   {selectedAppointment.DeceasedRelationship}
+                  <br />
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={<Tooltip>View Death Certificate File</Tooltip>}
+                  >
+                    <a
+                      href={selectedAppointment.DeathCertificate}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="View PDF"
+                    >
+                      Death Certificate: <FontAwesomeIcon icon={faFile} />
+                    </a>
+                  </OverlayTrigger>
                 </p>
               </>
             ) : (

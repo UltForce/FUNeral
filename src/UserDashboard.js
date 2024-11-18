@@ -24,7 +24,7 @@ import "./UserDashboard.css";
 import Loader from "./Loader.js";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faFile } from "@fortawesome/free-solid-svg-icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -421,7 +421,10 @@ const UserDashboard = () => {
                           {"⭐".repeat(review.rating)}
                         </div>
                       </p>
-                      <p className="review-status"><strong>Status: </strong>{review.status}</p>
+                      <p className="review-status">
+                        <strong>Status: </strong>
+                        {review.status}
+                      </p>
                       {/* Show Edit button only if the review is still pending */}
                       {review.status === "pending" && (
                         <OverlayTrigger
@@ -589,6 +592,20 @@ const UserDashboard = () => {
                     <br />
                     <strong>Deceased Relationship: </strong>
                     {selectedAppointment.DeceasedRelationship}
+                    <br />
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>View Death Certificate File</Tooltip>}
+                    >
+                      <a
+                        href={selectedAppointment.DeathCertificate}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="View PDF"
+                      >
+                        Death Certificate: <FontAwesomeIcon icon={faFile} />
+                      </a>
+                    </OverlayTrigger>
                   </p>
                 </>
               ) : (
