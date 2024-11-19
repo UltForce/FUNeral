@@ -178,13 +178,13 @@ const Navbar = () => {
             <ul>
               {isLoggedIn && (
                 <>
+                  <img alt=" " src="JROA_Banner.png" height="70px" />
                   <li
                     className={
                       location.pathname === "/dashboard" ? "active" : ""
                     }
                   >
                     <Link to="/dashboard">
-                      
                       <span className="nav-label"> Dashboard</span>
                     </Link>
                   </li>
@@ -195,7 +195,6 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/appointments">
-                     
                       <span className="nav-label"> Appointments</span>
                     </Link>
                   </li>
@@ -205,7 +204,6 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/transaction">
-                      
                       <span className="nav-label"> Transaction</span>
                     </Link>
                   </li>
@@ -215,7 +213,6 @@ const Navbar = () => {
                     }
                   >
                     <Link to="/inventory">
-                      
                       <span className="nav-label"> Inventory</span>
                     </Link>
                   </li>
@@ -223,7 +220,6 @@ const Navbar = () => {
                     className={location.pathname === "/content" ? "active" : ""}
                   >
                     <Link to="/content">
-                      
                       <span className="nav-label"> Content</span>
                     </Link>
                   </li>
@@ -231,7 +227,6 @@ const Navbar = () => {
                     className={location.pathname === "/reviews" ? "active" : ""}
                   >
                     <Link to="/reviews">
-                     
                       <span className="nav-label"> Reviews</span>
                     </Link>
                   </li>
@@ -239,7 +234,6 @@ const Navbar = () => {
                     className={location.pathname === "/reports" ? "active" : ""}
                   >
                     <Link to="/reports">
-                      
                       <span className="nav-label"> Reports</span>
                     </Link>
                   </li>
@@ -247,7 +241,6 @@ const Navbar = () => {
                     className={location.pathname === "/archive" ? "active" : ""}
                   >
                     <Link to="/archive">
-                    
                       <span className="nav-label"> Archive</span>
                     </Link>
                   </li>
@@ -255,13 +248,11 @@ const Navbar = () => {
                     className={location.pathname === "/audit" ? "active" : ""}
                   >
                     <Link to="/audit">
-                     
                       <span className="nav-label"> Audit</span>
                     </Link>
                   </li>
                   <li>
                     <a onClick={handleLogout} className="no-transition">
-                      
                       <span className="nav-label"> Logout</span>
                     </a>
                   </li>
@@ -274,36 +265,28 @@ const Navbar = () => {
         <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
           <ul className="menu">
-            
             <li className={location.pathname === "/homepage" ? "active" : ""}>
               <Link to="/homepage">
-                
                 <span className="menu-container"> Home</span>
               </Link>
             </li>
             <li className={location.pathname === "/about" ? "active" : ""}>
               <Link to="/about">
-               
                 <span className="menu-container"> About us</span>
               </Link>
             </li>
             <li className={location.pathname === "/gallery" ? "active" : ""}>
-            
               <Link to="/gallery">
-               
                 <span className="menu-container"> Gallery</span>
-
               </Link>
             </li>
-            
+
             {isLoggedIn && (
               <>
                 <li
                   className={location.pathname === "/services" ? "active" : ""}
                 >
-
                   <Link to="/services">
-                    
                     <span className="menu-container"> Services</span>
                   </Link>
                 </li>
@@ -311,7 +294,6 @@ const Navbar = () => {
                   className={location.pathname === "/booking" ? "active" : ""}
                 >
                   <Link to="/booking">
-                    
                     <span className="menu-container"> Book now</span>
                   </Link>
                 </li>
@@ -319,18 +301,15 @@ const Navbar = () => {
             )}
             <li className={location.pathname === "/terms" ? "active" : ""}>
               <Link to="/terms">
-               
                 <span className="menu-container"> Terms & Conditions</span>
               </Link>
             </li>
             <li className={location.pathname === "/faqs" ? "active" : ""}>
               <Link to="/faqs">
-                
                 <span className="menu-container"> FAQs</span>
               </Link>
             </li>
 
-            
             {isLoggedIn && (
               <li>
                 <div className="notification-container">
@@ -405,22 +384,18 @@ const Navbar = () => {
                     <FontAwesomeIcon icon={faUser} />
                     <span className="menu-container"> Account</span>
                   </Link>
-
-                  
                 </li>
                 {isLoggedIn && (
-              <li
-                className={
-                  location.pathname === "/userdashboard" ? "active" : ""
-                }
-              >
-                <Link to="/userdashboard">
-                  
-                  <span className="menu-container"> Dashboard</span>
-                
-                </Link>
-              </li>
-            )}
+                  <li
+                    className={
+                      location.pathname === "/userdashboard" ? "active" : ""
+                    }
+                  >
+                    <Link to="/userdashboard">
+                      <span className="menu-container"> Dashboard</span>
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <a onClick={handleLogout} className="no-transition">
                     <FontAwesomeIcon icon={faSignOutAlt} />
@@ -433,7 +408,6 @@ const Navbar = () => {
               <>
                 <li className={location.pathname === "/login" ? "active" : ""}>
                   <Link to="/login">
-                    
                     <span className="login-button-nav"> LOGIN</span>
                   </Link>
                 </li>
@@ -450,7 +424,6 @@ const Navbar = () => {
           </ul>
         </nav>
       )}
-      
     </>
   );
 };

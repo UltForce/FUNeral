@@ -79,11 +79,17 @@ nav ul li a .nav-label {
 /* Styles for top navbar */
 .top-navbar {
   background-color: #2b0a0a; /* Dark background color */
-      color: #e5e5d6; /* Light text color */
-      padding: 5px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  color: #e5e5d6; /* Light text color */
+  padding: 5px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-navbar ul li a:hover {
+  background-color: #444; /* Darker background on hover */
+  color: #ffcc00; /* Change text color on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
 }
 
 /* Adjust the position of the brand logo */
@@ -104,7 +110,6 @@ nav ul li a .nav-label {
   font-family: Arial, sans-serif;
   font-size: 16px;
 }
-
 
 /* Dropdown container */
 .dropdown {
@@ -142,8 +147,6 @@ nav ul li a .nav-label {
   text-decoration: none;
   font-family: Arial, sans-serif;
 }
-
-
 
 /* Ensure the content area is below the navbar */
 .content-user {
@@ -267,7 +270,7 @@ nav ul.centeredNav li.active a {
   padding-top: 10px;
 }
 
-.notification-buttons button{
+.notification-buttons button {
   margin: 0px 5px;
   border-radius: 10px;
   border: none;

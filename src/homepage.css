@@ -1,56 +1,52 @@
 /* Container for the snapping sections */
 .snapping-container {
-    scroll-snap-type: y mandatory;
-    height: 100vh;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-  }
-  
-  /*FONT*/
-  .rubik {
-    font-family: "Rubik", sans-serif;
-    font-optical-sizing: auto;
-  }
-  
-  
-  .action-button
-   {
-    font-family: "Rubik";
-    font-style: Bold;
-    font-size: x-large;
-    color: #FDF9AA;
-    background-color: #18020C;
-    border-radius: 30px;
-    padding: 10px 40px;
-    margin: 4px 2px;
-    cursor: pointer;
-    
-  }
+  scroll-snap-type: y mandatory;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
 
-  /* General styling for each section */
-  .snap-section {
-    scroll-snap-align: start;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    color: #18020C;
-  }
-  
-  /* Specific styles for each section */
-  .section1 {
-    background-image: url('homepage.jpg');
-    background-size: cover;
-    background-position: center;
-    text-align: center;
-    font-family: "Rubik";
-  }
-  
-  .section2 {
-    background-color: #CAA971;
-    
-  }
+/*FONT*/
+.rubik {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.action-button {
+  font-family: "Rubik";
+  font-style: Bold;
+  font-size: x-large;
+  color: #fdf9aa;
+  background-color: #18020c;
+  border-radius: 30px;
+  padding: 10px 40px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+/* General styling for each section */
+.snap-section {
+  scroll-snap-align: start;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #18020c;
+}
+
+/* Specific styles for each section */
+.section1 {
+  background-image: url("homepage.jpg");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  font-family: "Rubik";
+}
+
+.section2 {
+  background-color: #caa971;
+}
 
 /* General styling */
 .column {
@@ -71,7 +67,7 @@
 .homecard {
   height: 600px;
   width: 30%;
-  background-color: #E3D18D;
+  background-color: #e3d18d;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -85,10 +81,9 @@
   border-radius: 10px;
 }
 
-.homecard:hover{
-  transform: scale(1.10);
+.homecard:hover {
+  transform: scale(1.1);
 }
-
 
 .homecard h3 {
   margin-top: 10px;
@@ -110,8 +105,8 @@
   height: 50px;
   display: block;
   margin: 20px auto;
-  background-color: #18020C;
-  color: #E3D18D;
+  background-color: #18020c;
+  color: #e3d18d;
   border: none;
   border-radius: 100px;
   cursor: pointer;
@@ -137,18 +132,17 @@
   }
 }
 
-  
-  .section3 {
-    background-color: #CAA971;
-  }
-  
-  .section4 {
-    background-color: #CAA971;
-  }
-  
-  .section5 {
-    background-color: #CAA971;
-  }
+.section3 {
+  background-color: #caa971;
+}
+
+.section4 {
+  background-color: #caa971;
+}
+
+.section5 {
+  background-color: #caa971;
+}
 
 /* General styling */
 .homepage-row {
@@ -161,9 +155,9 @@
 }
 
 .grid {
-  height:230px;
+  height: 230px;
   width: 30%;
-  background-color: #E3D18D;
+  background-color: #e3d18d;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px #0000001a;
@@ -209,16 +203,15 @@
   }
 }
 
-
-  .section6 {
-    background-color: #CAA971;
-  }
-  .section7 {
-    background-color: #CAA971;
-  }
-  .section7 {
-    background-color: #CAA971;
-  }
+.section6 {
+  background-color: #caa971;
+}
+.section7 {
+  background-color: #caa971;
+}
+.section7 {
+  background-color: #caa971;
+}
 
 /* General styling */
 .column {
@@ -240,7 +233,7 @@
 .article {
   height: 500px;
   width: 30%;
-  background-color: #E3D18D;
+  background-color: #e3d18d;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -273,8 +266,8 @@
   height: 30px;
   display: block;
   margin: 20px;
-  background-color: #18020C;
-  color: #E3D18D;
+  background-color: #18020c;
+  color: #e3d18d;
   border: none;
   border-radius: 100px;
   cursor: pointer;
@@ -300,36 +293,29 @@
   }
 }
 
-
-  .section8 {
-    background-color: #CAA971;
-  }
-  
+.section8 {
+  background-color: #caa971;
+}
 
 /* Gallery section styling */
 .gallery-section {
-  background-color: #CAA971;
+  background-color: #caa971;
   padding: 40px 20px;
   text-align: center;
   font-family: Arial, sans-serif;
 }
 
 .gallery-header {
-  background-color: #CAA971;
+  background-color: #caa971;
   padding: 20px;
 }
-
-
-
-
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .gallery-images {
     gap: 20px; /* Reduce the gap between images on tablets */
   }
-  
+
   .gallery-images img {
     width: 250px;
     height: 250px; /* Smaller images on tablets */
@@ -348,7 +334,7 @@
   .gallery-images {
     gap: 10px; /* Minimal gap on mobile */
   }
-  
+
   .gallery-images img {
     width: 100%; /* Full-width images on mobile */
     height: auto; /* Maintain aspect ratio */
@@ -361,7 +347,7 @@
   display: flex;
   align-items: center;
   padding: 40px;
-  background-color: #CAA971;
+  background-color: #caa971;
   font-family: Arial, sans-serif;
 }
 
@@ -394,12 +380,11 @@
   top: -150px; /* Move the second image slightly down */
 }
 
-
 /* Text container */
 .text-container {
   flex: 1;
   padding: 20px;
-  color: #F9F9F9;
+  color: #f9f9f9;
   max-width: 1000px;
   text-align: justify;
 }
@@ -408,7 +393,7 @@
   font-family: "Rubrik";
   font-size: 24px;
   font-weight: bold;
-  color: #E3D18D;
+  color: #e3d18d;
   margin-bottom: 15px;
 }
 
@@ -417,4 +402,3 @@
   line-height: 1.6;
   color: #333;
 }
-

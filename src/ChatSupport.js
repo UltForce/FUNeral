@@ -61,7 +61,7 @@ const ChatSupport = () => {
         key={role || "user"} // Ensure re-render when role changes
         chat-icon={
           role === "admin"
-            ? "./JROA.jpg" // Admin-specific chat icon (ensure the correct path)
+            ? "./JROA_LOGO.png" // Admin-specific chat icon (ensure the correct path)
             : "https://openmoji.org/data/color/svg/1F56F.svg" // Default SVG icon
         }
         intent="WELCOME"
