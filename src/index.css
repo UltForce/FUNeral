@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.modal-backdrop.show {
+  -webkit-animation-name: none !important;
+  animation-name: none !important;
+  transition: none !important;
+  animation-duration: 0s;
+}
+
+.fade.modal.show {
+  animation: none !important;
+  transition: none !important;
+}
+
+.fade.modal:not(.show) {
+  transition: none !important;
+  animation: none !important;
+  display: none !important;
+}
