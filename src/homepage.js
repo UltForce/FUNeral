@@ -4,7 +4,8 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getCurrentUserId, getUserRoleFirestore, auth } from "./firebase.js";
 import "./homepage.css";
 import "typeface-rubik";
-import { Carousel } from 'react-carousel-minimal';
+import { Carousel } from "react-carousel-minimal";
+import { Modal, Button } from "react-bootstrap";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Homepage = () => {
     aboutUsText: "",
     contactText: "",
   });
+  const [showModal, setShowModal] = useState(false);
+  const [activeArticle, setActiveArticle] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -54,6 +57,14 @@ const Homepage = () => {
     }
   };
 
+  const handleSeeMore = () => {
+    if (isLoggedIn) {
+      navigate("/services");
+    } else {
+      navigate("/login");
+    }
+  };
+
   const Card = ({ image, title, description }) => {
     return (
       <div className="card">
@@ -68,36 +79,75 @@ const Homepage = () => {
   const gallery = [
     {
       image: "/funeral pics/wake1.jpg",
-      caption: "Funeral"
+      caption: "Funeral",
     },
     {
       image: "/funeral pics/flowers.jpg",
-      caption: "Flowers"
+      caption: "Flowers",
     },
     {
       image: "/funeral pics/wake3.jpg",
-      caption: "Funeral"
+      caption: "Funeral",
     },
     {
       image: "/funeral pics/wake5.jpg",
-      caption: "Funeral"
+      caption: "Funeral",
     },
     {
       image: "/funeral pics/wake6.jpg",
-      caption: "Funeral"
+      caption: "Funeral",
     },
-    
-
   ];
 
   const captionStyle = {
-    fontSize: '2em',
-    fontWeight: 'bold',
-  }
+    fontSize: "2em",
+    fontWeight: "bold",
+  };
   const slideNumberStyle = {
-    fontSize: '20px',
-    fontWeight: 'bold',
-  }
+    fontSize: "20px",
+    fontWeight: "bold",
+  };
+
+  const articles = [
+    {
+      img: "/funeral pics/Blog1.jpg",
+      title: "Filipino Beliefs You Should Respect When Attending Wakes",
+      content: `
+        Attending wakes in the Philippines often involves observing cultural practices 
+        rooted in deep respect for the departed and their families. These may include
+        refraining from wearing bright colors, offering prayers, and participating in rituals 
+        such as the “pa-siyam” or the nine-day novena.
+      `,
+    },
+    {
+      img: "/funeral pics/blog2.jpg",
+      title: "What Goes Into A Funeral Package, And How To Choose",
+      content: `
+        Funeral packages typically include essential services such as embalming, viewing arrangements, 
+        transportation, and burial. Choosing the right package depends on your family’s needs, 
+        budget, and the desired level of customization to honor your loved one.
+      `,
+    },
+    {
+      img: "/funeral pics/blog3.jpg",
+      title: "What are the Death Traditions in the Philippines?",
+      content: `
+        Death traditions in the Philippines are a mix of indigenous practices and Catholic influences. 
+        These include holding vigils, offering food to visitors, and celebrating the “pasiyam” 
+        and “babang luksa” to mark the end of mourning periods.
+      `,
+    },
+  ];
+
+  const handleShowModal = (article) => {
+    setActiveArticle(article);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setActiveArticle(null);
+  };
 
   return (
     <div className="snapping-container content-user">
@@ -121,59 +171,68 @@ const Homepage = () => {
             <img src="/funeral pics/homepage2.jpg" alt="Funeral Theme" />
             <h3>FUNERAL THEME</h3>
             <p>
-              Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing elit. Sed Do
-              Eiusmod tempor incididunt ut Labore Et Dolore Magna Aliqua, Magna
-              Aliqua.
+              Choose from a range of meaningful themes to create a dignified and
+              serene environment that honors your loved one’s life and legacy.
             </p>
-            <button>See More</button>
+            <button onClick={handleSeeMore}>See More</button>
           </div>
           <div className="homecard">
-            <img
-              src="/funeral pics/flowers.jpg"
-              alt="Floral Arrangement"
-            />
+            <img src="/funeral pics/flowers.jpg" alt="Floral Arrangement" />
             <h3>FLORAL ARRANGEMENT</h3>
             <p>
-              Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Ellit. Sed Do
-              Eiusmod tempor incididunt ut Labore Et Dolore Magna Aliqua, Magna
-              Aliqua.
+              Discover elegant floral arrangements designed to convey love,
+              respect, and remembrance during the memorial service.
             </p>
-            <button>See More</button>
+            <button onClick={handleSeeMore}>See More</button>
           </div>
           <div className="homecard">
-            <img
-              src="/funeral pics/wake6.jpg"
-              alt="Lights and Candles"
-            />
+            <img src="/funeral pics/wake6.jpg" alt="Lights and Candles" />
             <h3>LIGHTS AND CANDLES</h3>
             <p>
-              Lorem Ipsum Dolor Sit Amet. Consectetur Adipiscing Elit. Sed Do
-              Eiusmod tempor incididunt ut Labore Et Dolore Magna Aliqua, Magna
-              Aliqua.
+              Create a comforting ambiance with expertly curated lighting and
+              candle arrangements to reflect peace and warmth.
             </p>
-            <button>See More</button>
+            <button onClick={handleSeeMore}>See More</button>
           </div>
         </div>
       </section>
-      
+
       <section className="snap-section section4">
         <section className="care-section">
-      <div className="images-container">
-        <img src="/funeral pics/homepage1.jpg" alt="Service Image 1" className="rounded-image" />
-        <img src="funeral pics/homepage2.jpg" alt="Service Image 2" className="rounded-image" />
-      </div>
-      
+          <div className="images-container">
+            <img
+              src="/funeral pics/homepage1.jpg"
+              alt="Dignified Funeral Service"
+              className="rounded-image"
+            />
+            <img
+              src="/funeral pics/homepage2.jpg"
+              alt="Compassionate Floral Arrangements"
+              className="rounded-image"
+            />
+          </div>
 
-
-      <div className="text-container">
-        <h3>Compassionate Care In Your Time Of Need</h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          <br /><br />
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
-        </p>
-      </div>
-    </section>
+          <div className="text-container">
+            <h3>Compassionate Care In Your Time Of Need</h3>
+            <p>
+              At J.ROA Funeral Services, we are dedicated to providing
+              compassionate and personalized support during your most
+              challenging moments. Our team understands the importance of
+              honoring your loved one's life with dignity and respect.
+              <br />
+              <br />
+              From serene funeral arrangements to thoughtfully curated floral
+              displays, we ensure that every detail reflects the warmth and love
+              you wish to convey. Our experienced staff is here to guide you
+              through each step, offering comfort and understanding as we help
+              you create a meaningful tribute.
+              <br />
+              <br />
+              Trust J.ROA Funeral Services to provide unwavering care, helping
+              you focus on cherishing the memories that truly matter.
+            </p>
+          </div>
+        </section>
       </section>
 
       <section className="snap-section section5">
@@ -181,15 +240,12 @@ const Homepage = () => {
         <br></br>
         <div class="homepage-row">
           <div class="grid">
-            <img
-              src="/ficons/comfortinghearts.png"
-              alt="Comforting Hearts"
-            />
+            <img src="/ficons/comfortinghearts.png" alt="Comforting Hearts" />
             <h2>Comforting Hearts </h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
+              We provide emotional support and understanding to families during
+              their time of loss, ensuring a comforting environment throughout
+              the funeral process.
             </p>
           </div>
           <div className="grid">
@@ -199,9 +255,8 @@ const Homepage = () => {
             />
             <h2>Respectful Farewells</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
+              Our services are designed to honor your loved one's memory with
+              dignity and respect, ensuring a meaningful and heartfelt farewell.
             </p>
           </div>
           <div className="grid">
@@ -211,42 +266,32 @@ const Homepage = () => {
             />
             <h2>Dignified Services</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
+              Experience professional and compassionate assistance with every
+              aspect of funeral arrangements, tailored to your family's needs.
             </p>
           </div>
           <div className="grid">
-            <img
-              src="/ficons/Cherised Memories.png"
-              alt="Cherished Memories"
-            />
+            <img src="/ficons/Cherised Memories.png" alt="Cherished Memories" />
             <h2>Cherished Memories</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
+              Create lasting memories with personalized tributes that reflect
+              the unique life and legacy of your loved one.
             </p>
           </div>
           <div className="grid">
-            <img
-              src="/ficons/Honoring Legacies.png"
-              alt="Honoring Legacies"
-            />
+            <img src="/ficons/Honoring Legacies.png" alt="Honoring Legacies" />
             <h2>Honoring Legacies</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
+              Celebrate the life and achievements of your loved one with
+              meaningful ceremonies that honor their legacy.
             </p>
           </div>
           <div className="grid">
             <img src="/ficons/Guiding Grace.png" alt="Guiding Grace" />
             <h2>Guiding Grace</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
+              Our team provides guidance and support every step of the way,
+              ensuring all your needs are met with care and compassion.
             </p>
           </div>
         </div>
@@ -254,96 +299,94 @@ const Homepage = () => {
       <section className="snap-section section6">
         <h1>Our Gallery</h1>
         <div className="gallery-section">
-      <div className="gallery-header">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
-        </p>
-      </div>
+          <div className="gallery-header">
+            <p>
+              Discover moments captured during our services, showcasing the
+              dedication, elegance, and heartfelt care we bring to every
+              ceremony. Each image reflects our commitment to creating
+              meaningful and serene experiences for families, ensuring their
+              loved ones are honored with the utmost respect and grace.
+            </p>
+          </div>
 
-      <div className="gallery-images">
-      <div style={{ textAlign: "center" }}>
-        
-        <div style={{
-          padding: "50 50px"
-        }}>
-          <Carousel
-            data={gallery}
-            time={2000}
-            margin-top="30px" 
-            width="850px"
-            height="400px"
-            captionStyle={captionStyle}
-            radius="10px"
-            slideNumber={true}
-            slideNumberStyle={slideNumberStyle}
-            captionPosition="bottom"
-            automatic={true}
-            dots={true}
-            pauseIconColor="white"
-            pauseIconSize="40px"
-            slideBackgroundColor="darkgrey"
-            slideImageFit="cover"
-            thumbnails={true}
-            thumbnailWidth="100px"
-            style={{
-              textAlign: "center",
-              maxWidth: "850px",
-              maxHeight: "500px",
-              margin: "40px auto",
-            }}
-          />
+          <div className="gallery-images">
+            <div style={{ textAlign: "center" }}>
+              <div
+                style={{
+                  padding: "50 50px",
+                }}
+              >
+                <Carousel
+                  data={gallery}
+                  time={2000}
+                  margin-top="30px"
+                  width="850px"
+                  height="400px"
+                  captionStyle={captionStyle}
+                  radius="10px"
+                  slideNumber={true}
+                  slideNumberStyle={slideNumberStyle}
+                  captionPosition="bottom"
+                  automatic={true}
+                  dots={true}
+                  pauseIconColor="white"
+                  pauseIconSize="40px"
+                  slideBackgroundColor="darkgrey"
+                  slideImageFit="cover"
+                  thumbnails={true}
+                  thumbnailWidth="100px"
+                  style={{
+                    textAlign: "center",
+                    maxWidth: "850px",
+                    maxHeight: "500px",
+                    margin: "40px auto",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    
-      </div>
-    </div>
       </section>
       <section className="snap-section section7">
         <h1>BLOGS & ARTICLES</h1>
         <div className="blogs">
-          <div className="article">
-            <img src="/funeral pics/Blog1.jpg" alt="Blog1 Image" />
-            <h2>Filipino Beliefs You Should Respect When Attending Wakes</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
-            </p>
-            <button>Read More</button>
-          </div>
-          <div className="article">
-            <img
-              src="/funeral pics/blog2.jpg"
-              alt="Blog2 Image"
-            />
-            <h2>What Goes Into A Funeral Package, And How To Choose </h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
-            </p>
-            <button>Read More</button>
-          </div>
-          <div className="article">
-            <img
-              src="/funeral pics/blog3.jpg"
-              alt="Lights and Candles"
-            />
-            <h2>What are the Death Traditions in the Phillippines?</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua, magna
-              aliqua.
-            </p>
-            <button>Read More</button>
-          </div>
+          {articles.map((article, index) => (
+            <div className="article" key={index}>
+              <img src={article.img} alt={`${article.title} Image`} />
+              <h2>{article.title}</h2>
+              <p>{article.content.slice(0, 100)}...</p>
+              <button onClick={() => handleShowModal(article)}>
+                Read More
+              </button>
+            </div>
+          ))}
         </div>
-      </section>
-      <section className="snap-section section7">
-        <h1>Testimonials</h1>
+
+        {/* Modal */}
+        {activeArticle && (
+          <Modal show={showModal} onHide={handleCloseModal} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>{activeArticle.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <img
+                src={activeArticle.img}
+                alt={activeArticle.title}
+                style={{
+                  width: "100%",
+                  marginBottom: "20px",
+                  borderRadius: "8px",
+                }}
+              />
+              <p>{activeArticle.content}</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
       </section>
     </div>
   );

@@ -720,8 +720,6 @@ const Booking = ({}) => {
                 hour: "numeric",
                 minute: "numeric",
               }}
-              slotMinTime="08:00:00" // Set the earliest time to 8am
-              slotMaxTime="17:30:00" // Set the latest time to 5pm
               slotDuration="01:00:00" // Set the duration of each time slot to 30 minutes
             />
           </div>

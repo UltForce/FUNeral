@@ -675,7 +675,7 @@ const Transaction = () => {
                 <th>Name of Deceased</th>
                 <th>Date of Burial</th>
                 <th>Time of Burial</th>
-                <th>Address</th>
+                <th>Viewing Address</th>
                 <th>Cemetery</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -858,7 +858,7 @@ const Transaction = () => {
               </OverlayTrigger>
               <br />
               <Form.Group controlId="formAddress">
-                <Form.Label className="label-title">Address</Form.Label>
+                <Form.Label className="label-title">Viewing Address</Form.Label>
                 <Form.Control
                   className="input-details"
                   type="text"
@@ -1051,7 +1051,7 @@ const Transaction = () => {
                   <br />
                   <strong>Ordered By:</strong> {selectedTransaction.orderedBy}
                   <br />
-                  <strong>Address:</strong> {selectedTransaction.address}
+                  <strong>Viewing Address:</strong> {selectedTransaction.address}
                   <br />
                   <strong>Cemetery:</strong> {selectedTransaction.cemetery}
                   <br />
