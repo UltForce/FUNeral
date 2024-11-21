@@ -29,6 +29,7 @@
   overflow-y: auto;
   height: 100vh;
   background-color: #FCF2D8;
+  font-family: "Rubik";
 }
 
 .services-section {
@@ -151,6 +152,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  font-family: "Rubik";
 }
 
 .services-modal-box .modal-description {
