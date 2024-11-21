@@ -459,6 +459,12 @@
   margin: 0 5px;
 }
 
+.update-testimonial-button:hover {
+  background-color:#e3dd69;
+  color: #18020c;
+  border: 1px solid #4d4642;
+}
+
 .testimonial-buttons {
   display: flex;
   justify-content: center;
