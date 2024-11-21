@@ -461,22 +461,12 @@ const UserDashboard = () => {
 
             {/* Modal to edit testimonial */}
             <Modal show={editReviewId !== null} onHide={handleCloseEditModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Edit Your Testimonial</Modal.Title>
+              <Modal.Header closeButton className="user-testimonial-header">
+                <Modal.Title  className="user-testimonial-title">Edit Your Testimonial</Modal.Title>
               </Modal.Header>
-              <Modal.Body>
+              <Modal.Body className="user-testimonial-details-box">
                 <form onSubmit={handleEditSubmit}>
-                  <div className="mb-3">
-                    <textarea
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                      placeholder="Your comment"
-                      required
-                      className="form-control"
-                      rows="3"
-                    />
-                  </div>
-                  <div className="mb-3 star-rating">
+                <div className="star-rating">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <span
                         key={star}
@@ -490,15 +480,26 @@ const UserDashboard = () => {
                       </span>
                     ))}
                   </div>
-                  <div className="d-flex justify-content-end">
+                  <div>
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="Your comment"
+                      required
+                      className="testimonial-form-control"
+                      rows="3"
+                    />
+                  </div>
+                  
+                  <div className="testimonial-buttons">
                     <Button
                       variant="secondary"
                       onClick={handleCloseEditModal}
-                      className="me-2"
+                      className="close-button"
                     >
                       Close
                     </Button>
-                    <Button type="submit" variant="primary">
+                    <Button type="submit" variant="primary" className="update-testimonial-button">
                       Update Testimonial
                     </Button>
                   </div>
@@ -602,8 +603,9 @@ const UserDashboard = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         title="View PDF"
+                        className="appointment-death-cert"
                       >
-                        Death Certificate: <FontAwesomeIcon icon={faFile} />
+                        <strong>Death Certificate:</strong> <FontAwesomeIcon icon={faFile} />
                       </a>
                     </OverlayTrigger>
                   </p>

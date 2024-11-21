@@ -274,6 +274,11 @@
   text-decoration: underline;
 }
 
+.appointment-death-cert {
+  text-decoration: none;
+  color: #18020c;
+}
+
 .transaction-border {
   display: block;
   width: 340px;
@@ -407,4 +412,64 @@
 
 .transaction-details {
   margin-bottom: 20px;
+}
+
+.user-testimonial-header {
+  color: white;
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between title and close button */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Ensure it takes full width */
+}
+
+.user-testimonial-title {
+  flex-grow: 1; /* Allow the title to grow and take available space */
+  text-align: center; /* Center the title text */
+  font-weight: 400;
+  font-size: 25px;
+  margin: 0; /* Remove default margins */
+}
+
+.user-testimonial-details-box {
+  display: block;
+  border: 1px solid #4d4642;
+  border-radius: 20px;
+  background-color: #fcf2d8;
+  margin: 10px 0;
+  padding: 13px 20px;
+}
+
+.testimonial-form-control {
+  background-color: #EBEBEB;
+  border: 1px solid #6A6868;
+  color: #4d4642;
+  width: 100%;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-size: 14px;
+  padding: 8px;
+}
+
+.update-testimonial-button {
+  background-color:#f5f095;
+  color: #18020c;
+  border-radius: 5px;
+  border: 1px solid #4d4642;
+  font-size: 15px;
+  margin: 0 5px;
+}
+
+.update-testimonial-button:hover {
+  background-color:#e3dd69;
+  color: #18020c;
+  border: 1px solid #4d4642;
+}
+
+.testimonial-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.user-testimonial-details-box .star-rating {
+  text-align: center;
 }

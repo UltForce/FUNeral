@@ -1,10 +1,37 @@
-.snapping-container {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
+.services {
+  background-color: #caa971;
+  font-family: "Rubik";
+  scroll-snap-align: start;
+  height: auto;
+  padding: 1rem;
+  overflow: visible;
 }
 
-.snap-section {
+.services-title {
+  padding-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 50px;
+}
+
+.services-border {
+  display: block;
+  width: 350px;
+  height: 3px;
+  background: #18020c;
+  margin: 8px auto 65px;
+}
+
+.services-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+  background-color: #FCF2D8;
+}
+
+.services-section {
   height: 100vh;
   scroll-snap-align: start;
   display: flex;
@@ -12,6 +39,12 @@
   align-items: center;
   flex-direction: column;
   padding: 20px;
+}
+
+.services-section .funeral-pack-title {
+  margin-bottom: 50px;
+  font-weight: 500;
+  font-size: 30px;
 }
 
 .card-grid {
@@ -22,26 +55,34 @@
   max-width: 1200px;
 }
 
-.card {
-  background-color: #f1f1f1;
+ .card {
+  background-color: #FDF9AA;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 250px; /* Fix the height to prevent cards from being too tall */
+  justify-content: center;
+  height: auto; 
 }
 
-h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+.services-section img {
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
 }
 
-p {
-  font-size: 1rem;
-  margin: 10px 0;
+.services-section h3 {
+  font-size: 25px;
+  margin-top: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.services-section p {
+  font-size: 14px;
+  margin: 5px 0;
 }
 
 .view-service-button,
@@ -90,4 +131,156 @@ p {
   width: 100%;
   height: 400px; /* Adjust as needed */
   background-color: #f0f0f0; /* Optional: for better visibility */
+}
+
+.services-modal-box {
+  display: block;
+  border: 1px solid #4d4642; 
+  border-radius: 20px; 
+  background-color:#FCF2D8;
+  padding: 30px 15px;
+}
+
+.services-modal-box img {
+  width: 50%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.services-modal-box .funeral-package-details {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.services-modal-box .modal-description {
+  text-align: center;
+}
+
+.modal-description h2 {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+.modal-description p {
+  font-size: 14px;
+}
+
+.services-modal-box .show-3d-button {
+  display: block;
+  margin: auto;
+  background-color: #18020C;
+  color: #FDF9AA;
+  font-weight: 500;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.services-modal-box .show-3d-button:hover {
+  background-color: #433b3e;
+  color: #FDF9AA;
+}
+
+.services-modal-box .services-inclusion-select {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.services-modal-box .modal-buttons label {
+  margin-right: 5px;
+}
+
+.services-modal-box .modal-buttons select {
+  border-radius: 10px;
+  text-align: center;
+  background-color: aliceblue;
+}
+
+.modal-navigation {
+  margin: 5px auto;
+  display: block;
+}
+
+.modal-navigation button {
+  border-radius: 10px;
+  background-color: #FDF9AA;
+  color: #18020C;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  padding: 1px 20px;
+  margin: 0 2px;
+}
+
+.inclusion-title {
+  text-align: center;
+  color: #FDF9AA;
+  font-size: 25px;
+}
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {  
+  .services-section .view-package-button {
+    width: 50%;
+    font-size: 18px;
+    border-radius: 10px;
+    background-color: #18020C;
+    color: #FDF9AA;
+    font-weight: 500;
+    display: block;
+    margin: 5px auto;
+    padding: 5px 0;
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .services-section .view-package-button {
+    width: 50%;
+    font-size: 18px;
+    border-radius: 10px;
+    background-color: #18020C;
+    color: #FDF9AA;
+    font-weight: 500;
+    display: block;
+    margin: 5px auto;
+    padding: 5px 0;
+  }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  
+  .services-section .view-package-button {
+    width: 50%;
+    font-size: 13px;
+    border-radius: 10px;
+    background-color: #18020C;
+    color: #FDF9AA;
+    font-weight: 500;
+    display: block;
+    margin: 5px auto;
+    padding: 5px 0;
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .services-section .view-package-button {
+    width: 50%;
+    font-size: 12px;
+    border-radius: 10px;
+    background-color: #18020C;
+    color: #FDF9AA;
+    font-weight: 500;
+    display: block;
+    margin: 5px auto;
+    padding: 5px 0;
+  }
+}
+
+canvas {
+  height: 5in;
 }
