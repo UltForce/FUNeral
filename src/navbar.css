@@ -418,10 +418,10 @@ nav ul.centeredNav li.active a {
 .user-dropdown-content {
   display: block; /* Ensure it is displayed when open */
   position: absolute; /* Position it absolutely */
-  top: 100%; /* Position it below the button */
+  top: 155%; /* Position it below the button */
   right: 0%; /* Align it to the right of the button */
-  background-color: #2b0a0a; /* Match the navbar background color */
-  color: #e5e5d6; /* Text color */
+  background-color: #FDF9AA; /* Match the navbar background color */
+  color: #2b0a0a; /* Text color */
   padding: 10px; /* Padding for the dropdown */
   border-radius: 5px; /* Rounded corners */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow for depth */
@@ -429,7 +429,7 @@ nav ul.centeredNav li.active a {
 }
 
 .user-dropdown-content a {
-  color: #e5e5d6;
+  color: #2b0a0a;
   padding: 8px 20px;
   display: block;
   text-decoration: none;
@@ -437,4 +437,5 @@ nav ul.centeredNav li.active a {
 
 .user-dropdown-content a:hover {
   background-color: #444; /* Darker background on hover */
+  color: #FDF9AA;
 }
