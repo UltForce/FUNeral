@@ -1,27 +1,63 @@
+.gallery {
+  background-color: #caa971;
+  font-family: "Rubik";
+  scroll-snap-align: start;
+  height: auto;
+  padding: 1rem;
+  overflow: visible;
+}
+
+.gallery-title {
+  padding-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 50px;
+}
+
+.gallery-border {
+  display: block;
+  width: 350px;
+  height: 3px;
+  background: #18020c;
+  margin: 8px auto 65px;
+}
+
 .gallery-container {
   padding: 20px;
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+  background-color: #FCF2D8;
+  font-family: "Rubik";
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .album-selector {
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
   margin-bottom: 20px;
 }
 
 .album-cover {
   cursor: pointer;
   text-align: center;
+  margin: 0 20px;
 }
 
 .album-image {
-  width: 300px;
+  width: 400px;
   height: auto;
   border-radius: 10px;
 }
 
 .album-title {
-  margin-top: 10px;
+  margin-top: 20px;
   font-weight: bold;
+  font-size: 18px;
 }
 
 .album-preview {
@@ -29,17 +65,21 @@
 }
 
 .return-button {
-  background-color: #007bff;
+  background-color: #8B5E11;
   color: white;
   border: none;
   padding: 10px 20px;
-  margin-bottom: 20px;
+  margin: 20px 0;
   cursor: pointer;
   border-radius: 5px;
+  font-family: 'Rubik';
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .return-button:hover {
-  background-color: #0056b3;
+  background-color: #604820;
+  color: white;
 }
 
 .preview-container {
@@ -47,7 +87,7 @@
 }
 
 .preview-image {
-  width: 30%; /* Larger size than thumbnails */
+  width: 50%; /* Larger size than thumbnails */
   height: auto;
   border-radius: 10px;
   border: 5px solid transparent; /* Default transparent border */
@@ -61,7 +101,7 @@
 }
 
 .pagination-button {
-  background-color: #007bff;
+  background-color: #18020C;
   color: white;
   border: none;
   padding: 10px;
@@ -69,8 +109,13 @@
   border-radius: 5px;
 }
 
+.pagination-button:hover {
+  background-color: #534a4e;
+  color: white;
+}
+
 .pagination-button:disabled {
-  background-color: #ccc;
+  background-color: #7d7a7b;
   cursor: not-allowed;
 }
 
@@ -91,7 +136,7 @@
 }
 
 .thumbnail.active {
-  border: 2px solid #007bff; /* Highlight active thumbnail with blue border */
+  border: 2px solid #18020C; /* Highlight active thumbnail with blue border */
   opacity: 1; /* Full opacity for active thumbnail */
 }
 

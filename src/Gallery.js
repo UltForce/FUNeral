@@ -79,7 +79,14 @@ const Gallery = () => {
   };
 
   return (
-    <section className="gallery-container section content-user">
+    <main className="main-content">
+    <section className="gallery">
+      <div>
+        <h1 className="gallery-title">GALLERY</h1>
+        <div className="gallery-border"></div>
+      </div>
+    </section>
+    <section className="gallery-container">
       {!selectedAlbum ? (
         <div className="album-selector">
           {albums.map((album) => (
@@ -104,14 +111,6 @@ const Gallery = () => {
         </div>
       ) : (
         <div className="album-preview">
-          <OverlayTrigger
-            placement="right"
-            overlay={<Tooltip>Return to Album View</Tooltip>}
-          >
-            <button className="return-button" onClick={returnToGallery}>
-              Return to Album Gallery
-            </button>
-          </OverlayTrigger>
           <div className="preview-container">
             <img src={previewImage} alt="Preview" className="preview-image" />
           </div>
@@ -152,9 +151,19 @@ const Gallery = () => {
               {">"}
             </button>
           </div>
+
+          <OverlayTrigger
+            placement="right"
+            overlay={<Tooltip>Return to Album View</Tooltip>}
+          >
+            <button className="return-button" onClick={returnToGallery}>
+              Return to Album Gallery
+            </button>
+          </OverlayTrigger>
         </div>
       )}
     </section>
+    </main>
   );
 };
 
