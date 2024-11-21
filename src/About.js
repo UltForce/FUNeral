@@ -177,27 +177,25 @@ const About = () => {
     ));
   };
 
-// Function to handle the flipping of an image
-const handleFlip = (index) => {
-  const newFlipped = [...flipped];
-  newFlipped[index] = !newFlipped[index];
-  setFlipped(newFlipped);
-};
+  // Function to handle the flipping of an image
+  const handleFlip = (index) => {
+    const newFlipped = [...flipped];
+    newFlipped[index] = !newFlipped[index];
+    setFlipped(newFlipped);
+  };
 
   // List of images and text to display
   const images = [
-    { src: '/steps/step1.png', text: 'step1' },
-    { src: '/steps/step2.png', text: 'step2' },
-    { src: '/steps/step3.png', text: 'step3' },
-    { src: '/steps/step4.png', text: 'step4' },
-    { src: '/steps/step5.png', text: 'step5' },
+    { src: "/steps/step1.png", text: "step1" },
+    { src: "/steps/step2.png", text: "step2" },
+    { src: "/steps/step3.png", text: "step3" },
+    { src: "/steps/step4.png", text: "step4" },
+    { src: "/steps/step5.png", text: "step5" },
   ];
-
 
   return (
     <div className="snapping-container content-user">
       {loading && <Loader />} {/* Display loader while loading */}
-
       <section className="snap-section about-us-section">
         <h2>About Us</h2>
         <h3>Address</h3>
@@ -217,7 +215,6 @@ const handleFlip = (index) => {
         <h3>Contact No.</h3>
         <p>0909 081 3396 / 0935 354 4006</p>
       </section>
-
       <section className="snap-section testimonials-section">
         <h2>Testimonials</h2>
         <div className="testimonials-grid">
@@ -226,11 +223,11 @@ const handleFlip = (index) => {
               <div className="testimonial-content">
                 {/* Display profile picture or placeholder */}
                 <img
-                  src={testimonial.profilePictureURL || '/placeholder.jpg'} // Replace with your placeholder image path
+                  src={testimonial.profilePictureURL || "/placeholder.jpg"} // Replace with your placeholder image path
                   alt={`${testimonial.firstname} ${testimonial.lastname}`}
                   className="profile-picture"
                 />
-                <div className="stars">{'⭐'.repeat(testimonial.rating)}</div>
+                <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
                 <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
                 <p className="review-description">{testimonial.comment}</p>
               </div>
@@ -238,15 +235,21 @@ const handleFlip = (index) => {
           ))}
         </div>
       </section>
-
       {/* Steps Section with Flippable Images (now after Testimonials) */}
       <div className="steps">
         <h2>Steps</h2>
         <div className="image-container">
           {images.map((image, index) => (
-            <div key={index} className="image-wrapper" onClick={() => handleFlip(index)}>
-              <div className={`flip-card ${flipped[index] ? 'flipped' : ''}`}>
-                <div className="front" style={{ backgroundImage: `url(${image.src})` }}></div>
+            <div
+              key={index}
+              className="image-wrapper"
+              onClick={() => handleFlip(index)}
+            >
+              <div className={`flip-card ${flipped[index] ? "flipped" : ""}`}>
+                <div
+                  className="front"
+                  style={{ backgroundImage: `url(${image.src})` }}
+                ></div>
                 <div className="back">
                   <p>{image.text}</p>
                 </div>
@@ -255,7 +258,6 @@ const handleFlip = (index) => {
           ))}
         </div>
       </div>
-
       {isLoggedIn && !hasSubmittedTestimonial && (
         <section className="submit-testimonial-section section">
           <h3>Add Your Testimonial</h3>

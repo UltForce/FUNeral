@@ -673,6 +673,7 @@ const Appointments = () => {
                           <FontAwesomeIcon icon={faEdit} />
                         </button>
                       </OverlayTrigger>{" "}
+                      <br />
                       <Dropdown className="actions-button">
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Actions

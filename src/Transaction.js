@@ -66,13 +66,14 @@ const Transaction = () => {
     orderedById: "",
     address: "",
     cemetery: "",
-    casket: { particulars: "", amount: "" },
-    hearse: { particulars: "", amount: "" },
-    funServicesArrangements: { particulars: "", amount: "" },
-    permits: { particulars: "", amount: "" },
-    embalming: { particulars: "", amount: "" },
-    cemeteryExpenses: { particulars: "", amount: "" },
-    otherExpenses: { particulars: "", amount: "" },
+    glassViewing: "",
+    casket: { particulars: "", amount: 0 },
+    hearse: { particulars: "", amount: 0 },
+    funServicesArrangements: { particulars: "", amount: 0 },
+    permits: { particulars: "", amount: 0 },
+    embalming: { particulars: "", amount: 0 },
+    cemeteryExpenses: { particulars: "", amount: 0 },
+    otherExpenses: { particulars: "", amount: 0 },
     totalAmount: 0,
     deposit: 0,
     balance: 0,
@@ -82,7 +83,7 @@ const Transaction = () => {
   // Calculate the total amount based on item amounts
   useEffect(() => {
     const total = Object.keys(formData)
-      .filter((key) => formData[key].amount)
+      .filter((key) => formData[key] && formData[key].amount) // Check if key exists and has amount
       .reduce((acc, key) => acc + parseFloat(formData[key].amount || 0), 0);
 
     const balance = total - parseFloat(formData.deposit || 0);
@@ -183,7 +184,8 @@ const Transaction = () => {
       formData.timeOfBurial &&
       formData.orderedBy &&
       formData.address &&
-      formData.cemetery
+      formData.cemetery &&
+      formData.glassViewing
     ) {
       setShowModal(false);
       setShowModal2(true);
@@ -212,13 +214,14 @@ const Transaction = () => {
       orderedById: "",
       address: "",
       cemetery: "",
-      casket: { particulars: "", amount: "" },
-      hearse: { particulars: "", amount: "" },
-      funServicesArrangements: { particulars: "", amount: "" },
-      permits: { particulars: "", amount: "" },
-      embalming: { particulars: "", amount: "" },
-      cemeteryExpenses: { particulars: "", amount: "" },
-      otherExpenses: { particulars: "", amount: "" },
+      glassViewing: "",
+      casket: { particulars: "", amount: 0 },
+      hearse: { particulars: "", amount: 0 },
+      funServicesArrangements: { particulars: "", amount: 0 },
+      permits: { particulars: "", amount: 0 },
+      embalming: { particulars: "", amount: 0 },
+      cemeteryExpenses: { particulars: "", amount: 0 },
+      otherExpenses: { particulars: "", amount: 0 },
       totalAmount: 0,
       deposit: 0,
       balance: 0,
@@ -366,6 +369,7 @@ const Transaction = () => {
         orderedById: transaction.orderedById,
         address: transaction.address,
         cemetery: transaction.cemetery,
+        glassViewing: transaction.glassViewing,
         casket: {
           particulars: transaction.casket.particulars,
           amount: transaction.casket.amount,
@@ -885,6 +889,39 @@ const Transaction = () => {
                 />
               </Form.Group>
               <br />
+              <Form.Group controlId="formGlassViewing">
+                <Form.Label className="label-title">
+                  Glass Viewing Type
+                </Form.Label>
+                <div className="radio-inline">
+                  <Form.Check
+                    type="radio"
+                    id="halfGlass"
+                    label="Half"
+                    name="glassViewing"
+                    value="Half"
+                    checked={formData.glassViewing === "Half"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, glassViewing: e.target.value })
+                    }
+                    required
+                  />
+                  <Form.Check
+                    type="radio"
+                    id="fullGlass"
+                    label="Full"
+                    name="glassViewing"
+                    value="Full"
+                    checked={formData.glassViewing === "Full"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, glassViewing: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+              </Form.Group>
+
+              <br />
               <div className="buttons">
                 <Button
                   variant="primary"
@@ -1051,9 +1088,13 @@ const Transaction = () => {
                   <br />
                   <strong>Ordered By:</strong> {selectedTransaction.orderedBy}
                   <br />
-                  <strong>Viewing Address:</strong> {selectedTransaction.address}
+                  <strong>Viewing Address:</strong>{" "}
+                  {selectedTransaction.address}
                   <br />
                   <strong>Cemetery:</strong> {selectedTransaction.cemetery}
+                  <br />
+                  <strong>Viewing Glass:</strong>{" "}
+                  {selectedTransaction.glassViewing}
                   <br />
                   <strong>Status:</strong>{" "}
                   {getStatusBadge(selectedTransaction.status)}

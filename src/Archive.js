@@ -369,6 +369,8 @@ const Archive = () => {
                     <br />
                     <strong>Cemetery:</strong> {selectedItem.cemetery}
                     <br />
+                    <strong>Glass Viewing:</strong> {selectedItem.glassViewing}
+                    <br />
                     <strong>Status:</strong>{" "}
                     {getStatusBadge(selectedItem.status)}
                   </p>

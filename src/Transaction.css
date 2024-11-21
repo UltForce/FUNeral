@@ -118,10 +118,10 @@
 
 .transaction-details-box {
   display: block;
-  border: 1px solid #4d4642; 
-  border-radius: 20px; 
-  background-color:#FCF2D8;
-  margin: 10px 0; 
+  border: 1px solid #4d4642;
+  border-radius: 20px;
+  background-color: #fcf2d8;
+  margin: 10px 0;
   padding: 35px 20px;
 }
 
@@ -138,7 +138,8 @@
   color: #c89d53;
 }
 
-.particulars-title, .admin-appointment-user {
+.particulars-title,
+.admin-appointment-user {
   text-align: center;
   font-weight: 500;
   font-size: 20px;
@@ -146,20 +147,23 @@
   text-decoration: underline;
 }
 
-
-.transaction-details-box .first-details, .financial-summary-details {
+.transaction-details-box .first-details,
+.financial-summary-details {
   text-align: center;
   font-size: 15px;
   color: #18020c;
 }
 
 .transaction-details-box .first-details strong,
-.second-details strong, .financial-summary-details strong {
+.second-details strong,
+.financial-summary-details strong {
   font-weight: 500;
   color: #c89d53;
 }
 
-.transaction-details-box .particulars-title, .admin-transaction-user, .financial-summary-title {
+.transaction-details-box .particulars-title,
+.admin-transaction-user,
+.financial-summary-title {
   text-align: center;
   font-weight: 500;
   font-size: 20px;
@@ -221,8 +225,8 @@
 }
 
 .particulars-table .amount-input-details {
-  background-color: #EBEBEB;
-  border: 1px solid #6A6868;
+  background-color: #ebebeb;
+  border: 1px solid #6a6868;
   color: #4d4642;
   resize: none;
   margin-top: 30px;
@@ -243,8 +247,8 @@
 }
 
 .deposit-input {
-  background-color: #EBEBEB;
-  border: 1px solid #6A6868;
+  background-color: #ebebeb;
+  border: 1px solid #6a6868;
   color: #4d4642;
 }
 
@@ -264,4 +268,10 @@
   cursor: not-allowed;
   background: transparent;
   border: none !important;
+}
+
+.radio-inline {
+  display: flex;
+  gap: 10px; /* Adds spacing between the buttons */
+  align-items: center; /* Aligns the label and button vertically */
 }

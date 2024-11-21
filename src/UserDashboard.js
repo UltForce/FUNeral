@@ -462,11 +462,13 @@ const UserDashboard = () => {
             {/* Modal to edit testimonial */}
             <Modal show={editReviewId !== null} onHide={handleCloseEditModal}>
               <Modal.Header closeButton className="user-testimonial-header">
-                <Modal.Title  className="user-testimonial-title">Edit Your Testimonial</Modal.Title>
+                <Modal.Title className="user-testimonial-title">
+                  Edit Your Testimonial
+                </Modal.Title>
               </Modal.Header>
               <Modal.Body className="user-testimonial-details-box">
                 <form onSubmit={handleEditSubmit}>
-                <div className="star-rating">
+                  <div className="star-rating">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <span
                         key={star}
@@ -490,7 +492,7 @@ const UserDashboard = () => {
                       rows="3"
                     />
                   </div>
-                  
+
                   <div className="testimonial-buttons">
                     <Button
                       variant="secondary"
@@ -499,7 +501,11 @@ const UserDashboard = () => {
                     >
                       Close
                     </Button>
-                    <Button type="submit" variant="primary" className="update-testimonial-button">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      className="update-testimonial-button"
+                    >
                       Update Testimonial
                     </Button>
                   </div>
@@ -605,7 +611,8 @@ const UserDashboard = () => {
                         title="View PDF"
                         className="appointment-death-cert"
                       >
-                        <strong>Death Certificate:</strong> <FontAwesomeIcon icon={faFile} />
+                        <strong>Death Certificate:</strong>{" "}
+                        <FontAwesomeIcon icon={faFile} />
                       </a>
                     </OverlayTrigger>
                   </p>
@@ -655,6 +662,9 @@ const UserDashboard = () => {
                     <strong>Address:</strong> {selectedTransaction.address}
                     <br />
                     <strong>Cemetery:</strong> {selectedTransaction.cemetery}
+                    <br />
+                    <strong>Glass Viewing:</strong>{" "}
+                    {selectedTransaction.glassViewing}
                     <br />
                     <strong>Status:</strong>{" "}
                     {getStatusBadge(selectedTransaction.status)}
