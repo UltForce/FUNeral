@@ -747,9 +747,9 @@ const Booking = ({}) => {
                   }
                 >
                   <option value="">Select a plan</option>
-                  <option value="Plan 1">Plan 1</option>
-                  <option value="Plan 2">Plan 2</option>
-                  <option value="Plan 3">Plan 3</option>
+                  <option value="Plan 1">Plan 1 - Basic Plan</option>
+                  <option value="Plan 2">Plan 2 - Garden Plan</option>
+                  <option value="Plan 3">Plan 3 - Garbo Plan</option>
                 </Form.Select>
               </Form.Group>
               <br />

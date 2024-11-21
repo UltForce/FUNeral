@@ -4,6 +4,7 @@ import {
   deleteAppointment,
   updateAppointmentStatus,
   generateReportsPDF,
+  updateAppointment,
 } from "./firebase.js";
 import {
   getAppointments,
@@ -24,9 +25,11 @@ import {
   Modal,
   OverlayTrigger,
   Tooltip,
+  Form,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faFile } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFile, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import "./Appointment.css";
 import Loader from "./Loader.js";
 const Toast = Swal.mixin({
@@ -46,6 +49,30 @@ const Appointments = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
+  const [showModal1, setShowModal1] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const handleShow1 = () => setShowModal1(true);
+  const handleClose1 = () => setShowModal1(false);
+  const handleShow2 = () => setShowModal2(true);
+  const handleClose2 = () => setShowModal2(false);
+  const [isFormOpen, setIsFormOpen] = useState(false); // State for controlling form visibility
+  const [formData, setFormData] = useState({
+    // State for form data
+    name: "",
+    date: "",
+    phoneNumber: "",
+    notes: "",
+    plan: "",
+    status: "",
+    DeceasedName: "",
+    DeceasedAge: "",
+    DeceasedBirthday: "",
+    DateofDeath: "",
+    PlaceofDeath: "",
+    DeceasedRelationship: "",
+    DeathCertificate: "",
+  });
+
   const navigate = useNavigate();
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -77,6 +104,42 @@ const Appointments = () => {
 
     fetchAppointments();
   }, []);
+
+  const handleNext = () => {
+    // Validate first modal fields
+    if (formData.plan && formData.phoneNumber && formData.notes) {
+      setShowModal1(false);
+      setShowModal2(true);
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Please fill in all the fields.",
+      });
+    }
+  };
+  // Function to handle returning to the first modal
+  const handleReturn = () => {
+    handleClose2(); // Close the second modal
+    handleShow1(); // Reopen the first modal
+  };
+
+  const clearFormData = async () => {
+    setFormData({
+      // State for form data
+      name: "",
+      phoneNumber: "",
+      notes: "",
+      plan: "",
+      DeceasedName: "",
+      DeceasedAge: "",
+      DeceasedSex: "",
+      DeceasedBirthday: "",
+      DateofDeath: "",
+      PlaceofDeath: "",
+      DeceasedRelationship: "",
+      DeathCertificate: "",
+    });
+  };
 
   // Modal functions
   const handleShowDetails = (appointment) => {
@@ -380,6 +443,121 @@ const Appointments = () => {
     return allActions.filter((action) => action !== status);
   };
 
+  const handleEditClick = (appointment) => {
+    setFormData({
+      appointmentId: appointment.id,
+      name: appointment.name,
+      date: appointment.date,
+      phoneNumber: appointment.phoneNumber,
+      notes: appointment.notes,
+      plan: appointment.plan,
+      DeceasedName: appointment.DeceasedName,
+      DeceasedAge: appointment.DeceasedAge,
+      DeceasedSex: appointment.DeceasedSex,
+      DeceasedBirthday: appointment.DeceasedBirthday,
+      DateofDeath: appointment.DateofDeath,
+      PlaceofDeath: appointment.PlaceofDeath,
+      DeceasedRelationship: appointment.DeceasedRelationship,
+      DeathCertificate: appointment.DeathCertificate,
+    });
+
+    // Open the first modal for editing
+    setShowModal1(true);
+  };
+
+  // Handle form submission
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    // Validation: Birthday should be before Date of Death
+    if (new Date(formData.DeceasedBirthday) >= new Date(formData.DateofDeath)) {
+      Toast.fire({
+        icon: "error",
+        title: "The Date of Death cannot be before the Birth Date.",
+      });
+      return;
+    }
+    // Fill the name field with logged-in user's full name
+    const loggedInUserId = getCurrentUserId();
+
+    if (formData.appointmentId) {
+      // Update appointment
+      Swal.fire({
+        icon: "question",
+        title: "Do you want to edit this appointment?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: `No`,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await updateAppointment(formData.appointmentId, {
+            name: formData.name,
+            date: formData.date,
+            phoneNumber: formData.phoneNumber,
+            notes: formData.notes,
+            plan: formData.plan,
+            DeceasedName: formData.DeceasedName,
+            DeceasedAge: formData.DeceasedAge,
+            DeceasedSex: formData.DeceasedSex,
+            DeceasedBirthday: formData.DeceasedBirthday,
+            DateofDeath: formData.DateofDeath,
+            PlaceofDeath: formData.PlaceofDeath,
+            DeceasedRelationship: formData.DeceasedRelationship,
+            DeathCertificate: formData.DeathCertificate,
+          });
+          const appointment = appointments.find(
+            (r) => r.id === formData.appointmentId
+          );
+          // Handle file upload for Death Certificate
+          if (formData.DeathCertificate) {
+            const storage = getStorage();
+
+            const storageRef = ref(
+              storage,
+              `deathCertificates/${appointment.userId}/${formData.appointmentId}.pdf`
+            );
+            await uploadBytes(storageRef, formData.DeathCertificate);
+          }
+
+          const event = {
+            type: "Appointment", // Type of event
+            userId: loggedInUserId, // User ID associated with the event
+            details: "Admin edited an existing appointment", // Details of the event
+          };
+          handleClose2(); // Close the second modal after submitting
+          setIsFormOpen(false); // Close form
+
+          // Call the AuditLogger function with the event object
+          AuditLogger({ event });
+
+          const title = "Appointment edited";
+          const content = `Your appointment has been edited by an admin`;
+          const recipient = appointment.userId;
+
+          await sendNotification(title, content, loggedInUserId, recipient);
+
+          clearFormData();
+          // Show success message
+          Swal.fire({
+            title: "success",
+            text: "Appointment updated successfully",
+            icon: "success",
+            heightAuto: false,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Confirm",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: "Appointment updated successfully",
+              });
+            }
+          });
+          fetchAppointments(); // Fetch appointments
+        }
+      });
+    }
+  };
+
   return (
     <section className="dashboard-appointment">
       <main className="main-content">
@@ -481,6 +659,20 @@ const Appointments = () => {
                           <FontAwesomeIcon icon={faEye} />
                         </Button>
                       </OverlayTrigger>
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Edit Appointment</Tooltip>}
+                      >
+                        <button
+                          className="btn btn-warning"
+                          type="button"
+                          onClick={() => {
+                            handleEditClick(appointment);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                      </OverlayTrigger>{" "}
                       <Dropdown className="actions-button">
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Actions
@@ -593,6 +785,248 @@ const Appointments = () => {
               Close
             </Button>
           </Modal.Footer>
+        </Modal>
+        {/* First Modal for Plan, Phone Number, and Notes */}
+        <Modal show={showModal1} onHide={handleClose1}>
+          <Modal.Header closeButton className="booking-header">
+            <Modal.Title className="booking-title">Booking Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="details-box">
+            <p className="book-date" style={{ marginLeft: "20px" }}>
+              Selected Date: <strong>{formData.date}</strong>
+            </p>
+            <Form>
+              <Form.Group controlId="formPlan">
+                <Form.Label className="label-title">Plan</Form.Label>
+                <Form.Select
+                  className="plan-select"
+                  required
+                  value={formData.plan}
+                  onChange={(e) =>
+                    setFormData({ ...formData, plan: e.target.value })
+                  }
+                >
+                  <option value="">Select a plan</option>
+                  <option value="Plan 1">Plan 1 - Basic Plan</option>
+                  <option value="Plan 2">Plan 2 - Garden Plan</option>
+                  <option value="Plan 3">Plan 3 - Garbo Plan</option>
+                </Form.Select>
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formPhoneNumber">
+                <Form.Label className="label-title">Phone Number</Form.Label>
+                <Form.Control
+                  className="input-details"
+                  type="tel"
+                  placeholder="Enter phone number"
+                  value={formData.phoneNumber}
+                  onChange={(e) => {
+                    const phoneValue = e.target.value.replace(/\D/g, "");
+                    if (phoneValue.length <= 13) {
+                      setFormData({ ...formData, phoneNumber: phoneValue });
+                    }
+                  }}
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formNotes">
+                <Form.Label className="label-title">Notes</Form.Label>
+                <Form.Control
+                  className="input-details"
+                  as="textarea"
+                  rows={3}
+                  placeholder="Enter notes"
+                  value={formData.notes}
+                  onChange={(e) =>
+                    setFormData({ ...formData, notes: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <br />
+              <div className="buttons">
+                <Button
+                  variant="primary"
+                  className="close-button"
+                  onClick={handleClose1}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  className="next-button"
+                  onClick={handleNext}
+                >
+                  Next
+                </Button>
+              </div>
+            </Form>
+          </Modal.Body>
+        </Modal>
+        {/* Second Modal for Post-Mortem Details */}
+        <Modal show={showModal2} onHide={handleClose2}>
+          <Modal.Header closeButton className="booking-header">
+            <Modal.Title className="mortem-title">
+              Post-Mortem Details
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="details-box">
+            <Form onSubmit={handleFormSubmit}>
+              <Form.Group controlId="formDeceasedName">
+                <Form.Label className="label-title">Deceased Name</Form.Label>
+                <Form.Control
+                  className="input-details"
+                  type="text"
+                  placeholder="Enter deceased's name"
+                  value={formData.DeceasedName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, DeceasedName: e.target.value })
+                  }
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formDeceasedAge">
+                <Form.Label className="label-title">Deceased Age</Form.Label>
+                <Form.Control
+                  className="input-details"
+                  type="number"
+                  placeholder="Enter deceased's age"
+                  value={formData.DeceasedAge}
+                  onChange={(e) => {
+                    const ageValue = e.target.value.replace(/\D/g, "");
+                    if (ageValue.length <= 3) {
+                      setFormData({ ...formData, DeceasedAge: ageValue });
+                    }
+                  }}
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formDeceasedSex">
+                <Form.Label className="label-title">Deceased Sex</Form.Label>
+                <Form.Select
+                  className="sex-select"
+                  required
+                  value={formData.DeceasedSex}
+                  onChange={(e) =>
+                    setFormData({ ...formData, DeceasedSex: e.target.value })
+                  }
+                >
+                  <option value="">Enter deceased's sex</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </Form.Select>
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formDeceasedBirthday">
+                <Form.Label className="label-title">
+                  Deceased Birthday
+                </Form.Label>
+                <Form.Control
+                  type="date"
+                  className="input-details"
+                  value={formData.DeceasedBirthday}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DeceasedBirthday: e.target.value,
+                    })
+                  }
+                  required
+                  max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formDateofDeath">
+                <Form.Label className="label-title">Date of Death</Form.Label>
+                <Form.Control
+                  type="date"
+                  className="input-details"
+                  value={formData.DateofDeath}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DateofDeath: e.target.value,
+                    })
+                  }
+                  required
+                  max={new Date().toISOString().split("T")[0]} // Prevent future dates
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formPlaceofDeath">
+                <Form.Label className="label-title">Place of Death</Form.Label>
+                <Form.Control
+                  type="text"
+                  className="input-details"
+                  placeholder="Enter place of death"
+                  value={formData.PlaceofDeath}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      PlaceofDeath: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formDeceasedRelationship">
+                <Form.Label className="label-title">
+                  Deceased's Relationship
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  className="input-details"
+                  placeholder="Enter your relationship with the deceased"
+                  value={formData.DeceasedRelationship}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DeceasedRelationship: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Form.Group>
+              <br />
+              <Form.Group controlId="formDeathCertificate">
+                <Form.Label className="label-title">
+                  Death Certificate
+                </Form.Label>
+                <Form.Control
+                  type="file"
+                  className="input-details"
+                  accept=".pdf"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      DeathCertificate: e.target.files[0],
+                    })
+                  }
+                  required
+                />
+              </Form.Group>
+
+              <br />
+
+              {/* Return and Submit Buttons */}
+              <div className="buttons">
+                <Button
+                  variant="secondary"
+                  className="close-button"
+                  onClick={handleReturn}
+                >
+                  Back
+                </Button>
+                {""}
+                <Button variant="primary" type="submit" className="next-button">
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Modal.Body>
         </Modal>
       </main>
     </section>

@@ -13,7 +13,7 @@ import $ from "jquery";
 import "datatables.net";
 import { Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faArchive } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faArchive, faFile } from "@fortawesome/free-solid-svg-icons";
 import "./Archive.css";
 import Loader from "./Loader.js";
 const Toast = Swal.mixin({
@@ -335,6 +335,21 @@ const Archive = () => {
                     <br />
                     <strong>Deceased Relationship: </strong>
                     {selectedItem.DeceasedRelationship}
+
+                    <br />
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>View Death Certificate File</Tooltip>}
+                    >
+                      <a
+                        href={selectedItem.DeathCertificate}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="View PDF"
+                      >
+                        Death Certificate: <FontAwesomeIcon icon={faFile} />
+                      </a>
+                    </OverlayTrigger>
                   </p>
                 </>
               ) : (
@@ -396,7 +411,7 @@ const Archive = () => {
                       </tbody>
                     </table>
                   </p>
-                  
+
                   <div className="transaction-border"></div>
                   <h4 className="financial-summary-title">
                     Financial Summary:
