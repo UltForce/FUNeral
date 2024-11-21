@@ -258,6 +258,9 @@
     font-family: 'Rubik';
     border-radius: 20px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    height: auto;
 }
 
 .booking-header {

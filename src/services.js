@@ -142,15 +142,23 @@ const Services = () => {
   };
 
   return (
-    <div className="snapping-container content-user">
-      <section className="snap-section">
-        <h1>Funeral Packages</h1>
+    <main className="main-content">
+      <section className="services">
+        <div>
+          <h1 className="services-title">SERVICES</h1>
+          <div className="services-border"></div>
+        </div>
+      </section>
+    <div className="services-container">
+      <section className="services-section">
+        <h1 className="funeral-pack-title">Funeral Packages</h1>
         <div className="card-grid">
           {packages.map((pkg) => (
             <div key={pkg.id} className="card">
+              <img src="/funeral pics/wake1.jpg" alt="Funeral Package Image"></img>
               <h3>{pkg.title}</h3>
-              <p>Price: {pkg.price}</p>
-              <button onClick={() => handleViewPackage(pkg)}>
+              <p>Price: <strong>{pkg.price}</strong></p>
+              <button onClick={() => handleViewPackage(pkg)} className="view-package-button">
                 View Package
               </button>
             </div>
@@ -165,14 +173,16 @@ const Services = () => {
             isOpen={showInitialModal}
             onClose={() => setShowInitialModal(false)}
           >
-            <div className="modal-content">
+            <div className="services-modal-box">
+              <div className="funeral-package-details">
+              <img src="/funeral pics/wake1.jpg" alt="funeral-package img"></img>
               <div className="modal-description">
                 <h2>{selectedPackage.title}</h2>
                 <p>{selectedPackage.description}</p>
               </div>
               <div className="modal-buttons">
-                <button onClick={handleShow3DWake}>Show Funeral Wake 3D</button>
-                <div>
+                <button className="show-3d-button" onClick={handleShow3DWake}>Show Funeral Wake 3D</button>
+                <div className="services-inclusion-select">
                   <label htmlFor="inclusion-select">
                     Preview Inclusion Items:
                   </label>
@@ -190,6 +200,7 @@ const Services = () => {
                     <option value="curtains">Curtains</option>
                   </select>
                 </div>
+              </div>
               </div>
             </div>
           </Modal>
@@ -213,7 +224,7 @@ const Services = () => {
             isOpen={showInclusionModal}
             onClose={() => setShowInclusionModal(false)}
           >
-            <h2>
+            <h2 className="inclusion-title">
               {selectedInclusion.charAt(0).toUpperCase() +
                 selectedInclusion.slice(1)}{" "}
               Model
@@ -240,6 +251,7 @@ const Services = () => {
         </>
       )}
     </div>
+    </main>
   );
 };
 
