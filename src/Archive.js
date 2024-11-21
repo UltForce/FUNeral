@@ -343,11 +343,12 @@ const Archive = () => {
                     >
                       <a
                         href={selectedItem.DeathCertificate}
+                        className="appointment-death-cert"
                         target="_blank"
                         rel="noopener noreferrer"
                         title="View PDF"
                       >
-                        Death Certificate: <FontAwesomeIcon icon={faFile} />
+                        <strong>Death Certificate:</strong> <FontAwesomeIcon icon={faFile} />
                       </a>
                     </OverlayTrigger>
                   </p>

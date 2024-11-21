@@ -282,7 +282,7 @@ const Navbar = () => {
             </li>
             <li className={location.pathname === "/about" ? "active" : ""}>
               <Link to="/about">
-                <span className="menu-container"> About us</span>
+                <span className="menu-container"> About Us</span>
               </Link>
             </li>
             <li className={location.pathname === "/gallery" ? "active" : ""}>

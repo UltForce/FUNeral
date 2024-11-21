@@ -35,6 +35,10 @@
   color: #18020c;
 }
 
+.homepage-container {
+  height: auto;
+}
+
 /* Specific styles for each section */
 .section1 {
   background-image: url("homepage.jpg");
@@ -222,7 +226,7 @@
 
 .blogs {
   display: flex;
-  height: 700px;
+  height: auto;
   width: 100%;
   justify-content: space-evenly;
   padding: 20px;

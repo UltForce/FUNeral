@@ -150,7 +150,7 @@ const Homepage = () => {
   };
 
   return (
-    <div className="snapping-container content-user">
+    <div className="homepage-container">
       <section className="snap-section section1">
         <h3>
           <i>{content.homepageText || "A Family’s end needs"}</i>

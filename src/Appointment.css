@@ -147,6 +147,7 @@
   text-align: center;
   display: flex;
   justify-content: center;
+  margin: 5px 0;
 }
 
 .admin-appointment-header {
