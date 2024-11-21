@@ -245,12 +245,12 @@ const Reviews = () => {
                   <td>{review.comment}</td>
                   <td>{review.status}</td>
                   <td>
-                    <div>
+                    <div className="reviews-buttons">
                       <OverlayTrigger
                         placement="top"
                         overlay={<Tooltip>Toggle Status</Tooltip>}
                       >
-                        <span>
+                        <span className="publish-review-button">
                           <button
                             className="btn btn-success"
                             title={
@@ -282,7 +282,7 @@ const Reviews = () => {
                         placement="top"
                         overlay={<Tooltip>Delete Review</Tooltip>}
                       >
-                        <span>
+                        <span className="delete-review-button">
                           <button
                             className="btn btn-danger"
                             title="Delete Review"

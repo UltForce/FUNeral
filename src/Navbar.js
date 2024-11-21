@@ -53,12 +53,21 @@ const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
+  const toggleNotificationDropdown = (e) => {
+    e.stopPropagation();
+    setIsNotificationDropdownOpen((prev) => !prev);
+    setIsAccountDropdownOpen(false);
+  };
+
+  const toggleAccountDropdown = (e) => {
+    e.stopPropagation(); // Prevent the event from bubbling up
+    setIsAccountDropdownOpen((prev) => !prev);
+    setIsNotificationDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -135,7 +144,8 @@ const Navbar = () => {
           const userId = getCurrentUserId();
           setIsLoggedIn(false);
           setIsAdmin(false);
-          setIsDropdownOpen(false);
+          setIsAccountDropdownOpen(false);
+          setIsNotificationDropdownOpen(false);
           setNotifications([]); // Clear notifications on logout
           await auth.signOut();
           navigate("/login");
@@ -313,13 +323,13 @@ const Navbar = () => {
             {isLoggedIn && (
               <li>
                 <div className="notification-container">
-                  <button onClick={toggleDropdown} className="notify-button">
+                  <button onClick={toggleNotificationDropdown} className="notify-button">
                     <FontAwesomeIcon icon={faBell} className="bell-icon" />
                     {hasUnreadNotifications && (
                       <span className="red-dot"></span>
                     )}
                   </button>
-                  {isDropdownOpen && (
+                  {isNotificationDropdownOpen && (
                     <div className="notification-dropdown">
                       {notifications.length === 0 ? (
                         <p>No notifications</p>
@@ -377,31 +387,24 @@ const Navbar = () => {
             )}
             {isLoggedIn && (
               <>
-                <li
-                  className={location.pathname === "/account" ? "active" : ""}
-                >
-                  <Link to="/account">
-                    <FontAwesomeIcon icon={faUser} />
-                    <span className="menu-container"> Account</span>
-                  </Link>
-                </li>
-                {isLoggedIn && (
-                  <li
-                    className={
-                      location.pathname === "/userdashboard" ? "active" : ""
-                    }
-                  >
-                    <Link to="/userdashboard">
-                      <span className="menu-container"> Dashboard</span>
+                <li className="user-dropdown">
+                <button onClick={toggleAccountDropdown} className="user-dropdown-title">
+                <FontAwesomeIcon icon={faUser} className="user-icon" />
+                </button>
+                {isAccountDropdownOpen && (
+                  <div className="user-dropdown-content">
+                    <Link to="/account" onClick={() => setIsAccountDropdownOpen(false)}>
+                      Account
                     </Link>
-                  </li>
+                    <Link to="/userdashboard" onClick={() => setIsAccountDropdownOpen(false)}>
+                      Dashboard
+                    </Link>
+                    <a onClick={handleLogout} className="no-transition">
+                      Logout
+                    </a>
+                  </div>
                 )}
-                <li>
-                  <a onClick={handleLogout} className="no-transition">
-                    <FontAwesomeIcon icon={faSignOutAlt} />
-                    <span className="menu-container"> Logout</span>
-                  </a>
-                </li>
+              </li>
               </>
             )}
             {!isLoggedIn && (

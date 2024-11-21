@@ -396,3 +396,45 @@ nav ul.centeredNav li.active a {
   background: #f1f1f1;
   border-radius: 4px;
 }
+
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-title {
+  cursor: pointer;
+  color: black;
+  background-color: #FDF9AA;
+  border-radius: 50%;
+  font-size: 20px;
+  border: none;
+}
+
+.user-dropdown-title:hover {
+  color: black;
+  background-color:#FDF9AA;
+}
+
+.user-dropdown-content {
+  display: block; /* Ensure it is displayed when open */
+  position: absolute; /* Position it absolutely */
+  top: 100%; /* Position it below the button */
+  right: 0%; /* Align it to the right of the button */
+  background-color: #2b0a0a; /* Match the navbar background color */
+  color: #e5e5d6; /* Text color */
+  padding: 10px; /* Padding for the dropdown */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow for depth */
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.user-dropdown-content a {
+  color: #e5e5d6;
+  padding: 8px 20px;
+  display: block;
+  text-decoration: none;
+}
+
+.user-dropdown-content a:hover {
+  background-color: #444; /* Darker background on hover */
+}

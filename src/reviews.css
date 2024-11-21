@@ -58,3 +58,6 @@
     font-weight: 600;
     position: relative;
 }
+.publish-review-button, .delete-review-button{
+    margin: 0 2px;
+}
