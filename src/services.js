@@ -42,10 +42,10 @@ const Services = () => {
       description:
         "A basic funeral service package with essential items included.",
       modelPaths: {
-        wake: "/casket.glb",
+        wake: "/Plan1.glb",
         inclusions: {
-          casket: ["/casket.glb", "/casket.glb"],
-          flowers: ["/casket.glb", "/casket.glb"],
+          casket: ["/casket.glb", "Plan1.glb"],
+          flowers: ["/casket.glb", "Plan1.glb"],
           candles: ["/casket.glb", "/casket.glb"],
           curtains: ["/casket.glb", "/casket.glb"],
         },
