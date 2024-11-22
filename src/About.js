@@ -195,129 +195,153 @@ const About = () => {
 
   return (
     <main className="main-content">
-        <section className="about-us">
-          {loading && <Loader />} {/* Display loader while loading */}
-          <div>
-            <h1 className="about-title">ABOUT US</h1>
-            <div className="about-border"></div>
+      <section className="about-us">
+        {loading && <Loader />} {/* Display loader while loading */}
+        <div>
+          <h1 className="about-title">ABOUT US</h1>
+          <div className="about-border"></div>
+        </div>
+      </section>
+      <div className="about-container">
+        <section className="snap-section about-section">
+          <div className="JROA-about-us">
+            <img src="JROA.jpg" alt="JROA" />
+            <div className="JROA-info">
+              <h2>J.ROA FUNERAL SERVICES</h2>
+              <p>
+                J.ROA Funeral Services is a trusted name in providing
+                compassionate and professional funeral services throughout the
+                Philippines. Conveniently located at{" "}
+                <strong>64 K-4th St., Kamuning, Quezon City</strong>, we are
+                dedicated to supporting families during difficult times with
+                care and dignity.
+              </p>
+              <p>
+                Our services include funeral arrangements, embalming, burial
+                services, cremation, and other memorial needs. We pride
+                ourselves on offering personalized and culturally appropriate
+                services tailored to meet the unique wishes of every family we
+                serve.
+              </p>
+              <p>
+                <strong>Open 24/7</strong>, we are here to provide assistance
+                and guidance whenever you need us. Whether you require immediate
+                services or are planning ahead, our compassionate team is always
+                ready to help.
+              </p>
+              <p>
+                At J.ROA Funeral Services, we aim to create meaningful and
+                respectful farewells, honoring the lives of your loved ones in
+                the most memorable way.
+              </p>
+            </div>
           </div>
         </section>
-    <div className="about-container">
-    <section className="snap-section about-section">
-      <div className="JROA-about-us">
-        <img src="JROA.jpg" alt="JROA"></img>
-          <div className="JROA-info">
-            <h2>J.ROA FUNERAL SERVICES</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut labore et dolore magna 
-              aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-              nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, 
-              consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-              labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-               Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
-               dolore.
-            </p>
-          </div>
-      </div>
-    </section>
 
-    {/* Steps Section with Flippable Images (now after Testimonials) */}
-    <div className="steps">
-        <h2>STEPS</h2>
-        <div className="steps-container">
-          {images.map((image, index) => (
-            <div
-            key={index}
-            className="image-wrapper"
-            onClick={() => handleFlip(index)}
-          >
-            <div className={`flip-card ${flipped[index] ? "flipped" : ""}`}>
+        {/* Steps Section with Flippable Images (now after Testimonials) */}
+        <div className="steps">
+          <h2>STEPS</h2>
+          <div className="steps-container">
+            {images.map((image, index) => (
               <div
-                className="front"
-                style={{ backgroundImage: `url(${image.src})` }}
-              ></div>
-              <div className="back">
-                <p>{image.text}</p>
+                key={index}
+                className="image-wrapper"
+                onClick={() => handleFlip(index)}
+              >
+                <div className={`flip-card ${flipped[index] ? "flipped" : ""}`}>
+                  <div
+                    className="front"
+                    style={{ backgroundImage: `url(${image.src})` }}
+                  ></div>
+                  <div className="back">
+                    <p>{image.text}</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-          ))}
         </div>
-      </div>
 
-      <section className={`snap-section testimonials-section ${testimonials.length === 1 ? "single-testimonial" : ""}`}>
-        <h2>TESTIMONIALS</h2>
-        <div className={`testimonials-grid ${testimonials.length === 1 ? 'single-testimonial' : ''}`}>
-          {testimonials.slice(0, 4).map((testimonial) => (
-            <div key={testimonial.id} className="testimonial">
-            <div className="testimonial-content">
-              {/* Display profile picture or placeholder */}
-              <img
-                src={testimonial.profilePictureURL || "/placeholder.jpg"} // Replace with your placeholder image path
-                alt={`${testimonial.firstname} ${testimonial.lastname}`}
-                className="profile-picture"
-              />
-              <div className="user-review-info">
-              <div className="stars">{"⭐".repeat(testimonial.rating)}</div>
-              <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
-              <p className="review-description">{testimonial.comment}</p>
+        <section
+          className={`snap-section testimonials-section ${
+            testimonials.length === 1 ? "single-testimonial" : ""
+          }`}
+        >
+          <h2>TESTIMONIALS</h2>
+          <div
+            className={`testimonials-grid ${
+              testimonials.length === 1 ? "single-testimonial" : ""
+            }`}
+          >
+            {testimonials.slice(0, 4).map((testimonial) => (
+              <div key={testimonial.id} className="testimonial">
+                <div className="testimonial-content">
+                  {/* Display profile picture or placeholder */}
+                  <img
+                    src={testimonial.profilePictureURL || "/placeholder.jpg"} // Replace with your placeholder image path
+                    alt={`${testimonial.firstname} ${testimonial.lastname}`}
+                    className="profile-picture"
+                  />
+                  <div className="user-review-info">
+                    <div className="stars">
+                      {"⭐".repeat(testimonial.rating)}
+                    </div>
+                    <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
+                    <p className="review-description">{testimonial.comment}</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-          ))}
-        </div>
-      </section>
-
-      {isLoggedIn && !hasSubmittedTestimonial && (
-        <section className="submit-testimonial-section section">
-          <h3>ADD YOUR TESTIMONIAL</h3>
-          <form onSubmit={handleSubmit}>
-          <div className="star-rating">{renderStars()}</div>
-            <div className="testimonial-submit">
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Your comment..."
-                required
-                className="submitted-form-control"
-                rows="6"
-              />
-            </div>
-            
-            <OverlayTrigger
-              placement="right"
-              overlay={<Tooltip>Send for approval</Tooltip>}
-            >
-              <button type="submit" className="submit-button">
-                Submit
-              </button>
-            </OverlayTrigger>
-          </form>
         </section>
-      )}
 
-      <section className="snap-section about-us-section">
-        <h3>Address</h3>
-        <p>64 K4th Kamuning, Quezon City</p>
+        {isLoggedIn && !hasSubmittedTestimonial && (
+          <section className="submit-testimonial-section section">
+            <h3>ADD YOUR TESTIMONIAL</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="star-rating">{renderStars()}</div>
+              <div className="testimonial-submit">
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Your comment..."
+                  required
+                  className="submitted-form-control"
+                  rows="6"
+                />
+              </div>
 
-        {/* Embed Google Maps */}
-        <iframe
-          title="J.ROA Funeral Services"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241.28181057950175!2d121.0388392476465!3d14.62702553834181!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b70070be2ceb%3A0xf8649452deb2ddac!2sJ.ROA%20FUNERAL%20SERVICES!5e0!3m2!1sen!2sph!4v1723812378194!5m2!1sen!2sph"
-          width="400"
-          height="300"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-        ></iframe>
-        <br />
-        <h3>Contact No.</h3>
-        <p>0909 081 3396 / 0935 354 4006</p>
-      </section>
-    </div>
+              <OverlayTrigger
+                placement="right"
+                overlay={<Tooltip>Send for approval</Tooltip>}
+              >
+                <button type="submit" className="submit-button">
+                  Submit
+                </button>
+              </OverlayTrigger>
+            </form>
+          </section>
+        )}
+
+        <section className="snap-section about-us-section">
+          <h3>Address</h3>
+          <p>64 K4th Kamuning, Quezon City</p>
+
+          {/* Embed Google Maps */}
+          <iframe
+            title="J.ROA Funeral Services"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241.28181057950175!2d121.0388392476465!3d14.62702553834181!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b70070be2ceb%3A0xf8649452deb2ddac!2sJ.ROA%20FUNERAL%20SERVICES!5e0!3m2!1sen!2sph!4v1723812378194!5m2!1sen!2sph"
+            width="400"
+            height="300"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+          ></iframe>
+          <br />
+          <h3>Contact No.</h3>
+          <p>0909 081 3396 / 0935 354 4006</p>
+        </section>
+      </div>
     </main>
   );
 };
