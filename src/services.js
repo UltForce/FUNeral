@@ -1,6 +1,6 @@
 import React, { useState, useEffect, startTransition } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { useGLTF, CameraControls } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUserId } from "./firebase.js";
 import "./services.css";
@@ -10,17 +10,37 @@ const Casket3D = ({ modelPath }) => {
   const { scene } = useGLTF(modelPath);
 
   return (
-    <Canvas camera={{ position: [10, 10, 10], fov: 50 }}>
-      {/* Lighting */}
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <pointLight position={[-10, -10, -10]} intensity={1000} />
+    <Canvas camera={{ position: [5, 5, 5], fov: 50 }}>
+      {/* Ambient Light for overall brightness */}
+      <ambientLight intensity={1} color="#ffffff" />
+
+      {/* Point Light for local illumination */}
+      <pointLight position={[5, 5, 5]} intensity={2} />
+      <pointLight position={[-5, -5, 5]} intensity={2} />
+
+      {/* Directional Light for consistent shadows and illumination */}
+      <directionalLight
+        position={[10, 10, 10]}
+        intensity={1.5}
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+      />
+
+      {/* Spotlight for focused illumination */}
+      <spotLight
+        position={[5, 10, 5]}
+        angle={0.3}
+        penumbra={0.5}
+        intensity={1000}
+        castShadow
+      />
 
       {/* 3D Model */}
       <primitive object={scene} />
 
       {/* Orbit Controls */}
-      <OrbitControls />
+      <CameraControls />
     </Canvas>
   );
 };
@@ -57,7 +77,7 @@ const Services = () => {
       price: "50,000",
       description: "A premium package with elegant garden-themed items.",
       modelPaths: {
-        wake: "/casket.glb",
+        wake: "/Plan2.glb",
         inclusions: {
           casket: ["/casket.glb", "/casket.glb"],
           flowers: ["/casket.glb", "/casket.glb"],
@@ -149,108 +169,124 @@ const Services = () => {
           <div className="services-border"></div>
         </div>
       </section>
-    <div className="services-container">
-      <section className="services-section">
-        <h1 className="funeral-pack-title">Funeral Packages</h1>
-        <div className="card-grid">
-          {packages.map((pkg) => (
-            <div key={pkg.id} className="card">
-              <img src="/funeral pics/wake1.jpg" alt="Funeral Package Image"></img>
-              <h3>{pkg.title}</h3>
-              <p>Price: <strong>{pkg.price}</strong></p>
-              <button onClick={() => handleViewPackage(pkg)} className="view-package-button">
-                View Package
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {selectedPackage && (
-        <>
-          {/* Initial Modal */}
-          <Modal
-            isOpen={showInitialModal}
-            onClose={() => setShowInitialModal(false)}
-          >
-            <div className="services-modal-box">
-              <div className="funeral-package-details">
-              <img src="/funeral pics/wake1.jpg" alt="funeral-package img"></img>
-              <div className="modal-description">
-                <h2>{selectedPackage.title}</h2>
-                <p>{selectedPackage.description}</p>
+      <div className="services-container">
+        <section className="services-section">
+          <h1 className="funeral-pack-title">Funeral Packages</h1>
+          <div className="card-grid">
+            {packages.map((pkg) => (
+              <div key={pkg.id} className="card">
+                <img
+                  src="/funeral pics/wake1.jpg"
+                  alt="Funeral Package Image"
+                ></img>
+                <h3>{pkg.title}</h3>
+                <p>
+                  Price: <strong>{pkg.price}</strong>
+                </p>
+                <button
+                  onClick={() => handleViewPackage(pkg)}
+                  className="view-package-button"
+                >
+                  View Package
+                </button>
               </div>
-              <div className="modal-buttons">
-                <button className="show-3d-button" onClick={handleShow3DWake}>Show Funeral Wake 3D</button>
-                <div className="services-inclusion-select">
-                  <label htmlFor="inclusion-select">
-                    Preview Inclusion Items:
-                  </label>
-                  <select
-                    id="inclusion-select"
-                    onChange={(e) => handleShowInclusion3D(e.target.value)}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Select Inclusion
-                    </option>
-                    <option value="casket">Casket</option>
-                    <option value="flowers">Flowers</option>
-                    <option value="candles">Candles</option>
-                    <option value="curtains">Curtains</option>
-                  </select>
+            ))}
+          </div>
+        </section>
+
+        {selectedPackage && (
+          <>
+            {/* Initial Modal */}
+            <Modal
+              isOpen={showInitialModal}
+              onClose={() => setShowInitialModal(false)}
+            >
+              <div className="services-modal-box">
+                <div className="funeral-package-details">
+                  <img
+                    src="/funeral pics/wake1.jpg"
+                    alt="funeral-package img"
+                  ></img>
+                  <div className="modal-description">
+                    <h2>{selectedPackage.title}</h2>
+                    <p>{selectedPackage.description}</p>
+                  </div>
+                  <div className="modal-buttons">
+                    <button
+                      className="show-3d-button"
+                      onClick={handleShow3DWake}
+                    >
+                      Show Funeral Wake 3D
+                    </button>
+                    <div className="services-inclusion-select">
+                      <label htmlFor="inclusion-select">
+                        Preview Inclusion Items:
+                      </label>
+                      <select
+                        id="inclusion-select"
+                        onChange={(e) => handleShowInclusion3D(e.target.value)}
+                        defaultValue=""
+                      >
+                        <option value="" disabled>
+                          Select Inclusion
+                        </option>
+                        <option value="casket">Casket</option>
+                        <option value="flowers">Flowers</option>
+                        <option value="candles">Candles</option>
+                        <option value="curtains">Curtains</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </Modal>
+
+            {/* Funeral Wake 3D Modal */}
+            <Modal isOpen={show3DModal} onClose={() => setShow3DModal(false)}>
+              <Casket3D modelPath={selectedPackage.modelPaths.wake} />
+              <div className="modal-navigation">
+                <button
+                  onClick={() =>
+                    setShow3DModal(false) || setShowInitialModal(true)
+                  }
+                >
+                  Return
+                </button>
               </div>
-            </div>
-          </Modal>
+            </Modal>
 
-          {/* Funeral Wake 3D Modal */}
-          <Modal isOpen={show3DModal} onClose={() => setShow3DModal(false)}>
-            <Casket3D modelPath={selectedPackage.modelPaths.wake} />
-            <div className="modal-navigation">
-              <button
-                onClick={() =>
-                  setShow3DModal(false) || setShowInitialModal(true)
+            {/* Inclusion Items 3D Modal */}
+            <Modal
+              isOpen={showInclusionModal}
+              onClose={() => setShowInclusionModal(false)}
+            >
+              <h2 className="inclusion-title">
+                {selectedInclusion.charAt(0).toUpperCase() +
+                  selectedInclusion.slice(1)}{" "}
+                Model
+              </h2>
+              <Casket3D
+                modelPath={
+                  selectedPackage.modelPaths.inclusions[selectedInclusion][
+                    currentModelIndex
+                  ]
                 }
-              >
-                Return
-              </button>
-            </div>
-          </Modal>
-
-          {/* Inclusion Items 3D Modal */}
-          <Modal
-            isOpen={showInclusionModal}
-            onClose={() => setShowInclusionModal(false)}
-          >
-            <h2 className="inclusion-title">
-              {selectedInclusion.charAt(0).toUpperCase() +
-                selectedInclusion.slice(1)}{" "}
-              Model
-            </h2>
-            <Casket3D
-              modelPath={
-                selectedPackage.modelPaths.inclusions[selectedInclusion][
-                  currentModelIndex
-                ]
-              }
-            />
-            <div className="modal-navigation">
-              <button onClick={handlePreviousModel}>Previous</button>
-              <button onClick={handleNextModel}>Next</button>
-              <button
-                onClick={() =>
-                  setShowInclusionModal(false) || setShowInitialModal(true)
-                }
-              >
-                Return
-              </button>
-            </div>
-          </Modal>
-        </>
-      )}
-    </div>
+              />
+              <div className="modal-navigation">
+                <button onClick={handlePreviousModel}>Previous</button>
+                <button onClick={handleNextModel}>Next</button>
+                <button
+                  onClick={() =>
+                    setShowInclusionModal(false) || setShowInitialModal(true)
+                  }
+                >
+                  Return
+                </button>
+              </div>
+            </Modal>
+          </>
+        )}
+      </div>
     </main>
   );
 };
