@@ -6,6 +6,30 @@
   scroll-behavior: smooth;
 }
 
+.homepage-article-header {
+  color: white;
+}
+
+.homepage-article-title {
+  font-weight: 400;
+  font-size: 25px;
+  text-align: center;
+}
+
+.article-details-box {
+  display: block;
+  border: 1px solid #4d4642;
+  border-radius: 20px;
+  background-color: #fcf2d8;
+  margin: 10px 0;
+  padding: 35px 20px;
+}
+
+.article-details-box p {
+  font-size: 14px;
+  text-align: justify;
+}
+
 /*FONT*/
 .rubik {
   font-family: "Rubik", sans-serif;
@@ -14,7 +38,7 @@
 
 .action-button {
   font-family: "Rubik";
-  font-style: Bold;
+  font-weight: 600;
   font-size: x-large;
   color: #fdf9aa;
   background-color: #18020c;
@@ -24,15 +48,22 @@
   cursor: pointer;
 }
 
+.action-button:hover {
+  background-color: #282526;
+  color: white;
+}
+
 /* General styling for each section */
-.snap-section {
+.home-snap-section {
   scroll-snap-align: start;
-  height: 100vh;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2rem;
   color: #18020c;
+  text-align: center;
+  flex-direction: column;
 }
 
 .homepage-container {
@@ -52,6 +83,24 @@
   background-color: #caa971;
 }
 
+.title-section {
+  scroll-snap-align: start;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.our-services-title {
+  margin-top: 35px;
+  font-weight: 700;
+}
+
 /* General styling */
 .column {
   float: left;
@@ -66,10 +115,17 @@
   justify-content: space-evenly;
   padding: 20px;
   flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  gap: 20px;
+  /* overflow: auto; */
+}
+
+.section2 .container {
+  margin: 30px;
+  height: auto;
 }
 
 .homecard {
-  height: 600px;
+  height: 575px;
   width: 30%;
   background-color: #e3d18d;
   border-radius: 10px;
@@ -118,6 +174,11 @@
   font-size: 20px;
 }
 
+.homecard button:hover {
+  background-color: #282526;
+  color: white;
+}
+
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {
   .homecard {
@@ -154,40 +215,122 @@
   height: 500px;
   width: 100%;
   justify-content: space-evenly;
-  padding: 10px;
+  margin: 10px;
   flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  gap: 10px;
 }
 
 .grid {
-  height: 230px;
+  height: 240px;
   width: 30%;
   background-color: #e3d18d;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px #0000001a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
 }
 
-.grid img {
-  width: 100px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 10px;
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  .grid img {
+    width: 25%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0px;
+  }
+  
+  .grid h2 {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Rubik", sans-serif;
+  }
+  
+  .grid p {
+    margin: 0px;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 3px;
+    font-family: "Rubik", sans-serif;
+  }
 }
 
-.grid h2 {
-  margin-top: 5px;
-  font-size: 20px;
-  font-weight: bold;
-  font-family: "Rubik", sans-serif;
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .grid img {
+    width: 30%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0px;
+  }
+  
+  .grid h2 {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Rubik", sans-serif;
+  }
+  
+  .grid p {
+    margin: 0px;
+    font-size: 10px;
+    line-height: 1.5;
+    padding: 3px;
+    font-family: "Rubik", sans-serif;
+  }
 }
 
-.grid p {
-  margin-top: 0px;
-  font-size: 12px;
-  line-height: 1.5;
-  padding: 3px;
-  font-family: "Rubik", sans-serif;
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .grid img {
+    width: 25%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0px;
+  }
+  
+  .grid h2 {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Rubik", sans-serif;
+  }
+  
+  .grid p {
+    margin: 0px;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 3px;
+    font-family: "Rubik", sans-serif;
+  }
 }
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .grid img {
+    width: 20%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0px;
+  }
+  
+  .grid h2 {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Rubik", sans-serif;
+  }
+  
+  .grid p {
+    margin: 0px;
+    font-size: 10px;
+    line-height: 1.5;
+    padding: 3px;
+    font-family: "Rubik", sans-serif;
+  }
+}
+
 
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {
@@ -218,6 +361,11 @@
 }
 
 /* General styling */
+.blogs-articles-title {
+  margin-top: 30px;
+  font-weight: 700;
+}
+
 .column {
   float: left;
   width: 33.33%;
@@ -229,13 +377,14 @@
   height: auto;
   width: 100%;
   justify-content: space-evenly;
-  padding: 20px;
+  margin: 25px;
   flex-wrap: wrap; /* Allow items to wrap on smaller screens */
   text-align: left;
+  gap: 10px;
 }
 
 .article {
-  height: 500px;
+  height: 480px;
   width: 30%;
   background-color: #e3d18d;
   border-radius: 10px;
@@ -279,6 +428,11 @@
   font-size: 15px;
 }
 
+.article button:hover {
+  background-color: #282526;
+  color: white;
+}
+
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {
   .article {
@@ -302,16 +456,26 @@
 }
 
 /* Gallery section styling */
+.our-gallery-title {
+  margin-top: 30px;
+  font-weight: 700;
+}
+
 .gallery-section {
   background-color: #caa971;
-  padding: 40px 20px;
+  padding: 10px 20px;
   text-align: center;
   font-family: Arial, sans-serif;
 }
 
 .gallery-header {
   background-color: #caa971;
-  padding: 20px;
+  padding: 10px;
+}
+
+.gallery-header p {
+  font-family: 'Rubik';
+  font-size: 20px;
 }
 
 /* Responsive adjustments */
@@ -396,7 +560,7 @@
 .text-container h3 {
   font-family: "Rubrik";
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 500;
   color: #e3d18d;
   margin-bottom: 15px;
 }
@@ -405,4 +569,9 @@
   font-size: 16px;
   line-height: 1.6;
   color: #333;
+}
+
+.carousel-caption-bottom {
+  font-family: 'Rubik';
+  color: #FCF2D8;
 }

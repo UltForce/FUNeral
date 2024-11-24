@@ -242,7 +242,7 @@ const About = () => {
         </section>
 
         {/* Steps Section with Flippable Images (now after Testimonials) */}
-        <div className="steps">
+        <div className="steps-section">
           <h2>STEPS</h2>
           <div className="steps-container">
             {images.map((image, index) => (
@@ -286,13 +286,13 @@ const About = () => {
                     className="profile-picture"
                   />
                   <div className="user-review-info">
+                    <p className="review-plan">
+                      {testimonial.selectedPlan}
+                    </p>
                     <div className="stars">
                       {"⭐".repeat(testimonial.rating)}
                     </div>
                     <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
-                    <p className="review-description">
-                      {testimonial.selectedPlan}
-                    </p>
                     <p className="review-description">{testimonial.comment}</p>
                   </div>
                 </div>
@@ -304,25 +304,28 @@ const About = () => {
         {isLoggedIn && !hasSubmittedTestimonial && (
           <section className="submit-testimonial-section section">
             <h3>ADD YOUR TESTIMONIAL</h3>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                {/* Plan Selection */}
-                <label htmlFor="planSelect">Select a plan to review:</label>
-                <select
-                  id="planSelect"
-                  value={selectedPlan}
-                  onChange={(e) => setSelectedPlan(e.target.value)}
-                  required
-                  className="form-control"
-                >
-                  <option value="">-- Select a Plan --</option>
-                  <option value="Plan 1">Plan 1 Basic</option>
-                  <option value="Plan 2">Plan 2 Garden</option>
-                  <option value="Plan 3">Plan 3 Garbo</option>
-                </select>
+            <form onSubmit={handleSubmit} className="submit-testimonial">
+              
+              <div className="plan-rating">
+                <div className="plan-form-group">
+                  {/* Plan Selection */}
+                  {/* <label htmlFor="planSelect">Select a plan to review:</label> */}
+                  <select
+                    id="planSelect"
+                    value={selectedPlan}
+                    onChange={(e) => setSelectedPlan(e.target.value)}
+                    required
+                    className="form-control"
+                  >
+                    <option value="">-- Select a Plan --</option>
+                    <option value="Plan 1">Plan 1 Basic</option>
+                    <option value="Plan 2">Plan 2 Garden</option>
+                    <option value="Plan 3">Plan 3 Garbo</option>
+                  </select>
+                </div>
+                <div className="star-rating">{renderStars()}</div>
               </div>
-
-              <div className="star-rating">{renderStars()}</div>
+              
               <div className="testimonial-submit">
                 <textarea
                   value={comment}

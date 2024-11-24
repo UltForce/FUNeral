@@ -25,6 +25,7 @@
     display: flex;
     justify-content: space-between;
     padding-top: 20px;
+    flex-wrap: wrap;
 }
 
 .selectedDate {
@@ -218,10 +219,12 @@
     display: flex;
     justify-content: space-between;
     padding: 0px 30px;
+    flex-wrap: wrap;
 }
 
 .fc .fc-toolbar-title {
     font-size: 35px;
+    text-align: center;
 }
 
 .fc .fc-toolbar-chunk .btn-group button {
@@ -235,6 +238,10 @@
 
 .fc .fc-toolbar-chunk .btn-group button::first-letter {
    text-transform: capitalize;
+}
+
+.fc-direction-ltr .fc-daygrid-event .fc-event-time {
+    overflow: auto;
 }
 
 .book-appointment-button {

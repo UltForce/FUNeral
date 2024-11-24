@@ -26,20 +26,24 @@
 
 .gallery-container {
   padding: 20px;
-  scroll-snap-type: y mandatory;
-  overflow-y: auto;
-  height: 100vh;
+  /* scroll-snap-type: y mandatory;
+  overflow-y: auto; */
+  height: auto;
   background-color: #FCF2D8;
   font-family: "Rubik";
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .album-selector {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  margin: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
 }
 
 .album-cover {

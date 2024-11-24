@@ -34,7 +34,7 @@
 
 .snap-section {
   scroll-snap-align: start;
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,6 +59,15 @@
   font-weight: 400;
 }
 
+.plan-rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: space-between;
+}
+
 .submit-testimonial-section {
   background-color: #FCF2D8;
   height: auto;
@@ -69,6 +78,8 @@
   text-align: center;
   margin: 65px;
   box-sizing: border-box;
+  flex-wrap: wrap;
+  align-content: center;
 }
 
 .submit-testimonial-section h3 {
@@ -120,6 +131,7 @@
 .JROA-about-us {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
 }
 
@@ -130,7 +142,7 @@
 }
 
 .JROA-about-us img {
-  width: 120%;
+  width: 30%;
   height: auto;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -193,7 +205,7 @@
   /* grid-template-columns: repeat(2, 1fr); */
   display: grid;
   grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Responsive columns */
-  gap: 20px; /* Space between testimonials */
+  gap: 15px; /* Space between testimonials */
   justify-items: center; /* Center items */
 }
 
@@ -211,6 +223,30 @@
 .review-description {
   font-style: italic;
   font-size: 15px;
+}
+
+.review-plan {
+  font-weight: 600;
+  color: #FDF9AA;
+  font-size: 15px;
+  margin: 0px;
+}
+
+.plan-form-group {
+  font-size: 15px;
+}
+
+.plan-form-group label {
+  font-weight: 500;
+}
+
+.plan-form-group .form-control {
+  width: 120%;
+  margin-top: 10px;
+  background-color: #d4d1d2;
+  border: 1px solid #9b999a;
+  color: #333;
+  text-align: center;
 }
 
 .book-now-button {
@@ -271,14 +307,14 @@ body, .content-user {
 }
 
 /* Styling for the steps section */
-.steps {
+.steps-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #CAA971;
 }
 
-.steps h2 {
+.steps-section h2 {
   margin-top: 20px;
   background-color: #CAA971;
   font-size: 30px;
@@ -288,14 +324,14 @@ body, .content-user {
 /* Container for the images */
 .steps-container {
   display: flex;
-  justify-content: space-between; /* Ensure images are spaced out */
+  justify-content: center; /* Ensure images are spaced out */
   gap: 15px; /* Space between images */
   flex-wrap: wrap; /* Ensure images wrap to the next line on smaller screens */
   height: auto;
   width: 100%;
   max-width: 100%; /* Ensure the images take full available width */
   background-color: #CAA971;
-  margin: 30px 0px;
+  margin: 35px 0px;
   align-items: center;
   border: 0px;
   padding: 0 40px;

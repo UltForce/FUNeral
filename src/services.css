@@ -27,25 +27,26 @@
 .services-container {
   scroll-snap-type: y mandatory;
   overflow-y: auto;
-  height: 100vh;
+  height: auto;
   background-color: #FCF2D8;
   font-family: "Rubik";
 }
 
 .services-section {
-  height: 100vh;
+  height: auto;
   scroll-snap-align: start;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px;
+  margin: 20px;
 }
 
 .services-section .funeral-pack-title {
   margin-bottom: 50px;
   font-weight: 500;
   font-size: 30px;
+  margin-top: 20px;
 }
 
 .card-grid {
@@ -213,7 +214,7 @@
   font-weight: 600;
   border: none;
   padding: 1px 20px;
-  margin: 0 2px;
+  margin: 5px 2px;
 }
 
 .inclusion-title {
@@ -284,5 +285,8 @@
 }
 
 canvas {
-  height: 5in;
+  height: 680px;
+  background-color: #50483a;
+  border-radius: 5px;
+  margin-top: 15px;
 }
