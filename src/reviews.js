@@ -151,7 +151,7 @@ const Reviews = () => {
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
       // Uncomment the following to send the email (if required)
-      //await emailjs.send(serviceID, templateID, emailParams, userID);
+      await emailjs.send(serviceID, templateID, emailParams, userID);
 
       setReviews(
         reviews.map((review) =>
@@ -230,6 +230,7 @@ const Reviews = () => {
           <thead>
             <tr>
               <th>Name</th>
+              <th>Plan</th>
               <th>Rating</th>
               <th>Comment</th>
               <th>Status</th>
@@ -241,6 +242,7 @@ const Reviews = () => {
               reviews.map((review) => (
                 <tr key={review.id}>
                   <td>{`${review.firstname} ${review.lastname}`}</td>
+                  <td>{review.selectedPlan}</td>
                   <td>{review.rating}</td>
                   <td>{review.comment}</td>
                   <td>{review.status}</td>

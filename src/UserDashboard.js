@@ -56,6 +56,7 @@ const UserDashboard = () => {
   const [date, setDate] = useState(new Date());
   const [editReviewId, setEditReviewId] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
+  const [selectedPlan, setSelectedPlan] = useState("");
   useEffect(() => {
     const checkUserLoginStatus = async () => {
       const user = auth.currentUser;
@@ -204,6 +205,7 @@ const UserDashboard = () => {
       setComment("");
       setRating(5);
       setEditReviewId(null);
+      setSelectedPlan("");
       fetchReviews();
       handleCloseEditModal();
       setLoading(true); // Set loading state to true
@@ -227,12 +229,14 @@ const UserDashboard = () => {
   const startEditReview = (review) => {
     setEditReviewId(review.id);
     setComment(review.comment);
+    setSelectedPlan(review.selectedPlan);
     setRating(review.rating);
   };
 
   const handleCloseEditModal = () => {
     setEditReviewId(null); // Close the modal by setting editReviewId to null
     setComment("");
+    setSelectedPlan("");
     setRating(5); // Reset the form fields if necessary
   };
 
@@ -414,6 +418,7 @@ const UserDashboard = () => {
                       className="your-review-list"
                     >
                       <h5 className="review-title">{review.title}</h5>
+                      <p className="review-comment">{review.selectedPlan}</p>
                       <p className="review-comment">{review.comment}</p>
                       <p className="review-stars">
                         Rating:{" "}
@@ -468,6 +473,22 @@ const UserDashboard = () => {
               </Modal.Header>
               <Modal.Body className="user-testimonial-details-box">
                 <form onSubmit={handleEditSubmit}>
+                  <div className="form-group">
+                    {/* Plan Selection */}
+                    <label htmlFor="planSelect">Select a plan to review:</label>
+                    <select
+                      id="planSelect"
+                      value={selectedPlan}
+                      onChange={(e) => setSelectedPlan(e.target.value)}
+                      required
+                      className="form-control"
+                    >
+                      <option value="">-- Select a Plan --</option>
+                      <option value="Plan 1 Basic">Plan 1 Basic</option>
+                      <option value="Plan 2 Garden">Plan 2 Garden</option>
+                      <option value="Plan 3 Garbo">Plan 3 Garbo</option>
+                    </select>
+                  </div>
                   <div className="star-rating">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <span

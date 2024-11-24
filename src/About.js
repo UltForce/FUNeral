@@ -41,6 +41,7 @@ const About = () => {
   const [profilePictureURL, setProfilePictureURL] = useState(""); // Add state for profile picture URL
   const [hasSubmittedTestimonial, setHasSubmittedTestimonial] = useState(false);
   const [flipped, setFlipped] = useState(Array(5).fill(false)); // Track which images are flipped
+  const [selectedPlan, setSelectedPlan] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -94,7 +95,7 @@ const About = () => {
     e.preventDefault();
 
     // Check if firstName and lastName are set
-    if (!firstname || !lastname) {
+    if (!firstname || !lastname || !selectedPlan) {
       Toast.fire({
         icon: "error",
         title: "User details are not available. Please try again later.",
@@ -143,6 +144,7 @@ const About = () => {
         userId: currentUserId,
         firstname,
         lastname,
+        selectedPlan,
         comment,
         rating,
         profilePictureURL, // Include profile picture URL in the submission
@@ -152,6 +154,7 @@ const About = () => {
       // Clear the form
       setComment("");
       setRating(5);
+      setSelectedPlan("");
 
       // Show success toast
       Toast.fire({
@@ -287,6 +290,9 @@ const About = () => {
                       {"⭐".repeat(testimonial.rating)}
                     </div>
                     <p className="reviewer-name">{`${testimonial.firstname} ${testimonial.lastname}`}</p>
+                    <p className="review-description">
+                      {testimonial.selectedPlan}
+                    </p>
                     <p className="review-description">{testimonial.comment}</p>
                   </div>
                 </div>
@@ -299,6 +305,23 @@ const About = () => {
           <section className="submit-testimonial-section section">
             <h3>ADD YOUR TESTIMONIAL</h3>
             <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                {/* Plan Selection */}
+                <label htmlFor="planSelect">Select a plan to review:</label>
+                <select
+                  id="planSelect"
+                  value={selectedPlan}
+                  onChange={(e) => setSelectedPlan(e.target.value)}
+                  required
+                  className="form-control"
+                >
+                  <option value="">-- Select a Plan --</option>
+                  <option value="Plan 1">Plan 1 Basic</option>
+                  <option value="Plan 2">Plan 2 Garden</option>
+                  <option value="Plan 3">Plan 3 Garbo</option>
+                </select>
+              </div>
+
               <div className="star-rating">{renderStars()}</div>
               <div className="testimonial-submit">
                 <textarea

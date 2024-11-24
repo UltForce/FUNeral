@@ -401,7 +401,7 @@ const Appointments = () => {
           const userID = "0Tz3RouZf3BXZaSmh";
 
           // Send the email
-          //await emailjs.send(serviceID, templateID, emailParams, userID);
+          await emailjs.send(serviceID, templateID, emailParams, userID);
 
           Swal.fire(
             "Status!",

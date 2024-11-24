@@ -320,7 +320,7 @@ const Transaction = () => {
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
       // Uncomment the following to send the email (if required)
-      //await emailjs.send(serviceID, templateID, emailParams, userID);
+      await emailjs.send(serviceID, templateID, emailParams, userID);
 
       Swal.fire(
         "Updated!",
