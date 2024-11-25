@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="jroa-address">
             <p><strong>Address:</strong>
             <br/>
-            64 K4th kamuning, Quezon City, Philippines</p>
+            64 K4th Kamuning, Quezon City, Philippines</p>
           </div>
           <br/>
           <div className="contact-info">
