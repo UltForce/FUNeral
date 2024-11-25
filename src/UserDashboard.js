@@ -317,13 +317,6 @@ const UserDashboard = () => {
       <div className="user-dashboard-info">
         <div
           className="user-dashboard-info-inner"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gridTemplateRows: "1fr 1fr",
-            gap: "10px", // Reduced gap between cards
-            width: "100%",
-          }}
         >
           <div className="user-cards-total">
             <Card className="past-appointments">
