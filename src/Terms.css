@@ -31,6 +31,10 @@
   text-align: justify;
 }
 
+.body .welcome-terms p {
+  margin-bottom: 0px;
+}
+
 .body .end-terms {
   padding: 10px 165px 40px;
   font-size: 18px;
@@ -46,7 +50,7 @@
 
 .accordion-item {
   background-color: #e3d18d;
-  margin: 20px;
+  margin: 10px;
 }
 
 .accordion-item button {

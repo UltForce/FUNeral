@@ -8,9 +8,10 @@
 }
 
 .body-faqs {
-  background-color: #caa971;
+  background-color: #FCF2D8;
   min-height: 60vh !important; /* Full height */
   font-family: 'Rubik';
+  height: auto;
 }
 
 .faqs-title {
@@ -36,12 +37,17 @@
   font-size: 20px;
 }
 
+.accordion {
+  margin-top: 20px;
+}
+
 .accordion-item {
-  background-color: #fcf2d8;
+  background-color: #e3d18d;
+  margin: 10px;
 }
 
 .accordion-item button {
-  background-color: #fcf2d8;
+  background-color: #e3d18d;
   color: #8b5e11;
   font-weight: 500;
   font-size: 20px;
