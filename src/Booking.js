@@ -949,12 +949,26 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-
-              {/* Terms and Conditions Checkbox */}
               <Form.Group controlId="formTermsConditions" className="mt-3">
                 <Form.Check
                   type="checkbox"
-                  label="I have Read and Agreed to the Terms and Conditions"
+                  label={
+                    <span>
+                      I have read and agreed to the{" "}
+                      <a
+                        href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          textDecoration: "underline",
+                          color: "blue",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Terms and Conditions
+                      </a>
+                    </span>
+                  }
                   checked={termsChecked}
                   onChange={(e) => setTermsChecked(e.target.checked)}
                   required
