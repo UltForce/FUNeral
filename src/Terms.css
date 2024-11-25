@@ -24,22 +24,88 @@
   margin: 8px auto 65px;
 }
 
-.body .welcome-terms {
-  padding: 40px 165px 0px;
-  font-size: 18px;
-  font-family: 'Rubik';
-  text-align: justify;
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  .body .welcome-terms {
+    padding: 40px 165px 0px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
+  
+  .body .welcome-terms p {
+    margin-bottom: 0px;
+  }
+
+  .body .end-terms {
+    padding: 10px 165px 40px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
 }
 
-.body .welcome-terms p {
-  margin-bottom: 0px;
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .body .welcome-terms {
+    padding: 40px 125px 0px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
+  
+  .body .welcome-terms p {
+    margin-bottom: 0px;
+  }
+
+  .body .end-terms {
+    padding: 10px 125px 40px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
 }
 
-.body .end-terms {
-  padding: 10px 165px 40px;
-  font-size: 18px;
-  font-family: 'Rubik';
-  text-align: justify;
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .body .welcome-terms {
+    padding: 40px 100px 0px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
+  
+  .body .welcome-terms p {
+    margin-bottom: 0px;
+  }
+
+  .body .end-terms {
+    padding: 10px 100px 40px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .body .welcome-terms {
+    padding: 40px 85px 0px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
+  
+  .body .welcome-terms p {
+    margin-bottom: 0px;
+  }
+
+  .body .end-terms {
+    padding: 10px 85px 40px;
+    font-size: 18px;
+    font-family: 'Rubik';
+    text-align: justify;
+  }
 }
 
 .no-terms {
