@@ -24,6 +24,20 @@
   margin: 8px auto 65px;
 }
 
+.body .welcome-terms {
+  padding: 40px 165px 0px;
+  font-size: 18px;
+  font-family: 'Rubik';
+  text-align: justify;
+}
+
+.body .end-terms {
+  padding: 10px 165px 40px;
+  font-size: 18px;
+  font-family: 'Rubik';
+  text-align: justify;
+}
+
 .no-terms {
   text-align: center;
   margin: 40px auto;
@@ -31,11 +45,12 @@
 }
 
 .accordion-item {
-  background-color: #fcf2d8;
+  background-color: #e3d18d;
+  margin: 20px;
 }
 
 .accordion-item button {
-  background-color: #fcf2d8;
+  background-color: #e3d18d;
   color: #8b5e11;
   font-weight: 500;
   font-size: 20px;
@@ -51,4 +66,5 @@
   min-height: 60vh !important; /* Full height */
   font-family: 'Rubik';
   background-color: #FCF2D8;
+  height: auto;
 }
