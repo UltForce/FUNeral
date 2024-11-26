@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUserId } from "./firebase.js";
 import "./services.css";
 import Modal from "./Modal"; // Modal component
+import Loader from "./Loader"; // Import the Loader component
 
 const Casket3D = ({ modelPath }) => {
   const { scene } = useGLTF(modelPath);
@@ -53,6 +54,7 @@ const Services = () => {
   const [showInclusionModal, setShowInclusionModal] = useState(false);
   const [currentModelIndex, setCurrentModelIndex] = useState(0);
   const [selectedInclusion, setSelectedInclusion] = useState("casket");
+  const [showLoader, setShowLoader] = useState(false); // Loader state
 
   const packages = [
     {
@@ -62,12 +64,12 @@ const Services = () => {
       description:
         "A basic funeral service package with essential items included.",
       modelPaths: {
-        wake: "/Plan1.glb",
+        wake: "/3DModels/Plan1.glb",
         inclusions: {
-          casket: ["/casket.glb", "Plan1.glb"],
-          flowers: ["/casket.glb", "Plan1.glb"],
-          candles: ["/casket.glb", "/casket.glb"],
-          curtains: ["/casket.glb", "/casket.glb"],
+          casket: ["/3DModels/Plan1_casket.glb"],
+          flowers: ["/3DModels/Plan1_flowers.glb"],
+          candles: ["/3DModels/Plan1_candles.glb"],
+          curtains: ["/3DModels/Plan1_curtain.glb"],
         },
       },
     },
@@ -77,12 +79,12 @@ const Services = () => {
       price: "50,000",
       description: "A premium package with elegant garden-themed items.",
       modelPaths: {
-        wake: "/Plan2.glb",
+        wake: "/3DModels/Plan2.glb",
         inclusions: {
-          casket: ["/casket.glb", "/casket.glb"],
-          flowers: ["/casket.glb", "/casket.glb"],
-          candles: ["/casket.glb", "/casket.glb"],
-          curtains: ["/casket.glb", "/casket.glb"],
+          casket: ["/3DModels/Plan2_casket.glb"],
+          flowers: ["/3DModels/Plan2_flowers.glb"],
+          candles: ["/3DModels/Plan2_candles.glb"],
+          curtains: ["/3DModels/Plan2_curtain.glb"],
         },
       },
     },
@@ -92,12 +94,12 @@ const Services = () => {
       price: "280,000",
       description: "The ultimate funeral service package with luxurious items.",
       modelPaths: {
-        wake: "/casket.glb",
+        wake: "/3DModels/Plan3.glb",
         inclusions: {
-          casket: ["/casket.glb", "/casket.glb"],
-          flowers: ["/casket.glb", "/casket.glb"],
-          candles: ["/casket.glb", "/casket.glb"],
-          curtains: ["/casket.glb", "/casket.glb"],
+          casket: ["/3DModels/Plan3_casket.glb"],
+          flowers: ["/3DModels/Plan3_flowers.glb"],
+          candles: ["/3DModels/Plan3_candles.glb"],
+          curtains: ["/3DModels/Plan3_curtain.glb"],
         },
       },
     },
@@ -128,41 +130,30 @@ const Services = () => {
   const handleShow3DWake = () => {
     startTransition(() => {
       setShowInitialModal(false);
-      setShow3DModal(true);
+      setShowLoader(true); // Show loader
+      setTimeout(() => {
+        setShowLoader(false); // Hide loader after delay
+        setShow3DModal(true); // Show modal
+      }, 1000); // Simulate loading time (adjust as needed)
     });
   };
 
   const handleShowInclusion3D = (inclusion) => {
     startTransition(() => {
       setSelectedInclusion(inclusion);
-      setCurrentModelIndex(0); // Reset to the first model
+      setCurrentModelIndex(0);
       setShowInitialModal(false);
-      setShowInclusionModal(true);
-    });
-  };
-
-  const handleNextModel = () => {
-    startTransition(() => {
-      setCurrentModelIndex((prev) => {
-        const totalModels =
-          selectedPackage.modelPaths.inclusions[selectedInclusion].length;
-        return (prev + 1) % totalModels; // Loop back to first model
-      });
-    });
-  };
-
-  const handlePreviousModel = () => {
-    startTransition(() => {
-      setCurrentModelIndex((prev) => {
-        const totalModels =
-          selectedPackage.modelPaths.inclusions[selectedInclusion].length;
-        return (prev - 1 + totalModels) % totalModels; // Loop back to last model
-      });
+      setShowLoader(true); // Show loader
+      setTimeout(() => {
+        setShowLoader(false); // Hide loader
+        setShowInclusionModal(true); // Show modal
+      }, 1000); // Simulate loading time
     });
   };
 
   return (
     <main className="main-content">
+      {showLoader && <Loader />} {/* Render loader conditionally */}
       <section className="services">
         <div>
           <h1 className="services-title">SERVICES</h1>
@@ -273,8 +264,6 @@ const Services = () => {
                 }
               />
               <div className="modal-navigation">
-                <button onClick={handlePreviousModel}>Previous</button>
-                <button onClick={handleNextModel}>Next</button>
                 <button
                   onClick={() =>
                     setShowInclusionModal(false) || setShowInitialModal(true)

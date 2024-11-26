@@ -117,12 +117,12 @@ header h1 {
 /* footer */
 
 .footer {
-  margin:auto;
-  background-color: #18020C;
+  margin: auto;
+  background-color: #18020c;
   color: white;
   padding: 20px 0;
   text-align: center;
-  font-family: 'Rubik';
+  font-family: "Rubik";
 }
 
 .footer-content {
@@ -133,7 +133,8 @@ header h1 {
   margin: 0 auto;
 }
 
-.first-footer-content p, .second-footer-content p {
+.first-footer-content p,
+.second-footer-content p {
   text-align: justify;
   font-size: 16px;
 }
@@ -439,9 +440,7 @@ label {
   height: 100%;
   z-index: 9999;
   opacity: 1;
-  background: url(/public/Chunk-4s-154px.gif) center no-repeat #fff;
 }
-
 
 /*FONT*/
 .rubik {

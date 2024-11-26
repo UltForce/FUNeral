@@ -10,7 +10,7 @@
 
 # production
 /build
-
+/public/3DModels
 
 # misc
 .DS_Store
