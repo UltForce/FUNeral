@@ -304,7 +304,7 @@ const Homepage = () => {
         <br></br>
         <div class="homepage-row">
           <div class="grid">
-            <img src="/ficons/comfortinghearts.png" alt="Comforting Hearts" />
+            <img src="/ficons/Comforting Hearts.png" alt="Comforting Hearts" />
             <h2>Comforting Hearts </h2>
             <p>
               We provide emotional support and understanding to families during
@@ -314,7 +314,7 @@ const Homepage = () => {
           </div>
           <div className="grid">
             <img
-              src="/ficons/respectful Farewell.png"
+              src="/ficons/Respectful Farewells.png"
               alt="Respectful Farewells"
             />
             <h2>Respectful Farewells</h2>
@@ -335,7 +335,7 @@ const Homepage = () => {
             </p>
           </div>
           <div className="grid">
-            <img src="/ficons/Cherised Memories.png" alt="Cherished Memories" />
+            <img src="/ficons/Cherished Memories.png" alt="Cherished Memories" />
             <h2>Cherished Memories</h2>
             <p>
               Create lasting memories with personalized tributes that reflect
@@ -351,7 +351,7 @@ const Homepage = () => {
             </p>
           </div>
           <div className="grid">
-            <img src="/ficons/Guiding Grace.png" alt="Guiding Grace" />
+            <img src="/ficons/Guidance Grace.png" alt="Guiding Grace" />
             <h2>Guiding Grace</h2>
             <p>
               Our team provides guidance and support every step of the way,
@@ -384,7 +384,8 @@ const Homepage = () => {
                   data={gallery}
                   time={2000}
                   margin-top="30px"
-                  width="850px"
+                  // maxWidth="850px"
+                  // minWidth="673px"
                   height="400px"
                   captionStyle={captionStyle}
                   radius="10px"
@@ -399,12 +400,6 @@ const Homepage = () => {
                   slideImageFit="cover"
                   thumbnails={true}
                   thumbnailWidth="100px"
-                  style={{
-                    textAlign: "center",
-                    maxWidth: "850px",
-                    maxHeight: "500px",
-                    margin: "15px auto",
-                  }}
                 />
               </div>
             </div>
