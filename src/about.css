@@ -88,20 +88,7 @@
   text-decoration: underline;
 }
 
-.submit-testimonial-section .submitted-form-control {
-  background-color: #d4d1d2;
-  border-radius: 10px;
-  width: 10in;
-  font-size: 15px;
-  padding: 10px;
-  resize: none;
-  margin-top: 10px;
-  margin-bottom: 15px;
-}
 
-.submit-testimonial-section .submitted-form-control::placeholder {
-  color: #9b999a;
-}
 
 .submit-testimonial-section .star-rating {
   margin: 2px;
@@ -126,6 +113,108 @@
 .submit-testimonial-section .submit-button:hover {
   background-color: #f2ed84;
   color: #18020c;
+}
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  .submit-testimonial-section .submitted-form-control {
+    background-color: #d4d1d2;
+    border-radius: 10px;
+    width: 10in;
+    font-size: 15px;
+    padding: 10px;
+    resize: none;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .submit-testimonial-section .submitted-form-control::placeholder {
+    color: #9b999a;
+  }
+
+  .testimonials-grid {
+    /* grid-template-columns: repeat(2, 1fr); */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 15px; /* Space between testimonials */
+    justify-items: center; /* Center items */
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .submit-testimonial-section .submitted-form-control {
+    background-color: #d4d1d2;
+    border-radius: 10px;
+    width: 10in;
+    font-size: 15px;
+    padding: 10px;
+    resize: none;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .submit-testimonial-section .submitted-form-control::placeholder {
+    color: #9b999a;
+  }
+
+  .testimonials-grid {
+    /* grid-template-columns: repeat(2, 1fr); */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 15px; /* Space between testimonials */
+    justify-items: center; /* Center items */
+  }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .submit-testimonial-section .submitted-form-control {
+    background-color: #d4d1d2;
+    border-radius: 10px;
+    width: 8in;
+    font-size: 15px;
+    padding: 10px;
+    resize: none;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .submit-testimonial-section .submitted-form-control::placeholder {
+    color: #9b999a;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px; /* Space between testimonials */
+    justify-items: center; /* Center items */
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .submit-testimonial-section .submitted-form-control {
+    background-color: #d4d1d2;
+    border-radius: 10px;
+    width: 6in;
+    font-size: 15px;
+    padding: 10px;
+    resize: none;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .submit-testimonial-section .submitted-form-control::placeholder {
+    color: #9b999a;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px; /* Space between testimonials */
+    justify-items: center; /* Center items */
+  }
 }
 
 .JROA-about-us {
@@ -200,13 +289,6 @@
 .reviewer-name {
   font-weight: bold;
   margin: 10px 0;
-}
-.testimonials-grid {
-  /* grid-template-columns: repeat(2, 1fr); */
-  display: grid;
-  grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Responsive columns */
-  gap: 15px; /* Space between testimonials */
-  justify-items: center; /* Center items */
 }
 
 .testimonials-grid.single-testimonial .testimonial {
