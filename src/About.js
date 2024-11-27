@@ -189,11 +189,11 @@ const About = () => {
 
   // List of images and text to display
   const images = [
-    { src: "/steps/step1.png", text: "step1" },
-    { src: "/steps/step2.png", text: "step2" },
-    { src: "/steps/step3.png", text: "step3" },
-    { src: "/steps/step4.png", text: "step4" },
-    { src: "/steps/step5.png", text: "step5" },
+    { src: "/steps/step1.png", text: "Step 1: Set a date to appoint the deceased's wishes and service types while confirming the wake to burial schedules." },
+    { src: "/steps/step2.png", text: "Step2: Finalize the funeral package that fits your budget, and make the necessary financial arrangements, considering payment plans if needed." },
+    { src: "/steps/step3.png", text: "Step3: Participate in the seven-day wake, where friends and family gather to honor the deceased, share memories, and observe cultural or religious rites." },
+    { src: "/steps/step4.png", text: "Step4: Attend the burial session; this marks the final farewell of our beloved deceased to a designated cemetery." },
+    { src: "/steps/step5.png", text: "Step5: Grieving continues after the burial. Honor your emotions and create a healing environment for the bereaved." },
   ];
 
   return (
