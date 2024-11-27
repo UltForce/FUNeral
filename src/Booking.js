@@ -52,6 +52,9 @@ const Booking = ({}) => {
   const handleClose1 = () => setShowModal1(false);
   const handleShow2 = () => setShowModal2(true);
   const handleClose2 = () => setShowModal2(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const handleShowTermsModal = () => setShowTermsModal(true);
+  const handleCloseTermsModal = () => setShowTermsModal(false);
   const [termsChecked, setTermsChecked] = useState(false); // State for tracking if terms are checked
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -118,10 +121,22 @@ const Booking = ({}) => {
       });
     }
   };
+
+  // Function to handle showing the terms modal
+  const handleNextToTerms = () => {
+    handleClose2(); // Close the second modal
+    handleShowTermsModal(); // Show the terms modal
+  };
+  
   // Function to handle returning to the first modal
   const handleReturn = () => {
     handleClose2(); // Close the second modal
     handleShow1(); // Reopen the first modal
+  };
+
+  const handleReturn2 = () => {
+    handleCloseTermsModal(); // Close the second modal
+    handleShow2(); // Reopen the first modal
   };
   // Function to map appointment status to color
   const getStatusColor = (status) => {
@@ -373,6 +388,7 @@ const Booking = ({}) => {
           fetchAppointments(); // Fetch appointments
         }
       });
+      handleShowTermsModal();
     } else {
       // Create new appointment
       Swal.fire({
@@ -435,6 +451,7 @@ const Booking = ({}) => {
           fetchAppointments(); // Fetch appointments
         }
       });
+      handleShowTermsModal();
     }
   };
 
@@ -949,34 +966,9 @@ const Booking = ({}) => {
                   required
                 />
               </Form.Group>
-              <Form.Group controlId="formTermsConditions" className="mt-3">
-                <Form.Check
-                  type="checkbox"
-                  label={
-                    <span>
-                      I have read and agreed to the{" "}
-                      <a
-                        href="/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          textDecoration: "underline",
-                          color: "blue",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Terms and Conditions
-                      </a>
-                    </span>
-                  }
-                  checked={termsChecked}
-                  onChange={(e) => setTermsChecked(e.target.checked)}
-                  required
-                />
-              </Form.Group>
               <br />
 
-              {/* Return and Submit Buttons */}
+              {/* Return and Next Buttons */}
               <div className="buttons">
                 <Button
                   variant="secondary"
@@ -987,17 +979,123 @@ const Booking = ({}) => {
                 </Button>
                 {""}
                 <Button
-                  variant="primary"
-                  type="submit"
-                  className="next-button"
-                  disabled={!termsChecked} // Disable submit button if terms are not agreed to
-                >
-                  Submit
-                </Button>
+                variant="primary"
+                className="next-button"
+                onClick={handleNextToTerms} // Change to Next button
+              >
+                Next
+              </Button>
               </div>
             </Form>
           </Modal.Body>
         </Modal>
+
+         {/* Terms and Conditions Modal */}
+      <Modal show={showTermsModal} onHide={handleCloseTermsModal}>
+        <Modal.Header closeButton className="booking-header">
+          <Modal.Title className="booking-title">Terms and Conditions</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="details-box">
+          <p className="terms-and-conditions-modal">
+          Welcome to J.ROA Funeral Services. These Terms and Conditions govern your use of our website and services. By accessing or using our Site, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, please do not use our Site.
+          <br/>
+          <br/>
+          <strong>1. User Accounts</strong>
+          <br/>
+          To access certain features of the Site, you may be required to create an account. You agree to:<br/>
+          - Provide accurate, current, and complete information during the registration process.<br/>
+          - Maintain the security of your password and account.<br/>
+          - Notify us immediately of any unauthorized use of your account or any other breach of security.<br/>
+          - Take responsibility for all activities that occur under your account.<br/>
+          <br/>
+          <strong>2. Testimonial</strong><br/>
+          All users can only have one testimonial at a time. All testimonials are first subject to approval by J.ROA Funeral Services before being published
+          <br/>
+          <br/>
+          <strong>3. Acceptance of Terms</strong><br/>
+          By using the Site, you affirm that you are at least 18 years old and have the legal capacity to enter into these Terms. If you are using the Site on behalf of an organization, you represent that you have the authority to bind that organization to these Terms.
+          <br/>
+          <br/>
+          <strong>4. Appointment Cancellation</strong><br/>
+          Users can cancel pending appointments as they wish but canceling an approved appointment may incur a cancellation fee. 
+          <br/>
+          <br/>
+          <strong>5. Intellectual Property</strong><br/>
+          All content on the Site, including text, graphics, logos, and images, is the property of J.ROA Funeral Services or its licensors and is protected by copyright, trademark, and other intellectual property laws. You may not reproduce, distribute, or create derivative works from any content without our express written permission.
+          <br/>
+          <br/>
+          <strong>6. Changes to Terms and Conditions</strong><br/>
+          J.ROA Funeral Services reserves the right to modify these Terms and Conditions at any time. Users will be notified of significant changes. Continued use of the platform after changes indicates acceptance of the new terms.
+          <br/>
+          <br/>
+          <strong>7. Transaction</strong><br/>
+          Users will receive a transaction after a successful appointment. They can view its details and status anytime. Cancellation of a processing transaction incurs a cancellation fee.
+          <br/>
+          <br/>
+          <strong>8. General Use of FUNeral</strong><br/>
+          The FUNeral web application provides users with access to online appointment booking, viewing transactions, submitting testimonials and browsing service information, galleries, and 3D model renders.
+          <br/>
+          <br/>
+          <strong>9. User Responsibilities</strong><br/>
+          You agree to provide accurate and truthful information when creating an account, booking appointments, or submitting testimonials. You are responsible for maintaining the confidentiality of your account credentials.
+          <br/>
+          <br/>
+          <strong>10. Account Misuse</strong><br/>
+          Any misuse of the platform, including submitting false information or spamming testimonials, may result in account suspension or termination.
+          <br/>
+          <br/>
+          <strong>11. Limitation of Liability</strong><br/>
+          While we strive to ensure that all information on the platform is accurate and up-to-date, J.ROA Funeral Services does not guarantee the completeness or accuracy of any content. J.ROA Funeral Services is not liable for any losses or damages arising from the use of this platform, including but not limited to missed appointments, cancellation fees, or inaccuracies in displayed information.
+          <br/>
+          <br/>
+          <strong>12. Pending Appointment Rule</strong><br/>
+          A user can only have one pending appointment at a time.
+          <br/>
+          <br/>
+          <strong>13. Appointment Approval</strong><br/>
+          All appointments are subject to confirmation by J.ROA Funeral Services. You will receive a notification upon approval.
+          <br/>
+          <br/>
+          <strong>14. User Conduct</strong><br/>
+          You agree not to use the Site for any unlawful purpose or in a way that could damage, disable, overburden, or impair the Site. You agree not to:<br/>
+          - Harass, threaten, or defame any other user.<br/>
+          - Post or transmit any content that is obscene, offensive, or otherwise objectionable.<br/>
+          - Attempt to gain unauthorized access to any part of the Site or any other systems or networks connected to the Site.<br/>
+          <br/>
+          If you have any questions about these Terms, please contact us through these numbers 0909 081 3396 / 0935 354 4006 or visit us 64 K4th Kamuning, Quezon City, Philippines. By using our Site, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. Thank you for visiting J.ROA Funeral Services.
+          </p>
+          <Form.Group controlId="formTermsConditions" className="mt-3">
+                <Form.Check
+                  type="checkbox"
+                  label={
+                    <span>
+                      I have Read and Agreed to the Terms and Conditions
+                    </span>
+                  }
+                  checked={termsChecked}
+                  onChange={(e) => setTermsChecked(e.target.checked)}
+                  required
+                />
+              </Form.Group>
+              <br/>
+              <div className="buttons">
+                <Button
+                    variant="secondary"
+                    className="close-button"
+                    onClick={handleReturn2}
+                >
+                    Back
+                </Button>
+                <Button variant="primary" type="submit" className="next-button">
+                  Submit
+                </Button>
+              </div>
+        </Modal.Body>
+        <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
+
+
       </div>
       {/* Conditionally Render "Book Appointment" Button */}
       {isValidDaySelected && !hasPendingAppointment && (
