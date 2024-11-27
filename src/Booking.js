@@ -677,7 +677,7 @@ const Booking = ({}) => {
                 start: appointment.date,
                 backgroundColor: getStatusColor(appointment.status), // Set color based on status
               }))}
-              editable={true}
+              editable={false}
               selectable={true}
               select={handleDateSelect}
               allDaySlot={false}
