@@ -43,13 +43,20 @@
 }
 
 .services-section .funeral-pack-title {
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   font-weight: 500;
   font-size: 30px;
   margin-top: 20px;
 }
+.services-section .funeral-description {
+  text-align: justify;
+  margin-top: 10px;
+  margin-left: 100px;
+  margin-right:100px;
+}
 
 .card-grid {
+  margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
