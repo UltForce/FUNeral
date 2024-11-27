@@ -63,6 +63,7 @@ const Services = () => {
       price: "25,000",
       description:
         "A basic funeral service package with essential items included.",
+      imagePath: "/funeral pics/wake1.jpg", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan1.glb",
         inclusions: {
@@ -78,6 +79,7 @@ const Services = () => {
       title: "Garden Package",
       price: "50,000",
       description: "A premium package with elegant garden-themed items.",
+      imagePath: "/JROA.jpg", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan2.glb",
         inclusions: {
@@ -93,6 +95,7 @@ const Services = () => {
       title: "Garbo Package",
       price: "280,000",
       description: "The ultimate funeral service package with luxurious items.",
+      imagePath: "/JROA.jpg", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan3.glb",
         inclusions: {
@@ -166,10 +169,8 @@ const Services = () => {
           <div className="card-grid">
             {packages.map((pkg) => (
               <div key={pkg.id} className="card">
-                <img
-                  src="/funeral pics/wake1.jpg"
-                  alt="Funeral Package Image"
-                ></img>
+                <img src={pkg.imagePath} alt={`${pkg.title} Image`} />{" "}
+                {/* Use dynamic image path */}
                 <h3>{pkg.title}</h3>
                 <p>
                   Price: <strong>{pkg.price}</strong>
@@ -195,9 +196,10 @@ const Services = () => {
               <div className="services-modal-box">
                 <div className="funeral-package-details">
                   <img
-                    src="/funeral pics/wake1.jpg"
+                    src={selectedPackage.imagePath}
                     alt="funeral-package img"
-                  ></img>
+                  />{" "}
+                  {/* Dynamic image */}
                   <div className="modal-description">
                     <h2>{selectedPackage.title}</h2>
                     <p>{selectedPackage.description}</p>
