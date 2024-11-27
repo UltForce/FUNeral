@@ -54,7 +54,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(true); // New state for navbar collapse
-  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
+    useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -280,21 +281,21 @@ const Navbar = () => {
         <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
           <button onClick={toggleNavbar} className="navbar-toggle">
-            {isNavbarCollapsed ? '☰' : '✖'} {/* Toggle icon */}
+            {isNavbarCollapsed ? "☰" : "✖"} {/* Toggle icon */}
           </button>
-          <ul className={`menu ${isNavbarCollapsed ? 'collapsed' : ''}`}>
+          <ul className={`menu ${isNavbarCollapsed ? "collapsed" : ""}`}>
             <li className={location.pathname === "/homepage" ? "active" : ""}>
-              <Link to="/homepage">
+              <Link to="/homepage" onClick={toggleNavbar}>
                 <span className="menu-container"> Home</span>
               </Link>
             </li>
             <li className={location.pathname === "/about" ? "active" : ""}>
-              <Link to="/about">
+              <Link to="/about" onClick={toggleNavbar}>
                 <span className="menu-container"> About Us</span>
               </Link>
             </li>
             <li className={location.pathname === "/gallery" ? "active" : ""}>
-              <Link to="/gallery">
+              <Link to="/gallery" onClick={toggleNavbar}>
                 <span className="menu-container"> Gallery</span>
               </Link>
             </li>
@@ -304,26 +305,26 @@ const Navbar = () => {
                 <li
                   className={location.pathname === "/services" ? "active" : ""}
                 >
-                  <Link to="/services">
+                  <Link to="/services" onClick={toggleNavbar}>
                     <span className="menu-container"> Services</span>
                   </Link>
                 </li>
                 <li
                   className={location.pathname === "/booking" ? "active" : ""}
                 >
-                  <Link to="/booking">
+                  <Link to="/booking" onClick={toggleNavbar}>
                     <span className="menu-container"> Book now</span>
                   </Link>
                 </li>
               </>
             )}
             <li className={location.pathname === "/terms" ? "active" : ""}>
-              <Link to="/terms">
+              <Link to="/terms" onClick={toggleNavbar}>
                 <span className="menu-container"> Terms & Conditions</span>
               </Link>
             </li>
             <li className={location.pathname === "/faqs" ? "active" : ""}>
-              <Link to="/faqs">
+              <Link to="/faqs" onClick={toggleNavbar}>
                 <span className="menu-container"> FAQs</span>
               </Link>
             </li>
@@ -331,7 +332,10 @@ const Navbar = () => {
             {isLoggedIn && (
               <li>
                 <div className="notification-container">
-                  <button onClick={toggleNotificationDropdown} className="notify-button">
+                  <button
+                    onClick={toggleNotificationDropdown}
+                    className="notify-button"
+                  >
                     <FontAwesomeIcon icon={faBell} className="bell-icon" />
                     {hasUnreadNotifications && (
                       <span className="red-dot"></span>
@@ -396,23 +400,38 @@ const Navbar = () => {
             {isLoggedIn && (
               <>
                 <li className="user-dropdown">
-                <button onClick={toggleAccountDropdown} className="user-dropdown-title">
-                <FontAwesomeIcon icon={faUser} className="user-icon" />
-                </button>
-                {isAccountDropdownOpen && (
-                  <div className="user-dropdown-content">
-                    <Link to="/account" onClick={() => setIsAccountDropdownOpen(false)}>
-                      Account
-                    </Link>
-                    <Link to="/userdashboard" onClick={() => setIsAccountDropdownOpen(false)}>
-                      Dashboard
-                    </Link>
-                    <a onClick={handleLogout} className="no-transition">
-                      Logout
-                    </a>
-                  </div>
-                )}
-              </li>
+                  <button
+                    onClick={toggleAccountDropdown}
+                    className="user-dropdown-title"
+                  >
+                    <FontAwesomeIcon icon={faUser} className="user-icon" />
+                  </button>
+                  {isAccountDropdownOpen && (
+                    <div className="user-dropdown-content">
+                      <Link
+                        to="/account"
+                        onClick={() => {
+                          setIsAccountDropdownOpen(false);
+                          toggleNavbar();
+                        }}
+                      >
+                        Account
+                      </Link>
+                      <Link
+                        to="/userdashboard"
+                        onClick={() => {
+                          setIsAccountDropdownOpen(false);
+                          toggleNavbar();
+                        }}
+                      >
+                        Dashboard
+                      </Link>
+                      <a onClick={handleLogout} className="no-transition">
+                        Logout
+                      </a>
+                    </div>
+                  )}
+                </li>
               </>
             )}
             {!isLoggedIn && (
