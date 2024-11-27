@@ -62,6 +62,11 @@ const Register = () => {
   const handleGoogleSignIn = async () => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    // Trim the first name and last name
+    const trimmedFirstname = firstname.trim();
+    const trimmedLastname = lastname.trim();
+    
     if (
       !confirmPassword ||
       !password ||
@@ -80,6 +85,23 @@ const Register = () => {
         title: "Please fill in all the fields.",
       });
       return; // Exit early if fields are empty
+    }
+
+        // Validate first name and last name
+    if (trimmedFirstname.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "First Name cannot be empty or just spaces.",
+      });
+      return;
+    }
+
+    if (trimmedLastname.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "Last Name cannot be empty or just spaces.",
+      });
+      return;
     }
 
     if (!passwordRegex.test(password)) {

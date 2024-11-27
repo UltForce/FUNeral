@@ -110,10 +110,20 @@ const Booking = ({}) => {
   };
 
   const handleNext = () => {
-    // Validate first modal fields
-    if (formData.plan && formData.phoneNumber && formData.notes) {
-      setShowModal1(false);
-      setShowModal2(true);
+  // Validate first modal fields
+  if (formData.plan && formData.phoneNumber && formData.notes) {
+    // Phone number validation
+    const phoneRegex = /^(09\d{8,9}|9\d{9}|\+639\d{9,10})$/; // Validates phone numbers
+    if (!phoneRegex.test(formData.phoneNumber)) {
+      Toast.fire({
+        icon: "error",
+        title: "Phone number must start with 9, 09, or +63 and be between 10 to 13 digits long.",
+      });
+      return; // Prevent moving to the next modal
+    }
+    
+    setShowModal1(false);
+    setShowModal2(true);
     } else {
       Toast.fire({
         icon: "error",
@@ -125,7 +135,28 @@ const Booking = ({}) => {
   // Function to handle showing the terms modal
   const handleNextToTerms = () => {
     console.log(formData);
-    if (
+      // Validate that the Deceased Name does not contain digits or special characters
+    const nameRegex = /^[A-Za-z\s]+$/; // Allows only letters and spaces
+    const trimmedDeceasedName = formData.DeceasedName.trim(); // Trim spaces from the name
+
+    // Check if the name is less than 3 characters
+    if (trimmedDeceasedName.length < 3) {
+      Toast.fire({
+        icon: "error",
+        title: "Deceased Name must be at least 3 characters long.",
+      });
+      return; // Prevent moving to the terms modal
+    }
+
+    // Check if the name contains digits or special characters
+    if (!nameRegex.test(trimmedDeceasedName)) {
+      Toast.fire({
+        icon: "error",
+        title: "Deceased Name must not contain digits or special characters.",
+      });
+      return; // Prevent moving to the terms modal
+    }
+      if (
       formData.DeceasedName &&
       formData.DeceasedAge &&
       formData.DeceasedSex &&
@@ -730,10 +761,10 @@ const Booking = ({}) => {
                   placeholder="Enter phone number"
                   value={formData.phoneNumber}
                   onChange={(e) => {
-                    const phoneValue = e.target.value.replace(/\D/g, "");
-                    if (phoneValue.length <= 13) {
-                      setFormData({ ...formData, phoneNumber: phoneValue });
-                    }
+                    const inputValue = e.target.value;
+                    // Allow only digits and the "+" sign
+                    const sanitizedValue = inputValue.replace(/[^0-9+]/g, "");
+                    setFormData({ ...formData, phoneNumber: sanitizedValue });
                   }}
                   required
                 />
