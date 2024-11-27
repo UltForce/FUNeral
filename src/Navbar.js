@@ -426,7 +426,12 @@ const Navbar = () => {
                       >
                         Dashboard
                       </Link>
-                      <a onClick={handleLogout} className="no-transition">
+                      <a  onClick={() => {
+                          setIsAccountDropdownOpen(false);
+                          handleLogout();
+                          toggleNavbar();
+                        }}
+                         className="no-transition">
                         Logout
                       </a>
                     </div>
@@ -436,13 +441,20 @@ const Navbar = () => {
             )}
             {!isLoggedIn && (
               <>
-                <li className={location.pathname === "/login" ? "active" : ""}>
+                <li className={location.pathname === "/login" ? "active" : ""} onClick={() => {
+                          setIsAccountDropdownOpen(false);
+                          toggleNavbar();
+                        }}>
                   <Link to="/login">
                     <span className="login-button-nav"> LOGIN</span>
                   </Link>
                 </li>
                 <li
                   className={location.pathname === "/register" ? "active" : ""}
+                  onClick={() => {
+                    setIsAccountDropdownOpen(false);
+                    toggleNavbar();
+                  }}
                 >
                   <Link to="/register">
                     <FontAwesomeIcon icon={faAddressBook} />
