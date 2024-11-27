@@ -124,8 +124,25 @@ const Booking = ({}) => {
 
   // Function to handle showing the terms modal
   const handleNextToTerms = () => {
-    handleClose2(); // Close the second modal
-    handleShowTermsModal(); // Show the terms modal
+    console.log(formData);
+    if (
+      formData.DeceasedName &&
+      formData.DeceasedAge &&
+      formData.DeceasedSex &&
+      formData.DeceasedBirthday &&
+      formData.DateofDeath &&
+      formData.PlaceofDeath &&
+      formData.DeceasedRelationship &&
+      formData.DeathCertificate
+    ) {
+      handleClose2(); // Close the second modal
+      handleShowTermsModal(); // Show the terms modal
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Please fill in all the fields.",
+      });
+    }
   };
 
   // Function to handle returning to the first modal
@@ -235,69 +252,6 @@ const Booking = ({}) => {
       }
     } catch (error) {
       console.error("Error fetching appointments:", error.message);
-    }
-  };
-
-  // Handle click on calendar event
-  const handleEventClick = async (eventInfo) => {
-    try {
-      const loggedInUserId = getCurrentUserId(); // Get the current user's ID
-
-      const appointmentId = eventInfo.event.id;
-      const clickedAppointment = appointments.find(
-        // Find clicked appointment
-        (appointment) => appointment.id === appointmentId
-      );
-
-      if (!clickedAppointment) {
-        console.error("Appointment not found.");
-        return;
-      }
-
-      if (
-        (clickedAppointment.userId === loggedInUserId &&
-          clickedAppointment.status === "pending") || // User owns the appointment
-        isAdmin // User is an admin
-      ) {
-        setFormData({
-          // State for form data
-          appointmentId: appointmentId,
-          name: clickedAppointment.name,
-          phoneNumber: clickedAppointment.phoneNumber,
-          notes: clickedAppointment.notes,
-          plan: clickedAppointment.plan,
-          DeceasedName: clickedAppointment.DeceasedName,
-          DeceasedAge: clickedAppointment.DeceasedAge,
-          DeceasedSex: clickedAppointment.DeceasedSex,
-          DeceasedBirthday: clickedAppointment.DeceasedBirthday,
-          DateofDeath: clickedAppointment.DateofDeath,
-          PlaceofDeath: clickedAppointment.PlaceofDeath,
-          DeceasedRelationship: clickedAppointment.DeceasedRelationship,
-          DeathCertificate: clickedAppointment.DeathCertificate,
-        });
-        setSelectedDate(clickedAppointment.date); // Set selected date
-        setIsFormOpen(true); // Open form
-      } else {
-        // Show error message if user cannot edit/delete appointment
-        Swal.fire({
-          title: "Error",
-          text: "You cannot edit or delete appointments that do not belong to you or are not pending.",
-          icon: "error",
-          heightAuto: false,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Confirm",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Toast.fire({
-              icon: "error",
-              title:
-                "You cannot edit or delete appointments that do not belong to you or are not pending.",
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error handling event click:", error.message);
     }
   };
 
@@ -479,7 +433,6 @@ const Booking = ({}) => {
         DateofDeath: pendingAppointment.DateofDeath,
         PlaceofDeath: pendingAppointment.PlaceofDeath,
         DeceasedRelationship: pendingAppointment.DeceasedRelationship,
-        DeathCertificate: pendingAppointment.DeathCertificate,
       });
 
       // Open the first modal for editing
@@ -727,7 +680,6 @@ const Booking = ({}) => {
               editable={true}
               selectable={true}
               select={handleDateSelect}
-              eventClick={handleEventClick}
               allDaySlot={false}
               expandRows={true}
               height="625px"
