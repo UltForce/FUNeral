@@ -1053,18 +1053,26 @@ const Booking = ({}) => {
               information.
               <br />
               <br />
-              <strong>12. Pending Appointment Rule</strong>
+              <strong>12. 3D Model Rendering</strong>
+              <br />
+              The likeness of the actual product may vary due to technical 
+              constraints in 3D model rendering. Please take the 3D model renders 
+              as a reference only. Actual product images are available in the gallery 
+              section and during the appointment.
+              <br />
+              <br />
+              <strong>13. Pending Appointment Rule</strong>
               <br />
               A user can only have one pending appointment at a time.
               <br />
               <br />
-              <strong>13. Appointment Approval</strong>
+              <strong>14. Appointment Approval</strong>
               <br />
               All appointments are subject to confirmation by J.ROA Funeral
               Services. You will receive a notification upon approval.
               <br />
               <br />
-              <strong>14. User Conduct</strong>
+              <strong>15. User Conduct</strong>
               <br />
               You agree not to use the Site for any unlawful purpose or in a way
               that could damage, disable, overburden, or impair the Site. You
