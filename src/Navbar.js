@@ -53,6 +53,7 @@ const Navbar = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(true); // New state for navbar collapse
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
@@ -62,6 +63,10 @@ const Navbar = () => {
     e.stopPropagation();
     setIsNotificationDropdownOpen((prev) => !prev);
     setIsAccountDropdownOpen(false);
+  };
+
+  const toggleNavbar = () => {
+    setIsNavbarCollapsed((prev) => !prev); // Toggle the collapsed state
   };
 
   const toggleAccountDropdown = (e) => {
@@ -274,7 +279,10 @@ const Navbar = () => {
       ) : (
         <nav className="top-navbar">
           <img src="JROA.jpg" height="50px" alt="JROA Logo" />
-          <ul className="menu">
+          <button onClick={toggleNavbar} className="navbar-toggle">
+            {isNavbarCollapsed ? '☰' : '✖'} {/* Toggle icon */}
+          </button>
+          <ul className={`menu ${isNavbarCollapsed ? 'collapsed' : ''}`}>
             <li className={location.pathname === "/homepage" ? "active" : ""}>
               <Link to="/homepage">
                 <span className="menu-container"> Home</span>

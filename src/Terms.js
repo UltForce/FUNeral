@@ -38,9 +38,9 @@ const Terms = () => {
         <section className="body">
           <div className="welcome-terms">
             <p>
-            Welcome to J.ROA Funeral Services. These Terms and Conditions govern your use of our website and services. 
-            By accessing or using our Site, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, 
-            please do not use our Site.
+            Welcome to FUNeral, a web-based funeral service planner management and appointment system for J.ROA Funeral Services. 
+            These Terms and Conditions govern your use of our website and services. By accessing or using our Site, you agree to 
+            comply with and be bound by these Terms. If you do not agree with these Terms, please do not use our Site.
             </p>
           </div>
           <div className="accordion-container centered">
@@ -85,7 +85,7 @@ const Terms = () => {
             <p>
             If you have any questions about these Terms, please contact us through these numbers 0909 081 3396 / 0935 354 4006 
             or visit us 64 K4th Kamuning, Quezon City, Philippines. By using our Site, you acknowledge that you have read, understood, 
-            and agree to be bound by these Terms and Conditions. Thank you for visiting J.ROA Funeral Services.
+            and agree to be bound by these Terms and Conditions. Thank you for visiting FUNeral.
             </p>
           </div>
         </section>

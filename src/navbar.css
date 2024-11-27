@@ -117,6 +117,29 @@ nav ul li a .nav-label {
   border-radius: 20px;
 }
 
+.top-navbar .menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  transition: max-height 0.3s ease; /* Smooth transition */
+}
+
+.top-navbar .menu.collapsed {
+  max-height: 0; /* Hide when collapsed */
+  overflow: hidden; /* Prevent overflow */
+}
+
+.navbar-toggle {
+  background: none;
+  border: none;
+  color: #e5e5d6; /* Adjust color as needed */
+  font-size: 24px; /* Adjust size as needed */
+  cursor: pointer;
+  margin-left: auto; /* Push it to the right */
+  display: none; /* Hide by default */
+}
+
+
 /* Adjust the position of the brand logo */
 .top-navbar img {
   height: 35px;
@@ -440,4 +463,70 @@ nav ul.centeredNav li.active a {
 .user-dropdown-content a:hover {
   background-color: #444; /* Darker background on hover */
   color: #FDF9AA;
+}
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  .top-navbar .menu {
+    display: flex; /* Ensure menu is displayed as a row */
+    flex-direction: row; /* Ensure items are in a row */
+  }
+
+  .top-navbar .menu.collapsed {
+    max-height: none; /* No max height restriction */
+    overflow: visible; /* Allow overflow */
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .top-navbar .menu {
+    display: flex; /* Ensure menu is displayed as a row */
+    flex-direction: row; /* Ensure items are in a row */
+  }
+
+  .top-navbar .menu.collapsed {
+    max-height: none; /* No max height restriction */
+    overflow: visible; /* Allow overflow */
+  }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .navbar-toggle {
+    display: block; /* Show toggle button on mobile */
+    color: white;
+  }
+
+  .navbar-toggle:hover {
+    background-color: #2b0a0a ;
+    border: 2px solid #f5f095;
+    color: white;
+    border-radius: 10px;
+  }
+
+  .top-navbar .menu {
+    flex-direction: column; /* Stack items vertically */
+    width: 100%; /* Full width */
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .navbar-toggle {
+    display: block; /* Show toggle button on mobile */
+    color: white;
+  }
+
+  .navbar-toggle:hover {
+    background-color: #2b0a0a ;
+    border: 2px solid #f5f095;
+    color: white;
+    border-radius: 10px;
+  }
+
+  .top-navbar .menu {
+    flex-direction: column; /* Stack items vertically */
+    width: 100%; /* Full width */
+  }
 }
