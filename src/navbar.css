@@ -465,6 +465,47 @@ nav ul.centeredNav li.active a {
   color: #FDF9AA;
 }
 
+.about-planning-button {
+  color: #e5e5d6;
+  text-decoration: none;
+  font-family: "Rubik";
+  font-size: 16px;
+  background-color: #2b0a0a;
+  border: none;
+}
+
+.about-planning-button:hover {
+  color: #f7e6a6;
+  font-weight: 600;
+  background-color: #503535;
+  border-radius: 20px;
+}
+
+.about-dropdown-content {
+    display: block;
+    position: absolute;
+    top: 10%;
+    background-color: #FDF9AA;
+    color: #2b0a0a;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.about-dropdown-content a {
+  color: #2b0a0a;
+  padding: 8px 20px;
+  display: block;
+  text-decoration: none;
+}
+
+.about-dropdown-content a:hover {
+  background-color: #444; /* Darker background on hover */
+  color: #FDF9AA;
+}
+
+
 /* For desktop screens */
 @media only screen and (min-width: 1200px) {
   .top-navbar .menu {

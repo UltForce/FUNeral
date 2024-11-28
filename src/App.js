@@ -12,6 +12,7 @@ import Account from "./account";
 import Reset from "./reset";
 import Footer from "./Footer";
 import About from "./About";
+import PlanningGuide from "./PlanningGuide";
 import Gallery from "./Gallery";
 import Audit from "./Audit";
 import Appointments from "./Appointment";
@@ -84,6 +85,7 @@ const App = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/homepage" element={<Homepage />} />
               <Route path="/about" element={<About />} />
+              <Route path="/planningguide" element={<PlanningGuide />} />
               <Route path="/gallery" element={<Gallery />} />
 
               <Route path="/services" element={<Services />} />

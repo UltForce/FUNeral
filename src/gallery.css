@@ -52,12 +52,6 @@
   margin: 0 20px;
 }
 
-.album-image {
-  width: 400px;
-  height: auto;
-  border-radius: 10px;
-}
-
 .album-title {
   margin-top: 20px;
   font-weight: bold;
@@ -88,13 +82,6 @@
 
 .preview-container {
   margin-bottom: 20px;
-}
-
-.preview-image {
-  width: 50%; /* Larger size than thumbnails */
-  height: auto;
-  border-radius: 10px;
-  border: 5px solid transparent; /* Default transparent border */
 }
 
 .thumbnail-pagination {
@@ -147,4 +134,68 @@
 
 .thumbnail:hover {
   opacity: 0.8; /* Slightly increase opacity on hover */
+}
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  .album-image {
+    width: 400px;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .preview-image {
+    width: 70%; /* Larger size than thumbnails */
+    height: auto;
+    border-radius: 10px;
+    border: 5px solid transparent; /* Default transparent border */
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .album-image {
+    width: 400px;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .preview-image {
+    width: 50%; /* Larger size than thumbnails */
+    height: auto;
+    border-radius: 10px;
+    border: 5px solid transparent; /* Default transparent border */
+  }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .album-image {
+    width: 400px;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .preview-image {
+    width: 80%; /* Larger size than thumbnails */
+    height: auto;
+    border-radius: 10px;
+    border: 5px solid transparent; /* Default transparent border */
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .album-image {
+    width: 340px;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .preview-image {
+    width: 100%; /* Larger size than thumbnails */
+    height: auto;
+    border-radius: 10px;
+    border: 5px solid transparent; /* Default transparent border */
+  }
 }

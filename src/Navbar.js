@@ -57,6 +57,7 @@ const Navbar = () => {
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
@@ -64,6 +65,7 @@ const Navbar = () => {
     e.stopPropagation();
     setIsNotificationDropdownOpen((prev) => !prev);
     setIsAccountDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
   };
 
   const toggleNavbar = () => {
@@ -74,6 +76,14 @@ const Navbar = () => {
     e.stopPropagation(); // Prevent the event from bubbling up
     setIsAccountDropdownOpen((prev) => !prev);
     setIsNotificationDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
+  };
+
+  const toggleAboutDropdown = (e) => {
+    e.stopPropagation(); // Prevent the event from bubbling up
+    setIsAboutDropdownOpen((prev) => !prev);
+    setIsNotificationDropdownOpen(false);
+    setIsAccountDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -151,6 +161,7 @@ const Navbar = () => {
           setIsLoggedIn(false);
           setIsAdmin(false);
           setIsAccountDropdownOpen(false);
+          setIsAboutDropdownOpen(false);
           setIsNotificationDropdownOpen(false);
           setNotifications([]); // Clear notifications on logout
           await auth.signOut();
@@ -289,11 +300,33 @@ const Navbar = () => {
                 <span className="menu-container"> Home</span>
               </Link>
             </li>
-            <li className={location.pathname === "/about" ? "active" : ""}>
-              <Link to="/about" onClick={toggleNavbar}>
-                <span className="menu-container"> About Us</span>
-              </Link>
-            </li>
+            <li className="about-dropdown">
+                  <button
+                    onClick={toggleAboutDropdown}
+                    className="about-planning-button"
+                  >
+                    About Us
+                  </button>
+                  {isAboutDropdownOpen && (
+                    <div className="about-dropdown-content">
+                      <Link to="/about"  onClick={() => {
+                          setIsAboutDropdownOpen(false);
+                          toggleNavbar();
+                          }}>
+                            About Us
+                          </Link>
+                      <Link
+                        to="/planningguide"
+                        onClick={() => {
+                          setIsAboutDropdownOpen(false);
+                          toggleNavbar();
+                        }}
+                      >
+                        Planning Guide
+                      </Link>
+                    </div>
+                  )}
+                </li>
             <li className={location.pathname === "/gallery" ? "active" : ""}>
               <Link to="/gallery" onClick={toggleNavbar}>
                 <span className="menu-container"> Gallery</span>
