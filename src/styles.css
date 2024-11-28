@@ -133,10 +133,64 @@ header h1 {
   margin: 0 auto;
 }
 
-.first-footer-content p,
-.second-footer-content p {
-  text-align: justify;
-  font-size: 16px;
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  .first-footer-content p,
+  .second-footer-content p {
+    text-align: justify;
+    font-size: 16px;
+  }
+
+  .social-media a {
+    color: rgb(219, 217, 217);
+    text-decoration: none;
+    margin-right: 65px;
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .first-footer-content p,
+  .second-footer-content p {
+    text-align: justify;
+    font-size: 16px;
+  }
+
+  .social-media a {
+    color: rgb(219, 217, 217);
+    text-decoration: none;
+    margin-right: 65px;
+  }
+}
+
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .first-footer-content p,
+  .second-footer-content p {
+    text-align: justify;
+    font-size: 16px;
+  }
+
+  .social-media a {
+    color: rgb(219, 217, 217);
+    text-decoration: none;
+    margin-right: 65px;
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .first-footer-content p,
+  .second-footer-content p {
+    text-align: justify;
+    font-size: 10px;
+  }
+
+  .social-media a {
+    color: rgb(219, 217, 217);
+    text-decoration: none;
+    font-size: 10px;
+  }
 }
 
 .first-footer-content {
@@ -151,12 +205,6 @@ header h1 {
   text-align: center;
   font-size: 16px;
   padding-top: 10px;
-}
-
-.social-media a {
-  color: rgb(219, 217, 217);
-  text-decoration: none;
-  margin-right: 65px;
 }
 
 .contact-info p {

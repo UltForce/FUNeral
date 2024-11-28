@@ -135,6 +135,15 @@ const Booking = ({}) => {
   // Function to handle showing the terms modal
   const handleNextToTerms = () => {
     console.log(formData);
+    // Validation: Birthday should be before Date of Death
+    if (new Date(formData.DeceasedBirthday) >= new Date(formData.DateofDeath)) {
+      Toast.fire({
+        icon: "error",
+        title: "The Date of Death cannot be before the Birth Date.",
+      });
+      return;
+    }
+
       // Validate that the Deceased Name does not contain digits or special characters
     const nameRegex = /^[A-Za-z\s]+$/; // Allows only letters and spaces
     const trimmedDeceasedName = formData.DeceasedName.trim(); // Trim spaces from the name
@@ -289,14 +298,7 @@ const Booking = ({}) => {
   // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Validation: Birthday should be before Date of Death
-    if (new Date(formData.DeceasedBirthday) >= new Date(formData.DateofDeath)) {
-      Toast.fire({
-        icon: "error",
-        title: "The Date of Death cannot be before the Birth Date.",
-      });
-      return;
-    }
+    
     // Fill the name field with logged-in user's full name
     const loggedInUserName = `${userData.firstname} ${userData.lastname}`;
     formData.name = loggedInUserName; // Set the name field to the user's full name
@@ -341,7 +343,7 @@ const Booking = ({}) => {
             userId: loggedInUserId, // User ID associated with the event
             details: "User edited an existing appointment", // Details of the event
           };
-          handleClose2(); // Close the second modal after submitting
+          handleCloseTermsModal(); // Close the second modal after submitting
           setIsFormOpen(false); // Close form
           setIsValidDaySelected(false);
           // Call the AuditLogger function with the event object
@@ -405,7 +407,7 @@ const Booking = ({}) => {
           const recipient = "admin";
 
           await sendNotification(title, content, loggedInUserId, recipient);
-          handleClose2(); // Close the second modal after submitting
+          handleCloseTermsModal(); // Close the second modal after submitting
           setIsFormOpen(false); // Close form
           setIsValidDaySelected(false);
           clearFormData();
@@ -652,7 +654,7 @@ const Booking = ({}) => {
           <h1 className="appointment-booking-title">APPOINTMENT BOOKING</h1>{" "}
           <div className="booking-border"></div>
           <div className="date-and-buttons">
-            <p className="selectedDate" style={{ marginLeft: "20px" }}>
+            <p className="selectedDate">
               Selected Date:{" "}
               <strong>{selectedDate ? selectedDate : "None selected"}</strong>
             </p>
@@ -812,7 +814,7 @@ const Booking = ({}) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="details-box">
-            <Form onSubmit={handleFormSubmit}>
+            <Form >
               <Form.Group controlId="formDeceasedName">
                 <Form.Label className="label-title">Deceased Name</Form.Label>
                 <Form.Control
@@ -1046,6 +1048,13 @@ const Booking = ({}) => {
               <br />
               <strong>7. Transaction</strong>
               <br />
+              The undersigned hereby agrees to pay in full the
+              amount of this contract as soon as possible to any
+              authorized representative or to office of J.ROA
+              FUNERAL SERVICES so as to avoid unnecessary
+              delay of the service, I also agree to pay all attorney's
+              fees and court cost in case of lawsuit.
+
               Users will receive a transaction after a successful appointment.
               They can view its details and status anytime. Cancellation of a
               processing transaction incurs a cancellation fee.
@@ -1148,8 +1157,7 @@ const Booking = ({}) => {
                 Back
               </Button>
               <Button
-                variant="primary"
-                type="submit"
+                onClick={handleFormSubmit}
                 className="next-button"
                 disabled={!termsChecked}
               >

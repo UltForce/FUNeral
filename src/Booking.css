@@ -21,19 +21,6 @@
     margin: 5px auto 20px;
 }
 
-.date-and-buttons {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 20px;
-    flex-wrap: wrap;
-}
-
-.selectedDate {
-    font-size: 15px;
-    padding-bottom: 10px;
-    font-weight: 400;
-}
-
 .selectedDate strong {
     color: #FDF9AA;
     font-weight: 500;
@@ -83,6 +70,42 @@
         font-size: 16px;
         border-color: #8e2510;
     }
+
+    .date-and-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0px;
+        flex-wrap: wrap;
+    }
+
+    .selectedDate {
+        font-size: 15px;
+        padding-bottom: 10px;
+        font-weight: 400;
+        margin: auto auto auto 12px;
+    }
+
+    .fc .fc-toolbar {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 30px;
+        flex-wrap: wrap;
+    }
+
+    .fc .fc-toolbar-chunk .btn-group button {
+        background-color: #FDF9AA;
+        color: black;
+        border-color: #CAA971;
+        width: 70px;
+        height:40px;
+        font-weight: 500;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 35px;
+        text-align: center;
+    }
 }
 
 /* For laptop screens */
@@ -122,6 +145,42 @@
         font-size: 15px;
         border-color: #8e2510;
     }
+
+    .date-and-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0px;
+        flex-wrap: wrap;
+    }
+
+    .selectedDate {
+        font-size: 15px;
+        padding-bottom: 10px;
+        font-weight: 400;
+        margin: auto auto auto 12px;
+    }
+
+    .fc .fc-toolbar {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 30px;
+        flex-wrap: wrap;
+    }
+
+    .fc .fc-toolbar-chunk .btn-group button {
+        background-color: #FDF9AA;
+        color: black;
+        border-color: #CAA971;
+        width: 70px;
+        height:40px;
+        font-weight: 500;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 35px;
+        text-align: center;
+    }
 }
 
 /* For tablet screens */
@@ -147,7 +206,7 @@
         margin: 1px 9px;
         height: 40px;
         width: 45%;
-        font-size: 16px;
+        font-size: 15px;
         border-color: #8B5E11;
     }
     
@@ -158,8 +217,47 @@
         margin: 1px 7px;
         height: 40px;
         width: 45%;
-        font-size: 14px;
+        font-size: 13px;
         border-color: #8e2510;
+    }
+
+    .date-and-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0px;
+        flex-wrap: wrap;
+    }
+
+    .selectedDate {
+        font-size: 15px;
+        padding-bottom: 10px;
+        font-weight: 400;
+        margin: auto auto auto 12px;
+        text-align: center;
+    }
+
+    .fc .fc-toolbar {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 30px;
+        flex-wrap: wrap;
+    }
+
+    .fc .fc-toolbar-chunk .btn-group button {
+        background-color: #FDF9AA;
+        color: black;
+        border-color: #CAA971;
+        width: 53px;
+        height:40px;
+        font-weight: 500;
+        font-size: 11px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 22px;
+        text-align: center;
+        padding: 0%;
     }
 }
 
@@ -176,7 +274,8 @@
     }
 
     .edit-delete-button {
-        width: 57%;
+        width: 100%;
+        margin-bottom: 10px;
     }
 
     .edit-appointment-button {
@@ -186,7 +285,7 @@
         margin: 1px 9px;
         height: 40px;
         width: 45%;
-        font-size: 16px;
+        font-size: 14px;
         border-color: #8B5E11;
     }
     
@@ -197,8 +296,44 @@
         margin: 1px 7px;
         height: 40px;
         width: 45%;
-        font-size: 16px;
+        font-size: 13px;
         border-color: #8e2510;
+    }
+    .date-and-buttons {
+        display: flex;
+        padding: 20px 0px;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .selectedDate {
+        font-size: 15px;
+        padding-bottom: 10px;
+        font-weight: 400;
+        margin: auto;
+    }
+
+    .fc .fc-toolbar {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 30px;
+        flex-wrap: wrap;
+    }
+
+    .fc .fc-toolbar-chunk .btn-group button {
+        background-color: #FDF9AA;
+        color: black;
+        border-color: #CAA971;
+        width: 55px;
+        height:40px;
+        font-weight: 500;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 20px;
+        text-align: center;
     }
 }
 
@@ -214,27 +349,6 @@
     font-size: 18px;
 }
 
-.fc .fc-toolbar {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 30px;
-    flex-wrap: wrap;
-}
-
-.fc .fc-toolbar-title {
-    font-size: 35px;
-    text-align: center;
-}
-
-.fc .fc-toolbar-chunk .btn-group button {
-    background-color: #FDF9AA;
-    color: black;
-    border-color: #CAA971;
-    width: 70px;
-    height:40px;
-    font-weight: 500;
-}
 
 .fc .fc-toolbar-chunk .btn-group button::first-letter {
    text-transform: capitalize;

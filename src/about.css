@@ -139,6 +139,27 @@
     gap: 15px; /* Space between testimonials */
     justify-items: center; /* Center items */
   }
+
+  .JROA-about-us {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .JROA-about-us .JROA-info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 60px;
+  }
+  
+  .JROA-about-us img {
+    width: 30%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 35px;
+  }
 }
 
 /* For laptop screens */
@@ -165,6 +186,27 @@
     gap: 15px; /* Space between testimonials */
     justify-items: center; /* Center items */
   }
+
+  .JROA-about-us {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .JROA-about-us .JROA-info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 60px;
+  }
+  
+  .JROA-about-us img {
+    width: 40%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 35px;
+  }
 }
 
 /* For tablet screens */
@@ -189,6 +231,27 @@
     grid-template-columns: repeat(1, 1fr);
     gap: 15px; /* Space between testimonials */
     justify-items: center; /* Center items */
+  }
+
+  .JROA-about-us {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .JROA-about-us .JROA-info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 60px;
+  }
+  
+  .JROA-about-us img {
+    width: 45%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 35px;
   }
 }
 
@@ -215,27 +278,31 @@
     gap: 15px; /* Space between testimonials */
     justify-items: center; /* Center items */
   }
-}
 
-.JROA-about-us {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
+  iframe {
+    width: 65%;
+  }
 
-.JROA-about-us .JROA-info {
-  display: flex;
-  flex-direction: column;
-  margin: 0 60px;
-}
+  .JROA-about-us {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-.JROA-about-us img {
-  width: 30%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0 35px;
+  .JROA-about-us .JROA-info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 12px;
+  }
+  
+  .JROA-about-us img {
+    width: 75%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 35px;
+  }
 }
 
 .JROA-info h2 {

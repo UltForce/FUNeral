@@ -338,6 +338,7 @@ const Content = () => {
                   value={formData.page}
                   onChange={handleFormChange}
                   required
+                  rows="10"
                 >
                   <option value="faqs">FAQs</option>
                   <option value="terms">Terms and Conditions</option>
@@ -365,6 +366,7 @@ const Content = () => {
                   value={formData.body}
                   onChange={handleFormChange}
                   required
+                  rows="10"
                 />
               </Form.Group>
               <br />
