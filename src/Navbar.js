@@ -208,7 +208,7 @@ const Navbar = () => {
             <ul>
               {isLoggedIn && (
                 <>
-                  <img alt=" " src="JROA_Banner.png" height="70px" />
+                  <img alt=" " src="JROA-FUNeral-Banner.png" height="70px" />
                   <li
                     className={
                       location.pathname === "/dashboard" ? "active" : ""
@@ -293,7 +293,7 @@ const Navbar = () => {
         </div>
       ) : (
         <nav className="top-navbar">
-          <img src="JROA.jpg" height="50px" alt="JROA Logo" />
+          <img src="JROA-FUNeral-Logo.png" height="50px" alt="JROA Logo" />
           <button onClick={toggleNavbar} className="navbar-toggle">
             {isNavbarCollapsed ? "☰" : "✖"} {/* Toggle icon */}
           </button>

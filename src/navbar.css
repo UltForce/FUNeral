@@ -44,10 +44,14 @@ nav ul li a .nav-label {
   left: 0;
   width: 250px;
   height: 100%;
-  background-color: #333;
+  background-color: #201c1c;
   color: white;
   z-index: 999; /* Ensure it's above other content */
   font-family: "Rubik";
+}
+
+.sidebar img {
+  width: 100%;
 }
 
 .sidebar ul {
@@ -142,8 +146,7 @@ nav ul li a .nav-label {
 
 /* Adjust the position of the brand logo */
 .top-navbar img {
-  height: 35px;
-  margin-right: 1rem;
+  height: 40px;
 }
 
 .menu {
