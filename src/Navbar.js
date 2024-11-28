@@ -70,6 +70,9 @@ const Navbar = () => {
 
   const toggleNavbar = () => {
     setIsNavbarCollapsed((prev) => !prev); // Toggle the collapsed state
+    setIsNotificationDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
+    setIsAccountDropdownOpen(false);
   };
 
   const toggleAccountDropdown = (e) => {
@@ -301,12 +304,12 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="about-dropdown">
-                  <button
+                  <a
                     onClick={toggleAboutDropdown}
                     className="about-planning-button"
                   >
                     About Us
-                  </button>
+                  </a>
                   {isAboutDropdownOpen && (
                     <div className="about-dropdown-content">
                       <Link to="/about"  onClick={() => {

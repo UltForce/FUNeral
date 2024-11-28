@@ -458,11 +458,29 @@ nav ul.centeredNav li.active a {
   padding: 8px 20px;
   display: block;
   text-decoration: none;
+  text-align: center;
 }
 
 .user-dropdown-content a:hover {
   background-color: #444; /* Darker background on hover */
   color: #FDF9AA;
+}
+
+.about-dropdown {
+  position: relative;
+}
+
+.about-dropdown-content {
+  display: block;
+  position: absolute;
+  top: 147%;
+  background-color: #FDF9AA;
+  color: #2b0a0a;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 165%;
 }
 
 .about-planning-button {
@@ -472,32 +490,23 @@ nav ul.centeredNav li.active a {
   font-size: 16px;
   background-color: #2b0a0a;
   border: none;
+  text-align: center;
+  cursor: pointer;
 }
 
 .about-planning-button:hover {
-  color: #f7e6a6;
-  font-weight: 600;
   background-color: #503535;
   border-radius: 20px;
-}
-
-.about-dropdown-content {
-    display: block;
-    position: absolute;
-    top: 10%;
-    background-color: #FDF9AA;
-    color: #2b0a0a;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+  color: #e5e5d6;
+  border: none;
 }
 
 .about-dropdown-content a {
   color: #2b0a0a;
-  padding: 8px 20px;
+  padding: 8px 10px;
   display: block;
   text-decoration: none;
+  text-align: center;
 }
 
 .about-dropdown-content a:hover {
@@ -570,6 +579,18 @@ nav ul.centeredNav li.active a {
     flex-direction: column; /* Stack menu items vertically */
     width: 100%; /* Full width */
   }
+
+  .about-dropdown-content {
+    display: block;
+    position: absolute;
+    top: 100%;
+    background-color: #FDF9AA;
+    color: #2b0a0a;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
 }
 
 /* For mobile screens */
@@ -609,4 +630,16 @@ nav ul.centeredNav li.active a {
     flex-direction: column; /* Stack menu items vertically */
     width: 100%; /* Full width */
   }
+
+  .about-dropdown-content {
+    display: block;
+    position: absolute;
+    top: 100%;
+    background-color: #FDF9AA;
+    color: #2b0a0a;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
 }
