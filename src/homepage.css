@@ -614,8 +614,14 @@
 }
 
 .gallery-header p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #18020c;
   font-family: 'Rubik';
-  font-size: 20px;
+  text-align: center;
+  text-justify: inter-word;
+  margin-left: 100px;
+  margin-right:100px;
 }
 
 /* Responsive adjustments */
@@ -655,7 +661,7 @@
   align-items: center;
   padding: 70px;
   background-color: #caa971;
-  font-family: Arial, sans-serif;
+  font-family: "Rubik";
 }
 
 /* Image container */
@@ -691,24 +697,27 @@
 .text-container {
   flex: 1;
   padding: 20px;
-  color: #f9f9f9;
+  color: #18020c;
   max-width: 1000px;
   text-align: justify;
 }
 
 .text-container h3 {
-  font-family: "Rubrik";
-  font-size: 24px;
+  font-family: 'Rubik';
+  font-size: 23px;
   font-weight: 500;
-  color: #f7e6a6;
+  color: #18020c;
   margin-bottom: 15px;
 }
 
 .text-container p {
   font-size: 16px;
   line-height: 1.6;
-  color: #333;
+  color:#18020c;
   font-family: 'Rubik';
+  text-align: justify;
+  text-justify: inter-word;
+
 }
 
 .carousel-caption-bottom {
