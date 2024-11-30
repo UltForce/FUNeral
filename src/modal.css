@@ -17,8 +17,8 @@
   border-radius: 8px;
   width: 80%; /* Adjust width if needed */
   max-width: 800px; /* Larger maximum width */
-  height: 80%; /* Adjust height to make it taller */
-  max-height: 90%; /* Increase the max-height to allow for a taller modal */
+  height: auto; /* Adjust height to make it taller */
+  max-height: 100%; /* Increase the max-height to allow for a taller modal */
   overflow: auto;
   transition: none; /* Disable any animations */
   animation: none; /* Explicitly remove animation */

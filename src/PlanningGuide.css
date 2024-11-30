@@ -20,29 +20,45 @@
 .label-user{
   text-align: center;
   color: #18020c;
-
+  text-decoration: underline;
+  font-size: 25px;
+  margin: auto 35px;
 }
 
 .label-manager{
   text-align: center;
-  color: #FDF9AA;
-
+  color: #fffdd6;
+  text-decoration: underline;
+  font-size: 25px;
+  margin: auto 35px;
 }
 
 .for-user{
   background-color: #FDF9AA;
   flex: 1;
   padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
 }
 
 .for-manager{
   background-color: #CAA971;
   flex: 1;
   padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.for-user ol, .for-manager ol {
+  margin: 20px;
+}
+
+.for-user ul {
+  font-weight: 400;
 }
 
 .manager-text{
-  color: #FDF9AA;
+  color: #fffdd6;
 }
 
 
@@ -61,8 +77,21 @@
     height: auto;
 }
 
+.planning-decription .FUNeral-title {
+  margin-left: 15px;
+}
 
+.steps h1 {
+  color: #c08219;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 1px black;
+  font-weight: 700;
+  font-family: 'Rubik';
+}
 
+.steps p {
+  margin: 15px auto;
+}
 
 
 /* For desktop screens */
@@ -85,17 +114,17 @@
       text-align: justify;
     }
     .planning-container .steps {
-      padding: 40px 165px 0px;
+      padding: 40px 165px 30px;
       font-size: 18px;
       font-family: 'Rubik';
       text-align: justify; 
   }
-  .planning-container .pov-container {
+  .pov-container {
            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             display: flex;
-            gap: 20px;
+            gap: 10px;
   }
     
 }
@@ -120,7 +149,7 @@
       text-align: justify;
     }
     .planning-container .steps {
-      padding: 40px 125px 0px;
+      padding: 40px 125px 30px;
       font-size: 18px;
       font-family: 'Rubik';
       text-align: justify;
@@ -150,7 +179,7 @@
       text-align: justify;
     }
     .planning-container .steps {
-      padding: 40px 100px 0px;
+      padding: 40px 100px 30px;
       font-size: 18px;
       font-family: 'Rubik';
       text-align: justify;
@@ -175,13 +204,13 @@
     }
   
     .planning-container .end-terms {
-      padding: 10px 43px 40px;
+      margin: 10px 43px 40px;
       font-size: 18px;
       font-family: 'Rubik';
       text-align: justify;
     }
     .planning-container .steps {
-      padding: 40px 43px 0px;
+      padding: 40px 43px 30px;
       font-size: 18px;
       font-family: 'Rubik';
       text-align: justify;
@@ -199,10 +228,11 @@
     position: fixed;
     z-index: 1;
       top: 320px;
-      left: -5px;
+      left: -14px;
     background: #2b0a0a;
     overflow-x: hidden;
     padding: 8px 0;
+    border-radius: 10px;
   }
   
   .number a {

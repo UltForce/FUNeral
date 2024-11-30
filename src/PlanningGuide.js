@@ -22,7 +22,7 @@ const PlanningGuide = () => {
     <section className="planning-container">
       <div className="planning-decription">
         <p>
-        <b>FUNeral</b> can help you book a meeting with <b>JROA Funeral Service</b>, where you can discuss your loved one's wishes and any essential cultural or religious customs. Together, we'll navigate the funeral services, ensuring your needs and feelings are prioritized throughout the process.   
+        <b className="FUNeral-title">FUNeral</b> can help you book a meeting with <b>J.ROA Funeral Service</b>, where you can discuss your loved one's wishes and any essential cultural or religious customs. Together, we'll navigate the funeral services, ensuring your needs and feelings are prioritized throughout the process.   
         With the help of our chatbot, it is just a click away. We are ready to offer tips on coping with grief and help you explore our resources. Together, we'll ensure that all the logistics are handled carefully, prioritizing your needs and emotions throughout this challenging time. 
         Let's cherish their memory together.
         </p>
@@ -77,6 +77,7 @@ const PlanningGuide = () => {
                     </li>
                 </ol>
            </div>
+           <br/>
            <div className="for-manager">
            <h2 className="label-manager">Funeral Manager's Perspective:</h2>
            <ol className="manager-text">
@@ -140,6 +141,7 @@ const PlanningGuide = () => {
                     </li>
                 </ol>
            </div>
+           <br/>
            <div className="for-manager">
            <h2 className="label-manager">Funeral Manager's Perspective:</h2>
            <ol className="manager-text">
@@ -211,6 +213,7 @@ const PlanningGuide = () => {
                     </li>
                 </ol>
            </div>
+           <br/>
            <div className="for-manager">
            <h2 className="label-manager">Funeral Manager's Perspective:</h2>
            <ol className="manager-text">
@@ -272,6 +275,7 @@ const PlanningGuide = () => {
                     </li>
                 </ol>
            </div>
+           <br/>
            <div className="for-manager">
            <h2 className="label-manager">Funeral Manager's Perspective:</h2>
            <ol className="manager-text">
@@ -319,6 +323,7 @@ const PlanningGuide = () => {
                     
                 </ol>
            </div>
+           <br/>
            <div className="for-manager">
            <h2 className="label-manager">Funeral Manager's Perspective:</h2>
            <ol className="manager-text">
