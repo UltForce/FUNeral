@@ -65,7 +65,7 @@ const Services = () => {
       description:
         "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care." ,
       inclusionslist: 
-        "Casket , Curtain , Flower Stand , Carpet, Set of Lights and Candle",
+        "Casket , Curtain , Flower Stand , Carpet, Set of Lights and Candle,Traditional Filipino Clothing",
       
       imagePath: "/funeral pics/basicwake.png", // Unique image
       modelPaths: {

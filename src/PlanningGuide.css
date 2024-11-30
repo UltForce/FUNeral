@@ -14,7 +14,37 @@
     align-items: center;
     flex-direction: column;
     font-size: 50px;
+    color: #2b0a0a;
 }
+
+.label-user{
+  text-align: center;
+  color: #18020c;
+
+}
+
+.label-manager{
+  text-align: center;
+  color: #FDF9AA;
+
+}
+
+.for-user{
+  background-color: #FDF9AA;
+  flex: 1;
+  padding: 20px;
+}
+
+.for-manager{
+  background-color: #CAA971;
+  flex: 1;
+  padding: 20px;
+}
+
+.manager-text{
+  color: #FDF9AA;
+}
+
 
 .planning-border {
     display: block;
@@ -25,14 +55,170 @@
 }
 
 .planning-container {
-    padding: 20px;
-    /* scroll-snap-type: y mandatory;
-    overflow-y: auto; */
-    height: auto;
+    min-height: 60vh !important; /* Full height */
+    font-family: 'Rubik';
     background-color: #FCF2D8;
-    font-family: "Rubik";
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
+    height: auto;
 }
+
+
+
+
+
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+    .planning-container .planning-decription {
+      padding: 40px 165px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    
+    .planning-container .planning-decription p {
+      margin-bottom: 0px;
+    }
+  
+    .planning-container .end-terms {
+      padding: 10px 165px 40px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    .planning-container .steps {
+      padding: 40px 165px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify; 
+  }
+  .planning-container .pov-container {
+           max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+  }
+    
+}
+  
+  /* For laptop screens */
+  @media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .planning-container .planning-decription {
+      padding: 40px 125px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    
+    .planning-container .planning-decription p {
+      margin-bottom: 0px;
+    }
+  
+    .planning-container .end-terms {
+      padding: 10px 125px 40px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    .planning-container .steps {
+      padding: 40px 125px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    .planning-container .user-pov  {
+      background-color: #fffad5;
+  }
+  }
+  
+  /* For tablet screens */
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .planning-container .planning-decription {
+      padding: 40px 100px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    
+    .planning-container .planning-decription p {
+      margin-bottom: 0px;
+    }
+  
+    .planning-container .end-terms {
+      padding: 10px 100px 40px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    .planning-container .steps {
+      padding: 40px 100px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    .planning-container .user-pov {
+      background-color: #fffad5;
+  }
+  }
+  
+  /* For mobile screens */
+  @media only screen and (max-width: 767px) {
+    .planning-container .planning-decription {
+      padding: 40px 43px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+      margin-left: 50px;
+    }
+    
+    .planning-container .planning-decription p {
+      margin-bottom: 0px;
+    }
+  
+    .planning-container .end-terms {
+      padding: 10px 43px 40px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+    }
+    .planning-container .steps {
+      padding: 40px 43px 0px;
+      font-size: 18px;
+      font-family: 'Rubik';
+      text-align: justify;
+      margin-left: 50px;
+    }
+
+    .planning-container .user-pov {
+      background-color: #fffad5;
+  }
+  
+  }
+  
+  .number {
+    width: 90px;
+    position: fixed;
+    z-index: 1;
+      top: 320px;
+      left: -5px;
+    background: #2b0a0a;
+    overflow-x: hidden;
+    padding: 8px 0;
+  }
+  
+  .number a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #FCF2D8;
+    display: block;
+    text-align: center;
+  }
+  
+  .number a:hover {
+    color: #FDF9AA;
+  }
+
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }

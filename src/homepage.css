@@ -679,6 +679,7 @@
   border-radius: 150px; /* Rounded corners */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   position: absolute;
+  
 }
 
 /* Position each image with an offset to create overlap */
@@ -686,11 +687,17 @@
   left: -10px; /* Move the first image slightly to the left */
   top: -250px; /* Move the first image slightly up */
   z-index: 0; /* Make it appear above the second image */
+  outline:3px solid #FDF9AA;
+  outline-offset: 40px;
+ 
 }
 
 .rounded-image:last-child {
   left: 150px; /* Move the second image slightly to the right */
   top: -150px; /* Move the second image slightly down */
+  outline:3px solid #FDF9AA;
+  outline-offset: 40px;
+ 
 }
 
 /* Text container */
