@@ -463,6 +463,14 @@
     overflow: scroll;
     width: 315px;
   }
+
+  .images-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+  }
 }
 
 
@@ -670,6 +678,7 @@
   flex: 1;
   display: flex;
   justify-content: center;
+  margin: 10px;
 }
 
 /* Overlapping images */
@@ -712,7 +721,7 @@
 .text-container h3 {
   font-family: 'Rubik';
   font-size: 23px;
-  font-weight: 500;
+  font-weight: 700;
   color: #18020c;
   margin-bottom: 15px;
 }

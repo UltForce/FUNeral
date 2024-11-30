@@ -1,13 +1,31 @@
-import React, { useState } from "react";
 import "./PlanningGuide.css"; // Import CSS file for styling
 import { useNavigate } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
 
 const PlanningGuide = () => {
   
   
   const navigate = useNavigate(); // Initialize navigate function
+  const location = useLocation();
 
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        const headerOffset = 10; // Adjust this value based on your header height
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }
+  }, [location]);
 
   return (
     

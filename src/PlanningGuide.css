@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .planning-guide {
     background-color: #caa971;
     font-family: "Rubik";
@@ -15,22 +19,7 @@
     flex-direction: column;
     font-size: 50px;
     color: #2b0a0a;
-}
-
-.label-user{
-  text-align: center;
-  color: #18020c;
-  text-decoration: underline;
-  font-size: 25px;
-  margin: auto 35px;
-}
-
-.label-manager{
-  text-align: center;
-  color: #fffdd6;
-  text-decoration: underline;
-  font-size: 25px;
-  margin: auto 35px;
+    text-align: center;
 }
 
 .for-user{
@@ -47,10 +36,6 @@
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
-}
-
-.for-user ol, .for-manager ol {
-  margin: 20px;
 }
 
 .for-user ul {
@@ -126,6 +111,26 @@
             display: flex;
             gap: 10px;
   }
+
+  .for-user ol, .for-manager ol {
+    margin: 20px;
+  }
+
+  .label-user{
+    text-align: center;
+    color: #18020c;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+  
+  .label-manager{
+    text-align: center;
+    color: #fffdd6;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
     
 }
   
@@ -157,7 +162,27 @@
     .planning-container .user-pov  {
       background-color: #fffad5;
   }
+
+  .for-user ol, .for-manager ol {
+    margin: 20px;
   }
+
+  .label-user{
+    text-align: center;
+    color: #18020c;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+  
+  .label-manager{
+    text-align: center;
+    color: #fffdd6;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+}
   
   /* For tablet screens */
   @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -187,7 +212,27 @@
     .planning-container .user-pov {
       background-color: #fffad5;
   }
+
+  .for-user ol, .for-manager ol {
+    margin: 20px;
   }
+
+  .label-user{
+    text-align: center;
+    color: #18020c;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+  
+  .label-manager{
+    text-align: center;
+    color: #fffdd6;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+}
   
   /* For mobile screens */
   @media only screen and (max-width: 767px) {
@@ -201,6 +246,7 @@
     
     .planning-container .planning-decription p {
       margin-bottom: 0px;
+      font-size: 15px;
     }
   
     .planning-container .end-terms {
@@ -211,7 +257,7 @@
     }
     .planning-container .steps {
       padding: 40px 43px 30px;
-      font-size: 18px;
+      font-size: 15px;
       font-family: 'Rubik';
       text-align: justify;
       margin-left: 50px;
@@ -219,6 +265,32 @@
 
     .planning-container .user-pov {
       background-color: #fffad5;
+  }
+
+  .for-user ol, .for-manager ol {
+    margin: 15px 0px;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .label-user{
+    text-align: center;
+    color: #18020c;
+    text-decoration: underline;
+    font-size: 20px;
+    margin: auto 35px;
+  }
+  
+  .label-manager{
+    text-align: center;
+    color: #fffdd6;
+    text-decoration: underline;
+    font-size: 20px;
+    margin: auto 35px;
+  }
+
+  .steps h1 {
+    text-align: center;
   }
   
   }

@@ -536,6 +536,7 @@ nav ul.centeredNav li.active a {
   .top-navbar .menu {
     display: flex; /* Ensure menu is displayed as a row */
     flex-direction: row; /* Ensure items are in a row */
+    text-align: center;
   }
 
   .top-navbar .menu.collapsed {

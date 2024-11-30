@@ -189,12 +189,22 @@ const About = () => {
 
   // List of images and text to display
   const images = [
-    { src: "/steps/step1.png", text: "Step 1: Set a date to appoint the deceased's wishes and service types while confirming the wake to burial schedules." },
-    { src: "/steps/step2.png", text: "Step2: Finalize the funeral package that fits your budget, and make the necessary financial arrangements, considering payment plans if needed." },
-    { src: "/steps/step3.png", text: "Step3: Participate in the seven-day wake, where friends and family gather to honor the deceased, share memories, and observe cultural or religious rites." },
-    { src: "/steps/step4.png", text: "Step4: Attend the burial session; this marks the final farewell of our beloved deceased to a designated cemetery." },
-    { src: "/steps/step5.png", text: "Step5: Grieving continues after the burial. Honor your emotions and create a healing environment for the bereaved." },
+    { src: "/steps/step1.png", text: "<h1><strong>STEP 1:</strong></h1><br/> Set a date to appoint the deceased's wishes and service types while confirming the wake to burial schedules.", stepId: "step1" },
+    { src: "/steps/step2.png", text: "<h1><strong>STEP 2:</strong></h1><br/> Finalize the funeral package that fits your budget, and make the necessary financial arrangements, considering payment plans if needed.", stepId: "step2" },
+    { src: "/steps/step3.png", text: "<h1><strong>STEP 3:</strong></h1><br/> Participate in the seven-day wake, where friends and family gather to honor the deceased, share memories, and observe cultural or religious rites.", stepId: "step3" },
+    { src: "/steps/step4.png", text: "<h1><strong>STEP 4:</strong></h1><br/> Attend the burial session; this marks the final farewell of our beloved deceased to a designated cemetery.", stepId: "step4" },
+    { src: "/steps/step5.png", text: "<h1><strong>STEP 5:</strong></h1><br/> Grieving continues after the burial. Honor your emotions and create a healing environment for the bereaved.", stepId: "step5" },
   ];
+
+  // Function to handle navigation to the Planning Guide
+  const handleSeeMore = (stepId) => {
+    console.log("Navigating to:", stepId); // Debugging line
+    if (stepId) {
+      navigate(`/planningguide#${stepId}`);
+    } else {
+      console.error("Step ID is undefined");
+    }
+ }
 
   return (
     <main className="main-content">
@@ -257,7 +267,8 @@ const About = () => {
                     style={{ backgroundImage: `url(${image.src})` }}
                   ></div>
                   <div className="back">
-                    <p>{image.text}</p>
+                    <p dangerouslySetInnerHTML={{ __html: image.text }} />
+                    <button className="see-more-button" onClick={() => handleSeeMore(image.stepId)}>See More</button>
                   </div>
                 </div>
               </div>
