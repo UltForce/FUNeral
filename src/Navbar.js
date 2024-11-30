@@ -327,6 +327,15 @@ const Navbar = () => {
                       >
                         Planning Guide
                       </Link>
+                      <Link
+                        to="/blog"
+                        onClick={() => {
+                          setIsAboutDropdownOpen(false);
+                          toggleNavbar();
+                        }}
+                      >
+                        Blogs
+                      </Link>
                     </div>
                   )}
                 </li>
