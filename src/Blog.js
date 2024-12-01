@@ -13,7 +13,7 @@ return (
     <main className="main-content">
     <section className="blog">
       <div>
-        <h1 className="blog-title">BLOGS</h1>
+        <h1 className="blog-title">BLOGS & ARTICLES</h1>
         <div className="blog-border"></div>
       </div>
     </section>
