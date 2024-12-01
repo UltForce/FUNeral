@@ -63,10 +63,10 @@ const Services = () => {
       info: "A basic funeral service package with essential items included.",
       price: "PHP 25,000",
       description:
-        "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care." ,
-      inclusionslist: 
+        "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care.",
+      inclusionslist:
         "Casket , Curtain , Flower Stand , Carpet, Set of Lights and Candle,Traditional Filipino Clothing",
-      
+
       imagePath: "/funeral pics/basicwake.png", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan1.glb",
@@ -75,6 +75,7 @@ const Services = () => {
           flowers: ["/3DModels/Plan1_flowers.glb"],
           candles: ["/3DModels/Plan1_candles.glb"],
           curtains: ["/3DModels/Plan1_curtain.glb"],
+          tarp: ["/3DModels/tarp.glb"],
         },
       },
     },
@@ -83,8 +84,9 @@ const Services = () => {
       title: "Garden Package",
       info: "A premium package with elegant garden-themed items.",
       price: "PHP 50,000",
-      description: "The premium package, designed specifically for funeral wakes, features an exquisite selection of garden-themed items. This collection includes beautifully arranged floral displays and tasteful decorative accents that evoke a sense of peace and serenity, providing a comforting atmosphere for your loved one's farewell.",
-      inclusionslist: 
+      description:
+        "The premium package, designed specifically for funeral wakes, features an exquisite selection of garden-themed items. This collection includes beautifully arranged floral displays and tasteful decorative accents that evoke a sense of peace and serenity, providing a comforting atmosphere for your loved one's farewell.",
+      inclusionslist:
         "Casket , Curtain , Flower Stand , Casket Spray Flowers , Carpet, Set of Lights and Candle , Traditional Filipino Clothing",
       imagePath: "/funeral pics/gardenwake.png", // Unique image
       modelPaths: {
@@ -94,6 +96,7 @@ const Services = () => {
           flowers: ["/3DModels/Plan2_flowers.glb"],
           candles: ["/3DModels/Plan2_candles.glb"],
           curtains: ["/3DModels/Plan2_curtain.glb"],
+          tarp: ["/3DModels/tarp.glb"],
         },
       },
     },
@@ -102,8 +105,9 @@ const Services = () => {
       title: "Garbo Package",
       info: "The ultimate funeral service package with luxurious items.",
       price: "PHP 280,000",
-      description: "The ultimate funeral service package offers a comprehensive selection of luxurious items designed to provide comfort and dignity during a difficult time. This package includes elegant caskets, beautifully crafted memorial displays, personalized cabinetry, and premium floral arrangements. Each element is carefully chosen to reflect the unique life and legacy of your loved one, ensuring that every aspect of the service is a proper tribute.",
-      inclusionslist: 
+      description:
+        "The ultimate funeral service package offers a comprehensive selection of luxurious items designed to provide comfort and dignity during a difficult time. This package includes elegant caskets, beautifully crafted memorial displays, personalized cabinetry, and premium floral arrangements. Each element is carefully chosen to reflect the unique life and legacy of your loved one, ensuring that every aspect of the service is a proper tribute.",
+      inclusionslist:
         "Casket , Curtain , Flower Stand , Casket Spray Flowers, Lamps Flower, Carpet, Set of Lights and Candle, Traditional Filipino Clothing ",
       imagePath: "/funeral pics/garbowake.png", // Unique image
       modelPaths: {
@@ -113,6 +117,7 @@ const Services = () => {
           flowers: ["/3DModels/Plan3_flowers.glb"],
           candles: ["/3DModels/Plan3_candles.glb"],
           curtains: ["/3DModels/Plan3_curtain.glb"],
+          tarp: ["/3DModels/tarp.glb"],
         },
       },
     },
@@ -176,7 +181,18 @@ const Services = () => {
       <div className="services-container">
         <section className="services-section">
           <h1 className="funeral-pack-title">Funeral Packages</h1>
-          <p className="funeral-description">Funeral packages are thoughtfully crafted service bundles designed to ease the planning and organization of a funeral. These comprehensive packages play a crucial role in honoring the memory of a loved one, tailored to accommodate a wide range of personal preferences and financial considerations. By offering a customizable selection of services, we ensure that the distinctive needs of every family are met, providing a streamlined and compassionate approach to commemorating their loved ones. This allows families to celebrate the life and legacy of the deceased with the dignity and respect they deserve, creating a meaningful tribute. </p>
+          <p className="funeral-description">
+            Funeral packages are thoughtfully crafted service bundles designed
+            to ease the planning and organization of a funeral. These
+            comprehensive packages play a crucial role in honoring the memory of
+            a loved one, tailored to accommodate a wide range of personal
+            preferences and financial considerations. By offering a customizable
+            selection of services, we ensure that the distinctive needs of every
+            family are met, providing a streamlined and compassionate approach
+            to commemorating their loved ones. This allows families to celebrate
+            the life and legacy of the deceased with the dignity and respect
+            they deserve, creating a meaningful tribute.{" "}
+          </p>
           <div className="card-grid">
             {packages.map((pkg) => (
               <div key={pkg.id} className="card">
@@ -214,9 +230,13 @@ const Services = () => {
                   {/* Dynamic image */}
                   <div className="modal-description">
                     <h2>{selectedPackage.title}</h2>
-                    <p className="package-desc">{selectedPackage.description}</p>
-                    <p className="inclusion-list"><strong>Inclusion: </strong>
-                    {selectedPackage. inclusionslist}</p>
+                    <p className="package-desc">
+                      {selectedPackage.description}
+                    </p>
+                    <p className="inclusion-list">
+                      <strong>Inclusion: </strong>
+                      {selectedPackage.inclusionslist}
+                    </p>
                   </div>
                   <div className="modal-buttons">
                     <button
@@ -241,6 +261,7 @@ const Services = () => {
                         <option value="flowers">Flowers</option>
                         <option value="candles">Candles</option>
                         <option value="curtains">Curtains</option>
+                        <option value="tarp">Tarps</option>
                       </select>
                     </div>
                   </div>
