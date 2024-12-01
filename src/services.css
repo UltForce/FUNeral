@@ -125,60 +125,9 @@
   background-color: #f0f0f0; /* Optional: for better visibility */
 }
 
-.services-modal-box {
-  display: block;
-  border: 1px solid #4d4642; 
-  border-radius: 20px; 
-  background-color:#FCF2D8;
-  padding: 30px 25px;
-}
-
-.services-modal-box img {
-  width: 42%;
-  height: auto;
-  border-radius: 10px;
-  margin: 10px;
-}
-
-.services-modal-box .funeral-package-details {
-  display: flex;
-  flex-direction: row;
-  font-family: "Rubik";
-  align-items: center;
-}
-
-.services-modal-box .funeral-desc-inclusion {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
 .services-modal-box .modal-description {
   text-align: center;
   margin: auto;
-}
-
-.modal-description h2 {
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 30px;
-  text-decoration: underline;
-}
-
-.modal-description p {
-  font-size: 14px;
-}
-
-.modal-description .package-desc {
-  margin: 15px 30px 25px;
-  text-align: justify;
-}
-
-.modal-description .inclusion-list {
-  margin: 0px 30px 25px;
 }
 
 .services-modal-box .show-3d-button {
@@ -199,6 +148,7 @@
 .services-modal-box .services-inclusion-select {
   margin-top: 10px;
   font-size: 14px;
+  text-align: center;
 }
 
 .services-modal-box .modal-buttons label {
@@ -266,6 +216,57 @@
     margin-right:100px;
     font-size: 15px;
   }
+
+  .services-modal-box .funeral-package-details {
+    display: flex;
+    flex-direction: row;
+    font-family: "Rubik";
+    align-items: center;
+  }
+  
+  .services-modal-box .funeral-desc-inclusion {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .modal-description h2 {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 30px;
+    text-decoration: underline;
+  }
+  
+  .modal-description p {
+    font-size: 14px;
+  }
+  
+  .modal-description .package-desc {
+    margin: 15px 30px 25px;
+    text-align: justify;
+  }
+  
+  .modal-description .inclusion-list {
+    margin: 0px 30px 25px;
+  }
+
+  .services-modal-box img {
+    width: 42%;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px;
+  }
+
+  .services-modal-box {
+    display: block;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+    padding: 30px 25px;
+  }
 }
 
 /* For laptop screens */
@@ -300,6 +301,57 @@
     margin-left: 100px;
     margin-right:100px;
     font-size: 15px;
+  }
+
+  .services-modal-box .funeral-package-details {
+    display: flex;
+    flex-direction: row;
+    font-family: "Rubik";
+    align-items: center;
+  }
+  
+  .services-modal-box .funeral-desc-inclusion {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .modal-description h2 {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 30px;
+    text-decoration: underline;
+  }
+  
+  .modal-description p {
+    font-size: 14px;
+  }
+  
+  .modal-description .package-desc {
+    margin: 15px 30px 25px;
+    text-align: justify;
+  }
+  
+  .modal-description .inclusion-list {
+    margin: 0px 30px 25px;
+  }
+
+  .services-modal-box img {
+    width: 42%;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px;
+  }
+
+  .services-modal-box {
+    display: block;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+    padding: 30px 25px;
   }
 }
 
@@ -337,6 +389,57 @@
     margin-right:100px;
     font-size: 15px;
   }
+
+  .services-modal-box .funeral-package-details {
+    display: flex;
+    flex-direction: row;
+    font-family: "Rubik";
+    align-items: center;
+  }
+  
+  .services-modal-box .funeral-desc-inclusion {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .modal-description h2 {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 30px;
+    text-decoration: underline;
+  }
+  
+  .modal-description p {
+    font-size: 14px;
+  }
+  
+  .modal-description .package-desc {
+    margin: 15px 30px 25px;
+    text-align: justify;
+  }
+  
+  .modal-description .inclusion-list {
+    margin: 0px 30px 25px;
+  }
+
+  .services-modal-box img {
+    width: 42%;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px;
+  }
+
+  .services-modal-box {
+    display: block;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+    padding: 30px 25px;
+  }
 }
 
 /* For mobile screens */
@@ -369,6 +472,57 @@
     text-align: justify;
     margin: 10px 20px 0px;
     font-size: 15px;
+  }
+
+  .services-modal-box .funeral-package-details {
+    display: flex;
+    flex-direction: column;
+    font-family: "Rubik";
+    align-items: center;
+  }
+  
+  .services-modal-box .funeral-desc-inclusion {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .modal-description h2 {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 23px;
+    text-decoration: underline;
+  }
+  
+  .modal-description p {
+    font-size: 11px;
+  }
+  
+  .modal-description .package-desc {
+    margin: 15px 0px 25px;
+    text-align: justify;
+  }
+  
+  .modal-description .inclusion-list {
+    margin: 0px 0px 10px;
+  }
+
+  .services-modal-box img {
+    width: 65%;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px;
+  }
+
+  .services-modal-box {
+    display: block;
+    border: 1px solid #4d4642; 
+    border-radius: 20px; 
+    background-color:#FCF2D8;
+    padding: 12px 25px;
   }
 }
 
