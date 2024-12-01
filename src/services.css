@@ -130,24 +130,35 @@
   border: 1px solid #4d4642; 
   border-radius: 20px; 
   background-color:#FCF2D8;
-  padding: 30px 15px;
+  padding: 30px 25px;
 }
 
 .services-modal-box img {
-  width: 30%;
+  width: 42%;
   height: auto;
   border-radius: 10px;
+  margin: 10px;
 }
 
 .services-modal-box .funeral-package-details {
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   font-family: "Rubik";
+  align-items: center;
+}
+
+.services-modal-box .funeral-desc-inclusion {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .services-modal-box .modal-description {
   text-align: center;
+  margin: auto;
 }
 
 .modal-description h2 {
@@ -162,12 +173,12 @@
 }
 
 .modal-description .package-desc {
-  margin: 15px 90px 25px;
+  margin: 15px 30px 25px;
   text-align: justify;
 }
 
 .modal-description .inclusion-list {
-  margin: 0px 90px 25px;
+  margin: 0px 30px 25px;
 }
 
 .services-modal-box .show-3d-button {

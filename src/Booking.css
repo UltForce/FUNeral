@@ -318,9 +318,11 @@
     .fc .fc-toolbar {
         align-items: center;
         display: flex;
-        justify-content: space-between;
         padding: 0px 30px;
         flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        flex-direction: column;
     }
 
     .fc .fc-toolbar-chunk .btn-group button {
@@ -335,6 +337,7 @@
     .fc .fc-toolbar-title {
         font-size: 20px;
         text-align: center;
+        margin: 5px;
     }
 }
 

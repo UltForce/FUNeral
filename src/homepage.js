@@ -433,7 +433,6 @@ const Homepage = () => {
                 alt={activeArticle.title}
                 style={{
                   width: "100%",
-                  marginBottom: "20px",
                   borderRadius: "8px",
                 }}
               />

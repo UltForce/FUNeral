@@ -228,6 +228,7 @@ const Services = () => {
                     alt="funeral-package img"
                   />{" "}
                   {/* Dynamic image */}
+                  <div className="funeral-desc-inclusion">
                   <div className="modal-description">
                     <h2>{selectedPackage.title}</h2>
                     <p className="package-desc">
@@ -264,6 +265,7 @@ const Services = () => {
                         <option value="tarp">Tarps</option>
                       </select>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
