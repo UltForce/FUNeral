@@ -31,11 +31,43 @@
   margin-top: auto;
 }
 
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  /* Padding for the main content with increased specificity */
+  .dashboard-appointment .main-content {
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
+    margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  /* Padding for the main content with increased specificity */
 .dashboard-appointment .main-content {
   flex-grow: 1 !important;
   background-color: #caa971 !important; /* Maintain background */
   padding: 20px !important;
   margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+ /* Padding for the main content with increased specificity */
+.dashboard-appointment .main-content {
+  flex-grow: 1 !important;
+  background-color: #caa971 !important; /* Maintain background */
+  padding: 20px !important;
+}
+}
+
+@media only screen and (max-width: 767px) {
+  .dashboard-appointment .main-content {
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
+  }
 }
 
 .appointments-dashboard-box {

@@ -36,6 +36,7 @@ nav ul li a .nav-label {
 /* Sidebar styles */
 .sidebar-container {
   display: flex;
+  transition: transform 0.3s ease; /* Add transition for smooth effect */
 }
 
 .sidebar {
@@ -48,6 +49,21 @@ nav ul li a .nav-label {
   color: white;
   z-index: 999; /* Ensure it's above other content */
   font-family: "Rubik";
+  transform: translateX(0); /* Default position */
+}
+
+.sidebar.visible {
+  opacity: 1; /* Fully visible */
+  visibility: visible; /* Make it visible */
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%); /* Move sidebar out of view */
+}
+
+/* Toggle button styles */
+.sidebar-toggle {
+  display: none; /* Hide by default */
 }
 
 .sidebar img {
@@ -57,7 +73,6 @@ nav ul li a .nav-label {
 .sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .sidebar ul li {
@@ -86,6 +101,74 @@ nav ul li a .nav-label {
   background-color: #444; /* Darker background on hover */
   transform: scale(1.05); /* Slightly increase size on hover */
   border-radius: 20px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .sidebar-toggle {
+    border: none;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: -5px;
+    z-index: 1000;
+    width: 6%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #201c1c;
+    color: white;
+    font-weight: 900;
+    font-size: x-large;
+    margin: 0px;
+    padding: 10px;
+  }
+
+  .sidebar {
+    transform: translateX(-100%); /* Hide sidebar by default */
+  }
+
+  .sidebar-container.visible .sidebar {
+    transform: translateX(0); /* Show sidebar when visible */
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 50px 0 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .sidebar-toggle {
+    border: none;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: -7px;
+    z-index: 1000;
+    width: 45px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #201c1c;
+    color: white;
+    font-weight: 900;
+    font-size: x-large;
+    margin: 0px;
+    padding: 10px;
+  }
+
+  .sidebar {
+    transform: translateX(-100%); /* Hide sidebar by default */
+  }
+
+  .sidebar-container.visible .sidebar {
+    transform: translateX(0); /* Show sidebar when visible */
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 65px 0 0;
+  }
 }
 
 /* Adjust the content area to account for sidebar width */

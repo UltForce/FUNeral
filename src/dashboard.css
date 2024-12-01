@@ -23,14 +23,6 @@
   padding: 18px 38px;
 }
 
-/* Padding for the main content with increased specificity */
-.admin-dashboard .main-content {
-  flex-grow: 1 !important;
-  background-color: #caa971 !important; /* Maintain background */
-  padding: 20px !important;
-  margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
-}
-
 /* Sidebar navigation styling with high specificity */
 .admin-dashboard .sidebar-nav ul {
   list-style: none !important;
@@ -111,9 +103,44 @@
   .admin-dashboard .sidebar {
     width: 180px !important;
   }
+}
 
+/* For desktop screens */
+@media only screen and (min-width: 1200px) {
+  /* Padding for the main content with increased specificity */
   .admin-dashboard .main-content {
-    margin-left: 200px !important;
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
+    margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+  }
+}
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  /* Padding for the main content with increased specificity */
+.admin-dashboard .main-content {
+  flex-grow: 1 !important;
+  background-color: #caa971 !important; /* Maintain background */
+  padding: 20px !important;
+  margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+ /* Padding for the main content with increased specificity */
+.admin-dashboard .main-content {
+  flex-grow: 1 !important;
+  background-color: #caa971 !important; /* Maintain background */
+  padding: 20px !important;
+}
+}
+
+@media only screen and (max-width: 767px) {
+  .admin-dashboard .main-content {
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
   }
 }
 

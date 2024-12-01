@@ -54,6 +54,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(true); // New state for navbar collapse
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // New state for sidebar visibility
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
@@ -71,8 +72,13 @@ const Navbar = () => {
   const toggleNavbar = () => {
     setIsNavbarCollapsed((prev) => !prev); // Toggle the collapsed state
     setIsNotificationDropdownOpen(false);
+    setIsSidebarVisible(false);
     setIsAboutDropdownOpen(false);
     setIsAccountDropdownOpen(false);
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarVisible((prev) => !prev); // Toggle the sidebar visibility
   };
 
   const toggleAccountDropdown = (e) => {
@@ -203,8 +209,11 @@ const Navbar = () => {
   return (
     <>
       {isAdmin ? (
-        <div className="sidebar-container">
-          <nav className="sidebar">
+        <div className={`sidebar-container ${isSidebarVisible ? 'visible' : ''}`}>
+          <button onClick={toggleSidebar} className="sidebar-toggle">
+            {isSidebarVisible ? "✖" : "☰"}
+          </button>
+          <nav className={`sidebar ${isSidebarVisible ? '' : 'visible'}`}>
             <ul>
               {isLoggedIn && (
                 <>
@@ -214,7 +223,7 @@ const Navbar = () => {
                       location.pathname === "/dashboard" ? "active" : ""
                     }
                   >
-                    <Link to="/dashboard">
+                    <Link to="/dashboard" onClick={toggleNavbar}>
                       <span className="nav-label"> Dashboard</span>
                     </Link>
                   </li>
@@ -224,7 +233,7 @@ const Navbar = () => {
                       location.pathname === "/appointments" ? "active" : ""
                     }
                   >
-                    <Link to="/appointments">
+                    <Link to="/appointments" onClick={toggleNavbar}>
                       <span className="nav-label"> Appointments</span>
                     </Link>
                   </li>
@@ -233,7 +242,7 @@ const Navbar = () => {
                       location.pathname === "/transaction" ? "active" : ""
                     }
                   >
-                    <Link to="/transaction">
+                    <Link to="/transaction" onClick={toggleNavbar}>
                       <span className="nav-label"> Transaction</span>
                     </Link>
                   </li>
@@ -242,47 +251,50 @@ const Navbar = () => {
                       location.pathname === "/inventory" ? "active" : ""
                     }
                   >
-                    <Link to="/inventory">
+                    <Link to="/inventory" onClick={toggleNavbar}>
                       <span className="nav-label"> Inventory</span>
                     </Link>
                   </li>
                   <li
                     className={location.pathname === "/content" ? "active" : ""}
                   >
-                    <Link to="/content">
+                    <Link to="/content" onClick={toggleNavbar}>
                       <span className="nav-label"> Content</span>
                     </Link>
                   </li>
                   <li
                     className={location.pathname === "/reviews" ? "active" : ""}
                   >
-                    <Link to="/reviews">
+                    <Link to="/reviews" onClick={toggleNavbar}>
                       <span className="nav-label"> Reviews</span>
                     </Link>
                   </li>
                   <li
                     className={location.pathname === "/reports" ? "active" : ""}
                   >
-                    <Link to="/reports">
+                    <Link to="/reports" onClick={toggleNavbar}>
                       <span className="nav-label"> Reports</span>
                     </Link>
                   </li>
                   <li
                     className={location.pathname === "/archive" ? "active" : ""}
                   >
-                    <Link to="/archive">
+                    <Link to="/archive" onClick={toggleNavbar}>
                       <span className="nav-label"> Archive</span>
                     </Link>
                   </li>
                   <li
                     className={location.pathname === "/audit" ? "active" : ""}
                   >
-                    <Link to="/audit">
+                    <Link to="/audit" onClick={toggleNavbar}>
                       <span className="nav-label"> Audit</span>
                     </Link>
                   </li>
                   <li>
-                    <a onClick={handleLogout} className="no-transition">
+                    <a onClick={() => {
+                          handleLogout();
+                          toggleNavbar();
+                        }} className="no-transition">
                       <span className="nav-label"> Logout</span>
                     </a>
                   </li>
