@@ -117,7 +117,7 @@ const Services = () => {
           flowers: ["/3DModels/Plan3_flowers.glb"],
           candles: ["/3DModels/Plan3_candles.glb"],
           curtains: ["/3DModels/Plan3_curtain.glb"],
-          tarp: ["/3DModels/tarp.glb"],
+          tarp: ["/3DModels/garbostand.glb"],
         },
       },
     },
