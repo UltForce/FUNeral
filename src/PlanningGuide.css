@@ -3,35 +3,35 @@ html {
 }
 
 .planning-guide {
-    background-color: #caa971;
-    font-family: "Rubik";
-    scroll-snap-align: start;
-    height: auto;
-    padding: 1rem;
-    overflow: visible;
+  background-color: #caa971;
+  font-family: "Rubik";
+  scroll-snap-align: start;
+  height: auto;
+  padding: 1rem;
+  overflow: visible;
 }
 
 .planning-title {
-    padding-top: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-size: 50px;
-    color: #2b0a0a;
-    text-align: center;
+  padding-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 50px;
+  color: #2b0a0a;
+  text-align: center;
 }
 
-.for-user{
-  background-color: #FDF9AA;
+.for-user {
+  background-color: #fdf9aa;
   flex: 1;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
 }
 
-.for-manager{
-  background-color: #CAA971;
+.for-manager {
+  background-color: #caa971;
   flex: 1;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -42,24 +42,23 @@ html {
   font-weight: 400;
 }
 
-.manager-text{
+.manager-text {
   color: #fffdd6;
 }
 
-
 .planning-border {
-    display: block;
-    width: 350px;
-    height: 3px;
-    background: #18020c;
-    margin: 8px auto 65px;
+  display: block;
+  width: 350px;
+  height: 3px;
+  background: #18020c;
+  margin: 8px auto 65px;
 }
 
 .planning-container {
-    min-height: 60vh !important; /* Full height */
-    font-family: 'Rubik';
-    background-color: #FCF2D8;
-    height: auto;
+  min-height: 60vh !important; /* Full height */
+  font-family: "Rubik";
+  background-color: #fcf2d8;
+  height: auto;
 }
 
 .planning-decription .FUNeral-title {
@@ -71,111 +70,60 @@ html {
   text-transform: uppercase;
   text-shadow: 2px 2px 1px black;
   font-weight: 700;
-  font-family: 'Rubik';
+  font-family: "Rubik";
 }
 
 .steps p {
   margin: 15px auto;
 }
 
-
 /* For desktop screens */
 @media only screen and (min-width: 1200px) {
-    .planning-container .planning-decription {
-      padding: 40px 165px 0px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    
-    .planning-container .planning-decription p {
-      margin-bottom: 0px;
-    }
-  
-    .planning-container .end-terms {
-      padding: 10px 165px 40px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    .planning-container .steps {
-      padding: 40px 165px 30px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify; 
+  .planning-container .planning-decription {
+    padding: 40px 165px 0px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+
+  .planning-container .planning-decription p {
+    margin-bottom: 0px;
+  }
+
+  .planning-container .end-terms {
+    padding: 10px 165px 40px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+  .planning-container .steps {
+    padding: 40px 165px 30px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
   }
   .pov-container {
-           max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
   }
 
-  .for-user ol, .for-manager ol {
+  .for-user ol,
+  .for-manager ol {
     margin: 20px;
   }
 
-  .label-user{
+  .label-user {
     text-align: center;
     color: #18020c;
     text-decoration: underline;
     font-size: 25px;
     margin: auto 35px;
   }
-  
-  .label-manager{
-    text-align: center;
-    color: #fffdd6;
-    text-decoration: underline;
-    font-size: 25px;
-    margin: auto 35px;
-  }
-    
-}
-  
-  /* For laptop screens */
-  @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .planning-container .planning-decription {
-      padding: 40px 125px 0px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    
-    .planning-container .planning-decription p {
-      margin-bottom: 0px;
-    }
-  
-    .planning-container .end-terms {
-      padding: 10px 125px 40px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    .planning-container .steps {
-      padding: 40px 125px 30px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    .planning-container .user-pov  {
-      background-color: #fffad5;
-  }
 
-  .for-user ol, .for-manager ol {
-    margin: 20px;
-  }
-
-  .label-user{
-    text-align: center;
-    color: #18020c;
-    text-decoration: underline;
-    font-size: 25px;
-    margin: auto 35px;
-  }
-  
-  .label-manager{
+  .label-manager {
     text-align: center;
     color: #fffdd6;
     text-decoration: underline;
@@ -183,49 +131,50 @@ html {
     margin: auto 35px;
   }
 }
-  
-  /* For tablet screens */
-  @media only screen and (min-width: 768px) and (max-width: 991px) {
-    .planning-container .planning-decription {
-      padding: 40px 100px 0px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    
-    .planning-container .planning-decription p {
-      margin-bottom: 0px;
-    }
-  
-    .planning-container .end-terms {
-      padding: 10px 100px 40px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    .planning-container .steps {
-      padding: 40px 100px 30px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    .planning-container .user-pov {
-      background-color: #fffad5;
+
+/* For laptop screens */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .planning-container .planning-decription {
+    padding: 40px 125px 0px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
   }
 
-  .for-user ol, .for-manager ol {
+  .planning-container .planning-decription p {
+    margin-bottom: 0px;
+  }
+
+  .planning-container .end-terms {
+    padding: 10px 125px 40px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+  .planning-container .steps {
+    padding: 40px 125px 30px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+  .planning-container .user-pov {
+    background-color: #fffad5;
+  }
+
+  .for-user ol,
+  .for-manager ol {
     margin: 20px;
   }
 
-  .label-user{
+  .label-user {
     text-align: center;
     color: #18020c;
     text-decoration: underline;
     font-size: 25px;
     margin: auto 35px;
   }
-  
-  .label-manager{
+
+  .label-manager {
     text-align: center;
     color: #fffdd6;
     text-decoration: underline;
@@ -233,55 +182,107 @@ html {
     margin: auto 35px;
   }
 }
-  
-  /* For mobile screens */
-  @media only screen and (max-width: 767px) {
-    .planning-container .planning-decription {
-      padding: 40px 43px 0px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-      margin-left: 50px;
-    }
-    
-    .planning-container .planning-decription p {
-      margin-bottom: 0px;
-      font-size: 15px;
-    }
-  
-    .planning-container .end-terms {
-      margin: 10px 43px 40px;
-      font-size: 18px;
-      font-family: 'Rubik';
-      text-align: justify;
-    }
-    .planning-container .steps {
-      padding: 40px 43px 30px;
-      font-size: 15px;
-      font-family: 'Rubik';
-      text-align: justify;
-      margin-left: 50px;
-    }
 
-    .planning-container .user-pov {
-      background-color: #fffad5;
+/* For tablet screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .planning-container .planning-decription {
+    padding: 40px 100px 0px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
   }
 
-  .for-user ol, .for-manager ol {
+  .planning-container .planning-decription p {
+    margin-bottom: 0px;
+  }
+
+  .planning-container .end-terms {
+    padding: 10px 100px 40px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+  .planning-container .steps {
+    padding: 40px 100px 30px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+  .planning-container .user-pov {
+    background-color: #fffad5;
+  }
+
+  .for-user ol,
+  .for-manager ol {
+    margin: 20px;
+  }
+
+  .label-user {
+    text-align: center;
+    color: #18020c;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+
+  .label-manager {
+    text-align: center;
+    color: #fffdd6;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: auto 35px;
+  }
+}
+
+/* For mobile screens */
+@media only screen and (max-width: 767px) {
+  .planning-container .planning-decription {
+    padding: 40px 43px 0px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+    margin-left: 50px;
+  }
+
+  .planning-container .planning-decription p {
+    margin-bottom: 0px;
+    font-size: 15px;
+  }
+
+  .planning-container .end-terms {
+    margin: 10px 43px 40px;
+    font-size: 18px;
+    font-family: "Rubik";
+    text-align: justify;
+  }
+  .planning-container .steps {
+    padding: 40px 43px 30px;
+    font-size: 15px;
+    font-family: "Rubik";
+    text-align: justify;
+    margin-left: 50px;
+  }
+
+  .planning-container .user-pov {
+    background-color: #fffad5;
+  }
+
+  .for-user ol,
+  .for-manager ol {
     margin: 15px 0px;
     font-size: 12px;
     text-align: left;
   }
 
-  .label-user{
+  .label-user {
     text-align: center;
     color: #18020c;
     text-decoration: underline;
     font-size: 20px;
     margin: auto 35px;
   }
-  
-  .label-manager{
+
+  .label-manager {
     text-align: center;
     color: #fffdd6;
     text-decoration: underline;
@@ -292,35 +293,50 @@ html {
   .steps h1 {
     text-align: center;
   }
-  
-  }
-  
-  .number {
-    width: 90px;
-    position: fixed;
-    z-index: 1;
-      top: 320px;
-      left: -14px;
-    background: #2b0a0a;
-    overflow-x: hidden;
-    padding: 8px 0;
-    border-radius: 10px;
-  }
-  
-  .number a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #FCF2D8;
-    display: block;
-    text-align: center;
-  }
-  
-  .number a:hover {
-    color: #FDF9AA;
-  }
+}
 
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+.number {
+  width: 90px;
+  position: fixed;
+  z-index: 1;
+  top: 320px;
+  left: -14px;
+  background: #2b0a0a;
+  overflow-x: hidden;
+  padding: 8px 0;
+  border-radius: 10px;
+}
+
+.number a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #fcf2d8;
+  display: block;
+  text-align: center;
+}
+
+.number a:hover {
+  color: #fdf9aa;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .number {
+    display: none;
   }
+}
+
+@media only screen and (max-width: 767px) {
+  .number {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
