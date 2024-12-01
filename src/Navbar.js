@@ -334,7 +334,7 @@ const Navbar = () => {
                           toggleNavbar();
                         }}
                       >
-                        Blogs
+                        Blogs & Articles
                       </Link>
                     </div>
                   )}

@@ -476,14 +476,14 @@ nav ul.centeredNav li.active a {
 .about-dropdown-content {
   display: block;
   position: absolute;
-  top: 147%;
+  top: 145%;
   background-color: #FDF9AA;
   color: #2b0a0a;
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  width: 165%;
+  width: 170%;
 }
 
 .about-planning-button {
