@@ -280,6 +280,66 @@
     overflow: scroll;
     width: 845px;
   }
+
+  /* Main section container */
+.care-section {
+  display: flex;
+  align-items: center;
+  padding: 65px;
+  background-color: #caa971;
+  font-family: "Rubik";
+}
+
+/* Image container */
+.images-container {
+  position: relative;
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+/* Overlapping images */
+.rounded-image {
+  width: 100%; /* Adjust as needed */
+  max-width: 250px;
+  height: 400px; /* Adjust as needed */
+  border-radius: 150px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  
+}
+
+/* Position each image with an offset to create overlap */
+.rounded-image:first-child {
+  left: -10px; /* Move the first image slightly to the left */
+  top: -250px; /* Move the first image slightly up */
+  z-index: 0; /* Make it appear above the second image */
+  outline:3px solid #FDF9AA;
+  outline-offset: 40px;
+ 
+}
+
+.rounded-image:last-child {
+  left: 150px; /* Move the second image slightly to the right */
+  top: -150px; /* Move the second image slightly down */
+  outline:3px solid #FDF9AA;
+  outline-offset: 40px;
+ 
+}
+
+/* Text container */
+.text-container {
+  flex: 1 1 300px;
+  padding: 20px;
+  color: #18020c;
+  max-width: 1000px;
+  text-align: justify;
+}
+
+.text-container p {
+  font-size: 16px;
+}
 }
 
 /* For laptop screens */
@@ -289,7 +349,7 @@
     width: 30%;
     background-color: #e3d18d;
     border-radius: 10px;
-    padding: 20px;
+    padding: 75px;
     box-shadow: 0 2px 5px #0000001a;
     display: flex;
     flex-direction: column;
@@ -341,6 +401,66 @@
     overflow: scroll;
     width: 845px;
   }
+
+  /* Main section container */
+.care-section {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #caa971;
+  font-family: "Rubik";
+}
+
+/* Image container */
+.images-container {
+  position: relative;
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+/* Overlapping images */
+.rounded-image {
+  width: 100%; /* Adjust as needed */
+  max-width: 250px;
+  height: 400px; /* Adjust as needed */
+  border-radius: 150px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  
+}
+
+/* Position each image with an offset to create overlap */
+.rounded-image:first-child {
+  left: -10px; /* Move the first image slightly to the left */
+  top: -250px; /* Move the first image slightly up */
+  z-index: 0; /* Make it appear above the second image */
+  outline:3px solid #FDF9AA;
+  outline-offset: 40px;
+ 
+}
+
+.rounded-image:last-child {
+  left: 150px; /* Move the second image slightly to the right */
+  top: -150px; /* Move the second image slightly down */
+  outline:3px solid #FDF9AA;
+  outline-offset: 40px;
+ 
+}
+
+/* Text container */
+.text-container {
+  flex: 1 1 300px;
+  padding: 20px;
+  color: #18020c;
+  max-width: 1000px;
+  text-align: justify;
+}
+
+.text-container p {
+  font-size: 16px;
+}
 }
 
 /* For tablet screens */
@@ -402,12 +522,72 @@
     overflow: scroll;
     width: 647px;
   }
+
+  /* Main section container */
+.care-section {
+  display: flex;
+  align-items: center;
+  padding: 35px;
+  background-color: #caa971;
+  font-family: "Rubik";
+}
+
+/* Image container */
+.images-container {
+  position: relative;
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+/* Overlapping images */
+.rounded-image {
+  width: 58%; /* Adjust as needed */
+  max-width: 250px;
+  height: 330px; /* Adjust as needed */
+  border-radius: 150px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  
+}
+
+/* Position each image with an offset to create overlap */
+.rounded-image:first-child {
+  left: -10px; /* Move the first image slightly to the left */
+  top: -250px; /* Move the first image slightly up */
+  z-index: 0; /* Make it appear above the second image */
+  outline:3px solid #FDF9AA;
+  outline-offset: 20px;
+ 
+}
+
+.rounded-image:last-child {
+  left: 150px; /* Move the second image slightly to the right */
+  top: -150px; /* Move the second image slightly down */
+  outline:3px solid #FDF9AA;
+  outline-offset: 20px;
+ 
+}
+
+/* Text container */
+.text-container {
+  flex: 1 1 300px;
+  padding: 20px;
+  color: #18020c;
+  max-width: 1000px;
+  text-align: justify;
+}
+
+.text-container p {
+  font-size: 16px;
+}
 }
 
 /* For mobile screens */
 @media only screen and (max-width: 767px) {
   .grid {
-    height: 275px;
+    height: 300px;
     width: 45%;
     background-color: #e3d18d;
     border-radius: 10px;
@@ -466,11 +646,54 @@
 
   .images-container {
     position: relative;
-    flex: 1;
+    flex: 1 1 300px;
     display: flex;
-    justify-content: center;
     margin: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
+
+  .care-section {
+    flex-direction: column; /* Stack images and text vertically */
+    display: flex;
+    align-items: center;
+    padding: 35px;
+    background-color: #caa971;
+    font-family: "Rubik";
+  }
+
+  .rounded-image {
+    width: 70%;
+    max-width: 250px;
+    height: 330px;
+    border-radius: 150px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .text-container {
+    text-align: center; /* Center text on smaller screens */
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .text-container p {
+    font-size: 14px;
+  }
+
+  .rounded-image:first-child {
+    left: -10px;
+    top: -40px;
+    z-index: 0;
+    outline: 3px solid #FDF9AA;
+    outline-offset: 30px;
+  }
+
+  .rounded-image:last-child {
+    left: 10%;
+    top: -10%;
+    outline: 3px solid #FDF9AA;
+    outline-offset: 30px;
+}
 }
 
 
@@ -651,6 +874,7 @@
 
   .gallery-header p {
     font-size: 14px;
+    margin: auto;
   }
 
   .gallery-images {
@@ -661,61 +885,10 @@
     width: 100%; /* Full-width images on mobile */
     max-width: 300px; /* Ensure images don’t get too large on smaller devices */
   }
-}
 
-/* Main section container */
-.care-section {
-  display: flex;
-  align-items: center;
-  padding: 70px;
-  background-color: #caa971;
-  font-family: "Rubik";
-}
-
-/* Image container */
-.images-container {
-  position: relative;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin: 10px;
-}
-
-/* Overlapping images */
-.rounded-image {
-  width: 250px; /* Adjust as needed */
-  height: 400px; /* Adjust as needed */
-  border-radius: 150px; /* Rounded corners */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  position: absolute;
-  
-}
-
-/* Position each image with an offset to create overlap */
-.rounded-image:first-child {
-  left: -10px; /* Move the first image slightly to the left */
-  top: -250px; /* Move the first image slightly up */
-  z-index: 0; /* Make it appear above the second image */
-  outline:3px solid #FDF9AA;
-  outline-offset: 40px;
- 
-}
-
-.rounded-image:last-child {
-  left: 150px; /* Move the second image slightly to the right */
-  top: -150px; /* Move the second image slightly down */
-  outline:3px solid #FDF9AA;
-  outline-offset: 40px;
- 
-}
-
-/* Text container */
-.text-container {
-  flex: 1;
-  padding: 20px;
-  color: #18020c;
-  max-width: 1000px;
-  text-align: justify;
+  .text-container p {
+    font-size: 14px;
+  }
 }
 
 .text-container h3 {
@@ -727,7 +900,6 @@
 }
 
 .text-container p {
-  font-size: 16px;
   line-height: 1.6;
   color:#18020c;
   font-family: 'Rubik';
