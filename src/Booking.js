@@ -110,20 +110,21 @@ const Booking = ({}) => {
   };
 
   const handleNext = () => {
-  // Validate first modal fields
-  if (formData.plan && formData.phoneNumber && formData.notes) {
-    // Phone number validation
-    const phoneRegex = /^(09\d{8,9}|9\d{9}|\+639\d{9,10})$/; // Validates phone numbers
-    if (!phoneRegex.test(formData.phoneNumber)) {
-      Toast.fire({
-        icon: "error",
-        title: "Phone number must start with 9, 09, or +63 and be between 10 to 13 digits long.",
-      });
-      return; // Prevent moving to the next modal
-    }
-    
-    setShowModal1(false);
-    setShowModal2(true);
+    // Validate first modal fields
+    if (formData.plan && formData.phoneNumber && formData.notes) {
+      // Phone number validation
+      const phoneRegex = /^(09\d{8,9}|9\d{9}|\+639\d{9,10})$/; // Validates phone numbers
+      if (!phoneRegex.test(formData.phoneNumber)) {
+        Toast.fire({
+          icon: "error",
+          title:
+            "Phone number must start with 9, 09, or +63 and be between 10 to 13 digits long.",
+        });
+        return; // Prevent moving to the next modal
+      }
+
+      setShowModal1(false);
+      setShowModal2(true);
     } else {
       Toast.fire({
         icon: "error",
@@ -144,7 +145,7 @@ const Booking = ({}) => {
       return;
     }
 
-      // Validate that the Deceased Name does not contain digits or special characters
+    // Validate that the Deceased Name does not contain digits or special characters
     const nameRegex = /^[A-Za-z\s]+$/; // Allows only letters and spaces
     const trimmedDeceasedName = formData.DeceasedName.trim(); // Trim spaces from the name
 
@@ -165,7 +166,7 @@ const Booking = ({}) => {
       });
       return; // Prevent moving to the terms modal
     }
-      if (
+    if (
       formData.DeceasedName &&
       formData.DeceasedAge &&
       formData.DeceasedSex &&
@@ -298,7 +299,7 @@ const Booking = ({}) => {
   // Handle form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Fill the name field with logged-in user's full name
     const loggedInUserName = `${userData.firstname} ${userData.lastname}`;
     formData.name = loggedInUserName; // Set the name field to the user's full name
@@ -706,7 +707,7 @@ const Booking = ({}) => {
               }}
               events={appointments.map((appointment) => ({
                 id: appointment.id,
-                title: appointment.name,
+                title: appointment.status,
                 start: appointment.date,
                 backgroundColor: getStatusColor(appointment.status), // Set color based on status
               }))}
@@ -814,7 +815,7 @@ const Booking = ({}) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="details-box">
-            <Form >
+            <Form>
               <Form.Group controlId="formDeceasedName">
                 <Form.Label className="label-title">Deceased Name</Form.Label>
                 <Form.Control
@@ -1048,16 +1049,14 @@ const Booking = ({}) => {
               <br />
               <strong>7. Transaction</strong>
               <br />
-              The undersigned hereby agrees to pay in full the
-              amount of this contract as soon as possible to any
-              authorized representative or to office of J.ROA
-              FUNERAL SERVICES so as to avoid unnecessary
-              delay of the service, I also agree to pay all attorney's
-              fees and court cost in case of lawsuit.
-
-              Users will receive a transaction after a successful appointment.
-              They can view its details and status anytime. Cancellation of a
-              processing transaction incurs a cancellation fee.
+              The undersigned hereby agrees to pay in full the amount of this
+              contract as soon as possible to any authorized representative or
+              to office of J.ROA FUNERAL SERVICES so as to avoid unnecessary
+              delay of the service, I also agree to pay all attorney's fees and
+              court cost in case of lawsuit. Users will receive a transaction
+              after a successful appointment. They can view its details and
+              status anytime. Cancellation of a processing transaction incurs a
+              cancellation fee.
               <br />
               <br />
               <strong>8. General Use of FUNeral</strong>
@@ -1095,10 +1094,10 @@ const Booking = ({}) => {
               <br />
               <strong>12. 3D Model Rendering</strong>
               <br />
-              The likeness of the actual product may vary due to technical 
-              constraints in 3D model rendering. Please take the 3D model renders 
-              as a reference only. Actual product images are available in the gallery 
-              section and during the appointment.
+              The likeness of the actual product may vary due to technical
+              constraints in 3D model rendering. Please take the 3D model
+              renders as a reference only. Actual product images are available
+              in the gallery section and during the appointment.
               <br />
               <br />
               <strong>13. Pending Appointment Rule</strong>

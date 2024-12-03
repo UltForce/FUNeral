@@ -76,6 +76,7 @@ const Services = () => {
           candles: ["/3DModels/Plan1_candles.glb"],
           curtains: ["/3DModels/Plan1_curtain.glb"],
           tarp: ["/3DModels/tarp.glb"],
+          car: ["/3DModels/basiccar.glb"],
         },
       },
     },
@@ -97,6 +98,7 @@ const Services = () => {
           candles: ["/3DModels/Plan2_candles.glb"],
           curtains: ["/3DModels/Plan2_curtain.glb"],
           tarp: ["/3DModels/tarp.glb"],
+          car: ["/3DModels/gardencar.glb"],
         },
       },
     },
@@ -118,6 +120,7 @@ const Services = () => {
           candles: ["/3DModels/Plan3_candles.glb"],
           curtains: ["/3DModels/Plan3_curtain.glb"],
           tarp: ["/3DModels/garbostand.glb"],
+          car: ["/3DModels/garbocar.glb"],
         },
       },
     },
@@ -263,6 +266,7 @@ const Services = () => {
                         <option value="candles">Candles</option>
                         <option value="curtains">Curtains</option>
                         <option value="tarp">Tarps</option>
+                        <option value="car">Cars</option>
                       </select>
                     </div>
                   </div>
