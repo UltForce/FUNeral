@@ -195,7 +195,7 @@ const Archive = () => {
           <h1 className="centered">Archived Items</h1>
         </div>
         <div className="customerReport">
-          <div className="appointment-reports"></div>
+          <div className="reports"></div>
           {archivedData.appointments.length > 0 ||
           archivedData.transactions.length > 0 ? (
             <table className="display" id="appointmentsTable">

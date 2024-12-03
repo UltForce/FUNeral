@@ -365,7 +365,7 @@ const Dashboard = () => {
               <Col className="cards-total">
                 <Card
                   className="text-center stats-card"
-                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                  style={{ overflowY: "auto" }}
                 >
                   <Card.Body>
                     <div className="stats-first-column">
@@ -390,7 +390,7 @@ const Dashboard = () => {
               <Col className="cards-total">
                 <Card
                   className="text-center stats-card"
-                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                  style={{ overflowY: "auto" }}
                 >
                   <Card.Body>
                     <div className="stats-first-column">
@@ -411,7 +411,7 @@ const Dashboard = () => {
               <Col className="cards-total">
                 <Card
                   className="text-center stats-card"
-                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                  style={{ overflowY: "auto" }}
                 >
                   <Card.Body>
                     <div className="stats-first-column">
@@ -431,8 +431,8 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <Row className="cards-row">
-              <Col className="cards-total">
+            <Row className="bottom-cards-row">
+              <Col className="bottom-cards-total">
                 <Card
                   style={{ height: "450px", overflowY: "auto" }}
                   className="today-appointments"
@@ -471,7 +471,7 @@ const Dashboard = () => {
                 </Card>
               </Col>
 
-              <Col className="cards-total">
+              <Col className="bottom-cards-total">
                 <Card
                   style={{
                     height: "450px",
@@ -517,7 +517,7 @@ const Dashboard = () => {
                 </Card>
               </Col>
 
-              <Col className="cards-total">
+              <Col className="bottom-cards-total">
                 <Card
                   style={{ height: "450px", width: "100%" }}
                   className="dashboard-calendar"

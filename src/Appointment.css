@@ -40,26 +40,80 @@
     padding: 20px !important;
     margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
   }
+
+  #appointmentsTable th {
+    background-color: #d9d9d9;
+    font-weight: 500;
+    font-size: 20px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .dashboard-appointment .badge {
+    font-weight: 400;
+    font-size: 13px;
+  }
+  
+  .dashboard-appointment .actions-button .dropdown-toggle {
+    font-size: 15px;
+  }
 }
 
 /* For laptop screens */
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   /* Padding for the main content with increased specificity */
-.dashboard-appointment .main-content {
-  flex-grow: 1 !important;
-  background-color: #caa971 !important; /* Maintain background */
-  padding: 20px !important;
-  margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
-}
+  .dashboard-appointment .main-content {
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
+    margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
+  }
+
+  #appointmentsTable th {
+    background-color: #d9d9d9;
+    font-weight: 500;
+    font-size: 18px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .dashboard-appointment .badge {
+    font-weight: 400;
+    font-size: 13px;
+  }
+  
+  .dashboard-appointment .actions-button .dropdown-toggle {
+    font-size: 15px;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
  /* Padding for the main content with increased specificity */
-.dashboard-appointment .main-content {
-  flex-grow: 1 !important;
-  background-color: #caa971 !important; /* Maintain background */
-  padding: 20px !important;
-}
+  .dashboard-appointment .main-content {
+    flex-grow: 1 !important;
+    background-color: #caa971 !important; /* Maintain background */
+    padding: 20px !important;
+  }
+
+  #appointmentsTable th {
+    background-color: #d9d9d9;
+    font-weight: 500;
+    font-size: 17px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .dashboard-appointment .badge {
+    font-weight: 400;
+    font-size: 13px;
+  }
+  
+  .dashboard-appointment .actions-button .dropdown-toggle {
+    font-size: 15px;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -67,6 +121,55 @@
     flex-grow: 1 !important;
     background-color: #caa971 !important; /* Maintain background */
     padding: 20px !important;
+    overflow: auto;
+  }
+
+  #appointmentsTable th {
+    background-color: #d9d9d9;
+    font-weight: 500;
+    font-size: 12px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  #appointmentsTable td {
+    font-size: 7px;
+    font-weight: 500;
+  }
+
+  .appointment-reports .appointment-list-table tr {
+    font-size: 10px;
+  }
+
+  .appointment-reports .appointment-list-table th {
+    padding: 3px;
+  }
+
+  .dashboard-appointment .dt-length {
+    margin-right: 9px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+  }
+
+  .dashboard-appointment .dt-search {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  .dashboard-appointment .badge {
+    font-weight: 400;
+    font-size: 7px;
+  }
+  
+  .dashboard-appointment .actions-button .dropdown-toggle {
+    font-size: 8px;
   }
 }
 
@@ -113,15 +216,6 @@
   font-size: 15px;
 }
 
-#appointmentsTable th {
-  background-color: #d9d9d9;
-  font-weight: 500;
-  font-size: 20px;
-  border: 1px solid black;
-  text-align: center;
-  overflow: hidden;
-}
-
 #appointmentsTable td {
   background-color: white;
   text-align: center;
@@ -164,15 +258,6 @@
   background-color: #304768;
   color: white;
   border: 1px solid #304768;
-}
-
-.dashboard-appointment .badge {
-  font-weight: 400;
-  font-size: 13px;
-}
-
-.dashboard-appointment .actions-button .dropdown-toggle {
-  font-size: 15px;
 }
 
 .dashboard-appointment .actions-button {

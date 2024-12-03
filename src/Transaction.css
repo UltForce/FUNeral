@@ -1,6 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure full height */
+}
+
 .transaction {
   display: flex !important;
-  min-height: 100vh !important; /* Full height */
+  min-height: 100vh !important;
   background-color: #f0e6dc !important; /* Override global background */
   font-family: "Rubik";
 }
@@ -14,6 +26,15 @@
     padding: 20px !important;
     margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
   }
+
+  #transactionTable th {
+    background-color: #d9d9d9;
+    font-weight: 500;
+    font-size: 20px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+  }
 }
 
 /* For laptop screens */
@@ -25,6 +46,15 @@
   padding: 20px !important;
   margin-left: 240px !important; /* Add margin to account for the fixed sidebar */
 }
+
+#transactionTable th {
+  background-color: #d9d9d9;
+  font-weight: 500;
+  font-size: 20px;
+  border: 1px solid black;
+  text-align: center;
+  overflow: hidden;
+}
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -34,13 +64,64 @@
   background-color: #caa971 !important; /* Maintain background */
   padding: 20px !important;
 }
+
+#transactionTable th {
+  background-color: #d9d9d9;
+  font-weight: 500;
+  font-size: 20px;
+  border: 1px solid black;
+  text-align: center;
+  overflow: hidden;
+}
 }
 
 @media only screen and (max-width: 767px) {
   .transaction .main-content {
     flex-grow: 1 !important;
     background-color: #caa971 !important; /* Maintain background */
-    padding: 20px !important;
+    padding: 10px !important;
+    overflow: auto;
+  }
+
+  #transactionTable th {
+    background-color: #d9d9d9;
+    font-weight: 600;
+    font-size: 8px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+    padding: 5px;
+  }
+
+  #transactionTable td {
+    font-size: 10px;
+    padding: 2px;
+    font-weight: 500;
+  }
+
+  .transaction .dt-length {
+    margin-right: 20px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+  }
+
+  .transaction .dt-search {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+  }
+
+  .transaction .actions-button .dropdown-toggle {
+    font-size: 8px;
+  }
+
+  .transaction .badge {
+    font-size: 8px;
   }
 }
 
@@ -91,15 +172,6 @@
   border-radius: 10px;
   font-weight: 400;
   font-size: 15px;
-}
-
-#transactionTable th {
-  background-color: #d9d9d9;
-  font-weight: 500;
-  font-size: 20px;
-  border: 1px solid black;
-  text-align: center;
-  overflow: hidden;
 }
 
 #transactionTable td {

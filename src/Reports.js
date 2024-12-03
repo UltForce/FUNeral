@@ -214,7 +214,7 @@ const Reports = () => {
   };
 
   return (
-    <section className="dashboard-appointment">
+    <section className="report">
       <main className="main-content">
         {loading && <Loader />} {/* Use the Loader component here */}
         <div className="report-dashboard-box">
