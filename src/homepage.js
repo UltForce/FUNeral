@@ -235,8 +235,8 @@ const Homepage = () => {
             <img src="/funeral pics/homepage2.jpg" alt="Funeral Theme" />
             <h3>FUNERAL THEME</h3>
             <p>
-              Choose from a range of meaningful themes to create a dignified and
-              serene environment that honors your loved one’s life and legacy.
+              Choose from a range of meaningful themes to create a dignified
+              environment that honors your loved one’s life and legacy.
             </p>
             <button onClick={handleSeeMore}>See More</button>
           </div>
