@@ -28,6 +28,10 @@
 .article-details-box p {
   font-size: 14px;
   text-align: justify;
+  /* height: 585px;
+  overflow: auto;
+  margin: 15px auto;
+  padding: 0px 10px; */
 }
 
 /*FONT*/
@@ -226,7 +230,7 @@
   .grid {
     height: 275px;
     width: 30%;
-    background-color: #e3d18d;
+    background-color: #f7e6a6;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 5px #0000001a;
@@ -265,7 +269,7 @@
     flex-direction: column;
     border: 1px solid #4d4642;
     border-radius: 20px;
-    background-color: #e3d08d;
+    background-color: #f7e6a6;
     filter: drop-shadow(0 0 0.75rem black);
     text-align: center;
     width: 850px;
@@ -347,7 +351,7 @@
   .grid {
     height: 375px;
     width: 30%;
-    background-color: #e3d18d;
+    background-color: #f7e6a6;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 5px #0000001a;
@@ -386,7 +390,7 @@
     flex-direction: column;
     border: 1px solid #4d4642;
     border-radius: 20px;
-    background-color: #e3d08d;
+    background-color: #f7e6a6;
     filter: drop-shadow(0 0 0.75rem black);
     text-align: center;
     width: 850px;
@@ -468,7 +472,7 @@
   .grid {
     height: 275px;
     width: 30%;
-    background-color: #e3d18d;
+    background-color: #f7e6a6;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 5px #0000001a;
@@ -507,7 +511,7 @@
     flex-direction: column;
     border: 1px solid #4d4642;
     border-radius: 20px;
-    background-color: #e3d08d;
+    background-color: #f7e6a6;
     filter: drop-shadow(0 0 0.75rem black);
     text-align: center;
     width: 673px;
@@ -589,7 +593,7 @@
   .grid {
     height: 300px;
     width: 45%;
-    background-color: #e3d18d;
+    background-color: #f7e6a6;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 5px #0000001a;
@@ -628,7 +632,7 @@
     flex-direction: column;
     border: 1px solid #4d4642;
     border-radius: 20px;
-    background-color: #e3d08d;
+    background-color: #f7e6a6;
     filter: drop-shadow(0 0 0.75rem black);
     text-align: center;
     width: 315px;
@@ -751,7 +755,7 @@
 .article {
   height: 480px;
   width: 30%;
-  background-color: #e3d18d;
+  background-color: #f7e6a6;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
