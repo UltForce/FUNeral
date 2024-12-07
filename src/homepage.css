@@ -25,6 +25,10 @@
   padding: 35px 20px;
 }
 
+.homepageTxt {
+  color: #2b0a0a;
+}
+
 .article-details-box p {
   font-size: 14px;
   text-align: justify;
@@ -72,6 +76,7 @@
 
 .homepage-container {
   height: auto;
+  
 }
 
 /* Specific styles for each section */
@@ -97,6 +102,7 @@
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
+    
 }
 
 

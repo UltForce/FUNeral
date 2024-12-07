@@ -216,11 +216,11 @@ const Homepage = () => {
   return (
     <div className="homepage-container">
       <section className="title-section section1">
-        <h3>
+        <h3 className="homepageTxt">
           <i>{content.homepageText || "A Family’s end needs"}</i>
         </h3>
-        <h1>{content.homepageText || "WELCOME TO J.ROA FUNERAL SERVICES"}</h1>
-        <p>
+        <h1 className="homepageTxt">{content.homepageText || "WELCOME TO J.ROA FUNERAL SERVICES"}</h1>
+        <p className="homepageTxt">
           {content.homepageText ||
             "Guiding you through with Compassion and Care "}
         </p>
@@ -277,7 +277,7 @@ const Homepage = () => {
           </div>
 
           <div className="text-container">
-            <h3>Compassionate Care In Your Time Of Need</h3>
+            <h3>Compassionate Care In Your End's Need</h3>
             <p>
               At J.ROA Funeral Services, we are dedicated to providing
               compassionate and personalized support during your most
@@ -300,7 +300,7 @@ const Homepage = () => {
       </section>
 
       <section className="home-snap-section section5">
-        <h1 className="our-services-title">Our Service</h1>
+        <h1 className="our-services-title">OUR SERVICE</h1>
         <br></br>
         <div class="homepage-row">
           <div class="grid">
@@ -361,7 +361,7 @@ const Homepage = () => {
         </div>
       </section>
       <section className="home-snap-section section6">
-        <h1 className="our-gallery-title">Our Gallery</h1>
+        <h1 className="our-gallery-title">OUR GALLERY</h1>
         <div className="gallery-section">
           <div className="gallery-header">
             <p>
