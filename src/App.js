@@ -14,6 +14,7 @@ import Footer from "./Footer";
 import About from "./About";
 import PlanningGuide from "./PlanningGuide";
 import Blog from "./Blog";
+import Blogpage from "./BlogDetails";
 import Gallery from "./Gallery";
 import Audit from "./Audit";
 import Appointments from "./Appointment";
@@ -37,6 +38,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import "./App.css"; // Import your CSS file for animations
+import BlogDetails from "./BlogDetails";
 
 const Layout = ({ showFooter, children }) => (
   <>
@@ -88,6 +90,7 @@ const App = () => {
               <Route path="/about" element={<About />} />
               <Route path="/planningguide" element={<PlanningGuide />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blogdetails" element={<BlogDetails />} />
               <Route path="/gallery" element={<Gallery />} />
 
               <Route path="/services" element={<Services />} />

@@ -50,6 +50,14 @@
     margin-bottom: 5px;
   }
 
+  .blog-details-img{
+    align-items: center;
+    width: 12px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
   /* For desktop screens */
 @media only screen and (min-width: 1200px) {
     .blog-container {

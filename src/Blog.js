@@ -5,8 +5,14 @@ import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 const Blog = () => {
-  
-   
+    const navigate = useNavigate();
+
+    const handleSeeMore = () => {
+
+        navigate("/BlogDetails");
+
+    };
+
 
 return (
     
@@ -24,7 +30,7 @@ return (
                     <h1>Filipino Beliefs You Should Respect When Attending Wakes</h1>
                     <p>Attending wakes in the Philippines often involves observing cultural practices rooted in deep respect for the departed and their families. 
                         Filipinos place significant importance on honoring their loved ones through traditions thatbring comfort and support to the grieving family. 
-                        Here are some beliefs andpractices you should be mindful of:  <p><a href="/blogpage">Read More!</a></p>
+                        Here are some beliefs andpractices you should be mindful of:  <button onClick={handleSeeMore}>See More</button>
                     </p>
                 </div>
             </div>
