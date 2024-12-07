@@ -219,7 +219,7 @@ const Homepage = () => {
         <h3>
           <i>{content.homepageText || "A Family’s end needs"}</i>
         </h3>
-        <h1>{content.homepageText || "Welcome to J.ROA Funeral Services"}</h1>
+        <h1>{content.homepageText || "WELCOME TO J.ROA FUNERAL SERVICES"}</h1>
         <p>
           {content.homepageText ||
             "Guiding you through with Compassion and Care "}

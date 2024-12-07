@@ -37,7 +37,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import "./App.css"; // Import your CSS file for animations
-import BlogDetails from "./BlogDetails";
+
 
 const Layout = ({ showFooter, children }) => (
   <>
