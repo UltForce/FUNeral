@@ -466,7 +466,7 @@ nav ul.centeredNav li.active a {
 .red-dot {
   position: absolute;
   top: 5px;
-  right: 5px;
+  right: -2px;
   width: 10px;
   height: 10px;
   background-color: red;
@@ -521,6 +521,7 @@ nav ul.centeredNav li.active a {
   border-radius: 50%;
   font-size: 20px;
   border: none;
+  padding: 5px 12px;
 }
 
 .user-dropdown-title:hover {
@@ -639,6 +640,7 @@ nav ul.centeredNav li.active a {
     position: absolute;
     right: 10px;
     align-self: flex-start; /* Align toggle button to the start */
+    padding: 0px 10px;
   }
 
   .navbar-toggle:hover {
@@ -646,6 +648,7 @@ nav ul.centeredNav li.active a {
     border: 1px solid #f5f095;
     color: white;
     border-radius: 5px;
+    padding: 0px 10px;
   }
 
   .top-navbar {
@@ -690,6 +693,7 @@ nav ul.centeredNav li.active a {
     position: absolute;
     right: 10px;
     align-self: flex-start; /* Align toggle button to the start */
+    padding: 0px 10px;
   }
 
   .navbar-toggle:hover {
@@ -697,6 +701,7 @@ nav ul.centeredNav li.active a {
     border: 1px solid #f5f095;
     color: white;
     border-radius: 5px;
+    padding: 0px 10px;
   }
 
   .top-navbar {

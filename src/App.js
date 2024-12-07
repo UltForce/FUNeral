@@ -38,7 +38,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRef } from "react";
 import "./App.css"; // Import your CSS file for animations
 
-
 const Layout = ({ showFooter, children }) => (
   <>
     <Navbar />

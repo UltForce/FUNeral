@@ -31,23 +31,13 @@
     font-family: "Rubik";
   }
 
-  .blog-details {
-    font-family: 'Rubik';
-    margin: 10px;
-  }
-
-  .blog-details h1 {
-    font-weight: 600;
-    color: #FCF2D8;
-    text-shadow: 2px 3px 2px black;
-    margin-bottom: 10px;
-  }
-
-  .blog-details p {
-    font-size: 15px;
-    font-weight: 400;
-    color: #18020c;
-    margin-bottom: 5px;
+  .blog-container .article {
+      height: 480px;
+      width: 30%;
+      background-color: #f7e6a6;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 11px 5px rgba(0, 0, 0, 0.4);
   }
 
   /* For desktop screens */
@@ -61,17 +51,6 @@
         align-items: center;
         align-content: center;
         gap: 20px;
-    }
-
-    .blog-box {
-        background-color: #e3d18d;
-        display: block;
-        border-radius: 10px; 
-        margin: auto 50px; 
-        padding: 13px 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        height: auto;
     }
     
 }
@@ -88,18 +67,6 @@
         align-content: center;
         gap: 20px;
     }
-
-    .blog-box {
-        background-color: #e3d18d;
-        display: block;
-        border-radius: 10px; 
-        margin: auto 50px; 
-        padding: 13px 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        height: auto;
-    }
-    
 }
 
 /* For tablet screens */
@@ -113,17 +80,6 @@
         align-items: center;
         align-content: center;
         gap: 20px;
-    }
-
-    .blog-box {
-        background-color: #e3d18d;
-        display: block;
-        border-radius: 10px; 
-        margin: auto 50px; 
-        padding: 13px 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        height: auto;
     }
     
 }
@@ -139,17 +95,6 @@
         align-items: center;
         align-content: center;
         gap: 20px;
-    }
-
-    .blog-box {
-        background-color: #e3d18d;
-        display: block;
-        border-radius: 10px; 
-        margin: auto; 
-        padding: 13px 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        height: auto;
     }
     
 }
