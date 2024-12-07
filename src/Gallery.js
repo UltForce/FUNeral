@@ -12,7 +12,7 @@ const Gallery = () => {
   const albums = [
     {
       id: 1,
-      title: "Funeral Service Album 1",
+      title: "Funeral Service Album",
       coverImage: "/gallery/funeral/fun_gallery (1)",
       images: [
         "/gallery/funeral/fun_gallery (1)",
@@ -34,7 +34,7 @@ const Gallery = () => {
     },
     {
       id: 2,
-      title: "Funeral Service Album 2",
+      title: "Flower Arrangements",
       coverImage: "/gallery/flower arrangement/flower_gallery(1)",
       images: [
         "/gallery/flower arrangement/flower_gallery(1)",
@@ -48,7 +48,7 @@ const Gallery = () => {
     },
     {
       id: 3,
-      title: "Funeral Service Album 3",
+      title: "Lights and Cars",
       coverImage: "/gallery/lights and cars/ lights(1)",
       images: [
         "/gallery/lights and cars/ lights(1)",
