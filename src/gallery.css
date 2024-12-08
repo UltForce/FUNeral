@@ -30,7 +30,7 @@
   /* scroll-snap-type: y mandatory;
   overflow-y: auto; */
   height: auto;
-  background-color: #FCF2D8;
+  background-color: #fcf2d8;
   font-family: "Rubik";
   display: flex;
   align-items: center;
@@ -64,14 +64,14 @@
 }
 
 .return-button {
-  background-color: #8B5E11;
+  background-color: #8b5e11;
   color: white;
   border: none;
   padding: 10px 20px;
   margin: 20px 0;
   cursor: pointer;
   border-radius: 5px;
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-size: 15px;
   font-weight: 600;
 }
@@ -93,7 +93,7 @@
 }
 
 .pagination-button {
-  background-color: #18020C;
+  background-color: #18020c;
   color: white;
   border: none;
   padding: 10px;
@@ -129,7 +129,7 @@
 }
 
 .thumbnail.active {
-  border: 2px solid #18020C; /* Highlight active thumbnail with blue border */
+  border: 2px solid #18020c; /* Highlight active thumbnail with blue border */
   opacity: 1; /* Full opacity for active thumbnail */
 }
 
@@ -199,4 +199,77 @@
     border-radius: 10px;
     border: 5px solid transparent; /* Default transparent border */
   }
+}
+
+/* General Image Styling */
+img {
+  display: block;
+  object-fit: cover; /* Ensures images fill the container while maintaining aspect ratio */
+}
+
+/* Preview Image */
+.preview-container {
+  max-width: 1300px; /* Set a consistent width for the preview image */
+  height: 500px; /* Set a consistent height for the preview image */
+  margin: 0 auto; /* Center the preview container */
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px; /* Optional: adds a rounded border */
+  object-fit: cover;
+}
+
+/* Thumbnails */
+.thumbnail-container {
+  display: flex;
+  gap: 10px; /* Space between thumbnails */
+  justify-content: center; /* Center the thumbnails */
+}
+
+.thumbnail {
+  width: 400px; /* Thumbnail width */
+  height: 200px; /* Thumbnail height */
+  border: 2px solid transparent; /* Border for active styling */
+  border-radius: 4px; /* Optional: rounded edges */
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.thumbnail.active {
+  border-color: #007bff; /* Highlight active thumbnail */
+  transform: scale(1.05); /* Slightly enlarge the active thumbnail */
+}
+
+.thumbnail:hover {
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Album Cover */
+.album-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  margin: 20px;
+  transition: transform 0.2s ease;
+}
+
+.album-cover:hover {
+  transform: scale(1.05);
+}
+
+.album-image {
+  width: 400px; /* Album cover image width */
+  height: 300px; /* Album cover image height */
+  border-radius: 8px; /* Optional: rounded edges */
+  object-fit: cover;
+}
+
+.album-title {
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: center;
 }
