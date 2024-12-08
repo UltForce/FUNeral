@@ -64,15 +64,21 @@ const Services = () => {
       price: "PHP 25,000",
       description:
         "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care.",
-      inclusionslist:
-        <l1>"
-          Casket- Wood features , Full Glass, Basic Interiors and Handles
-          Curtain- Simple Fabric focusing on simplicity
-          Flower Arrangements -Simple and understated flower stand 
-          Carpet- Durable and Plain
-          Set of Lights and Candle-Minimalist without ornate details
-          Traditional Filipino Clothing- Barong Tagalog for Male Baro't Saya for Female "
-        </l1>,
+      inclusionslist: (
+        <ul style={{ textAlign: "left" }}>
+          <li>
+            Casket- Wood features, Full Glass, Basic Interiors and Handles.
+          </li>
+          <li>Curtain- Simple Fabric focusing on simplicity</li>
+          <li>Flower Arrangements- Simple and understated flower stand</li>
+          <li>Carpet- Durable and Plain</li>
+          <li>Set of Lights and Candle - Minimalist without ornate details</li>
+          <li>
+            Traditional Filipino Clothing- Barong Tagalog for Male, Baro't Saya
+            for Female
+          </li>
+        </ul>
+      ),
 
       imagePath: "/funeral pics/basicwake.png", // Unique image
       modelPaths: {
@@ -94,15 +100,27 @@ const Services = () => {
       price: "PHP 50,000",
       description:
         "The premium package, designed specifically for funeral wakes, features an exquisite selection of garden-themed items. This collection includes beautifully arranged floral displays and tasteful decorative accents that evoke a sense of peace and serenity, providing a comforting atmosphere for your loved one's farewell.",
-      inclusionslist:
-      <l1>"
-          Casket- Wood features , Full Glass, Detailed Interiors and Handles.
-          Curtain- Serene and Flowy Fabrics
-          Flower Arrangements- Emulate Garden Theme with Floral sprays top of casket
-          Carpet- Subtle Carpet Design
-          Set of Lights and Candle- Suitable for standard ceremonies with a modest style.
-          Traditional Filipino Clothing- Barong Tagalog for Male Baro't Saya for Female "
-    </l1>,
+      inclusionslist: (
+        <ul style={{ textAlign: "left" }}>
+          <li>
+            Casket- Wood features, Full Glass, Detailed Interiors, and Handles.
+          </li>
+          <li>Curtain- Serene and Flowy Fabrics</li>
+          <li>
+            Flower Arrangements- Emulate Garden Theme with Floral sprays top of
+            casket
+          </li>
+          <li>Carpet- Subtle Carpet Design</li>
+          <li>
+            Set of Lights and Candle - Suitable for standard ceremonies with a
+            modest style.
+          </li>
+          <li>
+            Traditional Filipino Clothing- Barong Tagalog for Male, Baro't Saya
+            for Female
+          </li>
+        </ul>
+      ),
       imagePath: "/funeral pics/gardenwake.png", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan2.glb",
@@ -123,15 +141,27 @@ const Services = () => {
       price: "PHP 280,000",
       description:
         "The ultimate funeral service package offers a comprehensive selection of luxurious items designed to provide comfort and dignity during a difficult time. This package includes elegant caskets, beautifully crafted memorial displays, personalized cabinetry, and premium floral arrangements. Each element is carefully chosen to reflect the unique life and legacy of your loved one, ensuring that every aspect of the service is a proper tribute.",
-      inclusionslist:
-      <l1>"
-          Casket- Wood features , Full Glass, Elegant Interiors and Handles
-          Curtain- High-quality fabrics for a Luxurious appearance
-          Flower Arrangements- Arranged in large casket floral sprays, cascading wreaths, or opulent urn-style displays
-          Carpet- Grandeur patterns and luxurious material
-          Set of Lights and Candle- Incorporates organic elements like floral and engraved symbols
-          Traditional Filipino Clothing- Barong Tagalog for Male Baro't Saya for Female "
-    </l1>,
+      inclusionslist: (
+        <ul style={{ textAlign: "left" }}>
+          <li>
+            Casket- Wood features, Full Glass, Detailed Interiors, and Handles.
+          </li>
+          <li>Curtain- High-quality fabrics for a Luxurious appearance</li>
+          <li>
+            Flower Arrangements- Arranged in large casket floral sprays,
+            cascading wreaths, or opulent urn-style displays
+          </li>
+          <li>Carpet- Subtle Carpet Design</li>
+          <li>
+            Set of Lights and Candle - Incorporates organic elements like floral
+            and engraved symbols
+          </li>
+          <li>
+            Traditional Filipino Clothing- Barong Tagalog for Male, Baro't Saya
+            for Female
+          </li>
+        </ul>
+      ),
       imagePath: "/funeral pics/garbowake.png", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan3.glb",
@@ -253,44 +283,46 @@ const Services = () => {
                   />{" "}
                   {/* Dynamic image */}
                   <div className="funeral-desc-inclusion">
-                  <div className="modal-description">
-                    <h2>{selectedPackage.title}</h2>
-                    <p className="package-desc">
-                      {selectedPackage.description}
-                    </p>
-                    <p className="inclusion-list">
-                      <strong>Inclusion: </strong>
-                      {selectedPackage.inclusionslist}
-                    </p>
-                  </div>
-                  <div className="modal-buttons">
-                    <button
-                      className="show-3d-button"
-                      onClick={handleShow3DWake}
-                    >
-                      Show Funeral Wake 3D
-                    </button>
-                    <div className="services-inclusion-select">
-                      <label htmlFor="inclusion-select">
-                        Preview Inclusion Items:
-                      </label>
-                      <select
-                        id="inclusion-select"
-                        onChange={(e) => handleShowInclusion3D(e.target.value)}
-                        defaultValue=""
-                      >
-                        <option value="" disabled>
-                          Select Inclusion
-                        </option>
-                        <option value="casket">Casket</option>
-                        <option value="flowers">Flowers</option>
-                        <option value="candles">Candles</option>
-                        <option value="curtains">Curtains</option>
-                        <option value="tarp">Tarps</option>
-                        <option value="car">Cars</option>
-                      </select>
+                    <div className="modal-description">
+                      <h2>{selectedPackage.title}</h2>
+                      <p className="package-desc">
+                        {selectedPackage.description}
+                      </p>
+                      <p className="inclusion-list">
+                        <strong>Inclusion: </strong>
+                        {selectedPackage.inclusionslist}
+                      </p>
                     </div>
-                  </div>
+                    <div className="modal-buttons">
+                      <button
+                        className="show-3d-button"
+                        onClick={handleShow3DWake}
+                      >
+                        Show Funeral Wake 3D
+                      </button>
+                      <div className="services-inclusion-select">
+                        <label htmlFor="inclusion-select">
+                          Preview Inclusion Items:
+                        </label>
+                        <select
+                          id="inclusion-select"
+                          onChange={(e) =>
+                            handleShowInclusion3D(e.target.value)
+                          }
+                          defaultValue=""
+                        >
+                          <option value="" disabled>
+                            Select Inclusion
+                          </option>
+                          <option value="casket">Casket</option>
+                          <option value="flowers">Flowers</option>
+                          <option value="candles">Candles</option>
+                          <option value="curtains">Curtains</option>
+                          <option value="tarp">Tarps</option>
+                          <option value="car">Cars</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
