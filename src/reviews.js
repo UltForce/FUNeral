@@ -146,7 +146,7 @@ const Reviews = () => {
       };
 
       // Replace these with your actual EmailJS credentials
-      const serviceID = "service_5f3k3ms";
+      const serviceID = "service_n0hzy4u";
       const templateID = "template_g1w6f2a";
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
