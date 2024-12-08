@@ -396,7 +396,7 @@ const Appointments = () => {
             status: action,
             email: userEmail,
           };
-          const serviceID = "service_5f3k3ms";
+          const serviceID = "service_n0hzy4u";
           const templateID = "template_g1w6f2a";
           const userID = "0Tz3RouZf3BXZaSmh";
 
@@ -769,7 +769,8 @@ const Appointments = () => {
                       rel="noopener noreferrer"
                       title="View PDF"
                     >
-                      <strong>Death Certificate:</strong> <FontAwesomeIcon icon={faFile} />
+                      <strong>Death Certificate:</strong>{" "}
+                      <FontAwesomeIcon icon={faFile} />
                     </a>
                   </OverlayTrigger>
                 </p>

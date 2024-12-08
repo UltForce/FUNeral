@@ -315,7 +315,7 @@ const Transaction = () => {
       };
 
       // Replace these with your actual EmailJS credentials
-      const serviceID = "service_5f3k3ms";
+      const serviceID = "service_n0hzy4u";
       const templateID = "template_g1w6f2a";
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
@@ -653,7 +653,12 @@ const Transaction = () => {
               placement="top"
               overlay={<Tooltip>Add Transaction</Tooltip>}
             >
-              <a className="add-transaction" onClick={handleShow}>
+              <a
+                className="add-transaction"
+                onClick={(event) => {
+                  handleShowModal("add");
+                }}
+              >
                 <img src="add.png" style={{ height: "30px" }}></img>
               </a>
             </OverlayTrigger>
