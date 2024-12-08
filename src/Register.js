@@ -61,12 +61,12 @@ const Register = () => {
   const [termsChecked, setTermsChecked] = useState(false); // State htmlFor tracking if terms are checked
   const handleGoogleSignIn = async () => {
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
     // Trim the first name and last name
     const trimmedFirstname = firstname.trim();
     const trimmedLastname = lastname.trim();
-    
+
     if (
       !confirmPassword ||
       !password ||
@@ -87,7 +87,7 @@ const Register = () => {
       return; // Exit early if fields are empty
     }
 
-        // Validate first name and last name
+    // Validate first name and last name
     if (trimmedFirstname.length === 0) {
       Toast.fire({
         icon: "error",

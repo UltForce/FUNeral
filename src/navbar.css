@@ -129,6 +129,7 @@ nav ul li a .nav-label {
 
   .sidebar-container.visible .sidebar {
     transform: translateX(0); /* Show sidebar when visible */
+    overflow-y: scroll;
   }
 
   .sidebar ul {
@@ -163,6 +164,7 @@ nav ul li a .nav-label {
 
   .sidebar-container.visible .sidebar {
     transform: translateX(0); /* Show sidebar when visible */
+    overflow-y: scroll;
   }
 
   .sidebar ul {
