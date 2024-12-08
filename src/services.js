@@ -65,7 +65,14 @@ const Services = () => {
       description:
         "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care.",
       inclusionslist:
-        "Casket , Curtain , Flower Stand , Carpet, Set of Lights and Candle,Traditional Filipino Clothing",
+        <l1>"
+          Casket- Wood features , Full Glass, Basic Interiors and Handles
+          Curtain- Simple Fabric focusing on simplicity
+          Flower Arrangements -Simple and understated flower stand 
+          Carpet- Durable and Plain
+          Set of Lights and Candle-Minimalist without ornate details
+          Traditional Filipino Clothing- Barong Tagalog for Male Baro't Saya for Female "
+        </l1>,
 
       imagePath: "/funeral pics/basicwake.png", // Unique image
       modelPaths: {
@@ -88,7 +95,14 @@ const Services = () => {
       description:
         "The premium package, designed specifically for funeral wakes, features an exquisite selection of garden-themed items. This collection includes beautifully arranged floral displays and tasteful decorative accents that evoke a sense of peace and serenity, providing a comforting atmosphere for your loved one's farewell.",
       inclusionslist:
-        "Casket , Curtain , Flower Stand , Casket Spray Flowers , Carpet, Set of Lights and Candle , Traditional Filipino Clothing",
+      <l1>"
+          Casket- Wood features , Full Glass, Detailed Interiors and Handles.
+          Curtain- Serene and Flowy Fabrics
+          Flower Arrangements- Emulate Garden Theme with Floral sprays top of casket
+          Carpet- Subtle Carpet Design
+          Set of Lights and Candle- Suitable for standard ceremonies with a modest style.
+          Traditional Filipino Clothing- Barong Tagalog for Male Baro't Saya for Female "
+    </l1>,
       imagePath: "/funeral pics/gardenwake.png", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan2.glb",
@@ -110,7 +124,14 @@ const Services = () => {
       description:
         "The ultimate funeral service package offers a comprehensive selection of luxurious items designed to provide comfort and dignity during a difficult time. This package includes elegant caskets, beautifully crafted memorial displays, personalized cabinetry, and premium floral arrangements. Each element is carefully chosen to reflect the unique life and legacy of your loved one, ensuring that every aspect of the service is a proper tribute.",
       inclusionslist:
-        "Casket , Curtain , Flower Stand , Casket Spray Flowers, Lamps Flower, Carpet, Set of Lights and Candle, Traditional Filipino Clothing ",
+      <l1>"
+          Casket- Wood features , Full Glass, Elegant Interiors and Handles
+          Curtain- High-quality fabrics for a Luxurious appearance
+          Flower Arrangements- Arranged in large casket floral sprays, cascading wreaths, or opulent urn-style displays
+          Carpet- Grandeur patterns and luxurious material
+          Set of Lights and Candle- Incorporates organic elements like floral and engraved symbols
+          Traditional Filipino Clothing- Barong Tagalog for Male Baro't Saya for Female "
+    </l1>,
       imagePath: "/funeral pics/garbowake.png", // Unique image
       modelPaths: {
         wake: "/3DModels/Plan3.glb",
