@@ -67,14 +67,14 @@ const Services = () => {
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
           <li>
-            Casket- Wood features, Full Glass, Basic Interiors and Handles.
+          <strong>Casket</strong> - Wood features, Full Glass, Basic Interiors and Handles.
           </li>
-          <li>Curtain- Simple Fabric focusing on simplicity</li>
-          <li>Flower Arrangements- Simple and understated flower stand</li>
-          <li>Carpet- Durable and Plain</li>
-          <li>Set of Lights and Candle - Minimalist without ornate details</li>
+          <li><strong>Curtain</strong> - Simple Fabric focusing on simplicity</li>
+          <li><strong>Flower Arrangements</strong> - Simple and understated flower stand</li>
+          <li><strong>Carpet</strong> - Durable and Plain</li>
+          <li><strong>Set of Lights and Candles</strong> - Minimalist without ornate details</li>
           <li>
-            Traditional Filipino Clothing- Barong Tagalog for Male, Baro't Saya
+          <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for Male, Baro't Saya
             for Female
           </li>
         </ul>
@@ -103,20 +103,20 @@ const Services = () => {
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
           <li>
-            Casket- Wood features, Full Glass, Detailed Interiors, and Handles.
+            <strong>Casket</strong> - Wood features, Full Glass, Detailed Interiors, and Handles.
           </li>
-          <li>Curtain- Serene and Flowy Fabrics</li>
+          <li><strong>Curtain</strong> - Serene and Flowy Fabrics</li>
           <li>
-            Flower Arrangements- Emulate Garden Theme with Floral sprays top of
+          <strong>Flower Arrangements</strong> - Emulate Garden Theme with Floral sprays top of
             casket
           </li>
-          <li>Carpet- Subtle Carpet Design</li>
+          <li><strong>Carpet</strong> - Subtle Carpet Design</li>
           <li>
-            Set of Lights and Candle - Suitable for standard ceremonies with a
+          <strong>Set of Lights and Candles</strong> - Suitable for standard ceremonies with a
             modest style.
           </li>
           <li>
-            Traditional Filipino Clothing- Barong Tagalog for Male, Baro't Saya
+          <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for Male, Baro't Saya
             for Female
           </li>
         </ul>
@@ -144,20 +144,20 @@ const Services = () => {
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
           <li>
-            Casket- Wood features, Full Glass, Detailed Interiors, and Handles.
+          <strong>Casket</strong> - Wood features, Full Glass, Detailed Interiors, and Handles.
           </li>
-          <li>Curtain- High-quality fabrics for a Luxurious appearance</li>
+          <li><strong>Curtain</strong> - High-quality fabrics for a Luxurious appearance</li>
           <li>
-            Flower Arrangements- Arranged in large casket floral sprays,
+          <strong>Flower Arrangements</strong> - Arranged in large casket floral sprays,
             cascading wreaths, or opulent urn-style displays
           </li>
-          <li>Carpet- Subtle Carpet Design</li>
+          <li><strong>Carpet</strong> - Subtle Carpet Design</li>
           <li>
-            Set of Lights and Candle - Incorporates organic elements like floral
+          <strong>Set of Lights and Candles</strong> - Incorporates organic elements like floral
             and engraved symbols
           </li>
           <li>
-            Traditional Filipino Clothing- Barong Tagalog for Male, Baro't Saya
+          <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for Male, Baro't Saya
             for Female
           </li>
         </ul>

@@ -246,12 +246,12 @@
   }
   
   .modal-description .package-desc {
-    margin: 15px 30px 25px;
+    margin: 15px 30px 15px;
     text-align: justify;
   }
   
   .modal-description .inclusion-list {
-    margin: 0px 30px 25px;
+    margin: 0px 30px 15px;
     text-align: justify;
     font-size: 11px;
   }
@@ -268,7 +268,7 @@
     border: 1px solid #4d4642; 
     border-radius: 20px; 
     background-color:#FCF2D8;
-    padding: 30px 25px;
+    padding: 20px 25px;
   }
 }
 
@@ -334,7 +334,7 @@
   }
   
   .modal-description .package-desc {
-    margin: 15px 30px 25px;
+    margin: 15px 30px 20px;
     text-align: justify;
   }
   
@@ -356,7 +356,7 @@
     border: 1px solid #4d4642; 
     border-radius: 20px; 
     background-color:#FCF2D8;
-    padding: 30px 25px;
+    padding: 25px;
   }
 }
 
@@ -423,7 +423,7 @@
   }
   
   .modal-description .package-desc {
-    margin: 15px 30px 25px;
+    margin: 15px 30px 20px;
     text-align: justify;
   }
   
@@ -445,7 +445,7 @@
     border: 1px solid #4d4642; 
     border-radius: 20px; 
     background-color:#FCF2D8;
-    padding: 30px 25px;
+    padding: 25px;
   }
 }
 
