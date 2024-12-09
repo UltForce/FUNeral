@@ -12,25 +12,9 @@ import {
 } from "./firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome,
   faUser,
-  faCog,
-  faSignOutAlt,
-  faQuestionCircle,
-  faInfoCircle,
-  faImage,
-  faCalendar,
-  faTag,
   faAddressBook,
-  faClapperboard,
-  faClipboard,
-  faBox,
-  faFileAlt,
-  faStar,
   faBell,
-  faExchangeAlt,
-  faArchive,
-  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import "./navbar.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -209,11 +193,13 @@ const Navbar = () => {
   return (
     <>
       {isAdmin ? (
-        <div className={`sidebar-container ${isSidebarVisible ? 'visible' : ''}`}>
+        <div
+          className={`sidebar-container ${isSidebarVisible ? "visible" : ""}`}
+        >
           <button onClick={toggleSidebar} className="sidebar-toggle">
             {isSidebarVisible ? "✖" : "☰"}
           </button>
-          <nav className={`sidebar ${isSidebarVisible ? '' : 'visible'}`}>
+          <nav className={`sidebar ${isSidebarVisible ? "" : "visible"}`}>
             <ul>
               {isLoggedIn && (
                 <>
@@ -291,10 +277,13 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <a onClick={() => {
-                          handleLogout();
-                          toggleNavbar();
-                        }} className="no-transition">
+                    <a
+                      onClick={() => {
+                        handleLogout();
+                        toggleNavbar();
+                      }}
+                      className="no-transition"
+                    >
                       <span className="nav-label"> Logout</span>
                     </a>
                   </li>
@@ -316,41 +305,44 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="about-dropdown">
-                  <a
-                    onClick={toggleAboutDropdown}
-                    className="about-planning-button"
+              <a
+                onClick={toggleAboutDropdown}
+                className="about-planning-button"
+              >
+                About Us
+              </a>
+              {isAboutDropdownOpen && (
+                <div className="about-dropdown-content">
+                  <Link
+                    to="/about"
+                    onClick={() => {
+                      setIsAboutDropdownOpen(false);
+                      toggleNavbar();
+                    }}
                   >
                     About Us
-                  </a>
-                  {isAboutDropdownOpen && (
-                    <div className="about-dropdown-content">
-                      <Link to="/about"  onClick={() => {
-                          setIsAboutDropdownOpen(false);
-                          toggleNavbar();
-                          }}>
-                            About Us
-                          </Link>
-                      <Link
-                        to="/planningguide"
-                        onClick={() => {
-                          setIsAboutDropdownOpen(false);
-                          toggleNavbar();
-                        }}
-                      >
-                        Planning Guide
-                      </Link>
-                      <Link
-                        to="/blog"
-                        onClick={() => {
-                          setIsAboutDropdownOpen(false);
-                          toggleNavbar();
-                        }}
-                      >
-                        Blogs & Articles
-                      </Link>
-                    </div>
-                  )}
-                </li>
+                  </Link>
+                  <Link
+                    to="/planningguide"
+                    onClick={() => {
+                      setIsAboutDropdownOpen(false);
+                      toggleNavbar();
+                    }}
+                  >
+                    Planning Guide
+                  </Link>
+                  <Link
+                    to="/blog"
+                    onClick={() => {
+                      setIsAboutDropdownOpen(false);
+                      toggleNavbar();
+                    }}
+                  >
+                    Blogs & Articles
+                  </Link>
+                </div>
+              )}
+            </li>
             <li className={location.pathname === "/gallery" ? "active" : ""}>
               <Link to="/gallery" onClick={toggleNavbar}>
                 <span className="menu-container"> Gallery</span>
@@ -483,12 +475,14 @@ const Navbar = () => {
                       >
                         Dashboard
                       </Link>
-                      <a  onClick={() => {
+                      <a
+                        onClick={() => {
                           setIsAccountDropdownOpen(false);
                           handleLogout();
                           toggleNavbar();
                         }}
-                         className="no-transition">
+                        className="no-transition"
+                      >
                         Logout
                       </a>
                     </div>
@@ -498,10 +492,13 @@ const Navbar = () => {
             )}
             {!isLoggedIn && (
               <>
-                <li className={location.pathname === "/login" ? "active" : ""} onClick={() => {
-                          setIsAccountDropdownOpen(false);
-                          toggleNavbar();
-                        }}>
+                <li
+                  className={location.pathname === "/login" ? "active" : ""}
+                  onClick={() => {
+                    setIsAccountDropdownOpen(false);
+                    toggleNavbar();
+                  }}
+                >
                   <Link to="/login">
                     <span className="login-button-nav"> LOGIN</span>
                   </Link>

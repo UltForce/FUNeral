@@ -8,9 +8,9 @@ import {
   getUserRoleFirestore,
   AuditLogger,
 } from "./firebase";
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, OAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaYahoo } from "react-icons/fa";
 import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
 import { dba } from "./firebase"; // Ensure Firestore is initialized in your firebase.js file
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -151,6 +151,56 @@ const Login = () => {
     }
   };
 
+  const handleYahooSignIn = async () => {
+    try {
+      const provider = new OAuthProvider("yahoo.com");
+      provider.addScope("openid");
+      provider.addScope("profile");
+      provider.addScope("email");
+
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Sign-in successful", user);
+
+      const yahooEmail = user.email;
+
+      const event = {
+        type: "Register",
+        userId: user.uid,
+        details: "User logged in with Yahoo",
+      };
+      AuditLogger({ event });
+
+      // Check user role and redirect
+      const userRole = await getUserRoleFirestore(user.uid);
+      setRole(userRole); // Update the role globally
+      if (userRole === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/homepage");
+      }
+
+      Swal.fire({
+        title: "Success",
+        text: "Account logged in successfully",
+        icon: "success",
+        confirmButtonText: "Confirm",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Toast.fire({
+            icon: "success",
+            title: "Account logged in successfully",
+          });
+        }
+      });
+    } catch (error) {
+      Toast.fire({
+        icon: "error",
+        title: "An error occurred. Please try again later.",
+      });
+    }
+  };
+
   return (
     <section className="login">
       <div className="box">
@@ -194,6 +244,15 @@ const Login = () => {
         >
           <button className="google-login-button" onClick={handleGoogleLogin}>
             <FaGoogle /> - Google Login
+          </button>
+        </OverlayTrigger>
+        <br />
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>Verify with Yahoo</Tooltip>}
+        >
+          <button className="google-login-button" onClick={handleYahooSignIn}>
+            <FaYahoo /> - Yahoo Login
           </button>
         </OverlayTrigger>
         <p className="links">

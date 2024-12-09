@@ -18,8 +18,10 @@ import {
   GoogleAuthProvider,
   linkWithCredential,
   EmailAuthProvider,
+  OAuthProvider,
+  getAuth,
 } from "firebase/auth";
-import { FaGoogle } from "react-icons/fa"; // Import FontAwesome icons
+import { FaGoogle, FaYahoo } from "react-icons/fa"; // Import FontAwesome icons
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "./Register.css";
 
@@ -41,7 +43,6 @@ const Register = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [mobilenumber, setMobilenumber] = useState("");
-  const [landlinenumber, setLandlinenumber] = useState("");
   const [region, setRegion] = useState("");
   const [city, setCity] = useState("");
   const [barangay, setBarangay] = useState("");
@@ -49,7 +50,6 @@ const Register = () => {
   const [unit, setUnit] = useState("");
   const LastNameInputRef = useRef(null);
   const MobileNumberInputRef = useRef(null);
-  const LandlineNumberInputRef = useRef(null);
   const RegionInputRef = useRef(null);
   const CityInputRef = useRef(null);
   const BarangayInputRef = useRef(null);
@@ -59,6 +59,7 @@ const Register = () => {
   const ConfirmPasswordInputRef = useRef(null);
   const navigate = useNavigate();
   const [termsChecked, setTermsChecked] = useState(false); // State htmlFor tracking if terms are checked
+
   const handleGoogleSignIn = async () => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
@@ -73,7 +74,6 @@ const Register = () => {
       !firstname ||
       !lastname ||
       !mobilenumber ||
-      !landlinenumber ||
       !region ||
       !city ||
       !barangay ||
@@ -147,7 +147,6 @@ const Register = () => {
             firstname,
             lastname,
             mobilenumber,
-            landlinenumber,
             region,
             city,
             barangay,
@@ -193,23 +192,160 @@ const Register = () => {
               icon: "error",
               title: "Email is already registered.",
             });
+          } else if (error.code === "auth/provider-already-linked") {
+            Toast.fire({
+              icon: "error",
+              title: "Email is already registered.",
+            });
           } else {
             Toast.fire({
               icon: "error",
               title: "An error occurred. Please try again later.",
             });
           }
-          console.error("Google Sign-In Error:", error);
-          Toast.fire({
-            icon: "error",
-            title:
-              "An error occurred with Google Sign-In. Please try again later.",
-          });
+
           return false;
         }
       }
     });
   };
+
+  const handleYahooSignIn = async () => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+    const trimmedFirstname = firstname.trim();
+    const trimmedLastname = lastname.trim();
+
+    if (
+      !confirmPassword ||
+      !password ||
+      !firstname ||
+      !lastname ||
+      !mobilenumber ||
+      !region ||
+      !city ||
+      !barangay ||
+      !street ||
+      !unit
+    ) {
+      Toast.fire({
+        icon: "error",
+        title: "Please fill in all the fields.",
+      });
+      return;
+    }
+
+    if (trimmedFirstname.length === 0 || trimmedLastname.length === 0) {
+      Toast.fire({
+        icon: "error",
+        title: "First Name and Last Name cannot be empty or just spaces.",
+      });
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      Toast.fire({
+        icon: "error",
+        title:
+          "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Toast.fire({
+        icon: "error",
+        title: "Passwords do not match.",
+      });
+      return;
+    }
+
+    Swal.fire({
+      icon: "question",
+      title: "Do you want to register this account?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: `No`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const provider = new OAuthProvider("yahoo.com");
+          provider.addScope("openid");
+          provider.addScope("profile");
+          provider.addScope("email");
+
+          const result = await signInWithPopup(auth, provider);
+          const user = result.user;
+          console.log("Sign-in successful", user);
+
+          const yahooEmail = user.email;
+
+          const userDocRef = doc(dba, "users", user.uid);
+          await setDoc(userDocRef, {
+            userId: user.uid,
+            role: "user",
+            firstname,
+            lastname,
+            mobilenumber,
+            region,
+            city,
+            barangay,
+            street,
+            unit,
+            email: yahooEmail,
+          });
+
+          await linkWithCredential(
+            user,
+            EmailAuthProvider.credential(yahooEmail, password)
+          );
+
+          const event = {
+            type: "Register",
+            userId: user.uid,
+            details: "User registered with Yahoo",
+          };
+          await sendEmailVerification(user);
+          AuditLogger({ event });
+
+          navigate("/homepage");
+
+          Swal.fire({
+            title: "Success",
+            text: "Account registered successfully",
+            icon: "success",
+            confirmButtonText: "Confirm",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Toast.fire({
+                icon: "success",
+                title: "Account registered successfully",
+              });
+            }
+          });
+        } catch (error) {
+          if (error.code === "auth/email-already-in-use") {
+            Toast.fire({
+              icon: "error",
+              title: "Email is already registered.",
+            });
+          } else if (error.code === "auth/provider-already-linked") {
+            Toast.fire({
+              icon: "error",
+              title: "Email is already registered.",
+            });
+          } else {
+            Toast.fire({
+              icon: "error",
+              title: "An error occurred. Please try again later.",
+            });
+          }
+        }
+      }
+    });
+  };
+
   // Handle terms checkbox change
   const handleTermsChange = (e) => {
     setTermsChecked(e.target.checked); // Set terms checked
@@ -221,8 +357,6 @@ const Register = () => {
         LastNameInputRef.current.focus();
       } else if (event.target.id === "floatingLast") {
         MobileNumberInputRef.current.focus();
-      } else if (event.target.id === "floatingMobile") {
-        LandlineNumberInputRef.current.focus();
       } else if (event.target.id === "floatingLand") {
         RegionInputRef.current.focus();
       } else if (event.target.id === "floatingRegion") {
@@ -325,37 +459,7 @@ const Register = () => {
                   </label>
                 </div>
               </OverlayTrigger>
-              <OverlayTrigger
-                placement="bottom"
-                overlay={
-                  <Tooltip>If no Landline Number, input Mobile Number</Tooltip>
-                }
-              >
-                <div className="  form-floating mb-3  col-md-6">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="floatingLand"
-                    placeholder="Landline Number"
-                    value={landlinenumber}
-                    onKeyPress={handleKeyPress}
-                    ref={LandlineNumberInputRef}
-                    onChange={(e) => {
-                      const landlinenumbervalue = e.target.value;
-                      if (
-                        landlinenumbervalue >= 0 &&
-                        landlinenumbervalue.length <= 128
-                      ) {
-                        // Check if the value is positive or zero
-                        setLandlinenumber(landlinenumbervalue);
-                      }
-                    }}
-                  />
-                  <label className="register-label" htmlFor="floatingLand">
-                    Landline Number
-                  </label>
-                </div>
-              </OverlayTrigger>
+
               <div className="  form-floating mb-3  col-md-6">
                 <input
                   type="text"
@@ -461,7 +565,7 @@ const Register = () => {
                   Unit
                 </label>
               </div>
-              <div className="col-md-6"></div>
+
               <OverlayTrigger
                 placement="bottom"
                 overlay={
@@ -549,6 +653,20 @@ const Register = () => {
             disabled={!termsChecked}
           >
             <FaGoogle /> - Register
+          </button>
+        </OverlayTrigger>
+        <br />
+        <OverlayTrigger
+          placement="right"
+          overlay={<Tooltip>Verify with Yahoo</Tooltip>}
+        >
+          <button
+            className="register-button"
+            type="submit"
+            disabled={!termsChecked}
+            onClick={handleYahooSignIn}
+          >
+            <FaYahoo /> - Register
           </button>
         </OverlayTrigger>
         <br />

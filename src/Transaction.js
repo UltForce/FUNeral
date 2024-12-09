@@ -302,9 +302,8 @@ const Transaction = () => {
       }
 
       await updateTransactionStatus(transactionId, action);
-
       // Fetch the user's email based on userId
-      const userEmail = await getUserEmailById(userId);
+      const userEmail = await getUserEmailById(transaction.orderedById);
 
       // Send email notification using EmailJS
       const emailParams = {
@@ -315,7 +314,7 @@ const Transaction = () => {
       };
 
       // Replace these with your actual EmailJS credentials
-      const serviceID = "service_n0hzy4u";
+      const serviceID = "service_m5g022b";
       const templateID = "template_g1w6f2a";
       const userID = "0Tz3RouZf3BXZaSmh"; // Use your User ID
 
@@ -1051,7 +1050,7 @@ const Transaction = () => {
                       style={{ textAlign: "center" }}
                       className="balance"
                     >
-                      <strong>Balance:</strong> ${formData.balance.toFixed(2)}
+                      <strong>Balance:</strong> ₱{formData.balance.toFixed(2)}
                     </td>
                   </tr>
                 </tfoot>

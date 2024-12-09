@@ -753,7 +753,7 @@ const updateInventoryItem = async (itemId, newData) => {
       const oldImageRef = ref(storage, itemData.imageUrl);
 
       // Delete the old image from Firebase Storage
-      await deleteObject(oldImageRef);
+      //await deleteObject(oldImageRef);
       console.log("Old image deleted successfully from Firebase Storage.");
     }
 

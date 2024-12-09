@@ -80,6 +80,7 @@ const Booking = ({}) => {
     DateofDeath: "",
     PlaceofDeath: "",
     DeceasedRelationship: "",
+    hasDeathCertificate: "",
     DeathCertificate: "",
   });
 
@@ -145,6 +146,15 @@ const Booking = ({}) => {
       return;
     }
 
+    // Validate the file upload if "Yes" is selected
+    if (formData.hasDeathCertificate === "yes" && !formData.DeathCertificate) {
+      Toast.fire({
+        icon: "error",
+        title: "Please upload a Death Certificate file.",
+      });
+      return;
+    }
+
     // Validate that the Deceased Name does not contain digits or special characters
     const nameRegex = /^[A-Za-z\s]+$/; // Allows only letters and spaces
     const trimmedDeceasedName = formData.DeceasedName.trim(); // Trim spaces from the name
@@ -173,8 +183,7 @@ const Booking = ({}) => {
       formData.DeceasedBirthday &&
       formData.DateofDeath &&
       formData.PlaceofDeath &&
-      formData.DeceasedRelationship &&
-      formData.DeathCertificate
+      formData.DeceasedRelationship
     ) {
       handleClose2(); // Close the second modal
       handleShowTermsModal(); // Show the terms modal
@@ -214,6 +223,7 @@ const Booking = ({}) => {
       DateofDeath: "",
       PlaceofDeath: "",
       DeceasedRelationship: "",
+      hasDeathCertificate: "",
       DeathCertificate: "",
     });
   };
@@ -328,6 +338,7 @@ const Booking = ({}) => {
             DateofDeath: formData.DateofDeath,
             PlaceofDeath: formData.PlaceofDeath,
             DeceasedRelationship: formData.DeceasedRelationship,
+            hasDeathCertificate: formData.hasDeathCertificate,
             DeathCertificate: formData.DeathCertificate,
           });
           // Handle file upload for Death Certificate
@@ -401,6 +412,7 @@ const Booking = ({}) => {
             DateofDeath: formData.DateofDeath,
             PlaceofDeath: formData.PlaceofDeath,
             DeceasedRelationship: formData.DeceasedRelationship,
+            hasDeathCertificate: formData.hasDeathCertificate,
             DeathCertificate: formData.DeathCertificate,
           });
           const title = "Appointment created";
@@ -640,6 +652,14 @@ const Booking = ({}) => {
     clearFormData();
   };
 
+  const handleRadioChange = (value) => {
+    setFormData({
+      ...formData,
+      hasDeathCertificate: value,
+      DeathCertificate: null, // Clear the file if "No" is selected
+    });
+  };
+
   return (
     <section className="booking">
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -707,9 +727,7 @@ const Booking = ({}) => {
               }}
               events={appointments.map((appointment) => ({
                 id: appointment.id,
-                title: appointment.status,
                 start: appointment.date,
-                backgroundColor: getStatusColor(appointment.status), // Set color based on status
               }))}
               editable={false}
               selectable={true}
@@ -901,20 +919,49 @@ const Booking = ({}) => {
               <br />
               <Form.Group controlId="formPlaceofDeath">
                 <Form.Label className="label-title">Place of Death</Form.Label>
-                <Form.Control
-                  type="text"
-                  className="input-details"
-                  placeholder="Enter place of death"
-                  value={formData.PlaceofDeath}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      PlaceofDeath: e.target.value,
-                    })
-                  }
-                  required
-                />
+                <div>
+                  <Form.Check
+                    type="radio"
+                    label="Hospital"
+                    name="placeOfDeath"
+                    value="Hospital"
+                    checked={formData.PlaceofDeath === "Hospital"}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        PlaceofDeath: e.target.value,
+                      })
+                    }
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Home"
+                    name="placeOfDeath"
+                    value="Home"
+                    checked={formData.PlaceofDeath === "Home"}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        PlaceofDeath: e.target.value,
+                      })
+                    }
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Accidental"
+                    name="placeOfDeath"
+                    value="Accidental"
+                    checked={formData.PlaceofDeath === "Accidental"}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        PlaceofDeath: e.target.value,
+                      })
+                    }
+                  />
+                </div>
               </Form.Group>
+
               <br />
               <Form.Group controlId="formDeceasedRelationship">
                 <Form.Label className="label-title">
@@ -935,23 +982,49 @@ const Booking = ({}) => {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formDeathCertificate">
+              <Form.Group controlId="formHasDeathCertificate">
                 <Form.Label className="label-title">
-                  Death Certificate
+                  Has Death Certificate?
                 </Form.Label>
-                <Form.Control
-                  type="file"
-                  className="input-details"
-                  accept=".pdf"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      DeathCertificate: e.target.files[0],
-                    })
-                  }
-                  required
-                />
+                <div>
+                  <Form.Check
+                    type="radio"
+                    label="Yes"
+                    name="hasDeathCertificate"
+                    value="yes"
+                    checked={formData.hasDeathCertificate === "yes"}
+                    onChange={() => handleRadioChange("yes")}
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="No"
+                    name="hasDeathCertificate"
+                    value="no"
+                    checked={formData.hasDeathCertificate === "no"}
+                    onChange={() => handleRadioChange("no")}
+                  />
+                </div>
               </Form.Group>
+
+              {/* File Upload for Death Certificate */}
+              {formData.hasDeathCertificate === "yes" && (
+                <Form.Group controlId="formDeathCertificate">
+                  <Form.Label className="label-title">
+                    Death Certificate
+                  </Form.Label>
+                  <Form.Control
+                    type="file"
+                    className="input-details"
+                    accept=".pdf"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        DeathCertificate: e.target.files[0],
+                      })
+                    }
+                  />
+                </Form.Group>
+              )}
               <br />
 
               {/* Return and Next Buttons */}

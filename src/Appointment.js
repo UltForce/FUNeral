@@ -388,15 +388,16 @@ const Appointments = () => {
           await sendNotification(title, content, userId, recipient);
           await updateAppointmentStatus(appointmentId, action);
 
+          const appointment = appointments.find((r) => r.id === appointmentId);
           // Fetch user's email and send email notification using EmailJS
-          const userEmail = await getUserEmailById(userId);
+          const userEmail = await getUserEmailById(appointment.userId);
           const emailParams = {
             type: "Appointment",
             to_name: appointment.name,
             status: action,
             email: userEmail,
           };
-          const serviceID = "service_n0hzy4u";
+          const serviceID = "service_m5g022b";
           const templateID = "template_g1w6f2a";
           const userID = "0Tz3RouZf3BXZaSmh";
 
