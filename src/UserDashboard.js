@@ -315,9 +315,7 @@ const UserDashboard = () => {
         <h1>Dashboard</h1>
       </div>
       <div className="user-dashboard-info">
-        <div
-          className="user-dashboard-info-inner"
-        >
+        <div className="user-dashboard-info-inner">
           <div className="user-cards-total">
             <Card className="past-appointments">
               <Card.Header>Past Appointments</Card.Header>
@@ -616,18 +614,31 @@ const UserDashboard = () => {
                     <br />
                     <OverlayTrigger
                       placement="top"
-                      overlay={<Tooltip>View Death Certificate File</Tooltip>}
+                      overlay={
+                        <Tooltip>
+                          {selectedAppointment.DeathCertificate
+                            ? "View Death Certificate File"
+                            : "No Death Certificate Available"}
+                        </Tooltip>
+                      }
                     >
-                      <a
-                        href={selectedAppointment.DeathCertificate}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title="View PDF"
-                        className="appointment-death-cert"
-                      >
-                        <strong>Death Certificate:</strong>{" "}
-                        <FontAwesomeIcon icon={faFile} />
-                      </a>
+                      {selectedAppointment.DeathCertificate ? (
+                        <a
+                          href={selectedAppointment.DeathCertificate}
+                          className="appointment-death-cert"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="View PDF"
+                        >
+                          <strong>Death Certificate:</strong>{" "}
+                          <FontAwesomeIcon icon={faFile} />
+                        </a>
+                      ) : (
+                        <span className="no-death-certificate">
+                          <strong>Death Certificate:</strong> No Death
+                          Certificate
+                        </span>
+                      )}
                     </OverlayTrigger>
                   </p>
                 </>
@@ -661,23 +672,25 @@ const UserDashboard = () => {
             <Modal.Body className="user-transaction-details-box">
               {selectedTransaction ? (
                 <>
-                  <h4 className="admin-transaction-user">
-                    {selectedTransaction.deceasedName || "N/A"}
+                  <h4 className="admin-appointment-user">
+                    {selectedTransaction.deceasedName}
                   </h4>
+
                   <p className="first-details">
-                    <strong>Date of Burial:</strong>{" "}
-                    {selectedTransaction.dateOfBurial}
+                    <strong>Date:</strong>{" "}
+                    {formatDateTime(selectedTransaction.dateOfBurial)}
                     <br />
                     <strong>Time of Burial:</strong>{" "}
                     {selectedTransaction.timeOfBurial}
                     <br />
                     <strong>Ordered By:</strong> {selectedTransaction.orderedBy}
                     <br />
-                    <strong>Address:</strong> {selectedTransaction.address}
+                    <strong>Viewing Address:</strong>{" "}
+                    {selectedTransaction.address}
                     <br />
                     <strong>Cemetery:</strong> {selectedTransaction.cemetery}
                     <br />
-                    <strong>Glass Viewing:</strong>{" "}
+                    <strong>Viewing Glass:</strong>{" "}
                     {selectedTransaction.glassViewing}
                     <br />
                     <strong>Status:</strong>{" "}
@@ -690,29 +703,15 @@ const UserDashboard = () => {
                     <table>
                       <thead>
                         <tr>
-                          <th>Category</th>
-                          <th>Particulars</th>
-                          <th>Amount</th>
+                          <th>Particular</th>
+                          <th>Price</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {[
-                          "casket",
-                          "hearse",
-                          "funServicesArrangements",
-                          "permits",
-                          "embalming",
-                          "cemeteryExpenses",
-                          "otherExpenses",
-                        ].map((field) => (
-                          <tr key={field}>
-                            <td>{field.replace(/([A-Z])/g, " $1")}</td>
-                            <td>
-                              {selectedTransaction[field]?.particulars || "N/A"}
-                            </td>
-                            <td>
-                              {selectedTransaction[field]?.amount || "N/A"}
-                            </td>
+                        {selectedTransaction.particulars.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.name}</td>
+                            <td>₱{item.price.toFixed(2)}</td>
                           </tr>
                         ))}
                       </tbody>

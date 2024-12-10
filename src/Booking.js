@@ -823,15 +823,24 @@ const Booking = ({}) => {
                   }
                 >
                   <option value="">Select a plan</option>
-                  <option value="Plan 1">
+                  <option
+                    value="Plan 1"
+                    disabled={remainingPackages["Plan 1"] === 0}
+                  >
                     Plan 1 - Basic Plan ({remainingPackages["Plan 1"]} packages
                     remaining)
                   </option>
-                  <option value="Plan 2">
+                  <option
+                    value="Plan 2"
+                    disabled={remainingPackages["Plan 2"] === 0}
+                  >
                     Plan 2 - Garden Plan ({remainingPackages["Plan 2"]} packages
                     remaining)
                   </option>
-                  <option value="Plan 3">
+                  <option
+                    value="Plan 3"
+                    disabled={remainingPackages["Plan 3"] === 0}
+                  >
                     Plan 3 - Garbo Plan ({remainingPackages["Plan 3"]} packages
                     remaining)
                   </option>

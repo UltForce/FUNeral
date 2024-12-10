@@ -339,17 +339,31 @@ const Archive = () => {
                     <br />
                     <OverlayTrigger
                       placement="top"
-                      overlay={<Tooltip>View Death Certificate File</Tooltip>}
+                      overlay={
+                        <Tooltip>
+                          {selectedItem.DeathCertificate
+                            ? "View Death Certificate File"
+                            : "No Death Certificate Available"}
+                        </Tooltip>
+                      }
                     >
-                      <a
-                        href={selectedItem.DeathCertificate}
-                        className="appointment-death-cert"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title="View PDF"
-                      >
-                        <strong>Death Certificate:</strong> <FontAwesomeIcon icon={faFile} />
-                      </a>
+                      {selectedItem.DeathCertificate ? (
+                        <a
+                          href={selectedItem.DeathCertificate}
+                          className="appointment-death-cert"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="View PDF"
+                        >
+                          <strong>Death Certificate:</strong>{" "}
+                          <FontAwesomeIcon icon={faFile} />
+                        </a>
+                      ) : (
+                        <span className="no-death-certificate">
+                          <strong>Death Certificate:</strong> No Death
+                          Certificate
+                        </span>
+                      )}
                     </OverlayTrigger>
                   </p>
                 </>
@@ -358,6 +372,7 @@ const Archive = () => {
                   <h4 className="admin-appointment-user">
                     {selectedItem.deceasedName}
                   </h4>
+
                   <p className="first-details">
                     <strong>Date:</strong>{" "}
                     {formatDateTime(selectedItem.dateOfBurial)}
@@ -366,11 +381,11 @@ const Archive = () => {
                     <br />
                     <strong>Ordered By:</strong> {selectedItem.orderedBy}
                     <br />
-                    <strong>Address:</strong> {selectedItem.address}
+                    <strong>Viewing Address:</strong> {selectedItem.address}
                     <br />
                     <strong>Cemetery:</strong> {selectedItem.cemetery}
                     <br />
-                    <strong>Glass Viewing:</strong> {selectedItem.glassViewing}
+                    <strong>Viewing Glass:</strong> {selectedItem.glassViewing}
                     <br />
                     <strong>Status:</strong>{" "}
                     {getStatusBadge(selectedItem.status)}
@@ -382,50 +397,31 @@ const Archive = () => {
                     <table>
                       <thead>
                         <tr>
-                          <th>Category</th>
-                          <th>Particulars</th>
-                          <th>Amount</th>
+                          <th>Particular</th>
+                          <th>Price</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {[
-                          "casket",
-                          "hearse",
-                          "funServicesArrangements",
-                          "permits",
-                          "embalming",
-                          "cemeteryExpenses",
-                          "otherExpenses",
-                        ].map((field) => (
-                          <tr key={field}>
-                            <td>{field.replace(/([A-Z])/g, " $1")}</td>
-                            <td>
-                              {selectedItem[field]?.particulars
-                                ? `${selectedItem[field].particulars}`
-                                : "N/A"}
-                            </td>
-                            <td>
-                              {selectedItem[field]?.amount
-                                ? `${selectedItem[field].amount}`
-                                : "N/A"}
-                            </td>
+                        {selectedItem.particulars.map((item, index) => (
+                          <tr key={index}>
+                            <td>{item.name}</td>
+                            <td>₱{item.price.toFixed(2)}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </p>
-
                   <div className="transaction-border"></div>
                   <h4 className="financial-summary-title">
                     Financial Summary:
                   </h4>
                   <p className="financial-summary-details">
-                    <strong>Total Amount:</strong> $
+                    <strong>Total Amount:</strong> ₱
                     {selectedItem.totalAmount || "0.00"}
                     <br />
-                    <strong>Deposit:</strong> ${selectedItem.deposit || "0.00"}
+                    <strong>Deposit:</strong> ₱{selectedItem.deposit || "0.00"}
                     <br />
-                    <strong>Balance:</strong> ${selectedItem.balance || "0.00"}
+                    <strong>Balance:</strong> ₱{selectedItem.balance || "0.00"}
                   </p>
                 </>
               )

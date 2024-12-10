@@ -34,6 +34,7 @@ import {
   faUsers,
   faCalendarDay,
   faCheckCircle,
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -439,34 +440,35 @@ const Dashboard = () => {
                 >
                   <Card.Header>Today's Appointments</Card.Header>
                   <Card.Body>
-                  <ListGroup variant="flush">
-                    {todaysAppointments.length === 0 ? (
-                      <ListGroup.Item className="today-appointment-list">
-                        No appointments today
-                      </ListGroup.Item>
-                    ) : (
-                      todaysAppointments.map((appointment) => (
-                        <ListGroup.Item
-                          className="appointment-list"
-                          key={appointment.id}
-                        >
-                          <div className="today-appointment-name">
-                            <strong>{appointment.name}</strong>
-                          </div>
-                          
-                          <div className="plan-date-status">
-                            <p className="appointment-plan">{appointment.plan}</p>  
-                            <p className="appointment-date">
-                              {" "}
-                              {formatDateTime(appointment.date)}
-                            </p>
-                            <p>{" "} {getStatusBadge(appointment.status)}</p>
-                          </div>
-                          
+                    <ListGroup variant="flush">
+                      {todaysAppointments.length === 0 ? (
+                        <ListGroup.Item className="today-appointment-list">
+                          No appointments today
                         </ListGroup.Item>
-                      ))
-                    )}
-                  </ListGroup>
+                      ) : (
+                        todaysAppointments.map((appointment) => (
+                          <ListGroup.Item
+                            className="appointment-list"
+                            key={appointment.id}
+                          >
+                            <div className="today-appointment-name">
+                              <strong>{appointment.name}</strong>
+                            </div>
+
+                            <div className="plan-date-status">
+                              <p className="appointment-plan">
+                                {appointment.plan}
+                              </p>
+                              <p className="appointment-date">
+                                {" "}
+                                {formatDateTime(appointment.date)}
+                              </p>
+                              <p> {getStatusBadge(appointment.status)}</p>
+                            </div>
+                          </ListGroup.Item>
+                        ))
+                      )}
+                    </ListGroup>
                   </Card.Body>
                 </Card>
               </Col>
@@ -588,6 +590,34 @@ const Dashboard = () => {
                 <br />
                 <strong>Deceased Relationship: </strong>
                 {selectedAppointment.DeceasedRelationship}
+                <br />
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip>
+                      {selectedAppointment.DeathCertificate
+                        ? "View Death Certificate File"
+                        : "No Death Certificate Available"}
+                    </Tooltip>
+                  }
+                >
+                  {selectedAppointment.DeathCertificate ? (
+                    <a
+                      href={selectedAppointment.DeathCertificate}
+                      className="appointment-death-cert"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="View PDF"
+                    >
+                      <strong>Death Certificate:</strong>{" "}
+                      <FontAwesomeIcon icon={faFile} />
+                    </a>
+                  ) : (
+                    <span className="no-death-certificate">
+                      <strong>Death Certificate:</strong> No Death Certificate
+                    </span>
+                  )}
+                </OverlayTrigger>
               </p>
             </>
           ) : (

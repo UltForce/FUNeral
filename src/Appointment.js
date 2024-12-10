@@ -761,18 +761,30 @@ const Appointments = () => {
                   <br />
                   <OverlayTrigger
                     placement="top"
-                    overlay={<Tooltip>View Death Certificate File</Tooltip>}
+                    overlay={
+                      <Tooltip>
+                        {selectedAppointment.DeathCertificate
+                          ? "View Death Certificate File"
+                          : "No Death Certificate Available"}
+                      </Tooltip>
+                    }
                   >
-                    <a
-                      href={selectedAppointment.DeathCertificate}
-                      className="appointment-death-cert"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="View PDF"
-                    >
-                      <strong>Death Certificate:</strong>{" "}
-                      <FontAwesomeIcon icon={faFile} />
-                    </a>
+                    {selectedAppointment.DeathCertificate ? (
+                      <a
+                        href={selectedAppointment.DeathCertificate}
+                        className="appointment-death-cert"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="View PDF"
+                      >
+                        <strong>Death Certificate:</strong>{" "}
+                        <FontAwesomeIcon icon={faFile} />
+                      </a>
+                    ) : (
+                      <span className="no-death-certificate">
+                        <strong>Death Certificate:</strong> No Death Certificate
+                      </span>
+                    )}
                   </OverlayTrigger>
                 </p>
               </>
