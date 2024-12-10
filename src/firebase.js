@@ -34,6 +34,7 @@ import {
   uploadBytes,
   getDownloadURL,
   deleteObject,
+  listAll,
 } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -709,10 +710,42 @@ const addInventoryItem = async (itemData) => {
 
 const uploadImage = async (file) => {
   const storage = getStorage();
-  const storageRef = ref(storage, `inventoryImages/${file.name}`);
+  let fileName = file.name; // Original filename
+  const storageRef = ref(storage, `inventoryImages`);
+  let uniqueFileName = fileName;
 
-  await uploadBytes(storageRef, file);
-  const imageUrl = await getDownloadURL(storageRef);
+  // Check if the file already exists and resolve naming conflicts
+  const checkFileExists = async (name) => {
+    const files = await listAll(storageRef);
+    const existingFiles = files.items.map((item) => item.name);
+
+    // If the file exists, append +1 to the filename
+    while (existingFiles.includes(name)) {
+      const fileParts = name.split(".");
+      const extension = fileParts.pop(); // Get the file extension
+      const baseName = fileParts.join(".");
+
+      // Add +1 to the filename
+      const match = baseName.match(/(.*)\+(\d+)$/); // Check if +number already exists
+      if (match) {
+        const base = match[1];
+        const number = parseInt(match[2], 10) + 1;
+        name = `${base}+${number}.${extension}`;
+      } else {
+        name = `${baseName}+1.${extension}`;
+      }
+    }
+
+    return name;
+  };
+
+  // Get a unique filename
+  uniqueFileName = await checkFileExists(fileName);
+
+  // Upload the file with the unique filename
+  const uniqueFileRef = ref(storage, `inventoryImages/${uniqueFileName}`);
+  await uploadBytes(uniqueFileRef, file);
+  const imageUrl = await getDownloadURL(uniqueFileRef);
 
   return imageUrl; // Return the URL for saving in Firestore
 };

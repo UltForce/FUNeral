@@ -17,9 +17,16 @@ import $ from "jquery";
 import "datatables.net";
 import { Button, Modal, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faTrash,
+  faArrowLeft,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import "./Inventory.css";
 import Loader from "./Loader.js";
+import { doc, updateDoc } from "firebase/firestore";
+import { dba } from "./firebase"; // Adjust the import path to your Firebase configuration
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -42,8 +49,9 @@ const Inventory = () => {
   const [loading, setLoading] = useState(true); // Add loading state
   const [formData, setFormData] = useState({
     name: "",
-    quantity: "",
-    price: "",
+    plan: "",
+    quantity: 0,
+    price: 0,
     description: "",
   });
 
@@ -126,6 +134,7 @@ const Inventory = () => {
     if (item) {
       setFormData({
         name: item.name,
+        plan: item.plan,
         quantity: item.quantity,
         price: item.price,
         description: item.description,
@@ -133,8 +142,9 @@ const Inventory = () => {
     } else {
       setFormData({
         name: "",
-        quantity: "",
-        price: "",
+        quantity: 0,
+        plan: "",
+        price: 0,
         description: "",
       });
     }
@@ -166,6 +176,13 @@ const Inventory = () => {
       // Upload image and get URL
       const imageUrl = await uploadImage(itemImage);
 
+      // Parse quantity and price to numbers
+      const itemData = {
+        ...formData,
+        quantity: Number(formData.quantity),
+        price: Number(formData.price),
+      };
+
       if (modalMode === "add") {
         const event = {
           type: "Inventory",
@@ -173,7 +190,7 @@ const Inventory = () => {
           details: "Admin added an item",
         };
         AuditLogger({ event });
-        await addInventoryItem({ ...formData, imageUrl }); // Include imageUrl here
+        await addInventoryItem({ ...itemData, imageUrl }); // Include imageUrl here
 
         Swal.fire(
           "Added!",
@@ -194,7 +211,7 @@ const Inventory = () => {
           details: "Admin updated an item",
         };
         AuditLogger({ event });
-        await updateInventoryItem(selectedItem.id, { ...formData, imageUrl }); // Include imageUrl here
+        await updateInventoryItem(selectedItem.id, { ...itemData, imageUrl }); // Include imageUrl here
 
         Swal.fire(
           "Updated!",
@@ -288,6 +305,36 @@ const Inventory = () => {
     window.open(imageUrl, "_blank"); // Simple example to open the image in a new tab
   };
 
+  const increaseQuantity = async (itemId) => {
+    const updatedItems = inventoryItems.map((item) =>
+      item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setInventoryItems(updatedItems);
+
+    const updatedItem = updatedItems.find((item) => item.id === itemId);
+
+    // Save to Firestore
+    const itemDocRef = doc(dba, "inventory", itemId); // Adjust "inventory" to your Firestore collection name
+    await updateDoc(itemDocRef, { quantity: updatedItem.quantity });
+  };
+
+  const decreaseQuantity = async (itemId) => {
+    const updatedItems = inventoryItems.map((item) =>
+      item.id === itemId && item.quantity > 0
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+    setInventoryItems(updatedItems);
+
+    const updatedItem = updatedItems.find((item) => item.id === itemId);
+
+    // Save to Firestore
+    if (updatedItem.quantity >= 0) {
+      const itemDocRef = doc(dba, "inventory", itemId); // Adjust "inventory" to your Firestore collection name
+      await updateDoc(itemDocRef, { quantity: updatedItem.quantity });
+    }
+  };
+
   return (
     <section className="inventory">
       <main className="main-content">
@@ -315,6 +362,7 @@ const Inventory = () => {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Plan</th>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Description</th>
@@ -326,7 +374,26 @@ const Inventory = () => {
               {inventoryItems.map((item) => (
                 <tr key={item.id}>
                   <td>{item.name}</td>
-                  <td>{item.quantity}</td>
+                  <td>{item.plan}</td>
+                  <td>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <button
+                        className="btn btn-light"
+                        style={{ padding: "2px 5px", marginRight: "5px" }}
+                        onClick={() => decreaseQuantity(item.id)}
+                      >
+                        <FontAwesomeIcon icon={faArrowLeft} />
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        className="btn btn-light"
+                        style={{ padding: "2px 5px", marginLeft: "5px" }}
+                        onClick={() => increaseQuantity(item.id)}
+                      >
+                        <FontAwesomeIcon icon={faArrowRight} />
+                      </button>
+                    </div>
+                  </td>
                   <td>{item.price}</td>
                   <td>{item.description}</td>
                   <td>
@@ -344,7 +411,6 @@ const Inventory = () => {
                   </td>
                   <td>
                     <div>
-                      {/* Edit Button with OverlayTrigger for Tooltip */}
                       <OverlayTrigger
                         placement="top"
                         overlay={<Tooltip>Edit Item</Tooltip>}
@@ -359,7 +425,6 @@ const Inventory = () => {
                           <FontAwesomeIcon icon={faEdit} />
                         </button>
                       </OverlayTrigger>{" "}
-                      {/* Delete Button with OverlayTrigger for Tooltip */}
                       <OverlayTrigger
                         placement="top"
                         overlay={<Tooltip>Delete Item</Tooltip>}
@@ -401,6 +466,24 @@ const Inventory = () => {
                 onChange={handleFormChange}
                 required
               />
+            </Form.Group>
+            <br />
+            <Form.Group controlId="formPlan">
+              <Form.Label className="label-title">Plan</Form.Label>
+              <Form.Select
+                className="plan-select"
+                required
+                value={formData.plan}
+                onChange={(e) =>
+                  setFormData({ ...formData, plan: e.target.value })
+                }
+              >
+                <option value="">Select a plan</option>
+                <option value="Plan 1">Plan 1 - Basic Plan</option>
+                <option value="Plan 2">Plan 2 - Garden Plan</option>
+                <option value="Plan 3">Plan 3 - Garbo Plan</option>
+                <option value="Any">Any Plan</option>
+              </Form.Select>
             </Form.Group>
             <br />
             <Form.Group controlId="formQuantity">
