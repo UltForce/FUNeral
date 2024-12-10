@@ -21,6 +21,9 @@ import {
   AuditLogger,
   sendNotification,
   getUserData,
+  collection,
+  getDocs,
+  dba,
 } from "./firebase";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -136,7 +139,7 @@ const Booking = ({}) => {
 
   // Function to handle showing the terms modal
   const handleNextToTerms = () => {
-    console.log(formData);
+    //console.log(formData);
     // Validation: Birthday should be before Date of Death
     if (new Date(formData.DeceasedBirthday) >= new Date(formData.DateofDeath)) {
       Toast.fire({
@@ -660,6 +663,58 @@ const Booking = ({}) => {
     });
   };
 
+  const [remainingPackages, setRemainingPackages] = useState({
+    "Plan 1": 0,
+    "Plan 2": 0,
+    "Plan 3": 0,
+  });
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      const inventoryRef = collection(dba, "inventory");
+      const inventorySnapshot = await getDocs(inventoryRef);
+      const inventory = inventorySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Find the lowest quantity for "Any" plan
+      let anyPlanQuantity = inventory
+        .filter((item) => item.plan === "Any")
+        .reduce(
+          (min, item) => (item.quantity < min ? item.quantity : min),
+          Infinity
+        );
+
+      // If no items exist for "Any" plan, set it to 0
+      anyPlanQuantity = anyPlanQuantity === Infinity ? 0 : anyPlanQuantity;
+
+      // Define specific plans
+      const plans = ["Plan 1", "Plan 2", "Plan 3"];
+
+      // Compute remaining packages per plan
+      const planQuantities = plans.reduce((acc, plan) => {
+        const itemsForPlan = inventory.filter((item) => item.plan === plan);
+        const lowestQuantity = itemsForPlan.reduce((min, item) => {
+          return item.quantity < min ? item.quantity : min;
+        }, Infinity);
+
+        // Apply "Any" plan as ceiling
+        const remaining =
+          lowestQuantity === Infinity
+            ? 0
+            : Math.min(lowestQuantity, anyPlanQuantity);
+        acc[plan] = remaining;
+
+        return acc;
+      }, {});
+
+      setRemainingPackages(planQuantities);
+    };
+
+    fetchInventory();
+  }, []);
+
   return (
     <section className="booking">
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -768,9 +823,18 @@ const Booking = ({}) => {
                   }
                 >
                   <option value="">Select a plan</option>
-                  <option value="Plan 1">Plan 1 - Basic Plan</option>
-                  <option value="Plan 2">Plan 2 - Garden Plan</option>
-                  <option value="Plan 3">Plan 3 - Garbo Plan</option>
+                  <option value="Plan 1">
+                    Plan 1 - Basic Plan ({remainingPackages["Plan 1"]} packages
+                    remaining)
+                  </option>
+                  <option value="Plan 2">
+                    Plan 2 - Garden Plan ({remainingPackages["Plan 2"]} packages
+                    remaining)
+                  </option>
+                  <option value="Plan 3">
+                    Plan 3 - Garbo Plan ({remainingPackages["Plan 3"]} packages
+                    remaining)
+                  </option>
                 </Form.Select>
               </Form.Group>
               <br />

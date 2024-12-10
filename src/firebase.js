@@ -699,9 +699,19 @@ const getUserEmailById = async (userId) => {
 // Function to add an inventory item
 const addInventoryItem = async (itemData) => {
   try {
-    // Create a new document in the "inventory" collection
+    // Add the inventory item and get the document reference
     const inventoryRef = await addDoc(collection(dba, "inventory"), itemData);
-    //console.log("Inventory item added successfully with ID: ", inventoryRef.id);
+
+    // Update the inventory item with the document ID as the id field
+    const updatedItemData = {
+      ...itemData,
+      id: inventoryRef.id, // Set the id field to the document ID
+    };
+
+    // Update the document with the added id field
+    await updateDoc(inventoryRef, updatedItemData);
+
+    console.log("Inventory item added successfully with ID: ", inventoryRef.id);
   } catch (error) {
     console.error("Error adding inventory item:", error.message);
     throw error; // Re-throw the error to be handled in the calling code

@@ -14,6 +14,12 @@ import {
   updateTransactionStatus,
   toggleArchiveStatus,
   generateTransactionReportsPDF,
+  getDocs,
+  collection,
+  dba,
+  doc,
+  getDoc,
+  updateDoc,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -57,9 +63,10 @@ const Transaction = () => {
   const [transactions, setTransactions] = useState([]);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [loading, setLoading] = useState(true); // Add loading state
+  const [particulars, setParticulars] = useState([]);
+  const [selectedParticulars, setSelectedParticulars] = useState([]);
   const [formData, setFormData] = useState({
     deceasedName: "",
-    date: "",
     dateOfBurial: "",
     timeOfBurial: "",
     orderedBy: "",
@@ -67,13 +74,7 @@ const Transaction = () => {
     address: "",
     cemetery: "",
     glassViewing: "",
-    casket: { particulars: "", amount: 0 },
-    hearse: { particulars: "", amount: 0 },
-    funServicesArrangements: { particulars: "", amount: 0 },
-    permits: { particulars: "", amount: 0 },
-    embalming: { particulars: "", amount: 0 },
-    cemeteryExpenses: { particulars: "", amount: 0 },
-    otherExpenses: { particulars: "", amount: 0 },
+    plan: "",
     totalAmount: 0,
     deposit: 0,
     balance: 0,
@@ -93,16 +94,7 @@ const Transaction = () => {
       totalAmount: total,
       balance: balance,
     }));
-  }, [
-    formData.casket,
-    formData.hearse,
-    formData.funServicesArrangements,
-    formData.permits,
-    formData.embalming,
-    formData.cemeteryExpenses,
-    formData.otherExpenses,
-    formData.deposit,
-  ]);
+  }, []);
 
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
@@ -207,7 +199,6 @@ const Transaction = () => {
     setFormData({
       // State for form data
       deceasedName: "",
-      date: "",
       dateOfBurial: "",
       timeOfBurial: "",
       orderedBy: "",
@@ -215,13 +206,7 @@ const Transaction = () => {
       address: "",
       cemetery: "",
       glassViewing: "",
-      casket: { particulars: "", amount: 0 },
-      hearse: { particulars: "", amount: 0 },
-      funServicesArrangements: { particulars: "", amount: 0 },
-      permits: { particulars: "", amount: 0 },
-      embalming: { particulars: "", amount: 0 },
-      cemeteryExpenses: { particulars: "", amount: 0 },
-      otherExpenses: { particulars: "", amount: 0 },
+      plan: "",
       totalAmount: 0,
       deposit: 0,
       balance: 0,
@@ -301,6 +286,24 @@ const Transaction = () => {
         return; // Exit the function early to prevent further actions
       }
 
+      // If the action is "completed," reduce the quantity of all selected particulars in inventory
+      if (action === "completed") {
+        for (const particular of transaction.particulars) {
+          const inventoryRef = doc(dba, "inventory", particular.id);
+          const inventoryDoc = await getDoc(inventoryRef);
+
+          if (inventoryDoc.exists()) {
+            const inventoryData = inventoryDoc.data();
+            const newQuantity = inventoryData.quantity - 1; // Decrease the quantity by 1
+
+            // Update the inventory document with the new quantity
+            await updateDoc(inventoryRef, {
+              quantity: newQuantity,
+            });
+          }
+        }
+      }
+
       await updateTransactionStatus(transactionId, action);
       // Fetch the user's email based on userId
       const userEmail = await getUserEmailById(transaction.orderedById);
@@ -361,7 +364,6 @@ const Transaction = () => {
     if (transaction) {
       setFormData({
         deceasedName: transaction.deceasedName,
-        date: transaction.date,
         dateOfBurial: transaction.dateOfBurial,
         timeOfBurial: transaction.timeOfBurial,
         orderedBy: transaction.orderedBy,
@@ -369,34 +371,7 @@ const Transaction = () => {
         address: transaction.address,
         cemetery: transaction.cemetery,
         glassViewing: transaction.glassViewing,
-        casket: {
-          particulars: transaction.casket.particulars,
-          amount: transaction.casket.amount,
-        },
-        hearse: {
-          particulars: transaction.hearse.particulars,
-          amount: transaction.hearse.amount,
-        },
-        funServicesArrangements: {
-          particulars: transaction.funServicesArrangements.particulars,
-          amount: transaction.funServicesArrangements.amount,
-        },
-        permits: {
-          particulars: transaction.permits.particulars,
-          amount: transaction.permits.amount,
-        },
-        embalming: {
-          particulars: transaction.embalming.particulars,
-          amount: transaction.embalming.amount,
-        },
-        cemeteryExpenses: {
-          particulars: transaction.cemeteryExpenses.particulars,
-          amount: transaction.cemeteryExpenses.amount,
-        },
-        otherExpenses: {
-          particulars: transaction.otherExpenses.particulars,
-          amount: transaction.otherExpenses.amount,
-        },
+        plan: transaction.plan,
         totalAmount: transaction.totalAmount,
         deposit: transaction.deposit,
         balance: transaction.balance,
@@ -430,13 +405,31 @@ const Transaction = () => {
       setLoading(true); // Set loading state to true
       const userId = getCurrentUserId();
 
+      // Prepare selected particulars data for submission (only include selected items)
+      const particularsData = selectedParticulars.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+      }));
+
+      // Add particulars and total amount to the formData
+      const transactionData = {
+        ...formData,
+        particulars: particularsData,
+        totalAmount: formData.totalAmount,
+      };
+
+      // Debugging: Log the data being submitted
+      console.log("Selected Particulars:", particularsData);
+      console.log("Form Data:", formData);
+
       if (modalMode === "add") {
         const event = {
           type: "Transaction",
           userId: userId,
           details: "Admin added a Transaction",
         };
-        await addTransaction({ ...formData });
+        await addTransaction(transactionData); // Submit transaction with selected particulars
         AuditLogger({ event });
         Swal.fire("Added!", "Transaction added successfully", "success").then(
           (result) => {
@@ -455,7 +448,7 @@ const Transaction = () => {
           details: "Admin updated a Transaction",
         };
         AuditLogger({ event });
-        await updateTransaction(selectedTransaction.id, { ...formData }); // Include imageUrl here
+        await updateTransaction(selectedTransaction.id, transactionData); // Update transaction with selected particulars
         Swal.fire(
           "Updated!",
           "Transaction updated successfully",
@@ -469,6 +462,7 @@ const Transaction = () => {
           }
         });
       }
+
       // Destroy DataTable before updating the state
       if ($.fn.DataTable.isDataTable("#transactionTable")) {
         $("#transactionTable").DataTable().destroy();
@@ -477,7 +471,7 @@ const Transaction = () => {
       handleCloseModal();
       handleClose2();
       clearFormData();
-      setLoading(false); // Set loading state to true
+      setLoading(false); // Set loading state to false
     } catch (error) {
       console.error(
         `Error ${modalMode === "add" ? "adding" : "updating"} transaction:`,
@@ -568,13 +562,6 @@ const Transaction = () => {
     return `${year}-${month}-${day} ${dayOfWeek} ${hour}:${minutes}`;
   };
 
-  const handleDepositChange = (value) => {
-    setFormData({
-      ...formData,
-      deposit: parseFloat(value),
-    });
-  };
-
   const handleGenerateReports = async () => {
     try {
       // Show SweetAlert confirmation first
@@ -641,6 +628,145 @@ const Transaction = () => {
     }
   };
 
+  const [remainingPackages, setRemainingPackages] = useState({
+    "Plan 1": 0,
+    "Plan 2": 0,
+    "Plan 3": 0,
+  });
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      const inventoryRef = collection(dba, "inventory");
+      const inventorySnapshot = await getDocs(inventoryRef);
+      const inventory = inventorySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Find the lowest quantity for "Any" plan
+      let anyPlanQuantity = inventory
+        .filter((item) => item.plan === "Any")
+        .reduce(
+          (min, item) => (item.quantity < min ? item.quantity : min),
+          Infinity
+        );
+
+      // If no items exist for "Any" plan, set it to 0
+      anyPlanQuantity = anyPlanQuantity === Infinity ? 0 : anyPlanQuantity;
+
+      // Define specific plans
+      const plans = ["Plan 1", "Plan 2", "Plan 3"];
+
+      // Compute remaining packages per plan
+      const planQuantities = plans.reduce((acc, plan) => {
+        const itemsForPlan = inventory.filter((item) => item.plan === plan);
+        const lowestQuantity = itemsForPlan.reduce((min, item) => {
+          return item.quantity < min ? item.quantity : min;
+        }, Infinity);
+
+        // Apply "Any" plan as ceiling
+        const remaining =
+          lowestQuantity === Infinity
+            ? 0
+            : Math.min(lowestQuantity, anyPlanQuantity);
+        acc[plan] = remaining;
+
+        return acc;
+      }, {});
+
+      setRemainingPackages(planQuantities);
+    };
+
+    fetchInventory();
+  }, []);
+
+  const handlePlanChange = async (selectedPlan) => {
+    try {
+      // Reset the selected particulars when the plan changes
+      setSelectedParticulars([]);
+
+      // Update formData with the selected plan
+      setFormData((prevData) => ({ ...prevData, plan: selectedPlan }));
+
+      if (!selectedPlan) {
+        setParticulars([]); // Clear particulars if no plan is selected
+        return;
+      }
+
+      // Query inventory for the selected plan
+      const inventoryRef = collection(dba, "inventory");
+      const inventorySnapshot = await getDocs(inventoryRef);
+
+      // Filter inventory items for the selected plan and "any" plan
+      const itemsForPlan = inventorySnapshot.docs
+        .map((doc) => doc.data())
+        .filter((item) => item.plan === selectedPlan || item.plan === "Any");
+
+      // Set the inventory items for the selected plan and "any" plan
+      setParticulars(itemsForPlan);
+
+      // Calculate the updated total amount based on selected items (start with 0)
+      setFormData((prevData) => ({
+        ...prevData,
+        totalAmount: 0, // Reset totalAmount when changing the plan
+      }));
+    } catch (error) {
+      console.error("Error fetching inventory items:", error);
+    }
+  };
+
+  const handleCheckboxChange = (item, isChecked) => {
+    // Update selectedParticulars state based on whether the item is checked or not
+    if (isChecked) {
+      setSelectedParticulars((prevSelected) => [...prevSelected, item]);
+    } else {
+      setSelectedParticulars((prevSelected) =>
+        prevSelected.filter((selectedItem) => selectedItem.id !== item.id)
+      );
+    }
+
+    // Recalculate the total amount whenever a checkbox is checked/unchecked
+    const updatedTotalAmount = calculateTotalAmount();
+    setFormData((prevData) => ({
+      ...prevData,
+      totalAmount: updatedTotalAmount,
+    }));
+  };
+
+  const calculateTotalAmount = () => {
+    // Calculate total amount based on selected particulars
+    return selectedParticulars.reduce((total, item) => total + item.price, 0);
+  };
+
+  // Update formData's totalAmount and balance dynamically whenever the selected particulars or deposit change
+  useEffect(() => {
+    const totalAmount = calculateTotalAmount();
+    const balance = totalAmount - formData.deposit;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      totalAmount: totalAmount,
+      balance: balance,
+    }));
+  }, [selectedParticulars, formData.deposit]);
+
+  const handleDepositChange = (deposit) => {
+    const updatedDeposit = parseFloat(deposit) || 0;
+    setFormData((prevData) => ({
+      ...prevData,
+      deposit: updatedDeposit,
+      balance: updatedDeposit
+        ? prevData.totalAmount - updatedDeposit
+        : prevData.totalAmount,
+    }));
+  };
+
+  // Recalculate the balance dynamically
+  const calculateBalance = () => {
+    const total = calculateTotalAmount();
+    return total - formData.deposit;
+  };
+
   return (
     <section className="transaction">
       <main className="main-content">
@@ -681,6 +807,7 @@ const Transaction = () => {
             <thead>
               <tr>
                 <th>Name of Deceased</th>
+
                 <th>Date of Burial</th>
                 <th>Time of Burial</th>
                 <th>Viewing Address</th>
@@ -693,6 +820,7 @@ const Transaction = () => {
               {transactions.map((transaction) => (
                 <tr key={transaction.id}>
                   <td>{transaction.deceasedName}</td>
+
                   <td>{transaction.dateOfBurial}</td>
                   <td>{transaction.timeOfBurial}</td>
                   <td>{transaction.address}</td>
@@ -794,6 +922,7 @@ const Transaction = () => {
                   required
                 />
               </Form.Group>
+
               <br />
               <Form.Group controlId="formDeceasedBirthday">
                 <Form.Label className="label-title">Date of Burial</Form.Label>
@@ -855,7 +984,9 @@ const Transaction = () => {
                     }}
                     required
                   >
-                    <option value="">Select User</option>
+                    <option value="">
+                      {formData.orderedBy || "Select User"}
+                    </option>
                     {users.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.firstname} {user.lastname}
@@ -954,65 +1085,53 @@ const Transaction = () => {
           </Modal.Header>
           <Modal.Body className="transaction-details-box">
             <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formPlan">
+                <Form.Label className="label-title">Plan</Form.Label>
+                <Form.Select
+                  className="plan-select"
+                  required
+                  value={formData.plan}
+                  onChange={(e) => handlePlanChange(e.target.value)}
+                >
+                  <option value="">Select a plan</option>
+                  <option value="Plan 1">
+                    Plan 1 - Basic Plan ({remainingPackages["Plan 1"]} packages
+                    remaining)
+                  </option>
+                  <option value="Plan 2">
+                    Plan 2 - Garden Plan ({remainingPackages["Plan 2"]} packages
+                    remaining)
+                  </option>
+                  <option value="Plan 3">
+                    Plan 3 - Garbo Plan ({remainingPackages["Plan 3"]} packages
+                    remaining)
+                  </option>
+                </Form.Select>
+              </Form.Group>
+
               <table bordered className="particulars-table">
                 <thead>
                   <tr>
                     <th>Particulars</th>
                     <th>Amount</th>
+                    <th>Select</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    "casket",
-                    "hearse",
-                    "funServicesArrangements",
-                    "permits",
-                    "embalming",
-                    "cemeteryExpenses",
-                    "otherExpenses",
-                  ].map((item) => (
-                    <tr key={item}>
+                  {particulars.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>₱{item.price.toFixed(2)}</td>
                       <td>
-                        <Form.Group controlId={`${item}Particulars`}>
-                          <Form.Label className="label-title">
-                            {item.replace(/([A-Z])/g, " $1")}
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter particulars"
-                            className="input-details"
-                            value={formData[item].particulars}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                [item]: {
-                                  ...formData[item],
-                                  particulars: e.target.value,
-                                },
-                              })
-                            }
-                          />
-                        </Form.Group>
-                      </td>
-                      <td>
-                        <Form.Group controlId={`${item}Amount`}>
-                          <Form.Control
-                            type="number"
-                            placeholder="Enter amount"
-                            className="amount-input-details"
-                            value={formData[item].amount}
-                            onChange={(e) => {
-                              const newAmount = e.target.value;
-                              setFormData({
-                                ...formData,
-                                [item]: {
-                                  ...formData[item],
-                                  amount: newAmount,
-                                },
-                              });
-                            }}
-                          />
-                        </Form.Group>
+                        <Form.Check
+                          type="checkbox"
+                          onChange={(e) =>
+                            handleCheckboxChange(item, e.target.checked)
+                          }
+                          checked={selectedParticulars.some(
+                            (selectedItem) => selectedItem.id === item.id
+                          )}
+                        />
                       </td>
                     </tr>
                   ))}
@@ -1020,7 +1139,7 @@ const Transaction = () => {
                 <tfoot>
                   <tr>
                     <td
-                      colSpan="2"
+                      colSpan="3"
                       style={{ textAlign: "right" }}
                       className="total-amount"
                     >
@@ -1029,7 +1148,7 @@ const Transaction = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="2" style={{ textAlign: "center" }}>
+                    <td colSpan="3" style={{ textAlign: "center" }}>
                       <Form.Group controlId="depositAmount">
                         <Form.Label className="deposit-title">
                           <strong>Deposit:</strong>
@@ -1046,7 +1165,7 @@ const Transaction = () => {
                   </tr>
                   <tr>
                     <td
-                      colSpan="2"
+                      colSpan="3"
                       style={{ textAlign: "center" }}
                       className="balance"
                     >
@@ -1055,6 +1174,7 @@ const Transaction = () => {
                   </tr>
                 </tfoot>
               </table>
+
               <div className="add-transaction-buttons">
                 <Button variant="secondary" onClick={handleReturn}>
                   Back
@@ -1070,7 +1190,7 @@ const Transaction = () => {
             </Form>
           </Modal.Body>
         </Modal>
-        {/* Appointment Details Modal */}
+        {/* Transaction Details Modal */}
         <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>
           <Modal.Header closeButton className="transaction-header">
             <Modal.Title className="transaction-title">
@@ -1083,6 +1203,7 @@ const Transaction = () => {
                 <h4 className="admin-appointment-user">
                   {selectedTransaction.deceasedName}
                 </h4>
+
                 <p className="first-details">
                   <strong>Date:</strong>{" "}
                   {formatDateTime(selectedTransaction.dateOfBurial)}
@@ -1110,33 +1231,15 @@ const Transaction = () => {
                   <table>
                     <thead>
                       <tr>
-                        <th>Category</th>
-                        <th>Particulars</th>
-                        <th>Amount</th>
+                        <th>Particular</th>
+                        <th>Price</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {[
-                        "casket",
-                        "hearse",
-                        "funServicesArrangements",
-                        "permits",
-                        "embalming",
-                        "cemeteryExpenses",
-                        "otherExpenses",
-                      ].map((field) => (
-                        <tr key={field}>
-                          <td>{field.replace(/([A-Z])/g, " $1")}</td>
-                          <td>
-                            {selectedTransaction[field]?.particulars
-                              ? `${selectedTransaction[field].particulars}`
-                              : "N/A"}
-                          </td>
-                          <td>
-                            {selectedTransaction[field]?.amount
-                              ? `${selectedTransaction[field].amount}`
-                              : "N/A"}
-                          </td>
+                      {selectedTransaction.particulars.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.name}</td>
+                          <td>₱{item.price.toFixed(2)}</td>
                         </tr>
                       ))}
                     </tbody>
