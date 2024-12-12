@@ -796,7 +796,7 @@ const updateInventoryItem = async (itemId, newData) => {
       const oldImageRef = ref(storage, itemData.imageUrl);
 
       // Delete the old image from Firebase Storage
-      //await deleteObject(oldImageRef);
+      await deleteObject(oldImageRef);
       console.log("Old image deleted successfully from Firebase Storage.");
     }
 
@@ -929,13 +929,190 @@ const deleteReviewFirestore = async (reviewId) => {
   }
 };
 
-export const addContent = async (contentData) => {
+export const addContent = async (
+  contentData,
+  file,
+  page,
+  planType,
+  imageType
+) => {
   try {
+    // Add the content to Firestore
     const docRef = await addDoc(collection(dba, "content"), contentData);
-    return docRef.id;
+    const documentId = docRef.id; // Get the document ID
+    console.log("Inside uploadImage2, page:", page); // Check the value of `page`
+    if (file) {
+      // For single file upload (thumbnail)
+      const imageUrl = await uploadImage2(
+        file,
+        page,
+        documentId,
+        planType,
+        imageType
+      );
+
+      // Update Firestore document with the image URL
+      const updatedItemData = {
+        ...contentData,
+        id: documentId,
+        imageUrl, // Add the image URL to the document
+      };
+
+      await updateDoc(docRef, updatedItemData);
+    } else if (contentData.images && contentData.images.length > 0) {
+      // For multiple image uploads
+      const imageUrls = await Promise.all(
+        contentData.images.map(async (file) => {
+          return await uploadImage2(
+            file,
+            page,
+            documentId,
+            planType,
+            imageType
+          );
+        })
+      );
+
+      const updatedItemData = {
+        ...contentData,
+        id: documentId,
+        imagesUrls: imageUrls, // Store multiple image URLs in Firestore
+      };
+
+      await updateDoc(docRef, updatedItemData);
+    }
+
+    return documentId;
   } catch (e) {
     console.error("Error adding content: ", e);
     throw new Error("Failed to add content");
+  }
+};
+
+export const addContent2 = async (
+  contentData,
+  thumbnailFile,
+  albumFile,
+  page,
+  planType
+) => {
+  try {
+    // Add the content to Firestore
+    const docRef = await addDoc(collection(dba, "content"), contentData);
+    const documentId = docRef.id; // Get the document ID
+
+    // Handle thumbnail image upload
+    let thumbnailUrl = null;
+    if (thumbnailFile) {
+      thumbnailUrl = await uploadImage2(
+        thumbnailFile,
+        page,
+        documentId,
+        planType,
+        "thumbnailImage"
+      );
+    }
+
+    // Handle album images upload
+    let albumUrls = [];
+    if (albumFile && albumFile.length > 0) {
+      // Ensure albumFile is an array (it could be a single file or multiple files)
+      const albumFiles = Array.isArray(albumFile) ? albumFile : [albumFile];
+      albumUrls = await Promise.all(
+        albumFiles.map(async (file) => {
+          return await uploadImage2(file, page, documentId, planType, "album");
+        })
+      );
+    }
+
+    // Update Firestore document with the image URLs
+    const updatedItemData = {
+      ...contentData,
+      id: documentId,
+      thumbnailUrl, // Add the thumbnail image URL
+      albumUrls, // Add the album image URLs (array)
+    };
+
+    await updateDoc(docRef, updatedItemData);
+
+    return documentId;
+  } catch (e) {
+    console.error("Error adding content: ", e);
+    throw new Error("Failed to add content");
+  }
+};
+
+const uploadImage2 = async (file, page, id, planType, imageType) => {
+  const storage = getStorage();
+  let fileName = file.name; // Original filename
+
+  // Determine the folder path based on the page type
+  let folderPath;
+  switch (page) {
+    case "gallery":
+      if (imageType === "album") {
+        folderPath = `content/gallery/${id}/album`;
+      } else if (imageType === "thumbnailImage") {
+        folderPath = `content/gallery/${id}/thumbnailImage`;
+      } else {
+        folderPath = `content/gallery/${id}`;
+      }
+      break;
+    case "blog":
+      folderPath = `content/blog/${id}`;
+      break;
+    case "services":
+      folderPath = `content/service/${planType}`;
+      break;
+    case "home":
+      folderPath = `content/home/${id}`;
+      break;
+    default:
+      throw new Error("Invalid page type provided.");
+  }
+
+  const storageRef = ref(storage, folderPath);
+  let uniqueFileName = fileName;
+
+  try {
+    // Check if the file already exists and resolve naming conflicts
+    const checkFileExists = async (name) => {
+      const files = await listAll(storageRef);
+      const existingFiles = files.items.map((item) => item.name);
+
+      // If the file exists, append +1 to the filename
+      while (existingFiles.includes(name)) {
+        const fileParts = name.split(".");
+        const extension = fileParts.pop(); // Get the file extension
+        const baseName = fileParts.join(".");
+
+        // Add +1 to the filename
+        const match = baseName.match(/(.*)\+(\d+)$/); // Check if +number already exists
+        if (match) {
+          const base = match[1];
+          const number = parseInt(match[2], 10) + 1;
+          name = `${base}+${number}.${extension}`;
+        } else {
+          name = `${baseName}+1.${extension}`;
+        }
+      }
+
+      return name;
+    };
+
+    // Get a unique filename
+    uniqueFileName = await checkFileExists(fileName);
+
+    console.log(`Uploading file: ${uniqueFileName} to ${folderPath}`);
+    const uniqueFileRef = ref(storage, `${folderPath}/${uniqueFileName}`);
+    await uploadBytes(uniqueFileRef, file);
+    const imageUrl = await getDownloadURL(uniqueFileRef);
+
+    console.log(`File uploaded successfully: ${imageUrl}`);
+    return imageUrl; // Return the URL for saving in Firestore
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw new Error("Failed to upload image");
   }
 };
 
@@ -945,19 +1122,246 @@ export const getContent = async () => {
   return contentSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-export const updateContent = async (contentId, updatedData) => {
-  const contentRef = doc(dba, "content", contentId);
+export const getContentByPage = async (page) => {
+  const contentCollection = collection(dba, "content");
+  const q = query(contentCollection, where("page", "==", page));
+  const contentSnapshot = await getDocs(q);
+  return contentSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+export const getExistingContentSections = async () => {
   try {
-    await updateDoc(contentRef, updatedData);
+    const contentData = await getContent();
+    // Assuming each content document has a `section` field
+    const existingSections = contentData.map((content) => content.section);
+    return existingSections; // Return an array of existing section values
+  } catch (error) {
+    console.error("Error fetching content sections:", error);
+    return [];
+  }
+};
+
+export const getExistingPlans = async () => {
+  try {
+    const contentData = await getContent();
+    // Assuming each content document has a `section` field
+    const existingSections = contentData.map((content) => content.planType);
+    return existingSections; // Return an array of existing section values
+  } catch (error) {
+    console.error("Error fetching content sections:", error);
+    return [];
+  }
+};
+
+// Function to update content and handle old image deletion
+export const updateContent = async (contentId, newData) => {
+  try {
+    // Construct the reference to the content document
+    const contentDocRef = doc(dba, "content", contentId);
+
+    // Retrieve the current content data from Firestore
+    const contentSnapshot = await getDoc(contentDocRef);
+    const contentData = contentSnapshot.data();
+
+    // If there's an existing image URL and a new image URL is provided, delete the old image
+    if (
+      contentData?.imageUrl &&
+      newData.imageUrl &&
+      contentData.imageUrl !== newData.imageUrl
+    ) {
+      const storage = getStorage();
+      const oldImageRef = ref(storage, contentData.imageUrl);
+
+      // Delete the old image from Firebase Storage
+      await deleteObject(oldImageRef);
+      console.log("Old image deleted successfully from Firebase Storage.");
+    }
+
+    // Update the content document in Firestore
+    await updateDoc(contentDocRef, newData);
+    console.log("Content updated successfully!");
   } catch (e) {
     console.error("Error updating content: ", e);
     throw new Error("Failed to update content");
   }
 };
 
-export const deleteContent = async (contentId) => {
+export const updateGalleryContent = async (
+  contentId,
+  updatedData,
+  thumbnailFile,
+  albumFile,
+  planType
+) => {
+  const contentRef = doc(dba, "content", contentId);
+
   try {
-    await deleteDoc(doc(dba, "content", contentId));
+    // Retrieve the current content data from Firestore
+    const contentSnapshot = await getDoc(contentRef);
+    const currentData = contentSnapshot.data();
+
+    // Handle thumbnail image update
+    if (currentData?.thumbnailUrl) {
+      if (
+        thumbnailFile ||
+        currentData.thumbnailUrl !== updatedData.thumbnailUrl
+      ) {
+        console.log("Deleting old thumbnail image...");
+        const oldThumbnailRef = ref(getStorage(), currentData.thumbnailUrl);
+        try {
+          await deleteObject(oldThumbnailRef);
+          console.log("Old thumbnail image deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting old thumbnail image:", error);
+        }
+      }
+    }
+
+    // Handle album images update
+    if (Array.isArray(currentData.albumUrls)) {
+      const oldAlbumUrls = currentData.albumUrls;
+
+      // Delete all old album images if new ones are provided
+      if (albumFile && albumFile.length > 0) {
+        console.log("Deleting old album images...");
+        await Promise.all(
+          oldAlbumUrls.map(async (oldAlbumUrl, index) => {
+            const oldAlbumRef = ref(getStorage(), oldAlbumUrl);
+            try {
+              await deleteObject(oldAlbumRef);
+              console.log(
+                `Old album image at index ${index} deleted successfully.`
+              );
+            } catch (error) {
+              console.error(
+                `Error deleting old album image at index ${index}:`,
+                error
+              );
+            }
+          })
+        );
+      }
+    }
+
+    // Handle thumbnail image upload if a new thumbnail is provided
+    let thumbnailUrl = currentData.thumbnailUrl;
+    if (thumbnailFile) {
+      console.log("Uploading new thumbnail image...");
+      thumbnailUrl = await uploadImage2(
+        thumbnailFile,
+        "gallery",
+        contentId,
+        planType,
+        "thumbnailImage"
+      );
+      console.log("New thumbnail URL:", thumbnailUrl);
+    }
+
+    // Handle album images upload if new album images are provided
+    let albumUrls = currentData.albumUrls || [];
+    if (albumFile && albumFile.length > 0) {
+      console.log("Uploading new album images...");
+      const albumFiles = Array.isArray(albumFile) ? albumFile : [albumFile];
+      albumUrls = await Promise.all(
+        albumFiles.map(async (file) => {
+          const albumUrl = await uploadImage2(
+            file,
+            "gallery",
+            contentId,
+            planType,
+            "album"
+          );
+          console.log("New album image URL:", albumUrl);
+          return albumUrl;
+        })
+      );
+    }
+
+    // Update Firestore document with the new data
+    const updatedItemData = {
+      ...updatedData,
+      id: contentId,
+      thumbnailUrl,
+      albumUrls,
+    };
+
+    // Update the content document with the new data
+    await updateDoc(contentRef, updatedItemData);
+    console.log("Gallery content updated successfully!");
+  } catch (e) {
+    console.error("Error updating gallery content: ", e);
+    throw new Error("Failed to update gallery content");
+  }
+};
+
+// Function to delete content, including its image from Firebase Storage
+export const deleteContent = async (contentId) => {
+  const contentRef = doc(dba, "content", contentId);
+  try {
+    // Retrieve the current content data from Firestore
+    const contentSnapshot = await getDoc(contentRef);
+    const contentData = contentSnapshot.data();
+
+    // If no content data or no image URL, log a warning and return
+    if (!contentData || !contentData.imageUrl) {
+      console.warn(
+        "Content not found or no imageURL associated with the content."
+      );
+    } else if (contentData.imageUrl) {
+      // Delete the image from Firebase Storage using the imageURL stored in Firestore
+      const imageRef = ref(getStorage(), contentData.imageUrl);
+      await deleteObject(imageRef);
+      console.log("Image deleted successfully from Firebase Storage.");
+    }
+
+    // Now delete the Firestore content document
+    await deleteDoc(contentRef);
+    console.log("Content document deleted successfully from Firestore.");
+  } catch (e) {
+    console.error("Error deleting content: ", e);
+    throw new Error("Failed to delete content");
+  }
+};
+
+export const deleteContent2 = async (contentId) => {
+  const contentRef = doc(dba, "content", contentId);
+  try {
+    // Retrieve the current content data from Firestore
+    const contentSnapshot = await getDoc(contentRef);
+    const contentData = contentSnapshot.data();
+
+    // If no content data, log a warning and return
+    if (!contentData) {
+      console.warn("Content not found.");
+      return;
+    }
+
+    // Delete the thumbnail image from Firebase Storage if it exists
+    if (contentData.thumbnailUrl) {
+      const thumbnailRef = ref(getStorage(), contentData.thumbnailUrl);
+      await deleteObject(thumbnailRef);
+      console.log(
+        "Thumbnail image deleted successfully from Firebase Storage."
+      );
+    }
+
+    // Delete all album images from Firebase Storage if they exist
+    if (contentData.albumUrls && Array.isArray(contentData.albumUrls)) {
+      // Loop through the album URLs and delete each one
+      await Promise.all(
+        contentData.albumUrls.map(async (albumUrl) => {
+          const albumRef = ref(getStorage(), albumUrl);
+          await deleteObject(albumRef);
+          console.log(
+            `Album image deleted successfully from Firebase Storage: ${albumUrl}`
+          );
+        })
+      );
+    }
+
+    // Now delete the Firestore content document
+    await deleteDoc(contentRef);
+    console.log("Content document deleted successfully from Firestore.");
   } catch (e) {
     console.error("Error deleting content: ", e);
     throw new Error("Failed to delete content");
@@ -1233,6 +1637,72 @@ const toggleArchiveStatus = async (docId, collectionName, isArchived) => {
   }
 };
 
+// Function to get content by page and organize it by section
+export const getContentByPage2 = async (page) => {
+  try {
+    // Query Firestore for documents where the page matches the specified value
+    const contentQuery = query(
+      collection(dba, "content"),
+      where("page", "==", page)
+    );
+
+    // Fetch the documents
+    const querySnapshot = await getDocs(contentQuery);
+
+    // Organize the data using the section field as keys
+    const contentData = {};
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const section = data.section; // Use the `section` field to structure the data
+      if (section) {
+        contentData[section] = {
+          title: data.title,
+          body: data.body,
+          imageUrl: data.imageUrl || null, // Optional image
+        };
+      }
+    });
+
+    return contentData;
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    throw new Error("Failed to fetch content");
+  }
+};
+// Function to get content by page and organize it by section
+export const getContentByPage3 = async (page) => {
+  try {
+    // Query Firestore for documents where the page matches the specified value
+    const contentQuery = query(
+      collection(dba, "content"),
+      where("page", "==", page)
+    );
+
+    // Fetch the documents
+    const querySnapshot = await getDocs(contentQuery);
+
+    // Organize the data using the section field as keys
+    const contentData = {};
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const planType = data.planType; // Use the `section` field to structure the data
+      if (planType) {
+        contentData[planType] = {
+          title: data.title,
+          imageUrl: data.imageUrl || null, // Optional image
+          price: data.price,
+          inclusions: data.inclusions,
+        };
+      }
+    });
+
+    return contentData;
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    throw new Error("Failed to fetch content");
+  }
+};
+
 export {
   getAuth,
   auth,
@@ -1297,4 +1767,5 @@ export {
   addReport,
   getReportsFromFirestore,
   deleteReport,
+  uploadImage2,
 };

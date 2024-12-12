@@ -10,6 +10,7 @@ import {
   AuditLogger,
   sendNotification,
   getUserReviewsFirestore,
+  getContentByPage2,
 } from "./firebase.js"; // Assume these functions are defined in your firebase.js
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -42,6 +43,7 @@ const About = () => {
   const [hasSubmittedTestimonial, setHasSubmittedTestimonial] = useState(false);
   const [flipped, setFlipped] = useState(Array(5).fill(false)); // Track which images are flipped
   const [selectedPlan, setSelectedPlan] = useState("");
+  const [content, setContent] = useState({});
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -89,6 +91,20 @@ const About = () => {
 
     fetchTestimonials();
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const getcontent = await getContentByPage2("about");
+        setContent(getcontent);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching plan content:", error);
+      }
+    };
+
+    fetchContent();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -189,11 +205,31 @@ const About = () => {
 
   // List of images and text to display
   const images = [
-    { src: "/steps/step1.png", text: "<h1><strong>STEP 1:</strong></h1><br/> Set a date to appoint the deceased's wishes and service types while confirming the wake to burial schedules.", stepId: "step1" },
-    { src: "/steps/step2.png", text: "<h1><strong>STEP 2:</strong></h1><br/> Finalize the funeral package that fits your budget, and make the necessary financial arrangements, considering payment plans if needed.", stepId: "step2" },
-    { src: "/steps/step3.png", text: "<h1><strong>STEP 3:</strong></h1><br/> Participate in the seven-day wake, where friends and family gather to honor the deceased, share memories, and observe cultural or religious rites.", stepId: "step3" },
-    { src: "/steps/step4.png", text: "<h1><strong>STEP 4:</strong></h1><br/> Attend the burial session; this marks the final farewell of our beloved deceased to a designated cemetery.", stepId: "step4" },
-    { src: "/steps/step5.png", text: "<h1><strong>STEP 5:</strong></h1><br/> Grieving continues after the burial. Honor your emotions and create a healing environment for the bereaved.", stepId: "step5" },
+    {
+      src: "/steps/step1.png",
+      text: "<h1><strong>STEP 1:</strong></h1><br/> Set a date to appoint the deceased's wishes and service types while confirming the wake to burial schedules.",
+      stepId: "step1",
+    },
+    {
+      src: "/steps/step2.png",
+      text: "<h1><strong>STEP 2:</strong></h1><br/> Finalize the funeral package that fits your budget, and make the necessary financial arrangements, considering payment plans if needed.",
+      stepId: "step2",
+    },
+    {
+      src: "/steps/step3.png",
+      text: "<h1><strong>STEP 3:</strong></h1><br/> Participate in the seven-day wake, where friends and family gather to honor the deceased, share memories, and observe cultural or religious rites.",
+      stepId: "step3",
+    },
+    {
+      src: "/steps/step4.png",
+      text: "<h1><strong>STEP 4:</strong></h1><br/> Attend the burial session; this marks the final farewell of our beloved deceased to a designated cemetery.",
+      stepId: "step4",
+    },
+    {
+      src: "/steps/step5.png",
+      text: "<h1><strong>STEP 5:</strong></h1><br/> Grieving continues after the burial. Honor your emotions and create a healing environment for the bereaved.",
+      stepId: "step5",
+    },
   ];
 
   // Function to handle navigation to the Planning Guide
@@ -204,7 +240,7 @@ const About = () => {
     } else {
       console.error("Step ID is undefined");
     }
- }
+  };
 
   return (
     <main className="main-content">
@@ -268,7 +304,12 @@ const About = () => {
                   ></div>
                   <div className="back">
                     <p dangerouslySetInnerHTML={{ __html: image.text }} />
-                    <button className="see-more-button" onClick={() => handleSeeMore(image.stepId)}>See More</button>
+                    <button
+                      className="see-more-button"
+                      onClick={() => handleSeeMore(image.stepId)}
+                    >
+                      See More
+                    </button>
                   </div>
                 </div>
               </div>
@@ -297,9 +338,7 @@ const About = () => {
                     className="profile-picture"
                   />
                   <div className="user-review-info">
-                    <p className="review-plan">
-                      {testimonial.selectedPlan}
-                    </p>
+                    <p className="review-plan">{testimonial.selectedPlan}</p>
                     <div className="stars">
                       {"⭐".repeat(testimonial.rating)}
                     </div>
@@ -316,7 +355,6 @@ const About = () => {
           <section className="submit-testimonial-section section">
             <h3>ADD YOUR TESTIMONIAL</h3>
             <form onSubmit={handleSubmit} className="submit-testimonial">
-              
               <div className="plan-rating">
                 <div className="plan-form-group">
                   {/* Plan Selection */}
@@ -336,7 +374,7 @@ const About = () => {
                 </div>
                 <div className="star-rating">{renderStars()}</div>
               </div>
-              
+
               <div className="testimonial-submit">
                 <textarea
                   value={comment}

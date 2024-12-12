@@ -2,7 +2,7 @@ import React, { useState, useEffect, startTransition } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF, CameraControls } from "@react-three/drei";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUserId } from "./firebase.js";
+import { getCurrentUserId, getContentByPage3 } from "./firebase.js";
 import "./services.css";
 import Modal from "./Modal"; // Modal component
 import Loader from "./Loader"; // Import the Loader component
@@ -55,32 +55,59 @@ const Services = () => {
   const [currentModelIndex, setCurrentModelIndex] = useState(0);
   const [selectedInclusion, setSelectedInclusion] = useState("casket");
   const [showLoader, setShowLoader] = useState(false); // Loader state
+  const [content, setContent] = useState({});
+  const [loading, setLoading] = useState(true); // Add loading state
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const getcontent = await getContentByPage3("services");
+        setContent(getcontent);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching plan content:", error);
+      }
+    };
+
+    fetchContent();
+  }, []);
 
   const packages = [
     {
       id: 1,
-      title: "Basic Package",
+      title: content["plan 1"]?.title,
       info: "A basic funeral service package with essential items included.",
-      price: "PHP 25,000",
+      price: "PHP " + content["plan 1"]?.price,
       description:
         "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care.",
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
           <li>
-          <strong>Casket</strong> - Wood features, Full Glass, Basic Interiors and Handles.
+            <strong>Casket</strong> - Wood features, Full Glass, Basic Interiors
+            and Handles.
           </li>
-          <li><strong>Curtain</strong> - Simple Fabric focusing on simplicity</li>
-          <li><strong>Flower Arrangements</strong> - Simple and understated flower stand</li>
-          <li><strong>Carpet</strong> - Durable and Plain</li>
-          <li><strong>Set of Lights and Candles</strong> - Minimalist without ornate details</li>
           <li>
-          <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for Male, Baro't Saya
-            for Female
+            <strong>Curtain</strong> - Simple Fabric focusing on simplicity
+          </li>
+          <li>
+            <strong>Flower Arrangements</strong> - Simple and understated flower
+            stand
+          </li>
+          <li>
+            <strong>Carpet</strong> - Durable and Plain
+          </li>
+          <li>
+            <strong>Set of Lights and Candles</strong> - Minimalist without
+            ornate details
+          </li>
+          <li>
+            <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for
+            Male, Baro't Saya for Female
           </li>
         </ul>
       ),
 
-      imagePath: "/funeral pics/basicwake.png", // Unique image
+      imagePath: content["plan 1"]?.imageUrl, // Unique image
       modelPaths: {
         wake: "/3DModels/Plan1.glb",
         inclusions: {
@@ -95,33 +122,38 @@ const Services = () => {
     },
     {
       id: 2,
-      title: "Garden Package",
+      title: content["plan 2"]?.title,
       info: "A premium package with elegant garden-themed items.",
-      price: "PHP 50,000",
+      price: "PHP " + content["plan 2"]?.price,
       description:
         "The premium package, designed specifically for funeral wakes, features an exquisite selection of garden-themed items. This collection includes beautifully arranged floral displays and tasteful decorative accents that evoke a sense of peace and serenity, providing a comforting atmosphere for your loved one's farewell.",
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
           <li>
-            <strong>Casket</strong> - Wood features, Full Glass, Detailed Interiors, and Handles.
-          </li>
-          <li><strong>Curtain</strong> - Serene and Flowy Fabrics</li>
-          <li>
-          <strong>Flower Arrangements</strong> - Emulate Garden Theme with Floral sprays top of
-            casket
-          </li>
-          <li><strong>Carpet</strong> - Subtle Carpet Design</li>
-          <li>
-          <strong>Set of Lights and Candles</strong> - Suitable for standard ceremonies with a
-            modest style.
+            <strong>Casket</strong> - Wood features, Full Glass, Detailed
+            Interiors, and Handles.
           </li>
           <li>
-          <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for Male, Baro't Saya
-            for Female
+            <strong>Curtain</strong> - Serene and Flowy Fabrics
+          </li>
+          <li>
+            <strong>Flower Arrangements</strong> - Emulate Garden Theme with
+            Floral sprays top of casket
+          </li>
+          <li>
+            <strong>Carpet</strong> - Subtle Carpet Design
+          </li>
+          <li>
+            <strong>Set of Lights and Candles</strong> - Suitable for standard
+            ceremonies with a modest style.
+          </li>
+          <li>
+            <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for
+            Male, Baro't Saya for Female
           </li>
         </ul>
       ),
-      imagePath: "/funeral pics/gardenwake.png", // Unique image
+      imagePath: content["plan 2"]?.imageUrl, // Unique image
       modelPaths: {
         wake: "/3DModels/Plan2.glb",
         inclusions: {
@@ -136,33 +168,39 @@ const Services = () => {
     },
     {
       id: 3,
-      title: "Garbo Package",
+      title: content["plan 3"]?.title,
       info: "The ultimate funeral service package with luxurious items.",
-      price: "PHP 280,000",
+      price: "PHP " + content["plan 2"]?.price,
       description:
         "The ultimate funeral service package offers a comprehensive selection of luxurious items designed to provide comfort and dignity during a difficult time. This package includes elegant caskets, beautifully crafted memorial displays, personalized cabinetry, and premium floral arrangements. Each element is carefully chosen to reflect the unique life and legacy of your loved one, ensuring that every aspect of the service is a proper tribute.",
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
           <li>
-          <strong>Casket</strong> - Wood features, Full Glass, Detailed Interiors, and Handles.
-          </li>
-          <li><strong>Curtain</strong> - High-quality fabrics for a Luxurious appearance</li>
-          <li>
-          <strong>Flower Arrangements</strong> - Arranged in large casket floral sprays,
-            cascading wreaths, or opulent urn-style displays
-          </li>
-          <li><strong>Carpet</strong> - Subtle Carpet Design</li>
-          <li>
-          <strong>Set of Lights and Candles</strong> - Incorporates organic elements like floral
-            and engraved symbols
+            <strong>Casket</strong> - Wood features, Full Glass, Detailed
+            Interiors, and Handles.
           </li>
           <li>
-          <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for Male, Baro't Saya
-            for Female
+            <strong>Curtain</strong> - High-quality fabrics for a Luxurious
+            appearance
+          </li>
+          <li>
+            <strong>Flower Arrangements</strong> - Arranged in large casket
+            floral sprays, cascading wreaths, or opulent urn-style displays
+          </li>
+          <li>
+            <strong>Carpet</strong> - Subtle Carpet Design
+          </li>
+          <li>
+            <strong>Set of Lights and Candles</strong> - Incorporates organic
+            elements like floral and engraved symbols
+          </li>
+          <li>
+            <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for
+            Male, Baro't Saya for Female
           </li>
         </ul>
       ),
-      imagePath: "/funeral pics/garbowake.png", // Unique image
+      imagePath: content["plan 3"]?.imageUrl, // Unique image
       modelPaths: {
         wake: "/3DModels/Plan3.glb",
         inclusions: {

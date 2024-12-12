@@ -1,66 +1,73 @@
-import React, { useState } from "react";
 import "./gallery.css"; // Import CSS file for styling
 import { useNavigate } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-
+import React, { useEffect, useState } from "react";
+import "./gallery.css"; // Import CSS file for styling
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import { dba } from "./firebase.js"; // Adjust path to your Firebase config
+import Loader from "./Loader.js";
 const Gallery = () => {
   const navigate = useNavigate(); // Initialize navigate function
-
-  // Sample album data with placeholder funeral-related images
-  const albums = [
-    {
-      id: 1,
-      title: "Funeral Service Album",
-      coverImage: "/gallery/funeral/fun_gallery (1).jpg",
-      images: [
-        "/gallery/funeral/fun_gallery (1).jpg",
-        "/gallery/funeral/fun_gallery (2).jpg",
-        "/gallery/funeral/fun_gallery (3).jpg",
-        "/gallery/funeral/fun_gallery (4).jpg",
-        "/gallery/funeral/fun_gallery (5).jpg",
-        "/gallery/funeral/fun_gallery (7).jpg",
-        "/gallery/funeral/fun_gallery (8).jpg",
-        "/gallery/funeral/fun_gallery (9).jpg",
-        "/gallery/funeral/fun_gallery (10).jpg",
-        "/gallery/funeral/fun_gallery (12).jpg",
-        "/gallery/funeral/fun_gallery (13).jpg",
-        "/gallery/funeral/fun_gallery (14).jpg",
-      ],
-    },
-    {
-      id: 2,
-      title: "Flower Arrangements",
-      coverImage: "/gallery/flower arrangement/flower_gallery (1).jpg",
-      images: [
-        "/gallery/flower arrangement/flower_gallery (1).jpg",
-        "/gallery/flower arrangement/flower_gallery (2).jpg",
-        "/gallery/flower arrangement/flower_gallery (3).jpg",
-        "/gallery/flower arrangement/flower_gallery (4).jpg",
-        "/gallery/flower arrangement/flower_gallery (5).jpg",
-        "/gallery/flower arrangement/flower_gallery (6).jpg",
-      ],
-    },
-    {
-      id: 3,
-      title: "Lights and Cars",
-      coverImage: "/gallery/lights and cars/lights (1).jpg",
-      images: [
-        "/gallery/lights and cars/lights (1).jpg",
-        "/gallery/lights and cars/lights (2).jpg",
-        "/gallery/lights and cars/lights (3).jpg",
-        "/gallery/lights and cars/lights (4).jpg",
-        "/gallery/lights and cars/lights (5).jpg",
-        "/gallery/lights and cars/car (1).jpg",
-        "/gallery/lights and cars/car (2).jpg",
-      ],
-    },
-  ];
-
-  const [selectedAlbum, setSelectedAlbum] = useState(null); // No album selected by default
-  const [previewImage, setPreviewImage] = useState(null); // No preview image by default
-  const [thumbnailIndex, setThumbnailIndex] = useState(0); // For paginating thumbnails
+  const [albums, setAlbums] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [thumbnailIndex, setThumbnailIndex] = useState(0);
 
   const thumbnailsPerPage = 3; // Limit number of thumbnails displayed per page
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const albumsRef = collection(dba, "content");
+        const q = query(albumsRef, where("page", "==", "gallery"));
+        const querySnapshot = await getDocs(q);
+
+        const storage = getStorage();
+        const fetchedAlbums = [];
+
+        for (const doc of querySnapshot.docs) {
+          const albumData = doc.data();
+          const albumId = doc.id;
+
+          // Fetch cover image
+          const coverImagesRef = ref(
+            storage,
+            `content/gallery/${albumId}/thumbnailImage`
+          );
+          const coverImageUrls = await listAll(coverImagesRef).then((result) =>
+            Promise.all(result.items.map((item) => getDownloadURL(item)))
+          );
+
+          // Fetch album images
+          const albumImagesRef = ref(
+            storage,
+            `content/gallery/${albumId}/album`
+          );
+          const albumImageUrls = await listAll(albumImagesRef).then((result) =>
+            Promise.all(result.items.map((item) => getDownloadURL(item)))
+          );
+
+          fetchedAlbums.push({
+            id: albumId,
+            title: albumData.title || "Untitled Album",
+            coverImage: coverImageUrls[0], // Assuming one cover image per album
+            images: albumImageUrls,
+          });
+        }
+
+        setAlbums(fetchedAlbums);
+        console.log(albums);
+      } catch (error) {
+        console.error("Error fetching albums:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAlbums();
+  }, []);
 
   const handleAlbumClick = (album) => {
     setSelectedAlbum(album);
@@ -91,6 +98,7 @@ const Gallery = () => {
 
   return (
     <main className="main-content">
+      {loading && <Loader />} {/* Use the Loader component here */}
       <section className="gallery">
         <div>
           <h1 className="gallery-title">GALLERY</h1>

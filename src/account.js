@@ -326,127 +326,101 @@ const Account = () => {
                       <td className="user-account-email">{user.email}</td>
                     </tr>
                     <th className="account-table-label">Mobile Number:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="mobilenumber"
-                    value={editableData.mobilenumber || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              <tr>
-                <th className="account-table-label">Landline Number:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="landlinenumber"
-                    value={editableData.landlinenumber || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th className="account-table-label">Region:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="region"
-                    value={editableData.region || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th className="account-table-label">City:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="city"
-                    value={editableData.city || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th className="account-table-label">Barangay:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="barangay"
-                    value={editableData.barangay || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th className="account-table-label">Street:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="street"
-                    value={editableData.street || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th className="account-table-label">Unit:</th>
-                <td>
-                  <input
-                    type="text"
-                    name="unit"
-                    value={editableData.unit || ""}
-                    className="account-table-info"
-                    onChange={handleEditChange}
-                    style={{ width: "100%" }}
-                    readOnly={!editMode} // Set to readonly based on edit mode
-                  />
-                </td>
-              </tr>
-                    {/* {[
-                      "mobilenumber",
-                      "landlinenumber",
-                      "region",
-                      "city",
-                      "barangay",
-                      "street",
-                      "unit",
-                    ].map((field) => (
-                      <tr key={field}>
-                        <th className="account-table-label">
-                          {field.replace(/([A-Z])/g, " $1")}
-                        </th>
-                        <td>
-                          <input
-                            type="text"
-                            name={field}
-                            value={editableData[field] || ""}
-                            className="account-table-info"
-                            onChange={handleEditChange}
-                            style={{ width: "100%" }}
-                            readOnly={!editMode} // Set to readonly based on edit mode
-                          />
-                        </td>
-                      </tr>
-                    ))} */}
+                    <td>
+                      <input
+                        type="text"
+                        name="mobilenumber"
+                        value={editableData.mobilenumber || ""}
+                        className="account-table-info"
+                        onChange={handleEditChange}
+                        style={{ width: "100%" }}
+                        readOnly={!editMode} // Set to readonly based on edit mode
+                      />
+                    </td>
+                    <tr>
+                      <th className="account-table-label">Landline Number:</th>
+                      <td>
+                        <input
+                          type="text"
+                          name="landlinenumber"
+                          value={editableData.landlinenumber || ""}
+                          className="account-table-info"
+                          onChange={handleEditChange}
+                          style={{ width: "100%" }}
+                          readOnly={!editMode} // Set to readonly based on edit mode
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="account-table-label">Region:</th>
+                      <td>
+                        <input
+                          type="text"
+                          name="region"
+                          value={editableData.region || ""}
+                          className="account-table-info"
+                          onChange={handleEditChange}
+                          style={{ width: "100%" }}
+                          readOnly={!editMode} // Set to readonly based on edit mode
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="account-table-label">City:</th>
+                      <td>
+                        <input
+                          type="text"
+                          name="city"
+                          value={editableData.city || ""}
+                          className="account-table-info"
+                          onChange={handleEditChange}
+                          style={{ width: "100%" }}
+                          readOnly={!editMode} // Set to readonly based on edit mode
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="account-table-label">Barangay:</th>
+                      <td>
+                        <input
+                          type="text"
+                          name="barangay"
+                          value={editableData.barangay || ""}
+                          className="account-table-info"
+                          onChange={handleEditChange}
+                          style={{ width: "100%" }}
+                          readOnly={!editMode} // Set to readonly based on edit mode
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="account-table-label">Street:</th>
+                      <td>
+                        <input
+                          type="text"
+                          name="street"
+                          value={editableData.street || ""}
+                          className="account-table-info"
+                          onChange={handleEditChange}
+                          style={{ width: "100%" }}
+                          readOnly={!editMode} // Set to readonly based on edit mode
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th className="account-table-label">Unit:</th>
+                      <td>
+                        <input
+                          type="text"
+                          name="unit"
+                          value={editableData.unit || ""}
+                          className="account-table-info"
+                          onChange={handleEditChange}
+                          style={{ width: "100%" }}
+                          readOnly={!editMode} // Set to readonly based on edit mode
+                        />
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
                 <div className="account-buttons">

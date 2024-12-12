@@ -211,6 +211,7 @@ const Transaction = () => {
       deposit: 0,
       balance: 0,
     });
+    setSelectedParticulars([]);
   };
 
   const getStatusBadge = (status) => {
@@ -356,7 +357,7 @@ const Transaction = () => {
     return allActions.filter((action) => action !== status);
   };
 
-  const handleShowModal = (mode, transaction = null, event = null) => {
+  const handleShowModal = async (mode, transaction = null, event = null) => {
     // Hide tooltip before changing status
 
     setModalMode(mode);
@@ -376,6 +377,20 @@ const Transaction = () => {
         deposit: transaction.deposit,
         balance: transaction.balance,
       });
+      // Query inventory for the selected plan
+      const inventoryRef = collection(dba, "inventory");
+      const inventorySnapshot = await getDocs(inventoryRef);
+
+      // Filter inventory items for the selected plan and "any" plan
+      const itemsForPlan = inventorySnapshot.docs
+        .map((doc) => doc.data())
+        .filter(
+          (item) => item.plan === transaction.plan || item.plan === "Any"
+        );
+
+      // Set the inventory items for the selected plan and "any" plan
+      setParticulars(itemsForPlan);
+      setSelectedParticulars(transaction.particulars || []);
     } else {
       clearFormData();
     }

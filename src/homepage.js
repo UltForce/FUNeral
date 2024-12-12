@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { getCurrentUserId, getUserRoleFirestore, auth } from "./firebase.js";
+import {
+  getCurrentUserId,
+  getUserRoleFirestore,
+  auth,
+  getContentByPage,
+  getContentByPage2,
+} from "./firebase.js";
 import "./homepage.css";
 import "typeface-rubik";
 import { Carousel } from "react-carousel-minimal";
 import { Modal, Button } from "react-bootstrap";
 import { Color } from "three";
-
+import Loader from "./Loader.js";
 const Homepage = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [content, setContent] = useState({
-    homepageText: "",
-    aboutUsText: "",
-    contactText: "",
-  });
+
   const [showModal, setShowModal] = useState(false);
   const [activeArticle, setActiveArticle] = useState(null);
+  const [content, setContent] = useState({});
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -30,24 +34,21 @@ const Homepage = () => {
       }
     });
 
-    // const fetchContent = async () => {
-    //   const db = getFirestore();
-    //   const contentDoc = doc(db, "staticContent", "content");
-    //   try {
-    //     const docSnap = await getDoc(contentDoc);
-    //     if (docSnap.exists()) {
-    //       setContent(docSnap.data());
-    //     } else {
-    //       //console.log("No content found");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching content:", error);
-    //   }
-    // };
-
-    // fetchContent();
-
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const getcontent = await getContentByPage2("home");
+        setContent(getcontent);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching plan content:", error);
+      }
+    };
+
+    fetchContent();
   }, []);
 
   const handleButtonClick = () => {
@@ -103,14 +104,14 @@ const Homepage = () => {
   const captionStyle = {
     fontSize: "18px",
     fontWeight: "500",
-    fontFamily: 'Rubik',
-    Color:"#FCF2D8",
+    fontFamily: "Rubik",
+    Color: "#FCF2D8",
   };
   const slideNumberStyle = {
     fontSize: "20px",
     fontWeight: "500",
-    fontFamily: 'Rubik',
-    Color:"#FCF2D8",
+    fontFamily: "Rubik",
+    Color: "#FCF2D8",
   };
 
   const articles = [
@@ -200,9 +201,12 @@ const Homepage = () => {
   };
 
   const renderContentWithBoldHeadings = (content) => {
-    return content.split('\n').map((line, index) => {
+    return content.split("\n").map((line, index) => {
       // Use a regex to find and replace text after '-' and before ':'
-      const modifiedLine = line.replace(/- (.*?):/, (match, p1) => `- <strong>${p1}</strong>:`);
+      const modifiedLine = line.replace(
+        /- (.*?):/,
+        (match, p1) => `- <strong>${p1}</strong>:`
+      );
 
       return (
         <span key={index}>
@@ -215,52 +219,41 @@ const Homepage = () => {
 
   return (
     <div className="homepage-container">
+      {loading && <Loader />} {/* Use the Loader component here */}
       <section className="title-section section1">
         <h3 className="homepageTxt">
-          <i>{content.homepageText || "A Family’s end needs"}</i>
+          <i>"A Family’s end needs"</i>
         </h3>
-        <h1 className="homepageTxt">{content.homepageText || "WELCOME TO J.ROA FUNERAL SERVICES"}</h1>
+        <h1 className="homepageTxt">"WELCOME TO J.ROA FUNERAL SERVICES"</h1>
         <p className="homepageTxt">
-          {content.homepageText ||
-            "Guiding you through with Compassion and Care "}
+          "Guiding you through with Compassion and Care "
         </p>
         <button className="action-button" onClick={handleButtonClick}>
           {isLoggedIn ? "Book Now" : "LOGIN"}
         </button>
       </section>
-
       <section className="home-snap-section section2">
         <div className="container">
           <div className="homecard">
-            <img src="/funeral pics/homepage2.jpg" alt="Funeral Theme" />
-            <h3>FUNERAL THEME</h3>
-            <p>
-              Choose from a range of meaningful themes to create a dignified
-              environment that honors your loved one’s life and legacy.
-            </p>
+            <img src={content.homepage1?.imageUrl} alt="Funeral Theme" />
+            <h3>{content.homepage1?.title}</h3>
+            <p>{content.homepage1?.body}</p>
             <button onClick={handleSeeMore}>See More</button>
           </div>
           <div className="homecard">
-            <img src="/funeral pics/flowers.jpg" alt="Floral Arrangement" />
-            <h3>FLORAL ARRANGEMENT</h3>
-            <p>
-              Discover elegant floral arrangements designed to convey love,
-              respect, and remembrance during the memorial service.
-            </p>
+            <img src={content.homepage2?.imageUrl} alt="Floral Arrangement" />
+            <h3>{content.homepage2?.title}</h3>
+            <p>{content.homepage2?.body}</p>
             <button onClick={handleSeeMore}>See More</button>
           </div>
           <div className="homecard">
-            <img src="/funeral pics/wake6.jpg" alt="Lights and Candles" />
-            <h3>LIGHTS AND CANDLES</h3>
-            <p>
-              Create a comforting ambiance with expertly curated lighting and
-              candle arrangements to reflect peace and warmth.
-            </p>
+            <img src={content.homepage3?.imageUrl} alt="Lights and Candles" />
+            <h3>{content.homepage3?.title}</h3>
+            <p>{content.homepage3?.body}</p>
             <button onClick={handleSeeMore}>See More</button>
           </div>
         </div>
       </section>
-
       <section className="home-snap-section section4">
         <section className="care-section">
           <div className="images-container">
@@ -298,65 +291,48 @@ const Homepage = () => {
           </div>
         </section>
       </section>
-
       <section className="home-snap-section section5">
         <h1 className="our-services-title">OUR SERVICE</h1>
         <br></br>
         <div class="homepage-row">
           <div class="grid">
-            <img src="/ficons/Comforting Hearts.png" alt="Comforting Hearts" />
-            <h2>Comforting Hearts </h2>
-            <p>
-              We provide emotional support and understanding to families during
-              their time of loss, ensuring a comforting environment throughout
-              the funeral process.
-            </p>
+            <img src={content.ourServices1?.imageUrl} alt="Comforting Hearts" />
+            <h2>{content.ourServices1?.title}</h2>
+            <p>{content.ourServices1?.body}</p>
           </div>
           <div className="grid">
             <img
-              src="/ficons/Respectful Farewells.png"
+              src={content.ourServices2?.imageUrl}
               alt="Respectful Farewells"
             />
-            <h2>Respectful Farewells</h2>
-            <p>
-              Our services are designed to honor your loved one's memory with
-              dignity and respect, ensuring a meaningful and heartfelt farewell.
-            </p>
+            <h2>{content.ourServices2?.title}</h2>
+            <p>{content.ourServices1?.body}</p>
           </div>
           <div className="grid">
             <img
-              src="/ficons/Dignified Services.png"
+              src={content.ourServices3?.imageUrl}
               alt="Dignified Services"
             />
-            <h2>Dignified Services</h2>
-            <p>
-              Experience professional and compassionate assistance with every
-              aspect of funeral arrangements, tailored to your family's needs.
-            </p>
+            <h2>{content.ourServices3?.title}</h2>
+            <p>{content.ourServices3?.body}</p>
           </div>
           <div className="grid">
-            <img src="/ficons/Cherished Memories.png" alt="Cherished Memories" />
-            <h2>Cherished Memories</h2>
-            <p>
-              Create lasting memories with personalized tributes that reflect
-              the unique life and legacy of your loved one.
-            </p>
+            <img
+              src={content.ourServices4?.imageUrl}
+              alt="Cherished Memories"
+            />
+            <h2>{content.ourServices4?.title}</h2>
+            <p>{content.ourServices4?.body}</p>
           </div>
           <div className="grid">
-            <img src="/ficons/Honoring Legacies.png" alt="Honoring Legacies" />
-            <h2>Honoring Legacies</h2>
-            <p>
-              Celebrate the life and achievements of your loved one with
-              meaningful ceremonies that honor their legacy.
-            </p>
+            <img src={content.ourServices5?.imageUrl} alt="Honoring Legacies" />
+            <h2>{content.ourServices5?.title}</h2>
+            <p>{content.ourServices5?.body}</p>
           </div>
           <div className="grid">
-            <img src="/ficons/Guidance Grace.png" alt="Guiding Grace" />
-            <h2>Guiding Grace</h2>
-            <p>
-              Our team provides guidance and support every step of the way,
-              ensuring all your needs are met with care and compassion.
-            </p>
+            <img src={content.ourServices6?.imageUrl} alt="Guiding Grace" />
+            <h2>{content.ourServices6?.title}</h2>
+            <p>{content.ourServices6?.body}</p>
           </div>
         </div>
       </section>
@@ -425,7 +401,9 @@ const Homepage = () => {
         {activeArticle && (
           <Modal show={showModal} onHide={handleCloseModal} centered>
             <Modal.Header closeButton className="homepage-article-header">
-              <Modal.Title className="homepage-article-title">{activeArticle.title}</Modal.Title>
+              <Modal.Title className="homepage-article-title">
+                {activeArticle.title}
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body className="article-details-box">
               <img
@@ -439,7 +417,11 @@ const Homepage = () => {
               <p>{renderContentWithBoldHeadings(activeArticle.content)}</p>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseModal} className="close2-button">
+              <Button
+                variant="secondary"
+                onClick={handleCloseModal}
+                className="close2-button"
+              >
                 Close
               </Button>
             </Modal.Footer>
