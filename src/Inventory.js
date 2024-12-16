@@ -376,7 +376,7 @@ const Inventory = () => {
                   <td>{item.name}</td>
                   <td>{item.plan}</td>
                   <td>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <button
                         className="btn btn-light"
                         style={{ padding: "2px 5px", marginRight: "5px" }}
@@ -404,7 +404,7 @@ const Inventory = () => {
                       <img
                         src={item.imageUrl}
                         alt={item.name}
-                        style={{ width: "50px", cursor: "pointer" }}
+                        style={{ width: "50px", cursor: "pointer", margin: "0 auto" }}
                         onClick={() => zoomImage(item.imageUrl)}
                       />
                     </OverlayTrigger>

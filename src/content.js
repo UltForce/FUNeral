@@ -844,7 +844,7 @@ const Content = () => {
                   <br />
                 </>
               )}
-
+              <br />
               {selectedPage === "plan" && (
                 <Form.Group controlId="formPlan">
                   <Form.Label className="label-title">Plan Details</Form.Label>

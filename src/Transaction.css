@@ -287,6 +287,7 @@ html, body {
   text-align: center;
   font-size: 15px;
   color: #18020c;
+  margin: auto 80px;
 }
 
 .transaction .actions-button {
@@ -326,6 +327,11 @@ html, body {
   text-decoration: underline;
   font-weight: 500;
   color: #4d4642;
+  padding: 0px 10px;
+}
+
+.particulars-table tr {
+  text-align: center;
 }
 
 .particulars-table .amount-input-details {
