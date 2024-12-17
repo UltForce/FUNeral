@@ -79,7 +79,6 @@ const Account = () => {
       setProfilePictureURL(data.profilePictureURL || placeholderProfilePicture);
       const initialEditableData = {
         mobilenumber: data.mobilenumber || "",
-        landlinenumber: data.landlinenumber || "",
         region: data.region || "",
         city: data.city || "",
         barangay: data.barangay || "",
@@ -335,22 +334,9 @@ const Account = () => {
                         onChange={handleEditChange}
                         style={{ width: "100%" }}
                         readOnly={!editMode} // Set to readonly based on edit mode
+                        maxLength={13}
                       />
                     </td>
-                    <tr>
-                      <th className="account-table-label">Landline Number:</th>
-                      <td>
-                        <input
-                          type="text"
-                          name="landlinenumber"
-                          value={editableData.landlinenumber || ""}
-                          className="account-table-info"
-                          onChange={handleEditChange}
-                          style={{ width: "100%" }}
-                          readOnly={!editMode} // Set to readonly based on edit mode
-                        />
-                      </td>
-                    </tr>
                     <tr>
                       <th className="account-table-label">Region:</th>
                       <td>
@@ -362,6 +348,7 @@ const Account = () => {
                           onChange={handleEditChange}
                           style={{ width: "100%" }}
                           readOnly={!editMode} // Set to readonly based on edit mode
+                          maxLength={128}
                         />
                       </td>
                     </tr>
@@ -376,6 +363,7 @@ const Account = () => {
                           onChange={handleEditChange}
                           style={{ width: "100%" }}
                           readOnly={!editMode} // Set to readonly based on edit mode
+                          maxLength={128}
                         />
                       </td>
                     </tr>
@@ -390,6 +378,7 @@ const Account = () => {
                           onChange={handleEditChange}
                           style={{ width: "100%" }}
                           readOnly={!editMode} // Set to readonly based on edit mode
+                          maxLength={128}
                         />
                       </td>
                     </tr>
@@ -404,6 +393,7 @@ const Account = () => {
                           onChange={handleEditChange}
                           style={{ width: "100%" }}
                           readOnly={!editMode} // Set to readonly based on edit mode
+                          maxLength={128}
                         />
                       </td>
                     </tr>
@@ -418,6 +408,7 @@ const Account = () => {
                           onChange={handleEditChange}
                           style={{ width: "100%" }}
                           readOnly={!editMode} // Set to readonly based on edit mode
+                          maxLength={128}
                         />
                       </td>
                     </tr>

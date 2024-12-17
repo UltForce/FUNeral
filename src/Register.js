@@ -68,18 +68,7 @@ const Register = () => {
     const trimmedFirstname = firstname.trim();
     const trimmedLastname = lastname.trim();
 
-    if (
-      !confirmPassword ||
-      !password ||
-      !firstname ||
-      !lastname ||
-      !mobilenumber ||
-      !region ||
-      !city ||
-      !barangay ||
-      !street ||
-      !unit
-    ) {
+    if (!confirmPassword || !password || !firstname || !lastname) {
       Toast.fire({
         icon: "error",
         title: "Please fill in all the fields.",
@@ -146,12 +135,7 @@ const Register = () => {
             role: "user",
             firstname,
             lastname,
-            mobilenumber,
-            region,
-            city,
-            barangay,
-            street,
-            unit,
+
             email: googleEmail,
           });
           //await createUserWithEmailAndPassword(auth, googleEmail, password);
@@ -217,18 +201,7 @@ const Register = () => {
     const trimmedFirstname = firstname.trim();
     const trimmedLastname = lastname.trim();
 
-    if (
-      !confirmPassword ||
-      !password ||
-      !firstname ||
-      !lastname ||
-      !mobilenumber ||
-      !region ||
-      !city ||
-      !barangay ||
-      !street ||
-      !unit
-    ) {
+    if (!confirmPassword || !password || !firstname || !lastname) {
       Toast.fire({
         icon: "error",
         title: "Please fill in all the fields.",
@@ -287,12 +260,6 @@ const Register = () => {
             role: "user",
             firstname,
             lastname,
-            mobilenumber,
-            region,
-            city,
-            barangay,
-            street,
-            unit,
             email: yahooEmail,
           });
 
@@ -355,22 +322,6 @@ const Register = () => {
       // Check if the pressed key is Enter
       if (event.target.id === "floatingFirst") {
         LastNameInputRef.current.focus();
-      } else if (event.target.id === "floatingLast") {
-        MobileNumberInputRef.current.focus();
-      } else if (event.target.id === "floatingLand") {
-        RegionInputRef.current.focus();
-      } else if (event.target.id === "floatingRegion") {
-        CityInputRef.current.focus();
-      } else if (event.target.id === "floatingCity") {
-        BarangayInputRef.current.focus();
-      } else if (event.target.id === "floatingBarangay") {
-        StreetInputRef.current.focus();
-      } else if (event.target.id === "floatingStreet") {
-        UnitInputRef.current.focus();
-      } else if (event.target.id === "floatingUnit") {
-        PasswordInputRef.current.focus();
-      } else if (event.target.id === "floatingPass") {
-        ConfirmPasswordInputRef.current.focus();
       } else {
         handleGoogleSignIn();
       }
@@ -428,141 +379,6 @@ const Register = () => {
                 />
                 <label className="register-label" htmlFor="floatingLast">
                   Last Name
-                </label>
-              </div>
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip>11 Digit e.g. 09xxxxxxxxx</Tooltip>}
-              >
-                <div className="  form-floating mb-3  col-md-6">
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="floatingMobile"
-                    placeholder="Mobile Number"
-                    value={mobilenumber}
-                    onKeyPress={handleKeyPress}
-                    ref={MobileNumberInputRef}
-                    onChange={(e) => {
-                      const mobilenumbervalue = e.target.value;
-                      if (
-                        mobilenumbervalue >= 0 &&
-                        mobilenumbervalue.length <= 11
-                      ) {
-                        // Check if the value is positive or zero
-                        setMobilenumber(mobilenumbervalue);
-                      }
-                    }}
-                  />
-                  <label className="register-label" htmlFor="floatingMobile">
-                    Mobile Number
-                  </label>
-                </div>
-              </OverlayTrigger>
-
-              <div className="  form-floating mb-3  col-md-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="floatingRegion"
-                  placeholder="Region"
-                  value={region}
-                  onChange={(e) => {
-                    const regionvalue = e.target.value;
-                    if (regionvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setRegion(regionvalue);
-                    }
-                  }}
-                  onKeyPress={handleKeyPress}
-                  ref={RegionInputRef}
-                />
-                <label className="register-label" htmlFor="floatingRegion">
-                  Region
-                </label>
-              </div>
-              <div className="  form-floating mb-3  col-md-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="floatingCity"
-                  placeholder="City"
-                  value={city}
-                  onKeyPress={handleKeyPress}
-                  ref={CityInputRef}
-                  onChange={(e) => {
-                    const cityvalue = e.target.value;
-                    if (cityvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setCity(cityvalue);
-                    }
-                  }}
-                />
-                <label className="register-label" htmlFor="floatingCity">
-                  City
-                </label>
-              </div>
-              <div className="  form-floating mb-3  col-md-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="floatingBarangay"
-                  placeholder="Barangay"
-                  value={barangay}
-                  onKeyPress={handleKeyPress}
-                  ref={BarangayInputRef}
-                  onChange={(e) => {
-                    const barangayvalue = e.target.value;
-                    if (barangayvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setBarangay(barangayvalue);
-                    }
-                  }}
-                />
-                <label className="register-label" htmlFor="floatingBarangay">
-                  Barangay
-                </label>
-              </div>
-              <div className="form-floating mb-3  col-md-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="floatingStreet"
-                  placeholder="Street"
-                  value={street}
-                  onKeyPress={handleKeyPress}
-                  ref={StreetInputRef}
-                  onChange={(e) => {
-                    const streetvalue = e.target.value;
-                    if (streetvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setStreet(streetvalue);
-                    }
-                  }}
-                />
-                <label className="register-label" htmlFor="floatingStreet">
-                  Street
-                </label>
-              </div>
-              <div className=" form-floating mb-3  col-md-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="floatingUnit"
-                  placeholder="Unit"
-                  value={unit}
-                  onKeyPress={handleKeyPress}
-                  ref={UnitInputRef}
-                  onChange={(e) => {
-                    const unitvalue = e.target.value;
-                    if (unitvalue.length <= 128) {
-                      // Check if the value is positive or zero
-                      setUnit(unitvalue);
-                    }
-                  }}
-                />
-                <label className="register-label" htmlFor="floatingUnit">
-                  Unit
                 </label>
               </div>
 
