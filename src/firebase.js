@@ -1703,6 +1703,36 @@ export const getContentByPage3 = async (page) => {
   }
 };
 
+export const getContentByPage4 = async (page) => {
+  try {
+    // Query Firestore for documents where the page matches the specified value
+    const contentQuery = query(
+      collection(dba, "content"),
+      where("page", "==", page)
+    );
+
+    // Fetch the documents
+    const querySnapshot = await getDocs(contentQuery);
+
+    // Convert query results into an array
+    const contentArray = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      contentArray.push({
+        id: doc.id, // Include document ID for unique keys if needed
+        title: data.title || "",
+        body: data.body || "",
+        imageUrl: data.imageUrl || null, // Optional image
+      });
+    });
+
+    return contentArray; // Return an array instead of an object
+  } catch (error) {
+    console.error("Error fetching content:", error);
+    throw new Error("Failed to fetch content");
+  }
+};
+
 export {
   getAuth,
   auth,

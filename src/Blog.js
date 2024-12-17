@@ -4,41 +4,62 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-
+import { getContentByPage4 } from "./firebase.js";
+import Loader from "./Loader.js";
 const Blog = () => {
-    const [activeArticle, setActiveArticle] = useState(null);
-    const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
+  const [activeArticle, setActiveArticle] = useState(null);
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [content, setContent] = useState({});
+  const [loading, setLoading] = useState(true);
+  const handleShowModal = (article) => {
+    setActiveArticle(article);
+    setShowModal(true);
+  };
 
-    const handleShowModal = (article) => {
-        setActiveArticle(article);
-        setShowModal(true);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setActiveArticle(null);
+  };
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const getcontent = await getContentByPage4("blogs");
+        setContent(getcontent);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching plan content:", error);
+      }
     };
-    
-      const handleCloseModal = () => {
-        setShowModal(false);
-        setActiveArticle(null);
-    };
 
-    const renderContentWithBoldHeadings = (content) => {
-        return content.split('\n').map((line, index) => {
-          // Use a regex to find and replace text after '-' and before ':'
-          const modifiedLine = line.replace(/- (.*?):/, (match, p1) => `- <strong>${p1}</strong>:`);
-    
-          return (
-            <span key={index}>
-              <span dangerouslySetInnerHTML={{ __html: modifiedLine }} />
-              <br />
-            </span>
-          );
-        });
-      };
+    fetchContent();
+  }, []);
 
-    const articles = [
-        {
-          img: "/funeral pics/Blog1.jpg",
-          title: "Filipino Beliefs You Should Respect When Attending Wakes",
-          content: `
+  const renderContentWithBoldHeadings = (bodyContent) => {
+    if (!bodyContent) return null; // Handle case where bodyContent is undefined or null
+
+    return bodyContent.split("\n").map((line, index) => {
+      // Use regex to bold text after '-' and before ':'
+      const modifiedLine = line.replace(
+        /- (.*?):/,
+        (match, p1) => `- <strong>${p1}</strong>:`
+      );
+
+      return (
+        <span key={index}>
+          <span dangerouslySetInnerHTML={{ __html: modifiedLine }} />
+          <br />
+        </span>
+      );
+    });
+  };
+
+  const articles = [
+    {
+      img: "/funeral pics/Blog1.jpg",
+      title: "Filipino Beliefs You Should Respect When Attending Wakes",
+      content: `
             Attending wakes in the Philippines often involves observing cultural practices 
             rooted in deep respect for the departed and their families. Filipinos place 
             significant importance on honoring their loved ones through traditions that 
@@ -56,11 +77,11 @@ const Blog = () => {
             By understanding and respecting these beliefs, you contribute to a supportive 
             environment for the family and help preserve these meaningful Filipino traditions.
           `,
-        },
-        {
-          img: "/funeral pics/blog2.jpg",
-          title: "What Goes Into A Funeral Package, And How To Choose",
-          content: `
+    },
+    {
+      img: "/funeral pics/blog2.jpg",
+      title: "What Goes Into A Funeral Package, And How To Choose",
+      content: `
             Funeral packages are designed to simplify the process of arranging a funeral, 
             providing families with various options tailored to their needs and budgets. 
             These packages typically include the following components:
@@ -84,11 +105,11 @@ const Blog = () => {
             A good funeral package provider will help guide you through the process, 
             ensuring that your loved one’s final journey is handled with dignity and respect.
           `,
-        },
-        {
-          img: "/funeral pics/blog3.jpg",
-          title: "What are the Death Traditions in the Philippines?",
-          content: `
+    },
+    {
+      img: "/funeral pics/blog3.jpg",
+      title: "What are the Death Traditions in the Philippines?",
+      content: `
             Death traditions in the Philippines are a unique blend of indigenous practices 
             and Catholic influences, reflecting the country’s deep spirituality and family-oriented 
             culture. These traditions often aim to honor the deceased, support the grieving, and 
@@ -107,26 +128,25 @@ const Blog = () => {
             These traditions showcase the deep respect Filipinos have for their ancestors, 
             emphasizing the importance of family and faith in the face of loss.
           `,
-        },
-      ];
+    },
+  ];
 
-return (
-    
+  return (
     <main className="main-content">
-    <section className="blog">
-      <div>
-        <h1 className="blog-title">BLOGS & ARTICLES</h1>
-        <div className="blog-border"></div>
-      </div>
-    </section>
-    <section className="blog-section">
-        <div className="blog-container">
-        {articles.map((article, index) => (
+      <section className="blog">
+        <div>
+          <h1 className="blog-title">BLOGS & ARTICLES</h1>
+          <div className="blog-border"></div>
+        </div>
+      </section>
+      <section className="home-snap-section section7">
+        <div className="blogs">
+          {Object.values(content).map((content, index) => (
             <div className="article" key={index}>
-              <img src={article.img} alt={`${article.title} Image`} />
-              <h2>{article.title}</h2>
-              <p>{article.content.slice(0, 100)}...</p>
-              <button onClick={() => handleShowModal(article)}>
+              <img src={content.imageUrl} alt={`${content.title} Image`} />
+              <h2>{content.title}</h2>
+              <p>{content.body.slice(0, 100)}...</p>
+              <button onClick={() => handleShowModal(content)}>
                 Read More
               </button>
             </div>
@@ -137,27 +157,33 @@ return (
         {activeArticle && (
           <Modal show={showModal} onHide={handleCloseModal} centered>
             <Modal.Header closeButton className="homepage-article-header">
-              <Modal.Title className="homepage-article-title">{activeArticle.title}</Modal.Title>
+              <Modal.Title className="homepage-article-title">
+                {activeArticle.title}
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body className="article-details-box">
               <img
-                src={activeArticle.img}
+                src={activeArticle.imageUrl}
                 alt={activeArticle.title}
                 style={{
                   width: "100%",
                   borderRadius: "8px",
                 }}
               />
-              <p>{renderContentWithBoldHeadings(activeArticle.content)}</p>
+              <div>{renderContentWithBoldHeadings(activeArticle.body)}</div>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseModal} className="close2-button">
+              <Button
+                variant="secondary"
+                onClick={handleCloseModal}
+                className="close2-button"
+              >
                 Close
               </Button>
             </Modal.Footer>
           </Modal>
         )}
-    </section>
+      </section>
     </main>
   );
 };
