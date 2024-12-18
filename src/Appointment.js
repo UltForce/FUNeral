@@ -559,6 +559,14 @@ const Appointments = () => {
     }
   };
 
+  const handleRadioChange = (value) => {
+    setFormData({
+      ...formData,
+      hasDeathCertificate: value,
+      DeathCertificate: null, // Clear the file if "No" is selected
+    });
+  };
+
   return (
     <section className="dashboard-appointment">
       <main className="main-content">
@@ -1007,23 +1015,49 @@ const Appointments = () => {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formDeathCertificate">
+              <Form.Group controlId="formHasDeathCertificate">
                 <Form.Label className="label-title">
-                  Death Certificate
+                  Has Death Certificate?
                 </Form.Label>
-                <Form.Control
-                  type="file"
-                  className="input-details"
-                  accept=".pdf"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      DeathCertificate: e.target.files[0],
-                    })
-                  }
-                  required
-                />
+                <div>
+                  <Form.Check
+                    type="radio"
+                    label="Yes"
+                    name="hasDeathCertificate"
+                    value="yes"
+                    checked={formData.hasDeathCertificate === "yes"}
+                    onChange={() => handleRadioChange("yes")}
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="No"
+                    name="hasDeathCertificate"
+                    value="no"
+                    checked={formData.hasDeathCertificate === "no"}
+                    onChange={() => handleRadioChange("no")}
+                  />
+                </div>
               </Form.Group>
+
+              {/* File Upload for Death Certificate */}
+              {formData.hasDeathCertificate === "yes" && (
+                <Form.Group controlId="formDeathCertificate">
+                  <Form.Label className="label-title">
+                    Death Certificate
+                  </Form.Label>
+                  <Form.Control
+                    type="file"
+                    className="input-details"
+                    accept=".pdf"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        DeathCertificate: e.target.files[0],
+                      })
+                    }
+                  />
+                </Form.Group>
+              )}
 
               <br />
 
