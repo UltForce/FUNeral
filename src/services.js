@@ -80,8 +80,12 @@ const Services = () => {
       price: "PHP " + content["plan 1"]?.price,
       description:
         "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care.",
+      
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
+          
+          <i><strong>Prices are subject to change depending on inclusion</strong></i>
+          
           <li>
             <strong>Casket</strong> - Wood features, Full Glass, Basic Interiors
             and Handles.
@@ -104,6 +108,8 @@ const Services = () => {
             <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for
             Male, Baro't Saya for Female
           </li>
+
+         
         </ul>
       ),
 
