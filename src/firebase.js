@@ -1733,6 +1733,16 @@ export const getContentByPage4 = async (page) => {
   }
 };
 
+export const updateAppointmentStaff = async (appointmentId, staff) => {
+  if (!appointmentId) {
+    throw new Error("Invalid appointmentId or staff value");
+  }
+  const appointmentRef = doc(dba, "appointments", appointmentId);
+  await updateDoc(appointmentRef, {
+    staff,
+  });
+};
+
 export {
   getAuth,
   auth,

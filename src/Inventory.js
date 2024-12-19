@@ -482,6 +482,7 @@ const Inventory = () => {
                 <option value="Plan 1">Plan 1 - Basic Plan</option>
                 <option value="Plan 2">Plan 2 - Garden Plan</option>
                 <option value="Plan 3">Plan 3 - Garbo Plan</option>
+                <option value="Plan 4">Plan 4 - Kid Plan</option>
                 <option value="Any">Any Plan</option>
               </Form.Select>
             </Form.Group>

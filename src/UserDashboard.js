@@ -587,6 +587,9 @@ const UserDashboard = () => {
                     {getStatusBadge(selectedAppointment.status)}
                     <br />
                     <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
+                    <br />
+                    <strong>Appointed Staff:</strong>{" "}
+                    {selectedAppointment.staff || "None Yet"}
                   </p>
                   <br />
                   <h4 className="postmortem-title">Post Mortem Details:</h4>

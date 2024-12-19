@@ -311,6 +311,9 @@ const Archive = () => {
                     {getStatusBadge(selectedItem.status)}
                     <br />
                     <strong>Notes:</strong> {selectedItem.notes || "N/A"}
+                    <br />
+                    <strong>Appointed Staff:</strong>{" "}
+                    {selectedItem.staff || "None Yet"}
                   </p>
                   <br />
                   <h4 className="postmortem-title">Post Mortem Details:</h4>

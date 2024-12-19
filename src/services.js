@@ -80,12 +80,13 @@ const Services = () => {
       price: "PHP " + content["plan 1"]?.price,
       description:
         "The basic funeral service package is designed for families seeking a simple yet heartfelt farewell for their loved ones. It ensures that all essential aspects of the service, from preparation to final disposition, are handled professionally and with care.",
-      
+
       inclusionslist: (
         <ul style={{ textAlign: "left" }}>
-          
-          <i><strong>Prices are subject to change depending on inclusion</strong></i>
-          
+          <i>
+            <strong>Prices are subject to change depending on inclusion</strong>
+          </i>
+
           <li>
             <strong>Casket</strong> - Wood features, Full Glass, Basic Interiors
             and Handles.
@@ -108,8 +109,6 @@ const Services = () => {
             <strong>Traditional Filipino Clothing</strong> - Barong Tagalog for
             Male, Baro't Saya for Female
           </li>
-
-         
         </ul>
       ),
 
@@ -216,6 +215,26 @@ const Services = () => {
           curtains: ["/3DModels/Plan3_curtain.glb"],
           tarp: ["/3DModels/garbostand.glb"],
           car: ["/3DModels/garbocar.glb"],
+        },
+      },
+    },
+    {
+      id: 4,
+      title: content["plan 4"]?.title,
+      info: "Kid Package",
+      price: "PHP " + content["plan 4"]?.price,
+      description: "Kid Package Description",
+
+      imagePath: content["plan 4"]?.imageUrl, // Unique image
+      modelPaths: {
+        wake: "/3DModels/Plan4.glb",
+        inclusions: {
+          casket: ["/3DModels/Plan4_casket.glb"],
+          flowers: ["/3DModels/Plan4_flowers.glb"],
+          candles: ["/3DModels/Plan4_candles.glb"],
+          curtains: ["/3DModels/Plan4_curtain.glb"],
+          tarp: ["/3DModels/kidstand.glb"],
+          car: ["/3DModels/kidcar.glb"],
         },
       },
     },

@@ -667,6 +667,7 @@ const Booking = ({}) => {
     "Plan 1": 0,
     "Plan 2": 0,
     "Plan 3": 0,
+    "Plan 4": 0,
   });
 
   useEffect(() => {
@@ -690,7 +691,7 @@ const Booking = ({}) => {
       anyPlanQuantity = anyPlanQuantity === Infinity ? 0 : anyPlanQuantity;
 
       // Define specific plans
-      const plans = ["Plan 1", "Plan 2", "Plan 3"];
+      const plans = ["Plan 1", "Plan 2", "Plan 3", "Plan 4"];
 
       // Compute remaining packages per plan
       const planQuantities = plans.reduce((acc, plan) => {
@@ -842,6 +843,13 @@ const Booking = ({}) => {
                     disabled={remainingPackages["Plan 3"] === 0}
                   >
                     Plan 3 - Garbo Plan ({remainingPackages["Plan 3"]} packages
+                    remaining)
+                  </option>
+                  <option
+                    value="Plan 4"
+                    disabled={remainingPackages["Plan 4"] === 0}
+                  >
+                    Plan 4 - Kid Plan ({remainingPackages["Plan 4"]} packages
                     remaining)
                   </option>
                 </Form.Select>

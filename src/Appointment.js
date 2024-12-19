@@ -14,6 +14,7 @@ import {
   sendNotification,
   getUserEmailById,
   toggleArchiveStatus,
+  updateAppointmentStaff,
 } from "./firebase.js";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -56,6 +57,7 @@ const Appointments = () => {
   const handleShow2 = () => setShowModal2(true);
   const handleClose2 = () => setShowModal2(false);
   const [isFormOpen, setIsFormOpen] = useState(false); // State for controlling form visibility
+  const staffList = ["Staff A", "Staff B", "Staff C", "Staff D", "Staff E"];
   const [formData, setFormData] = useState({
     // State for form data
     name: "",
@@ -567,18 +569,45 @@ const Appointments = () => {
     });
   };
 
+  const handleAssignStaff = async (appointmentId, staff, event) => {
+    try {
+      setLoading(true);
+      const event = {
+        type: "Appointment",
+        userId: "admin",
+        details: "Admin set a staff for an appointment",
+      };
+
+      await updateAppointmentStaff(appointmentId, staff); // Call Firebase function
+      // Log event and refresh appointments list
+      AuditLogger({ event });
+      if ($.fn.DataTable.isDataTable("#appointmentsTable")) {
+        $("#appointmentsTable").DataTable().destroy();
+      }
+      await fetchAppointments();
+      setLoading(false);
+      Toast.fire({
+        icon: "success",
+        title: `Staff assigned successfully: ${staff}`,
+      });
+    } catch (error) {
+      console.error("Error assigning staff:", error);
+      Toast.fire({
+        icon: "error",
+        title: "Failed to assign staff.",
+      });
+    }
+  };
+
   return (
     <section className="dashboard-appointment">
       <main className="main-content">
-        {loading && <Loader />} {/* Use the Loader component here */}
+        {loading && <Loader />}
         <div className="appointments-dashboard-box">
           <h1 className="centered">Appointments</h1>
         </div>
         <div className="customerReport">
           <div className="appointment-reports">
-            {/* <h3>
-            Appointment List
-          </h3> */}
             <table className="appointment-list-table">
               <thead>
                 <tr>
@@ -643,6 +672,7 @@ const Appointments = () => {
                   <th>Plan</th>
                   <th>Notes</th>
                   <th>Status</th>
+                  <th>Staff</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -655,6 +685,24 @@ const Appointments = () => {
                     <td>{appointment.plan}</td>
                     <td>{appointment.notes}</td>
                     <td>{getStatusBadge(appointment.status)}</td>
+                    <td>
+                      <select
+                        value={appointment.staff || ""}
+                        onChange={(e) =>
+                          handleAssignStaff(
+                            appointment.appointmentId,
+                            e.target.value
+                          )
+                        }
+                      >
+                        <option value="">Assign Staff</option>
+                        {staffList.map((staff) => (
+                          <option key={staff} value={staff}>
+                            {staff}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
                     <td>
                       <OverlayTrigger
                         placement="top"
@@ -675,9 +723,7 @@ const Appointments = () => {
                         <button
                           className="btn btn-warning"
                           type="button"
-                          onClick={() => {
-                            handleEditClick(appointment);
-                          }}
+                          onClick={() => handleEditClick(appointment)}
                         >
                           <FontAwesomeIcon icon={faEdit} />
                         </button>
@@ -742,6 +788,9 @@ const Appointments = () => {
                   {getStatusBadge(selectedAppointment.status)}
                   <br />
                   <strong>Notes:</strong> {selectedAppointment.notes || "N/A"}
+                  <br />
+                  <strong>Appointed Staff:</strong>{" "}
+                  {selectedAppointment.staff || "None Yet"}
                 </p>
                 <br />
                 <h4 className="postmortem-title">Post Mortem Details:</h4>
@@ -834,6 +883,7 @@ const Appointments = () => {
                   <option value="Plan 1">Plan 1 - Basic Plan</option>
                   <option value="Plan 2">Plan 2 - Garden Plan</option>
                   <option value="Plan 3">Plan 3 - Garbo Plan</option>
+                  <option value="Plan 4">Plan 4 - Kid Plan</option>
                 </Form.Select>
               </Form.Group>
               <br />

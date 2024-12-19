@@ -1130,6 +1130,13 @@ const Transaction = () => {
                     Plan 3 - Garbo Plan ({remainingPackages["Plan 3"]} packages
                     remaining)
                   </option>
+                  <option
+                    value="Plan 4"
+                    disabled={remainingPackages["Plan 4"] === 0}
+                  >
+                    Plan 4 - Kid Plan ({remainingPackages["Plan 4"]} packages
+                    remaining)
+                  </option>
                 </Form.Select>
               </Form.Group>
 
