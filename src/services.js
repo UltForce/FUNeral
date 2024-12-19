@@ -170,7 +170,7 @@ const Services = () => {
       id: 3,
       title: content["plan 3"]?.title,
       info: "The ultimate funeral service package with luxurious items.",
-      price: "PHP " + content["plan 2"]?.price,
+      price: "PHP " + content["plan 3"]?.price,
       description:
         "The ultimate funeral service package offers a comprehensive selection of luxurious items designed to provide comfort and dignity during a difficult time. This package includes elegant caskets, beautifully crafted memorial displays, personalized cabinetry, and premium floral arrangements. Each element is carefully chosen to reflect the unique life and legacy of your loved one, ensuring that every aspect of the service is a proper tribute.",
       inclusionslist: (
