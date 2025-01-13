@@ -223,8 +223,28 @@ const Services = () => {
       title: content["plan 4"]?.title,
       info: "Kid Package",
       price: "PHP " + content["plan 4"]?.price,
-      description: "Kid Package Description",
-
+      description: "Our Kids' Funeral Package is thoughtfully designed to honor the life and memory of your beloved child with care and sensitivity. A small package that we provide for grieving family that having difficult time to grief with their children. Having a service that reflects your child’s personality and the love they brought into the world.",
+      inclusionslist: (
+        <ul style={{ textAlign: "left" }}>
+          <li>
+            <strong>Casket</strong> -A Small Full Glass, Detailed
+            Interiors, and Handles.
+          </li>
+          <li>
+            <strong>Curtain</strong> - Simple Fabric focusing on simplicity
+          </li>
+          <li>
+            <strong>Flower Arrangements</strong> - Simple and understated Flower arrangements
+          </li>
+          <li>
+            <strong>Carpet</strong> - Durable and Plain
+          </li>
+          <li>
+            <strong>Set of Lights and Candles</strong> - Minimalist without
+            ornate details
+          </li>
+        </ul>
+      ),
       imagePath: content["plan 4"]?.imageUrl, // Unique image
       modelPaths: {
         wake: "/3DModels/Plan4.glb",
