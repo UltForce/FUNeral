@@ -370,6 +370,7 @@ const About = () => {
                     <option value="Plan 1">Plan 1 Basic</option>
                     <option value="Plan 2">Plan 2 Garden</option>
                     <option value="Plan 3">Plan 3 Garbo</option>
+                    <option value="Plan 4">Plan 4 Kid</option>
                   </select>
                 </div>
                 <div className="star-rating">{renderStars()}</div>

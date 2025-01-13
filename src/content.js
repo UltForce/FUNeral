@@ -613,6 +613,14 @@ const Content = () => {
                         ? "Plan 3 - Garbo - Already exists"
                         : "Plan 3 - Garbo"}
                     </option>
+                    <option
+                      value="plan 4"
+                      disabled={existingPlans.includes("plan 4")}
+                    >
+                      {existingPlans.includes("plan 4")
+                        ? "Plan 4 - Kid - Already exists"
+                        : "Plan 4 - Kid"}
+                    </option>
                   </Form.Control>
                 </Form.Group>
               )}
