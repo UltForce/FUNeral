@@ -228,12 +228,12 @@ const Services = () => {
       modelPaths: {
         wake: "/3DModels/Plan4.glb",
         inclusions: {
-          casket: ["/3DModels/Plan4_casket.glb"],
-          flowers: ["/3DModels/Plan4_flowers.glb"],
-          candles: ["/3DModels/Plan4_candles.glb"],
-          curtains: ["/3DModels/Plan4_curtain.glb"],
-          tarp: ["/3DModels/kidstand.glb"],
-          car: ["/3DModels/kidcar.glb"],
+          casket: ["/3DModels/small casket.glb"],
+          flowers: ["/3DModels/small flowers.glb"],
+          candles: ["/3DModels/small lights.glb"],
+          curtains: ["/3DModels/[small curtain].glb"],
+          tarp: ["/3DModels/tarp.glb"],
+          car: ["/3DModels/basiccar.glb"],
         },
       },
     },
