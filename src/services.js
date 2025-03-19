@@ -231,7 +231,7 @@ const Services = () => {
           casket: ["/3DModels/small casket.glb"],
           flowers: ["/3DModels/small flowers.glb"],
           candles: ["/3DModels/small lights.glb"],
-          curtains: ["/3DModels/[small curtain].glb"],
+          curtains: ["/3DModels/small curtain.glb"],
           tarp: ["/3DModels/tarp.glb"],
           car: ["/3DModels/basiccar.glb"],
         },
