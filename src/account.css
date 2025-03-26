@@ -264,3 +264,21 @@
         font-size: 12px;
     }
 }
+
+.account-table-info {
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  /* Hover effect */
+  .account-table-info:hover {
+    border-color: #007bff; /* Change border color on hover */
+    background-color: #f0f8ff; /* Light blue background */
+  }
+  
+  /* Focus effect when clicked */
+  .account-table-info:focus {
+    outline: none;
+    border-color: #0056b3; /* Darker blue border */
+    background-color: #e6f2ff;
+  }
+  

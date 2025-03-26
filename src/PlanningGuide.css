@@ -340,3 +340,14 @@ html {
     font-size: 18px;
   }
 }
+
+.for-user, .for-manager {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.for-user:hover, .for-manager:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #e0e0e0; /* Slightly darker background on hover */
+}

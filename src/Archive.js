@@ -377,6 +377,9 @@ const Archive = () => {
                   </h4>
 
                   <p className="first-details">
+                    <strong>Plan:</strong>{" "}
+                    {selectedItem.plan}
+                    <br/>
                     <strong>Date:</strong>{" "}
                     {formatDateTime(selectedItem.dateOfBurial)}
                     <br />

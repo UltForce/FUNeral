@@ -312,3 +312,27 @@
     position: relative;
     bottom: 0;
 } */
+
+/* Hover effect for select dropdown */
+td select {
+  transition: all 0.3s ease;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* When hovering over the select dropdown */
+td select:hover {
+  background-color: #f8f9fa; /* Light gray background */
+  border-color: #007bff; /* Blue border */
+  transform: scale(1.05); /* Slightly enlarge */
+  box-shadow: 2px 2px 8px rgba(0, 123, 255, 0.2); /* Subtle blue shadow */
+}
+
+/* When clicking (focusing) the select dropdown */
+td select:focus {
+  outline: none;
+  border-color: #0056b3; /* Darker blue border */
+  box-shadow: 2px 2px 10px rgba(0, 86, 179, 0.3); /* Stronger shadow */
+}

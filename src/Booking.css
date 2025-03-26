@@ -484,4 +484,23 @@
     font-size: 12px;
 }
 
-
+.fc-day-hover:hover {
+    background-color: rgba(0, 123, 255, 0.2) !important; /* Light blue background */
+    cursor: pointer; /* Show pointer cursor */
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+/* Hover effect for day cells */
+.fc-day-hover:hover {
+    background-color: rgba(0, 123, 255, 0.2) !important; /* Light blue */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  /* Hover effect for time slots */
+  .fc-time-slot-hover:hover {
+    background-color: rgba(255, 193, 7, 0.2) !important; /* Light yellow */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  

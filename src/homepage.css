@@ -922,3 +922,86 @@
   font-family: 'Rubik';
   color: #FCF2D8;
 }
+
+/* Add a subtle shadow and scale effect on hover */
+.grid {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.grid img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.grid p {
+  color: #666;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.grid:hover {
+  transform: translateY(-10px); /* Slight lift effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.grid:hover img {
+  transform: scale(1.05); /* Slightly enlarge the image */
+}
+
+.grid:hover h2 {
+  color: #007bff; /* Change title color */
+}
+
+.grid:hover p {
+  color: #333; /* Darken the text */
+}
+
+
+/* Individual blog article */
+.article {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Blog image */
+.article img {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Blog title */
+.article h2 {
+  transition: color 0.3s ease-in-out;
+}
+
+/* Blog text */
+.article p {
+  color: #666;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Read more button */
+.article button {
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Hover Effects */
+.article:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.article:hover img {
+  transform: scale(1.05);
+}
+
+.article:hover h2 {
+  color: #007bff;
+}
+
+.article:hover p {
+  color: #333;
+}
+
+.article button:hover {
+  background: #0056b3;
+}

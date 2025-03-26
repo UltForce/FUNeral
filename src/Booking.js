@@ -289,25 +289,35 @@ const Booking = ({}) => {
       const adminAppointments = await getAllAppointments();
       const userAppointments = await getUserAppointments(loggedInUserId); // Fetch user's appointments
       const approvedAppointments = await getApprovedAppointments(); // Fetch approved appointments
+  
+      const today = moment().tz("Asia/Manila").startOf("day"); // Get current date
+  
+      // Filter out past appointments
       const filteredApprovedAppointments = approvedAppointments.filter(
-        // Filter out user's own approved appointments
-        (appointment) => appointment.userId !== loggedInUserId
+        (appointment) =>
+          moment(appointment.date).tz("Asia/Manila").isSameOrAfter(today) && // Only future appointments
+          appointment.userId !== loggedInUserId // Exclude the logged-in user's own approved appointments
       );
-
-      const allAppointments = [
-        // Combine user's own appointments and filtered approved appointments
-        ...filteredApprovedAppointments,
-        ...userAppointments,
-      ];
+  
+      const filteredUserAppointments = userAppointments.filter(
+        (appointment) =>
+          moment(appointment.date).tz("Asia/Manila").isSameOrAfter(today) // Only future appointments
+      );
+  
       if (userRole === "admin") {
-        setAppointments(adminAppointments);
+        setAppointments(
+          adminAppointments.filter((appointment) =>
+            moment(appointment.date).tz("Asia/Manila").isSameOrAfter(today) // Only future appointments
+          )
+        );
       } else {
-        setAppointments(allAppointments); // Set appointments
+        setAppointments([...filteredApprovedAppointments, ...filteredUserAppointments]); // Set only future & relevant appointments
       }
     } catch (error) {
       console.error("Error fetching appointments:", error.message);
     }
   };
+  
 
   // Handle form submission
   const handleFormSubmit = async (e) => {
@@ -776,6 +786,9 @@ const Booking = ({}) => {
               initialView="dayGridMonth"
               initialDate={new Date().toISOString()} // Set initial date to current date/time
               timeZone="Asia/Manila" // Set timezone to Asia/Manila
+              validRange={{
+                start: moment().tz("Asia/Manila").startOf("month").format("YYYY-MM-DD"), // Prevent past months
+              }}
               headerToolbar={{
                 left: "prev,next,today",
                 center: "title",
@@ -798,6 +811,15 @@ const Booking = ({}) => {
                 minute: "numeric",
               }}
               slotDuration="01:00:00" // Set the duration of each time slot to 30 minutes
+              dayCellDidMount={(info) => {
+                info.el.classList.add("fc-day-hover"); // Add custom class to each day cell
+              }}
+              slotLabelDidMount={(info) => {
+                info.el.classList.add("fc-time-slot-hover"); // Add hover class for time slots (labels)
+              }}
+              slotLaneDidMount={(info) => {
+                info.el.classList.add("fc-time-slot-hover"); // Add hover class for time slots (lanes)
+              }}
             />
           </div>
         </div>

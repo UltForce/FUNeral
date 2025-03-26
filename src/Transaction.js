@@ -647,6 +647,7 @@ const Transaction = () => {
     "Plan 1": 0,
     "Plan 2": 0,
     "Plan 3": 0,
+    "Plan 4": 0,
   });
 
   useEffect(() => {
@@ -670,7 +671,7 @@ const Transaction = () => {
       anyPlanQuantity = anyPlanQuantity === Infinity ? 0 : anyPlanQuantity;
 
       // Define specific plans
-      const plans = ["Plan 1", "Plan 2", "Plan 3"];
+      const plans = ["Plan 1", "Plan 2", "Plan 3", "Plan 4"];
 
       // Compute remaining packages per plan
       const planQuantities = plans.reduce((acc, plan) => {
@@ -1236,6 +1237,9 @@ const Transaction = () => {
                 </h4>
 
                 <p className="first-details">
+                  <strong>Plan:</strong>{" "}
+                  {selectedTransaction.plan}
+                  <br/>
                   <strong>Date:</strong>{" "}
                   {formatDateTime(selectedTransaction.dateOfBurial)}
                   <br />

@@ -23,6 +23,12 @@ const FAQs = () => {
     fetchData();
   }, []);
 
+    const [openIndex, setOpenIndex] = useState(null); // Track open accordion index
+  
+  const handleToggle = (index) => {
+    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+  
   return (
     <div>
       <section className="faqs">
@@ -44,11 +50,10 @@ const FAQs = () => {
                     <div className="accordion-item">
                       <h2 className="accordion-header" id={`heading${index}`}>
                         <button
-                          className="accordion-button collapsed"
+                          className={`accordion-button ${index === openIndex ? "" : "collapsed"}`}
                           type="button"
-                          data-bs-toggle="collapse"
-                          data-bs-target={`#collapse${index}`}
-                          aria-expanded="false"
+                          onClick={() => handleToggle(index)}
+                          aria-expanded={index === openIndex ? "true" : "false"}
                           aria-controls={`collapse${index}`}
                         >
                           {faq.title}
@@ -56,7 +61,7 @@ const FAQs = () => {
                       </h2>
                       <div
                         id={`collapse${index}`}
-                        className="accordion-collapse collapse"
+                        className={`accordion-collapse collapse ${index === openIndex ? "show" : ""}`}
                         aria-labelledby={`heading${index}`}
                         data-bs-parent="#faqsAccordion"
                       >

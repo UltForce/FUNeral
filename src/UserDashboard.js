@@ -681,6 +681,9 @@ const UserDashboard = () => {
                   </h4>
 
                   <p className="first-details">
+                    <strong>Plan:</strong>{" "}
+                    {selectedTransaction.plan}
+                    <br/>
                     <strong>Date:</strong>{" "}
                     {formatDateTime(selectedTransaction.dateOfBurial)}
                     <br />
@@ -704,23 +707,23 @@ const UserDashboard = () => {
                   <div className="transaction-border"></div>
                   <h4 className="particulars-title">Particulars Details:</h4>
                   <p className="second-details">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Particular</th>
-                          <th>Price</th>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Particular</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedTransaction.particulars.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.name}</td>
+                          <td>₱{item.price.toFixed(2)}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {selectedTransaction.particulars.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.name}</td>
-                            <td>₱{item.price.toFixed(2)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </p>
+                      ))}
+                    </tbody>
+                  </table>
+                </p>
                   <div className="transaction-border"></div>
                   <h4 className="financial-summary-title">
                     Financial Summary:

@@ -57,7 +57,7 @@ const Appointments = () => {
   const handleShow2 = () => setShowModal2(true);
   const handleClose2 = () => setShowModal2(false);
   const [isFormOpen, setIsFormOpen] = useState(false); // State for controlling form visibility
-  const staffList = ["Staff A", "Staff B", "Staff C", "Staff D", "Staff E"];
+  const staffList = ["Patricia", "Roland"];
   const [formData, setFormData] = useState({
     // State for form data
     name: "",

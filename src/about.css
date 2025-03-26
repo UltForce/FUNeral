@@ -567,3 +567,70 @@ body, .content-user {
   border: none;
   color: #18020c;
 }
+
+/* Plan Selection Dropdown */
+.form-control {
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover and Focus Effects */
+.form-control:hover,
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+/* Textarea Styling */
+.submitted-form-control {
+  resize: vertical;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover and Focus Effects for Textarea */
+.submitted-form-control:hover,
+.submitted-form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.testimonial {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture {
+  transition: transform 0.3s ease;
+}
+
+.testimonial:hover .profile-picture {
+  transform: scale(1.1);
+}
+
+.review-plan {
+  font-weight: bold;
+  color: #555;
+}
+
+.stars {
+  color: gold;
+  font-size: 1.2rem;
+}
+
+.reviewer-name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.review-description {
+  font-size: 0.9rem;
+  color: #333;
+  margin-top: 5px;
+}
