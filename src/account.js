@@ -197,6 +197,17 @@ const Account = () => {
   };
 
   const handleSaveChanges = async () => {
+
+    const phoneRegex = /^(09\d{8,9}|9\d{9}|\+639\d{9,10})$/; // Validates phone numbers
+
+if (!phoneRegex.test(editableData.mobilenumber)) {
+  Toast.fire({
+    icon: "error",
+    title: "Phone number must start with 9, 09, or +63 and be between 10 to 13 digits long.",
+  });
+  return; // Prevent submission
+}
+
     // Confirm save changes
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -331,12 +342,21 @@ const Account = () => {
                         name="mobilenumber"
                         value={editableData.mobilenumber || ""}
                         className="account-table-info"
-                        onChange={handleEditChange}
+                        onChange={(e) => {
+                          if (!editMode) return; // Prevent changes if not in edit mode
+
+                          const inputValue = e.target.value;
+                          // Allow only digits and the "+" sign
+                          const sanitizedValue = inputValue.replace(/[^0-9+]/g, "");
+
+                          setEditableData({ ...editableData, mobilenumber: sanitizedValue });
+                        }}
                         style={{ width: "100%" }}
                         readOnly={!editMode} // Set to readonly based on edit mode
                         maxLength={13}
                       />
                     </td>
+
                     <tr>
                       <th className="account-table-label">Region:</th>
                       <td>
