@@ -234,7 +234,7 @@ const Booking = ({}) => {
   // Object mapping appointment status to colors
   const statusColors = {
     pending: "orange",
-    canceled: "red",
+    cancelled: "red",
     approved: "blue",
     completed: "green",
   };
@@ -549,7 +549,7 @@ const Booking = ({}) => {
           const event = {
             type: "Appointment", // Type of event
             userId: loggedInUserId, // User ID associated with the event
-            details: "User canceled a pending appointment", // Details of the event
+            details: "User cancelled a pending appointment", // Details of the event
           };
           AuditLogger({ event }); // Log the event
           const title = "Pending appointment deleted";
@@ -561,7 +561,7 @@ const Booking = ({}) => {
           // Show success message
           Swal.fire({
             title: "Success",
-            text: "Appointment canceled successfully",
+            text: "Appointment cancelled successfully",
             icon: "success",
             heightAuto: false,
             confirmButtonColor: "#3085d6",
@@ -570,7 +570,7 @@ const Booking = ({}) => {
             if (result.isConfirmed) {
               Toast.fire({
                 icon: "success",
-                title: "Appointment canceled successfully",
+                title: "Appointment cancelled successfully",
               });
             }
           });
@@ -725,6 +725,33 @@ const Booking = ({}) => {
 
     fetchInventory();
   }, []);
+
+
+  const handleDateChange = (field, value) => {
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [field]: value };
+  
+      // Check if both birthday and date of death are set
+      if (updatedFormData.DeceasedBirthday && updatedFormData.DateofDeath) {
+        const birthday = moment
+          .tz(updatedFormData.DeceasedBirthday, "Asia/Manila")
+          .startOf("day");
+        const deathDate = moment
+          .tz(updatedFormData.DateofDeath, "Asia/Manila")
+          .startOf("day");
+  
+        // Calculate age only if death date is after birthday
+        if (deathDate.isAfter(birthday)) {
+          const age = deathDate.diff(birthday, "years");
+          updatedFormData.DeceasedAge = age;
+        } else {
+          updatedFormData.DeceasedAge = ""; // Reset age if invalid
+        }
+      }
+  
+      return updatedFormData;
+    });
+  };
 
   return (
     <section className="booking">
@@ -951,22 +978,47 @@ const Booking = ({}) => {
                 />
               </Form.Group>
               <br />
-              <Form.Group controlId="formDeceasedAge">
-                <Form.Label className="label-title">Deceased Age</Form.Label>
-                <Form.Control
-                  className="input-details"
-                  type="number"
-                  placeholder="Enter deceased's age"
-                  value={formData.DeceasedAge}
-                  onChange={(e) => {
-                    const ageValue = e.target.value.replace(/\D/g, "");
-                    if (ageValue.length <= 3) {
-                      setFormData({ ...formData, DeceasedAge: ageValue });
-                    }
-                  }}
-                  required
-                />
-              </Form.Group>
+              <Form.Group controlId="formDeceasedBirthday">
+              <Form.Label className="label-title">Deceased Birthday</Form.Label>
+              <Form.Control
+                type="date"
+                className="input-details"
+                value={formData.DeceasedBirthday}
+                onChange={(e) => handleDateChange("DeceasedBirthday", e.target.value)}
+                required
+                max={new Date().toISOString().split("T")[0]} // Prevent future dates
+              />
+            </Form.Group>
+            <br />
+            <Form.Group controlId="formDateofDeath">
+              <Form.Label className="label-title">Date of Death</Form.Label>
+              <Form.Control
+                type="date"
+                className="input-details"
+                value={formData.DateofDeath}
+                onChange={(e) => handleDateChange("DateofDeath", e.target.value)}
+                required
+                max={new Date().toISOString().split("T")[0]} // Prevent future dates
+              />
+            </Form.Group>
+            <br />
+            <Form.Group controlId="formDeceasedAge">
+              <Form.Label className="label-title">Deceased Age</Form.Label>
+              <Form.Control
+                className="input-details"
+                type="number"
+                placeholder="Enter deceased's age"
+                value={formData.DeceasedAge}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    DeceasedAge: e.target.value.replace(/\D/g, ""),
+                  })
+                }
+                required
+                readOnly // Prevent manual input since it's auto-calculated
+              />
+            </Form.Group>
               <br />
               <Form.Group controlId="formDeceasedSex">
                 <Form.Label className="label-title">Deceased Sex</Form.Label>
@@ -984,86 +1036,83 @@ const Booking = ({}) => {
                 </Form.Select>
               </Form.Group>
               <br />
-              <Form.Group controlId="formDeceasedBirthday">
-                <Form.Label className="label-title">
-                  Deceased Birthday
-                </Form.Label>
-                <Form.Control
-                  type="date"
-                  className="input-details"
-                  value={formData.DeceasedBirthday}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      DeceasedBirthday: e.target.value,
-                    })
-                  }
-                  required
-                  max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                />
-              </Form.Group>
-              <br />
-              <Form.Group controlId="formDateofDeath">
-                <Form.Label className="label-title">Date of Death</Form.Label>
-                <Form.Control
-                  type="date"
-                  className="input-details"
-                  value={formData.DateofDeath}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      DateofDeath: e.target.value,
-                    })
-                  }
-                  required
-                  max={new Date().toISOString().split("T")[0]} // Prevent future dates
-                />
-              </Form.Group>
-              <br />
               <Form.Group controlId="formPlaceofDeath">
-                <Form.Label className="label-title">Place of Death</Form.Label>
-                <div>
-                  <Form.Check
-                    type="radio"
-                    label="Hospital"
-                    name="placeOfDeath"
-                    value="Hospital"
-                    checked={formData.PlaceofDeath === "Hospital"}
+              <Form.Label className="label-title">Place of Death</Form.Label>
+              <div>
+                <Form.Check
+                  type="radio"
+                  label="Hospital"
+                  name="placeOfDeath"
+                  value="Hospital"
+                  checked={formData.PlaceofDeath === "Hospital"}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      PlaceofDeath: e.target.value,
+                      OtherPlaceofDeath: "", // Clear the "Other" input if another option is selected
+                    })
+                  }
+                />
+                <Form.Check
+                  type="radio"
+                  label="Home"
+                  name="placeOfDeath"
+                  value="Home"
+                  checked={formData.PlaceofDeath === "Home"}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      PlaceofDeath: e.target.value,
+                      OtherPlaceofDeath: "",
+                    })
+                  }
+                />
+                <Form.Check
+                  type="radio"
+                  label="Accidental"
+                  name="placeOfDeath"
+                  value="Accidental"
+                  checked={formData.PlaceofDeath === "Accidental"}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      PlaceofDeath: e.target.value,
+                      OtherPlaceofDeath: "",
+                    })
+                  }
+                />
+                <Form.Check
+                  type="radio"
+                  label="Others"
+                  name="placeOfDeath"
+                  value="Others"
+                  checked={formData.PlaceofDeath === "Others"}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      PlaceofDeath: e.target.value,
+                    })
+                  }
+                />
+
+                {/* Show input field when "Others" is selected */}
+                {formData.PlaceofDeath === "Others" && (
+                  <Form.Control
+                    type="text"
+                    placeholder="Please specify"
+                    value={formData.OtherPlaceofDeath || ""}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        PlaceofDeath: e.target.value,
+                        OtherPlaceofDeath: e.target.value,
                       })
                     }
+                    className="input-details"
                   />
-                  <Form.Check
-                    type="radio"
-                    label="Home"
-                    name="placeOfDeath"
-                    value="Home"
-                    checked={formData.PlaceofDeath === "Home"}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        PlaceofDeath: e.target.value,
-                      })
-                    }
-                  />
-                  <Form.Check
-                    type="radio"
-                    label="Accidental"
-                    name="placeOfDeath"
-                    value="Accidental"
-                    checked={formData.PlaceofDeath === "Accidental"}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        PlaceofDeath: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </Form.Group>
+                )}
+              </div>
+            </Form.Group>
+
 
               <br />
               <Form.Group controlId="formDeceasedRelationship">

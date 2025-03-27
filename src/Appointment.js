@@ -280,7 +280,7 @@ const Appointments = () => {
         return <span className="badge bg-info">{status}</span>;
       case "completed":
         return <span className="badge bg-success">{status}</span>;
-      case "canceled":
+      case "cancelled":
         return <span className="badge bg-danger">{status}</span>;
       default:
         return <span className="badge bg-secondary">{status}</span>;
@@ -289,6 +289,18 @@ const Appointments = () => {
 
   const handleAction = async (action, appointmentId) => {
     try {
+      const appointment = appointments.find((r) => r.id === appointmentId);
+  
+      // Check if staff is assigned before allowing status change
+      if (action !== "delete" && action !== "archive" && !appointment.staff) {
+        Swal.fire({
+          title: "Action Not Allowed",
+          text: "You must assign a staff member before changing the status.",
+          icon: "error",
+        });
+        return;
+      }
+  
       // Set up action-specific confirmation messages
       const actionMessages = {
         delete: {
@@ -307,7 +319,7 @@ const Appointments = () => {
           confirmButtonText: "Yes, change it!",
         },
       };
-
+  
       // Select the appropriate message for the action
       const confirmationMessage =
         action === "delete"
@@ -315,7 +327,7 @@ const Appointments = () => {
           : action === "archive"
           ? actionMessages.archive
           : actionMessages.status;
-
+  
       // Show confirmation dialog
       const result = await Swal.fire({
         title: confirmationMessage.title,
@@ -326,15 +338,13 @@ const Appointments = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: confirmationMessage.confirmButtonText,
       });
-
-      // Proceed only if the user confirmed
+  
       if (result.isConfirmed) {
-        const appointment = appointments.find((r) => r.id === appointmentId);
-        setLoading(true); // Set loading state to true
+        setLoading(true);
         const userId = getCurrentUserId();
         const recipient = appointment.userId;
         let event, title, content;
-
+  
         if (action === "delete") {
           event = {
             type: "Appointment",
@@ -345,18 +355,7 @@ const Appointments = () => {
           content = "Your appointment has been deleted by an admin";
           await sendNotification(title, content, userId, recipient);
           await deleteAppointment(appointmentId);
-          Swal.fire(
-            "Deleted!",
-            "Appointment deleted successfully",
-            "success"
-          ).then((result) => {
-            if (result.isConfirmed) {
-              Toast.fire({
-                icon: "success",
-                title: "Appointment deleted successfully",
-              });
-            }
-          });
+          Swal.fire("Deleted!", "Appointment deleted successfully", "success");
         } else if (action === "archive") {
           event = {
             type: "Appointment",
@@ -367,18 +366,7 @@ const Appointments = () => {
           content = "Your appointment has been archived by an admin";
           await sendNotification(title, content, userId, recipient);
           await toggleArchiveStatus(appointmentId, "appointments", true);
-          Swal.fire(
-            "Archived!",
-            "Appointment archived successfully",
-            "success"
-          ).then((result) => {
-            if (result.isConfirmed) {
-              Toast.fire({
-                icon: "success",
-                title: "Appointment archived successfully",
-              });
-            }
-          });
+          Swal.fire("Archived!", "Appointment archived successfully", "success");
         } else {
           event = {
             type: "Appointment",
@@ -389,9 +377,8 @@ const Appointments = () => {
           content = `Your appointment status has been changed to ${action}`;
           await sendNotification(title, content, userId, recipient);
           await updateAppointmentStatus(appointmentId, action);
-
-          const appointment = appointments.find((r) => r.id === appointmentId);
-          // Fetch user's email and send email notification using EmailJS
+  
+          // Send email notification using EmailJS
           const userEmail = await getUserEmailById(appointment.userId);
           const emailParams = {
             type: "Appointment",
@@ -399,28 +386,11 @@ const Appointments = () => {
             status: action,
             email: userEmail,
           };
-          const serviceID = "service_m5g022b";
-          const templateID = "template_g1w6f2a";
-          const userID = "0Tz3RouZf3BXZaSmh";
-
-          // Send the email
-          await emailjs.send(serviceID, templateID, emailParams, userID);
-
-          Swal.fire(
-            "Status!",
-            `Appointment status changed to ${action}`,
-            "success"
-          ).then((result) => {
-            if (result.isConfirmed) {
-              Toast.fire({
-                icon: "success",
-                title: `Appointment status changed to ${action}`,
-              });
-            }
-          });
+          await emailjs.send("service_m5g022b", "template_g1w6f2a", emailParams, "0Tz3RouZf3BXZaSmh");
+  
+          Swal.fire("Status!", `Appointment status changed to ${action}`, "success");
         }
-
-        // Log event and refresh appointments list
+  
         AuditLogger({ event });
         if ($.fn.DataTable.isDataTable("#appointmentsTable")) {
           $("#appointmentsTable").DataTable().destroy();
@@ -433,13 +403,14 @@ const Appointments = () => {
       alert(`An error occurred while performing the action (${action}).`);
     }
   };
+  
 
   const getAvailableActions = (status) => {
     const allActions = [
       "pending",
       "approved",
       "completed",
-      "canceled",
+      "cancelled",
       "delete",
       "archive",
     ];
@@ -643,7 +614,7 @@ const Appointments = () => {
                   <td>
                     {
                       appointments.filter(
-                        (appointment) => appointment.status === "canceled"
+                        (appointment) => appointment.status === "cancelled"
                       ).length
                     }
                   </td>

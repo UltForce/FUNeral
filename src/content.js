@@ -688,7 +688,7 @@ const Content = () => {
               ) && (
                 <>
                   <Form.Group controlId="formTitle">
-                    <Form.Label className="label-title">Title</Form.Label>
+                    <Form.Label className="label-title">Content</Form.Label>
                     <Form.Control
                       type="text"
                       className="input-details"
@@ -700,7 +700,7 @@ const Content = () => {
                   </Form.Group>
                   <br />
                   <Form.Group controlId="formBody">
-                    <Form.Label className="label-title">Content</Form.Label>
+                    <Form.Label className="label-title">Description</Form.Label>
                     <Form.Control
                       as="textarea"
                       className="input-details"

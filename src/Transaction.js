@@ -222,7 +222,7 @@ const Transaction = () => {
         return <span className="badge bg-info">{status}</span>;
       case "completed":
         return <span className="badge bg-success">{status}</span>;
-      case "canceled":
+      case "cancelled":
         return <span className="badge bg-danger">{status}</span>;
       default:
         return <span className="badge bg-secondary">{status}</span>;
@@ -245,7 +245,7 @@ const Transaction = () => {
 
       // If the user confirms, proceed with the action
       if (!result.isConfirmed) {
-        return; // Exit if the user canceled
+        return; // Exit if the user cancelled
       }
 
       setLoading(true); // Set loading state to true
@@ -347,15 +347,17 @@ const Transaction = () => {
   };
 
   const getAvailableActions = (status) => {
-    const allActions = [
-      "processing",
-      "burial",
-      "completed",
-      "canceled",
-      "archive",
-    ];
-    return allActions.filter((action) => action !== status);
+    const allowedTransitions = {
+      processing: ["burial", "cancelled"], // Can go to Burial or Cancelled
+      burial: ["completed"], // Can only go to Completed
+      completed: ["archive"], // Can only be archived
+      cancelled: [], // Cannot transition from Cancelled
+      archive: [], // Once archived, no further actions
+    };
+  
+    return allowedTransitions[status] || [];
   };
+  
 
   const handleShowModal = async (mode, transaction = null, event = null) => {
     // Hide tooltip before changing status
@@ -593,7 +595,7 @@ const Transaction = () => {
 
       // If the user cancels, exit the function
       if (!result.isConfirmed) {
-        return; // Exit the function if the user canceled
+        return; // Exit the function if the user cancelled
       }
 
       // If the user confirms, proceed with generating the report
@@ -754,34 +756,37 @@ const Transaction = () => {
     return selectedParticulars.reduce((total, item) => total + item.price, 0);
   };
 
-  // Update formData's totalAmount and balance dynamically whenever the selected particulars or deposit change
   useEffect(() => {
     const totalAmount = calculateTotalAmount();
-    const balance = totalAmount - formData.deposit;
-
+    const baseDeposit = totalAmount * 0.05; // 5% of total amount
+    const additionalDeposit = parseFloat(formData.additionalDeposit || 0);
+    const totalDeposit = baseDeposit + additionalDeposit;
+  
+    const balance = totalAmount - totalDeposit; // Calculate balance
+  
     setFormData((prevData) => ({
       ...prevData,
       totalAmount: totalAmount,
+      deposit: totalDeposit, // Store total deposit
       balance: balance,
     }));
-  }, [selectedParticulars, formData.deposit]);
+  }, [selectedParticulars, formData.additionalDeposit]);
+  
 
   const handleDepositChange = (deposit) => {
-    const updatedDeposit = parseFloat(deposit) || 0;
+    const additionalDeposit = parseFloat(deposit) || 0;
+    const baseDeposit = formData.totalAmount * 0.05; // 5% of total amount
+    const totalDeposit = baseDeposit + additionalDeposit;
+    const balance = formData.totalAmount - totalDeposit;
+  
     setFormData((prevData) => ({
       ...prevData,
-      deposit: updatedDeposit,
-      balance: updatedDeposit
-        ? prevData.totalAmount - updatedDeposit
-        : prevData.totalAmount,
+      additionalDeposit: additionalDeposit,
+      deposit: totalDeposit,
+      balance: balance,
     }));
   };
-
-  // Recalculate the balance dynamically
-  const calculateBalance = () => {
-    const total = calculateTotalAmount();
-    return total - formData.deposit;
-  };
+  
 
   return (
     <section className="transaction">
@@ -1170,41 +1175,54 @@ const Transaction = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td
-                      colSpan="3"
-                      style={{ textAlign: "right" }}
-                      className="total-amount"
-                    >
-                      <strong>Total Amount:</strong> ₱
-                      {formData.totalAmount.toFixed(2)}
+                    <td colSpan="3" style={{ textAlign: "right" }} className="total-amount">
+                      <strong>Total Amount:</strong> ₱{formData.totalAmount.toFixed(2)}
                     </td>
                   </tr>
                   <tr>
                     <td colSpan="3" style={{ textAlign: "center" }}>
-                      <Form.Group controlId="depositAmount">
+                      <Form.Group controlId="baseDeposit">
                         <Form.Label className="deposit-title">
-                          <strong>Deposit:</strong>
+                          <strong>Base Deposit (5%):</strong> ₱
+                          {(formData.totalAmount * 0.05).toFixed(2)}
                         </Form.Label>
-                        <Form.Control
-                          type="number"
-                          placeholder="Enter deposit amount"
-                          className="deposit-input"
-                          value={formData.deposit}
-                          onChange={(e) => handleDepositChange(e.target.value)}
-                        />
                       </Form.Group>
                     </td>
                   </tr>
                   <tr>
-                    <td
-                      colSpan="3"
-                      style={{ textAlign: "center" }}
-                      className="balance"
-                    >
+                    <td colSpan="3" style={{ textAlign: "center" }}>
+                      <Form.Group controlId="additionalDeposit">
+                        <Form.Label className="deposit-title">
+                          <strong>Additional Deposit:</strong>
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          placeholder="Enter additional deposit amount"
+                          className="deposit-input"
+                          value={formData.additionalDeposit || ""}
+                          onChange={(e) => handleDepositChange(e.target.value)}
+                          min="0"
+                        />
+                      </Form.Group>
+                    </td>
+                  </tr>
+                  <br/>
+                  <tr>
+                    <td colSpan="3" style={{ textAlign: "center" }}>
+                      <Form.Group controlId="totalDeposit">
+                        <Form.Label className="deposit-title">
+                          <strong>Total Deposit:</strong> ₱{formData.deposit.toFixed(2)}
+                        </Form.Label>
+                      </Form.Group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="3" style={{ textAlign: "center" }} className="balance">
                       <strong>Balance:</strong> ₱{formData.balance.toFixed(2)}
                     </td>
                   </tr>
                 </tfoot>
+
               </table>
 
               <div className="add-transaction-buttons">

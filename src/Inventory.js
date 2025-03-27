@@ -54,7 +54,20 @@ const Inventory = () => {
     price: 0,
     description: "",
   });
+  const [showQuantityModal, setShowQuantityModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
+  const [adjustment, setAdjustment] = useState(0);
+  const [quantityAction, setQuantityAction] = useState("add");
 
+  const openQuantityModal = (itemId, quantity) => {
+    setSelectedItemId(itemId);
+    setSelectedQuantity(quantity);
+    setAdjustment(0); // Reset adjustment field
+    setShowQuantityModal(true);
+  };
+
+  
   useEffect(() => {
     const checkAdminAndLoginStatus = async () => {
       try {
@@ -305,35 +318,52 @@ const Inventory = () => {
     window.open(imageUrl, "_blank"); // Simple example to open the image in a new tab
   };
 
-  const increaseQuantity = async (itemId) => {
-    const updatedItems = inventoryItems.map((item) =>
-      item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setInventoryItems(updatedItems);
-
-    const updatedItem = updatedItems.find((item) => item.id === itemId);
-
-    // Save to Firestore
-    const itemDocRef = doc(dba, "inventory", itemId); // Adjust "inventory" to your Firestore collection name
-    await updateDoc(itemDocRef, { quantity: updatedItem.quantity });
-  };
-
-  const decreaseQuantity = async (itemId) => {
-    const updatedItems = inventoryItems.map((item) =>
-      item.id === itemId && item.quantity > 0
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
-    setInventoryItems(updatedItems);
-
-    const updatedItem = updatedItems.find((item) => item.id === itemId);
-
-    // Save to Firestore
-    if (updatedItem.quantity >= 0) {
-      const itemDocRef = doc(dba, "inventory", itemId); // Adjust "inventory" to your Firestore collection name
-      await updateDoc(itemDocRef, { quantity: updatedItem.quantity });
+  const handleQuantityUpdate = async () => {
+    if (adjustment <= 0) {
+      Swal.fire("Invalid Amount", "Please enter a valid quantity.", "warning");
+      return;
     }
+  
+    let newQuantity =
+      quantityAction === "add"
+        ? selectedQuantity + adjustment
+        : selectedQuantity - adjustment;
+  
+    if (newQuantity < 0) {
+      Swal.fire("Error", "Quantity cannot be negative.", "error");
+      return;
+    }
+  
+    Swal.fire({
+      title: "Confirm Quantity Update",
+      text: `Are you sure you want to ${quantityAction} ${adjustment} items?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, update it!",
+      cancelButtonText: "No, cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const itemDocRef = doc(dba, "inventory", selectedItemId);
+          await updateDoc(itemDocRef, { quantity: newQuantity });
+  
+          // Update state
+          setInventoryItems((prevItems) =>
+            prevItems.map((item) =>
+              item.id === selectedItemId ? { ...item, quantity: newQuantity } : item
+            )
+          );
+  
+          Swal.fire("Updated!", "Inventory has been updated.", "success");
+          setShowQuantityModal(false);
+        } catch (error) {
+          Swal.fire("Error", "Failed to update inventory.", "error");
+        }
+      }
+    });
   };
+  
+  
 
   return (
     <section className="inventory">
@@ -375,25 +405,21 @@ const Inventory = () => {
                 <tr key={item.id}>
                   <td>{item.name}</td>
                   <td>{item.plan}</td>
-                  <td>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <button
-                        className="btn btn-light"
-                        style={{ padding: "2px 5px", marginRight: "5px" }}
-                        onClick={() => decreaseQuantity(item.id)}
+                 <td>
+                 <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip>Modify Quantity</Tooltip>}
                       >
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        className="btn btn-light"
-                        style={{ padding: "2px 5px", marginLeft: "5px" }}
-                        onClick={() => increaseQuantity(item.id)}
-                      >
-                        <FontAwesomeIcon icon={faArrowRight} />
-                      </button>
-                    </div>
-                  </td>
+                  <div
+                    style={{ cursor: "pointer", textAlign: "center" }}
+                    onClick={() => openQuantityModal(item.id, item.quantity)}
+                  >
+                    <span style={{ color: "blue" }}>
+                      {item.quantity}
+                    </span>
+                  </div>
+                  </OverlayTrigger>
+                </td>
                   <td>{item.price}</td>
                   <td>{item.description}</td>
                   <td>
@@ -544,6 +570,65 @@ const Inventory = () => {
           </Form>
         </Modal.Body>
       </Modal>
+
+<Modal show={showQuantityModal} onHide={() => setShowQuantityModal(false)}>
+  <Modal.Header closeButton className="inventory-header">
+    <Modal.Title className="inventory-title">Adjust Quantity</Modal.Title>
+  </Modal.Header>
+  <Modal.Body className="inventory-details-box">
+    <p className="current-quantity">
+      Current Quantity: <strong>{selectedQuantity}</strong>
+    </p>
+    <Form>
+      {/* Selection to Add or Subtract */}
+      <Form.Group controlId="quantityAction">
+        <Form.Label className="label-title">Action</Form.Label>
+        <Form.Select
+          className="plan-select"
+          value={quantityAction}
+          onChange={(e) => setQuantityAction(e.target.value)}
+          required
+        >
+          <option value="add">Add</option>
+          <option value="subtract">Subtract</option>
+        </Form.Select>
+      </Form.Group>
+      <br />
+
+      {/* Input for Quantity Adjustment */}
+      <Form.Group controlId="quantityAdjustment">
+        <Form.Label className="label-title">
+          Enter Amount to {quantityAction === "add" ? "Add" : "Subtract"}
+        </Form.Label>
+        <Form.Control
+          type="number"
+          className="input-details"
+          value={adjustment}
+          onChange={(e) => setAdjustment(Number(e.target.value))}
+          required
+        />
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button
+      variant="secondary"
+      className="cancel-button"
+      onClick={() => setShowQuantityModal(false)}
+    >
+      Cancel
+    </Button>
+    <Button
+      variant="primary"
+      className="edit-item-button"
+      onClick={handleQuantityUpdate}
+    >
+      Save Changes
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
     </section>
   );
 };

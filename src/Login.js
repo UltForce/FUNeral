@@ -54,12 +54,22 @@ const Login = () => {
       return;
     }
     try {
+      const user = userCredential.user;
+      if (!user.emailVerified) {
+        Toast.fire({
+          icon: "error",
+          title: "Please Verify your email first.",
+        });
+        await auth.signOut();
+        navigate("/login");
+        return; // Prevent login
+      }
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredential.user;
+
 
       // Display success notification
       Toast.fire({
@@ -124,7 +134,7 @@ const Login = () => {
           details: "User logged in with Google",
         };
         AuditLogger({ event });
-
+ 
         // Check user role and redirect
         const userRole = await getUserRoleFirestore(user.uid);
         setRole(userRole); // Update the role globally
@@ -132,6 +142,15 @@ const Login = () => {
           navigate("/dashboard");
         } else {
           navigate("/homepage");
+        }
+        if (!user.emailVerified) {
+          Toast.fire({
+            icon: "error",
+            title: "Please Verify your email first.",
+          });
+          await auth.signOut();
+          navigate("/login");
+          return; // Prevent login
         }
       } else {
         // User does not exist, show an error
@@ -160,7 +179,6 @@ const Login = () => {
 
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("Sign-in successful", user);
 
       const yahooEmail = user.email;
 
@@ -193,6 +211,15 @@ const Login = () => {
           });
         }
       });
+      if (!user.emailVerified) {
+        Toast.fire({
+          icon: "error",
+          title: "Please Verify your email first.",
+        });
+        await auth.signOut();
+        navigate("/login");
+        return; // Prevent login
+      }
     } catch (error) {
       Toast.fire({
         icon: "error",
