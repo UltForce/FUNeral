@@ -151,7 +151,19 @@ const Register = () => {
           };
           await sendEmailVerification(user);
           AuditLogger({ event });
-
+          if (!user.emailVerified) {
+            Swal.fire({
+              icon: "warning",
+              title: "Email Verification Required",
+              text: "Please verify your email before logging in.",
+              confirmButtonText: "OK",
+            }).then(async () => {
+              await auth.signOut();
+              navigate("/login");
+            });
+          
+            return; // Prevent login
+          }
           navigate("/homepage");
 
           Swal.fire({
@@ -275,7 +287,19 @@ const Register = () => {
           };
           await sendEmailVerification(user);
           AuditLogger({ event });
-
+          if (!user.emailVerified) {
+            Swal.fire({
+              icon: "warning",
+              title: "Email Verification Required",
+              text: "Please verify your email before logging in.",
+              confirmButtonText: "OK",
+            }).then(async () => {
+              await auth.signOut();
+              navigate("/login");
+            });
+          
+            return; // Prevent login
+          }
           navigate("/homepage");
 
           Swal.fire({
